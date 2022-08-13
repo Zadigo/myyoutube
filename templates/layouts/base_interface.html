@@ -170,7 +170,7 @@
         </script>
         
         <!-- Lodash -->
-        <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
         
         <!-- Velocity -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
@@ -197,30 +197,54 @@
         {% endcomment %}
 
         <!-- Axios -->
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        
-        <!-- Vuetify -->
-        <!-- <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script> -->
-        
-        <!-- VueX -->
-        <!-- <script src="https://unpkg.com/vuex@3.6.2/dist/vuex.js"></script> -->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+                
+        <!-- Store -->
+        <script src="https://unpkg.com/vuex@4"></script>
         
         <!-- Router -->
-        <!-- <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script> -->
-        <script src="https://unpkg.com/vue-router@next"></script>
+        <script src="https://unpkg.com/vue-router@4"></script>
+
+        <!-- DayJS -->
+        <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+
+        <script>
+            axios.defaults.headers.common['Content-Type'] = 'application/json'
+            axios.defaults.headers.common['Accept-Language'] = 'fr,en-US;q=0.9'
+
+            const client = axios.create({
+                baseURL: 'http://127.0.0.1:8000',
+                timeout: 5000,
+                withCredentials: true
+            })
+        </script>
 
         {% block extra_scripts %}{% endblock %}
 
-        {% include "scripts/vue.html" %}
-
-        {% block vuejs_scripts %}
-            <!-- Global -->
-            {# {% include "vue/global.html" %} #}
-        {% endblock %}
+        {# {% include "scripts/vue.html" %} #}
+        
+        {% comment %}
+            {% block vuejs_scripts %}
+                <!-- Global -->
+                {# {% include "vue/global.html" %} #}
+            {% endblock %}
+        {% endcomment %}
 
         <script>
+            var { createApp } = Vue
+
+            const app = createApp({
+                name: 'App'
+            })
+
+            app.use(router)
+
+            app.use((app) => {
+                app.config.globalProperties.$http = axios
+            })
+
             app.config.compilerOptions.delimiters = [ "[[", "]]" ]
-            window.vm = app.mount("#app")
+            window.vm = app.mount('#app')
         </script>
     </html>
 {% endblock %}
