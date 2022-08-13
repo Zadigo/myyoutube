@@ -1,0 +1,23 @@
+{% load i18n static cache %}
+
+{% comment %}
+{% cache 300 "video" video.reference %}
+    <div class="row">
+        <h1>{{video}}</h1>
+        <div class="col-12">
+            <!-- Player -->
+            <video-player-component inline-template>
+                <div class="video-wrapper">
+                    <div v-show="loading" class="spinner-border text-light" id="video-spinner" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+        
+                    <video @play="play($event)" @pause="pause($event)" @playing="playing($event)" @timeupdate="timeupdate($event)" @ended="playerended($event)" @statechanged="statechanged($event)" ref="videoplayer" :id="'video_{{ video.reference }}'" :width="900" :controls="true" class="vjs-custom-skin video-js" preload="auto">
+                        <source :src="'{{ video.video.url }}'" type="video/mp4" />
+                    </video>
+                </div>
+            </video-player-component>
+        </div>
+    </div>
+{% endcache %}     
+{% endcomment %}

@@ -1,0 +1,30 @@
+{% extends "layouts/base_interface.html" %}
+{% load i18n  %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-12">
+            <p>
+                <a href="{% url 'mychannel:settings:customize' channel.reference %}">{% trans "Customize" %}</a> /
+                <a href="{% url 'mychannel:settings:upload' channel.reference %}">{% trans "Upload" %}</a> /
+                <a href="{% url 'mychannel:settings:videos' channel.reference %}">{% trans "Videos" %}</a> /
+            </p>
+        </div>
+
+        <div class="col-12">
+            <form method="POST" action="{% block action_url %}{% endblock %}" enctype="multipart/form-data">
+                {% csrf_token %}
+        
+                <div class="form-row">
+                    <div class="col-12">
+                        <div class="actions">
+                            {% block form_actions %}{% endblock %}
+                        </div>
+                    </div>
+                </div>
+        
+                {% block form_content %}{% endblock %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

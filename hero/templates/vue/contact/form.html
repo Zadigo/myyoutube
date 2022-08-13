@@ -1,0 +1,67 @@
+<script>
+    const formcomponent = {
+        name: "FormComponent",
+        delimiters: ["[[", "]]"],
+        data() {
+            return {
+                items: {
+                    name: null,
+                    email: null,
+                    message: null,
+                    newsletter: false
+                }
+            }
+        }
+    }
+
+    app.component("contact-form", {
+        name: 'ContactForm',
+        delimiters: ["[[", "]]"],
+        components: {
+            "form-component": formcomponent
+        },
+        data() {
+            return {
+                sent: false,
+                success: false,
+            }
+        },
+        methods: {
+            async doSend() {
+                try {
+                    await this.$http.get("{% url 'hero:contact' %}")
+                    this.success = true
+                    this.resetitems()
+                } catch(error) {
+                    console.error(error)
+                }
+            },
+            // dosend: function (data) {
+            //     fetch("{% url 'hero:contact' %}", {
+            //         headers: {
+            //             "X-CSRFToken": "{{ csrf_token }}"
+            //         },
+            //         credentials: "same-origin",
+            //         body: JSON.stringify(data)
+            //     })
+            //     .then((response) => {
+            //         response.json().then((data) => {
+            //             this.success = true
+            //             this.resetitems()
+            //         })
+            //     })
+            //     .catch((error) => {
+            //         console.log(error)
+            //     })
+            // },
+            resetitems: function () {
+                this.items = {
+                    name: null,
+                    email: null,
+                    message: null,
+                    newsletter: false
+                }
+            }
+        }
+    })
+</script>

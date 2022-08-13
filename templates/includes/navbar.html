@@ -1,0 +1,97 @@
+{% load i18n %}
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+    <div class="container-fluid">
+        <a class="navbar-brand waves-effect" href="https://mdbootstrap.com/docs/jquery/" target="_blank">
+            <strong class="blue-text">MDB</strong>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <!-- <li class="nav-item">
+                    <input type="search" name="search" class="form-control" 
+                        id="search" placeholder="{% trans 'Search' %}">
+                </li> -->
+
+                <li class="nav-item active">
+                    <a class="nav-link waves-effect">
+                        <i class="fa fa-bars"></i>
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link waves-effect" href="https://mdbootstrap.com/docs/jquery/" target="_blank">
+                        About MDB
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link waves-effect"
+                        href="https://mdbootstrap.com/docs/jquery/getting-started/download/" target="_blank">
+                        Free download
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav nav-flex-icons">
+                {% if request.user.is_authenticated %}
+                    {% with user_channel=request.user.userchannel_set.get %}
+                        {% if user_channel %}
+                            <li class="nav-item">
+                                <a href="{% url 'mychannel:settings:upload' user_channel.reference %}" class="nav-link waves-effect" target="_blank">
+                                    <i class="fa fa-upload"></i>
+                                </a>
+                            </li>    
+                        {% endif %}                        
+                    {% endwith %}
+
+                    <li class="nav-item">
+                        <a href="https://www.facebook.com/mdbootstrap" class="nav-link waves-effect" target="_blank">
+                            <i class="fas fa-bell"></i>
+                        </a>
+                    </li>                    
+                {% endif %}
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user-circle mr-2"></i>
+                    </a>
+
+                    <div class="dropdown-menu">
+                        {% if request.user.is_authenticated %}
+                            {% if request.user.userchannel_set.get %}
+                                <a href="{{ request.user.userchannel_set.get.get_absolute_url }}" class="dropdown-item">
+                                    {% trans "My channel" %}
+                                </a>                                
+                            {% endif %}
+
+                            <a href="{% url 'admin:logout' %}" class="dropdown-item" href="#">
+                                {% trans "Sign out" %}
+                            </a>        
+
+                            <div class="dropdown-divider"></div>
+    
+                            <a href="{% url 'history:home' %}" class="dropdown-item" href="#">
+                                {% trans "Your data" %}
+                            </a>
+
+                            <a class="dropdown-item" href="#">
+                                {% trans "Settings" %}
+                            </a>
+                        {% else %}
+                            <a class="dropdown-item" href="/admin/login/">
+                                {% trans "Sign in" %}
+                            </a>                                                        
+                        {% endif %}
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
