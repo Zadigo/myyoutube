@@ -1,0 +1,14 @@
+<script>
+    Vue.component("current-channel", {
+        name: "Channel",
+        components: {
+            "subscription-component": subscriptioncomponent
+        },
+        delimiters: ["[[", "]]"],
+        data() {
+            return {
+                channel: "{{ channel.reference }}"
+            }
+        }
+    })
+</script>

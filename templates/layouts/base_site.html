@@ -1,0 +1,42 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block theme_color %}#484848{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/transitions.css' %}">
+{% endblock %}
+
+{% block analytics %}
+{% endblock %}
+
+{% block extra_analytics %}
+{% endblock %}
+
+{% comment %}
+<div class="top-banner sales-policies green">
+    <div class="container">
+        <div class="row">
+            <div class="col-4">A</div>
+            <div class="col-4">B</div>
+            <div class="col-4">C</div>
+        </div>
+    </div>
+</div>
+{% endcomment %}
+
+{% block main %}
+    <div class="container dark-grey-text mt-5">
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+
+        {% block container %}{% endblock %}
+    </div>
+{% endblock %}

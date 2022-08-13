@@ -1,0 +1,127 @@
+{% extends "layouts/base_interface.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% trans "Comments" %} - VaTube
+{% endblock %}
+
+{% block main %}
+    <section class="section">
+        <div class="row">
+            <div class="col-6 col-sm-12 col-md-7 offset-md-1">
+                {% for comment in comments %}
+                    <comment-card-component videoreference="{{ comment.video.reference }}" commentid="{{ comment.id }}" key="{{ forloop.counter }}" inline-template>
+                        <transition name="general-transition">
+                            <div class="card {% if forloop.counter > 0 %}mt-3{% endif %}">
+                                <div class="card-body">
+                                    <p class="font-weight-bold">
+                                        {% if request.user.username == comment.user.username %}
+                                            {% trans "Me" %}
+                                        {% else %}
+                                            {{ comment.user.username|title }}
+                                        {% endif %}
+                                        - 
+                                        <span>
+                                            {% trans "Commented on" %}:
+                                            <a href="{{ comment.video.get_absolute_url }}">
+                                                {{ comment.video.title }}
+                                            </a>
+                                        </span>
+                                    </p>
+
+                                    {{ comment.content }}
+
+                                    {% with replies=comment.reply_set.all %}
+                                        {% if replies.count > 0 %}
+                                            <div id="show-replies text-right">
+                                                <button @click="showreplies=!showreplies" class="btn btn-sm btn-info m-0 mt-3">
+                                                    <i class="fa fa-arrow-down"></i>
+                                                    {% blocktrans with reply_count=replies.count %}
+                                                        Show {{ reply_count }} replies
+                                                    {% endblocktrans %}
+                                                </button>
+                                            </div>                                             
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+    
+                                {% with replies=comment.reply_set.all %}
+                                    {% if replies %}
+                                        <div v-if="showreplies" class="card-footer">
+                                            {% for reply in replies %}
+                                                <comment-card-component :videoreference="videoreference" :commentid="commentid" replyid="{{ reply.id }}" key="{{ forloop.counter }}" inline-template>
+                                                    <div class="card {% if forloop.counter > 0 %}mt-3{% endif %} z-depth-0 border">
+                                                        <div class="card-body">
+                                                            <p class="font-weight-bold">
+                                                                {% with channel=reply.user.userchannel_set.get %}
+                                                                    {% if channel %}
+                                                                        <a href="{{ channel.get_absolute_url }}">
+                                                                            {{ channel.name }}
+                                                                        </a>
+                                                                    {% else %}
+                                                                        {{ reply.user.username|title }}
+                                                                    {% endif %}
+                                                                {% endwith %}
+                                                            </p>
+                                                            {{ reply.content }}
+                                                        </div>
+
+                                                        <div class="card-footer text-right">
+                                                            <button @click="showinput=!showinput" class="btn btn-sm btn-link m-0 mb-2">
+                                                                {% trans "Reply" %}
+                                                            </button>
+
+                                                            <div class="form-group">
+                                                                <input @keypress.enter.strip="newreply()" v-if="showinput" type="text" v-model="comment" name="comment" class="form-control" id="comment" placeholder="{% trans 'Leave a comment' %}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </comment-card-component>                                    
+                                            {% endfor %}
+                                        </div>                                    
+                                    {% endif %}
+                                {% endwith %}
+
+                                <comment-card-component v-if="shownewreply" inline-template>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <p class="font-weight-bold">
+                                                {% trans "Me" %}
+                                            </p>
+                                            [[ newcomment ]]
+                                        </div>
+                                    </div>
+                                </comment-card-component>
+                            </div>
+                        </transition>
+                    </comment-card-component>                              
+                {% empty %}
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>{% trans "You have no comments" %}</h3>
+
+                            <a href="{% url 'mychannel:channels' %}" class="btn btn-lg btn-secondary">
+                                {% trans "Start watching videos" %}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure deleniti enim 
+                        veritatis voluptates esse omnis earum, cupiditate accusamus eum. 
+                        Vel perspiciatis nulla ea ut. Delectus veniam minus laudantium exercitationem vel!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block vuejs_scripts %}
+    <!-- App -->
+    {% include "vue/comments_app.html" %}
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "layouts/modals/base.html" %}
+{% load i18n %}
+
+{% block modal_id %}donation{% endblock %}
+
+{% block modal_title %}{% trans "Make a donation to" %} {{ video.user.username|upper }}{% endblock %}
+
+{% block modal_body %}
+    <donation-modal-component inline-template>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Ab, cum consectetur? Ex dicta neque vel quam, blanditiis eius a? 
+                    Repellat doloribus animi, error autem laborum quisquam! Aliquid sapiente alias quidem.
+                </p>
+    
+                <p>
+                    {% trans "Each donation will get a 30% cut for us and a 70% cut for" %} <span class="font-weight-bold">{{ video.user.username }}</span>
+                </p>
+    
+                <p>
+                    {% blocktrans %}
+                        By making a [[ value ]] donation, we will receive [[ companycut ]]
+                        and the creator will get [[ creatorcut ]]. You can increase the amount
+                        your favorite creator gets by making a <a @click="creatoronly=!creatoronly" href="#">creator only donation</a>
+                    {% endblocktrans %}
+                </p>
+    
+                <form>
+                    <div class="form-row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <input v-model.number="value" :min="minvalue" type="number" name="donation-value" max="250" step="5" id="donation-value" class="form-control" placeholder="Donation value">
+                            </div>
+                        </div>
+    
+                        <div class="col-12">
+                            <div v-if="creatoronly" class="alert alert-info">
+                                {% trans "You chose to do a creator only donation" %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-12">
+                            <div class="form-group">
+                                <data-checkbox-component @startaction="doconsent" :id="'agreement'" :label="'I fully consent and wish to proceed'" :value="'general'" />
+                            </div>
+                        </div>
+    
+                        <div class="col-12">
+                            <div class="form-group">
+                                <data-checkbox-component @startaction="doconsent" :id="'my-account'" :label="'I consent that I am doing this on my own account etc'" :value="'onaccount'" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-12 text-right">
+                            <!-- TODO -->
+                            <button @click="senddonation()" :disabled="donationbuttondisabled" type="button" class="btn btn-primary">
+                                {% trans "Make donation" %} - $[[ value ]]
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <hr class="mt-3 mb-3">
+    
+                <p>
+                    {% blocktrans %}
+                        Before proceeding to payment, please add a payment option
+                        <a href="">by following the link below.</a>
+                    {% endblocktrans %}
+                </p>
+            </div>
+        </div>
+    </donation-modal-component>
+{% endblock %}
+
+{% block modal_footer %}
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+            {% trans "Cancel" %}
+        </button>
+    </div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "layouts/base_interface.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% trans "Getting started" %} - VaTube
+{% endblock %}
+
+{% block main %}
+    <section class="section">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h1>
+                            {% trans "Academy" %} /
+                            <span class="red-text darken-3">
+                                {% trans "Getting started" %}
+                            </span>
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        At vitae doloribus tenetur mollitia eum voluptatem officiis itaque dicta 
+                        enim amet nemo autem expedita, illo magnam ipsa accusantium facere natus quam.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="card mt-3">
+                    <div class="card-body">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae magni nemo, totam quaerat ut sapiente voluptatibus pariatur in sint enim voluptates modi repellat voluptatem, est quibusdam deserunt consectetur repudiandae impedit!
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card mt-3 mb-3">
+                    <div class="card-body">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae magni nemo, totam quaerat ut sapiente voluptatibus pariatur in sint enim voluptates modi repellat voluptatem, est quibusdam deserunt consectetur repudiandae impedit!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="{% url 'school:editing:first-video' %}" class="btn-lg btn-primary">
+                            {% trans "Editing" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

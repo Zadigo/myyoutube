@@ -1,0 +1,114 @@
+{% extends "layouts/base_interface.html" %}
+{% load i18n humanize cache %}
+
+{% block title %}
+    {% trans "Videos" %} - VaTube
+{% endblock %}
+
+{% block main %}
+    <feed-view />
+{% endblock %}
+
+{% block vue_templates %} 
+    {% include "includes/feed/video_card_player.html" %}
+
+    <script type="text/x-template" id="feed-view">
+        <section class="section mt-4">
+            <!-- Filters -->
+            <filters-component />
+
+            <hr class="mt-3 mb-3">
+
+            <!-- Videos -->
+            <videos-component class="row" />
+        </section>
+    </script>
+
+    <script type="text/x-template" id="filters-component">
+        <div class="row mb-3">
+            <div class="col-12">
+                <button class="btn btn-md btn-primary m-0" @click="clicked=!clicked">
+                    <i class="fa fa-filter mr-2"></i>
+                    {% trans "Filter" %}
+                </button>
+            </div>
+
+            <transition name="filter-transition" tag="div">
+                <div v-if="clicked" class="col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    Show a set of filters
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+        </div >
+    </script>
+
+    <script type="text/x-template" id="videos-component">
+        <div class="col-12">
+            <div class="row">
+                {% if videos %}
+                    {% for video in videos %}
+                        <div class="col-4">
+                            <video-card-component reference="{{ video.reference }}" src="{{ video.video.url }}" 
+                                viewcount="{{ video.mediaview_set.all.count }}" createdon="{{ video.created_on|naturaltime }}" videotitle="{{ video.title|truncatechars:30 }}"
+                                    channelname="{{ video.user_channel.name|title }}" href="{% url 'videos:detail' video.reference %}" key="{{ forloop.counter }}" />
+                            <!-- <transition-group name="card-transition" tag="article" id="video_{{ forloop.counter }}">
+                            </transition-group> -->
+                        </div>
+                        {% cache 300 "video_views" video.reference %}
+                        {% endcache %}
+
+                        {% if forloop.counter == 6 %}
+                            <div class="col-12 mt-4 mb-4">
+                                <h1>{% trans "Discover" %}</h1>
+                                <hr>
+                            </div>    
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h2>{% trans "There are no videos on this website" %}</h2>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </script>
+{% endblock %}
+
+{% block vuejs_scripts %}
+    <script>
+        var filterscomponent = {
+            name: "FiltersComponent",
+            template: '#filters-component',
+            data() {
+                return {
+                    clicked: false
+                }
+            }
+        }
+        
+        var videoscomponent = {
+            name: "VideosComponent",
+            template: '#videos-component'
+        }
+
+        app.component("feed-view", {
+            name: "FeedView",
+            template: "#feed-view",
+            components: {
+                "videos-component": videoscomponent,
+                "filters-component": filterscomponent
+            }
+        })
+    </script>
+{% endblock %}

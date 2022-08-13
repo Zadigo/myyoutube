@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<div class="card-header">
+    <div class="row">
+        <div class="col-12 text-center">
+            <p>{% trans "Se connecter avec" %}</p>
+            <a href="{% url 'social:begin' backend='facebook-oauth2' %}" class="btn btn-sm mr-3 mb-2 bg-white">
+                <i class="fab fa-facebook mr-4"></i>Facebook
+    
+            <a href="{% url 'social:begin' backend='google-oauth2' %}" class="btn btn-sm mb-2 bg-white">
+                <i class="fab fa-google mr-4"></i>Google
+            </a>
+        </div>
+    </div>
+</div>

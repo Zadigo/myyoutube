@@ -1,0 +1,17 @@
+<ul class="navbar-nav mr-auto">
+    {% for link, details in links %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ details.href }}">
+                {{ details.name }}
+                <span class="sr-only">(current)</span>
+            </a>
+        </li>        
+    {% endfor %}
+
+    {% if user.is_admin or user.is_staff %}
+        <li class="nav-item">
+            <a href="/admin/">
+            Admin</a>
+        </li>
+    {% endif %}
+</ul>

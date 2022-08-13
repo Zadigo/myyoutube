@@ -1,0 +1,35 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+stripe = "*"
+psycopg2 = "*"
+django-storages = "*"
+boto3 = "*"
+gunicorn = "*"
+django = "*"
+social-auth-app-django = "*"
+django-rest-framework = "*"
+django-cors-headers = "*"
+djangorestframework-jwt = "*"
+django-extensions = "*"
+redis = "*"
+django-celery-beat = "*"
+pandas = "*"
+flower = "*"
+python-memcached = "*"
+pillow = "*"
+django-debug-toolbar = "*"
+numpy = "==1.19.3"
+django-imagekit = "*"
+django-redis = "*"
+nltk = "*"
+sklearn = "*"
+
+[dev-packages]
+autopep8 = "*"
+
+[requires]
+python_version = "3.9"

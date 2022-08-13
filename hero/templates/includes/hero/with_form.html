@@ -1,0 +1,77 @@
+{% load i18n %}
+
+<div class="row wow fadeIn">
+    <div class="col-md-6 mb-4 white-text text-center text-md-left">
+        <h1 class="display-4 font-weight-bold">
+            {% trans "Learn Bootstrap 4 with MDB" %}
+        </h1>
+        <hr class="hr-light">
+        <p>
+            <strong>{% trans "Best & free guide of responsive web design" %}</strong>
+        </p>
+
+        <p class="mb-4 d-none d-md-block">
+            <strong>
+                {% blocktrans trimmed %}
+                    The most comprehensive tutorial for the Bootstrap 4. Loved by over 500 000 users. Video
+                    and written versions available. Create your own, stunning website.                    
+                {% endblocktrans %}
+            </strong>
+        </p>
+
+        <a target="_blank" href="https://mdbootstrap.com/education/bootstrap/" class="btn btn-indigo btn-lg">
+            Start free tutorial
+            <i class="fas fa-graduation-cap ml-2"></i>
+        </a>
+    </div>
+
+    <div class="col-md-6 col-xl-5 mb-4">
+        <contact-form inline-template>
+            <div class="card">
+                <div class="card-body">
+                    <div id="vue-contact-form">
+                        <form-component @sendmessage="dosend" inline-template>
+                            <form @submit.prevent="$emit('sendmessage', items)" id="contact-form">
+                                <h3 class="dark-grey-text text-center">
+                                    <strong>{% trans "Write to us:" %}</strong>
+                                </h3>
+                                <hr>
+            
+                                <div class="md-form">
+                                    <i class="fas fa-user prefix grey-text"></i>
+                                    <input v-model="items['name']" type="text" id="name" class="form-control">
+                                    <label for="form3">{% trans "Your name" %}</label>
+                                </div>
+    
+                                <div class="md-form">
+                                    <i class="fas fa-envelope prefix grey-text"></i>
+                                    <input v-model="items['email']" type="text" id="email" class="form-control">
+                                    <label for="form2">{% trans "Your email" %}</label>
+                                </div>
+            
+                                <div class="md-form">
+                                    <i class="fas fa-pencil-alt prefix grey-text"></i>
+                                    <textarea v-model="items['message']" type="text" id="message" class="md-textarea"></textarea>
+                                    <label for="form8">{% trans "Your message" %}</label>
+                                </div>
+            
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-indigo">
+                                        {% trans "Envoyer" %}
+                                    </button>
+                                    <hr>
+                                    <fieldset class="form-check">
+                                        <input v-model="items['newsletter']" type="checkbox" class="form-check-input" id="checkbox1">
+                                        <label for="checkbox1" class="form-check-label dark-grey-text">
+                                            {% trans "Subscribe me to the newsletter" %}
+                                        </label>
+                                    </fieldset>
+                                </div>
+                            </form>
+                        </form-component>
+                    </div>
+                </div>
+            </div>
+        </contact-form>
+    </div>
+</div>

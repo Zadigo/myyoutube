@@ -1,0 +1,45 @@
+<script>
+    Vue.component("channels-interface", {
+        name: "Channels",
+        delimiters: ["[[", "]]"],
+        data() {
+            return {
+                newchannelcreated: false,
+                channelurl: null,
+                hasexistingchannel: false
+            }
+        },
+        created() {
+            var hasexistingchannel = "{{ has_existing_channel }}"
+            this.hasexistingchannel = hasexistingchannel === "True" ? true : false
+            this.channelurl = "{{ existing_channel_url }}"
+        },
+        methods: {
+            createnewchannel: function () {
+                fetch("{% url 'mychannel:new' %}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    },
+                    credentials: "same-origin"
+                })
+                .then((response) => {
+                    response.json().then((data) => {
+                        if (!data.state & response.status === 201) {
+                            window.location.href = data.url
+                        }
+
+                        if (data.state) {
+                            this.newchannelcreated = data.state
+                            this.hasexistingchannel = true
+                            this.channelurl = data.url
+                        }
+                    })
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
+            }
+        }
+    })
+</script>
