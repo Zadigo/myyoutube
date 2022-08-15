@@ -3,67 +3,192 @@
 
 {% block title %}{{ video.title }} - VaTube{% endblock %}
 
-{% block extra_css %}
-    <style>
-        .video-wrapper {
-            position: relative;
-            height: auto;
-            width: 100%;
-            min-height: 450px;
-            background: black;
-        }
-
-        .spinner-border {
-            /* border: .25em solid currentColor; */
-            animation: spinner-border 1.5s linear infinite;
-        }
-    
-        #video-spinner {
-            position: absolute;
-            z-index: 3;
-            left: 40%;
-            top: 40%;
-            width: 10rem;
-            height: 10rem;
-        }
-    </style>
-{% endblock %}
-
 {% block main %}
-    <div class="row">
-        <div class="col-12">
-            <base-messages inline-template>
-                <div id="messages">
-                    <v-alert v-for="message in messages" :key="message.id" :type="message.type" :value="message.visible" dismissable>
-                        This is a message
-                    </v-alert>
-                </div>
-            </base-messages>
-        </div>
-    </div>
-
-    <video-interface inline-template>
-        <section class="section p-0 mb-3" id="video">
-            <!-- Video -->
-            {% include "includes/video/player.html" %}
-    
-            <!-- General Infos & Actions -->
-            {% include "includes/video/infos_actions.html" %}
-    
-            <!-- Channel Informations -->
-            {% include "includes/video/channel_infos.html" %}
-            
-            <hr class="mt-3 mb-3">
-    
-            <!-- Comments -->
-            {% include "includes/video/comments/comments.html" %}
-        </section>
-    </video-interface>
+    <video-view :current-video="{{ vue_video|safe }}"></video-view>
 {% endblock %}
-
 
 {% block vuejs_scripts %}
-    {{ block.super }}
-    <!-- Video -->
-    {% include "vue/video.html" %}
+{% include "includes/video/comments.html" %}
+{% include "includes/video/card.html" %}
+{% include "includes/video/reply.html" %}
+
+<script type="text/x-template" id="video-view">
+    <section id="video">
+        <div class="container-fluid p-0">
+            <div class="position-relative">
+                <!-- Information -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card mt-2">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    {{ video.title }}
+                                </h5>
+
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">
+                                        {{ video.views }} views - {{ video.created_on|date:"d M Y" }}
+                                    </span>
+
+                                    <!-- Actions -->
+                                    <div class="d-flex justify-content-around">
+                                        <div class="btn-group me-2">
+                                            <button type="button" class="btn btn-lg btn-primary" @click="likeVideo">
+                                                <span class="mdi mdi-thumb-up me-2"></span>{{ likes }}
+                                            </button>
+
+                                            <button type="button" class="btn btn-lg btn-primary" @click="likeVideo">
+                                                <span class="mdi mdi-thumb-down me-2"></span>{{ dislikes }}
+                                            </button>
+                                        </div>
+
+                                        <!-- <base-dropdown-button-vue :button-name="'More'" :color="'secondary'" :items="[{ name: 'Store', icon: 'store' }, { name: 'Download', icon: 'download' }, { name: 'Save', icon: 'content-save' }, { name: 'Gift', icon: 'gift' }, { name: 'Donate', icon: 'cash' }, { name: 'Share', icon: 'share' }, { name: 'Recommendation', icon: 'star-remove-outline' }, { name: 'Report', icon: 'alert' }]" class="mx-2" @dropdown-click="dropdownClick" /> -->
+
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary btn-lg" @click="isSubscribed = !isSubscribed">
+                                                <span v-if="isSubscribed">Unsubscribe</span>
+                                                <span v-else>Subscribe</span>
+                                            </button>
+
+                                            <button v-if="isSubscribed" type="button" class="btn btn-primary btn-lg" @click="notifications = !notifications">
+                                                <font-awesome-icon v-if="notifications" icon="fa-solid fa-bell-slash" />
+                                                <font-awesome-icon v-else icon="fa-solid fa-bell" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card my-2">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <img src="{{ video.channel.user.myuserprofile.avatar }}" class="img-fluid rounded-circle" :alt="{{ video.user_channel.name }}">
+                                    </div>
+    
+                                    <div class="col-10">
+                                    <a href="{{ video.user_channel.get_absolute_url }}" class="fw-bold mb-0">
+                                        {{ video.user_channel.name }}
+                                        <font-awesome-icon v-if="{{ video.user_channel.verified }}" icon="fa-solid fa-circle-check" class="text-primary mx-1" />
+                                    </a>
+                                    
+                                    {% comment %}
+                                    <p class="text-muted fw-light m-0">{{ formatSubscribers(video.user_channel.subscribers) }} subscribers</p>
+                                    {% endcomment %}
+    
+                                    <!-- <base-scrollbar-vue :items="currentVideo.categories" class="my-3" /> -->
+    
+                                    <p id="description">{{ video.description }}</p>
+    
+                                    <button type="button" class="btn btn-light shadow-none">Show more</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Comments -->
+                    <comment-section :current-video="currentVideo" />
+                </div>
+            </div>
+        </div>
+    </section>
+</script>
+
+<script>
+    const replyCard = {
+        name: 'ReplyCard',
+        template: '#reply-card'
+    }
+
+    const commentCard = {
+        name: 'CommentCard',
+        template: '#comment-card',
+        components: { replyCard },
+        props:{
+            comment: {
+                type: Object,
+                required: true
+            }
+        },
+        methods: {
+            async likeComment () {
+            },
+            async createComment () {
+            },
+            async createReply () {
+            }
+        }
+    }
+
+    const commentSection = {
+        name: 'CommentSection',
+        template: '#comment-section',
+        components: { commentCard },
+        props: {
+            currentVideo: {
+                type: Object,
+                required: true
+            }
+        },
+        data () {
+            return {
+                newComment: {}
+            }
+        },
+        computed: {
+            comments () {
+                return this.currentVideo.comments
+            },
+            unpinnedComments () {
+                return _.filter(this.comments, ['is_pinned', false])
+            },
+            pinnedComments () {
+                return _.filter(this.comments, ['is_pinned', true])
+            }
+        },
+        methods: {
+            async likeVideo () {
+                this.$emit('like-video', true)
+            },
+            async getComments () {
+            },
+            async createComment () {
+            },
+            appendEmoji (emoji) {
+                this.newComment = this.newComment + emoji
+            },
+            setSort (params) {
+                this.sortMethod = params[1]
+            }
+        }
+    }
+
+    const videoView = {
+        name: 'VideoView',
+        template: '#video-view',
+        components: { commentSection },
+        props: {
+            currentVideo: {
+                type: Object,
+                required: true
+            }
+        },
+        data () {
+            return {
+                isSubscribed: '{{ is_subscribed }}',
+                notifications: false
+            }
+        },
+        methods:{
+            async likeVideo () {
+                await this.$http.post('{{  video.get_absolute_url }}')
+            }
+        }
+    }
+
+    app.component('VideoView', videoView)
+</script>
 {% endblock %}

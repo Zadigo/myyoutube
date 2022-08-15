@@ -38,7 +38,8 @@ class BaseDetailView(DetailView):
         try:
             video = queryset.get()
         except queryset.model.DoesNotExist:
-            raise Http404(_(f"No {queryset.model._meta.verbose_name} found matching the query"))
+            raise Http404(
+                _(f"No {queryset.model._meta.verbose_name} found matching the query"))
         return video
 
 
@@ -46,7 +47,7 @@ class FeedMixin(ListView):
     model = Video
     queryset = Video.objects.filter(active=True)
     context_object_name = 'videos'
-    
+
 
 class FeedView(FeedMixin, ListView):
     template_name = 'pages/feed.html'
@@ -58,7 +59,7 @@ class SearchView(FeedMixin, ListView):
 
 class VideoView(BaseDetailView):
     template_name = 'pages/video.html'
-    
+
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             video = super().get_object()
@@ -69,10 +70,12 @@ class VideoView(BaseDetailView):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             video = super().get_object()
-            
+
             reverse_accessor = video.rating_set
-            context['likes'] = reverse_accessor.filter(rating_type='Like').count()
-            context['dislikes'] = reverse_accessor.filter(rating_type='Dislike').count()
+            context['likes'] = reverse_accessor.filter(
+                rating_type='Like').count()
+            context['dislikes'] = reverse_accessor.filter(
+                rating_type='Dislike').count()
             context['user_rating'] = Video.objects.user_rating(
                 self.request.user, video
             )
@@ -95,7 +98,7 @@ class PlaylistView(DetailView):
     model = Playlist
     template_name = 'pages/playlist.html'
     context_object_name = 'playlist'
-    
+
     def get_queryset(self):
         return super().get_queryset()
 
@@ -107,7 +110,7 @@ def new_playlist(request, **kwargs):
     reference = request.POST.get('reference', None)
     playlist_name = request.POST.get('name', None)
 
-    if (playlist_name is not None and 
+    if (playlist_name is not None and
             reference is not None):
         visibility = request.POST.get('visibility', VisibilityChoices.PUBLIC)
         visibilities = {
@@ -119,7 +122,7 @@ def new_playlist(request, **kwargs):
             visibility = visibilities[visibility]
         except:
             visibility = VisibilityChoices.PUBLIC
-        
+
         new_playlist = Playlist.objects.create(
             user=request.user,
             name=playlist_name,
@@ -128,7 +131,7 @@ def new_playlist(request, **kwargs):
 
         video = get_object_or_404(Video, reference=reference)
         new_playlist.videos.add(video)
-    
+
         data.update({'state': True, 'id': new_playlist.id})
     else:
         messages.error(
@@ -152,7 +155,7 @@ def add_or_remove_video_in_playlist(request, **kwargs):
     if reference is not None and playlist_id is not None:
         video = get_object_or_404(Video, reference=reference)
         playlist_to_add = get_object_or_404(Playlist, id=playlist_id)
-        
+
         playlists = video.playlist_set.filter(
             id=playlist_id
         )
@@ -219,5 +222,6 @@ def count_view(request, **kwargs):
             except Exception:
                 pass
             else:
-                return_data.update({'state': True, 'view_id': data.get('uuid')})
+                return_data.update(
+                    {'state': True, 'view_id': data.get('uuid')})
     return JsonResponse(data=return_data)

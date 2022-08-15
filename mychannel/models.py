@@ -44,9 +44,16 @@ class ChannelPlaylist(models.Model):
 
 class UserChannel(models.Model):
     reference = models.CharField(
-        max_length=50, default=secrets.token_hex(5), unique=True)
+        max_length=50,
+        default=secrets.token_hex(5),
+        unique=True
+    )
     user = models.ForeignKey(
-        MYUSER, on_delete=models.CASCADE, blank=True, null=True)
+        MYUSER,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=2000)
 
@@ -72,8 +79,11 @@ class UserChannel(models.Model):
     tiktok = models.CharField(max_length=150, blank=True, null=True)
     facebook = models.CharField(max_length=150, blank=True, null=True)
     subscribers = models.ManyToManyField(
-        MYUSER, related_name='channel_subscribers', blank=True)
-
+        MYUSER,
+        related_name='channel_subscribers',
+        blank=True
+    )
+    # verified = models.BooleanField(default=False)
     tags = models.ManyToManyField(ChannelTag, blank=True)
 
     created_on = models.DateTimeField(auto_now_add=True)
