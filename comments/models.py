@@ -4,10 +4,13 @@ from videos.models import Video
 
 MYUSER = get_user_model()
 
+
 class AbstractComment(models.Model):
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
     user = models.ForeignKey(MYUSER, on_delete=models.CASCADE)
     content = models.TextField(max_length=500)
+    from_creator = models.BooleanField(default=False)
+    pinned = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:

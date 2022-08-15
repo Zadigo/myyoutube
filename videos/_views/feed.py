@@ -2,6 +2,7 @@ from django.http import Http404
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView
 from videos.models import Playlist, Video
+from ..utils import vue_dict
 
 
 class BaseDetailView(DetailView):
@@ -27,7 +28,8 @@ class BaseDetailView(DetailView):
         try:
             video = queryset.get()
         except queryset.model.DoesNotExist:
-            raise Http404(_(f"No {queryset.model._meta.verbose_name} found matching the query"))
+            raise Http404(
+                _(f"No {queryset.model._meta.verbose_name} found matching the query"))
         return video
 
 
@@ -56,15 +58,22 @@ class VideoView(BaseDetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.request.user.is_authenticated:
-            video = super().get_object()
 
+        video = super().get_object()
+        context['vue_video'] = {
+            "id": video.id,
+            "name": video.title,
+            "comments": list(video.comment_set.values('id', 'content', 'user__username', 'pinned'))
+        }
+
+        if self.request.user.is_authenticated:
             reverse_accessor = video.rating_set
-            context['likes'] = reverse_accessor.filter(rating_type='Like').count()
-            context['dislikes'] = reverse_accessor.filter(rating_type='Dislike').count()
+            context['likes'] = reverse_accessor.filter(
+                rating_type='Like').count()
+            context['dislikes'] = reverse_accessor.filter(
+                rating_type='Dislike').count()
             context['user_rating'] = Video.objects.user_rating(
-                self.request.user, video
-            )
+                self.request.user, video)
 
             context['is_subscribed'] = False
             subscription = video.user_channel.subscribers.filter(
