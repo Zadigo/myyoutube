@@ -1,11 +1,11 @@
-import { loadLayout, loadView } from "@/composables/utils"
+import { loadLayout, loadView, scrollToTop } from "@/composables/utils"
 import { createRouter, createWebHistory } from "vue-router"
 
 const routes = [
   {
     path: '/',
     name: 'home_view',
-    component: loadView('VideoView')
+    component: loadView('TimelinePageView')
   },
   {
     // path: '/video/:id([a-zA-Z0-9]+)',
@@ -45,5 +45,6 @@ const routes = [
 
 export default createRouter({
   history: createWebHistory(),
+  scrollBehavior: scrollToTop,
   routes: routes
 })

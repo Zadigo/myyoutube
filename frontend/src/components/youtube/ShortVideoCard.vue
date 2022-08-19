@@ -5,18 +5,18 @@
         <!-- TODO: Make this a reusable component -->
         <div class="row">
           <div class="col-2">
-            <a href>
+            <router-link :to="{ name: 'channel_view' }">
               <img src="https://via.placeholder.com/400x400" class="img-fluid z-depth-1 rounded-circle" alt="">
-            </a>
+            </router-link>
           </div>
 
           <div class="col-10 position-relative">
             <div class="d-flex justify-content-left" @mouseenter="showUserInfo = true" @mouseleave="showUserInfo = false">
-              <a href class="me-2">
+              <router-link :to="{ name: 'channel_view' }" class="me-2">
                 <span class="fw-bold">
                   camillembaye
                 </span>
-              </a>
+              </router-link>
               <p class="fw-light m-0">Camille Mbaye</p>
             </div>
 
@@ -58,8 +58,9 @@
         <div class="row">
           <div class="col-12">
             <div class="row">
-              <div class="col-auto">
-                <img src="https://via.placeholder.com/300x500" class="rounded" alt="">
+              <div class="col-6">
+                <base-vertical-player :video-source="require('@/assets/vertical1.mp4')" />
+                <!-- <img src="https://via.placeholder.com/300x500" class="rounded" alt=""> -->
               </div>
               <div class="col-auto d-flex flex-column justify-content-left">
                 <button type="button" class="btn btn-floating btn-light shadow-none mb-2 btn-lg">
@@ -89,12 +90,14 @@
 
 
 <script>
+import BaseVerticalPlayer from '@/layouts/BaseVerticalPlayer.vue'
 export default {
   name: 'ShortVideoCard',
+  components: { BaseVerticalPlayer },
   data () {
     return {
       showUserInfo: false
-    }
+    };
   },
   // mounted () {
   //   const links = document.querySelectorAll('a#hashtag')
@@ -108,17 +111,17 @@ export default {
   methods: {
     detectHashtags (text) {
       // const link = new RouterLink()
-      const items = []
-      const tokens = text.split(' ')
+      const items = [];
+      const tokens = text.split(" ")
       tokens.forEach((token) => {
-        if (token.startsWith('#')) {
+        if (token.startsWith("#")) {
           items.push(`<a id="hashtag" href class="fw-bold">${token}</a>`)
         } else {
-          items.push(token)
+          items.push(token);
         }
       })
-      const newText = items.join(' ')
-      return newText
+      const newText = items.join(" ")
+      return newText;
     }
   }
 }

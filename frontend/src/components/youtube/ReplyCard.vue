@@ -4,12 +4,16 @@
       <div class="card-body">
         <div class="d-flex justify-content-around">
           <div class="me-3">
-            <img src="http://via.placeholder.com/100x100" class="img-fluid rounded-circle" alt="Image 3">
+            <router-link :to="{ name: 'channel_view'}">
+              <img :src="require('@/assets/avatar3.png')" class="img-fluid rounded-circle" width="80" alt="Image 3">
+            </router-link>
           </div>
 
           <div clas="ms-1">
             <div class="d-flex justify-content-left">
-              <span class="fw-bold me-2">Cee Dee</span>
+              <router-link :to="{ name: 'channel_view'}">
+                <span class="fw-bold me-2">Cee Dee</span>
+              </router-link>
               <span class="text-muted">3 weeks ago</span>
             </div>
 

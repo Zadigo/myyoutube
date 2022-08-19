@@ -2,7 +2,7 @@
   <base-site>
     <section id="fast">
       <div class="row">
-        <short-video-card v-for="i in 30" :key="i" class="mb-2" />
+        <short-video-card v-for="i in 3" :key="i" class="mb-2" />
       </div>
     </section>
   </base-site>
