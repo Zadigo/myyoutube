@@ -1,0 +1,23 @@
+{
+    "sections": [
+        {
+            "title": "Templates",
+            "links": [
+                {
+                    "name": "Youtube",
+                    "to": "home_view"
+                },
+                {
+                    "name": "L'équipe",
+                    "to": "home_view"
+                }
+            ]
+        }
+    ],
+    "socials": [
+        {
+            "name": "Facebook",
+            "href": null
+        }
+    ]
+}
