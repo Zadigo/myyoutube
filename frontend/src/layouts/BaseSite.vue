@@ -26,7 +26,7 @@
           </router-link>
 
           <ul class="navbar-nav ms-auto d-flex flex-row">
-            <nav-item :to="{ name: 'home_view' }" link-name="Some link" />
+            <nav-item :to="{ name: 'account_view' }" link-name="Account" />
           </ul>
         </div>
       </nav>
