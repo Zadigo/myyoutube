@@ -16,7 +16,7 @@
           <div class="card-body">
             <div class="d-flex justify-content-around">
               <div class="me-3">
-                <img src="http://via.placeholder.com/100x100" class="img-fluid rounded-circle" alt="Image 2">
+                <img :src="require('@/assets/avatar2.png')" class="img-fluid rounded-circle" width="100" alt="Image 2">
               </div>
 
               <div class="w-100">
@@ -64,7 +64,7 @@
 
       <div class="card-footer text-center">
         <button type="button" class="btn btn-primary btn-lg" @click="getComments">
-          <span class="mdi mdi-refresh me-2"></span>
+          <font-awesome-icon icon="fa-solid fa-refresh" class="me-2"></font-awesome-icon>
           Load more
         </button>
       </div>
@@ -74,8 +74,8 @@
 
 
 <script>
-import EmojiPicker from '@/layouts/emojis/EmojiPicker.vue'
 import BaseDropdownButtonVue from '@/layouts/BaseDropdownButton.vue'
+import EmojiPicker from '@/layouts/emojis/EmojiPicker.vue'
 import CommentCard from './CommentCard.vue'
 
 import { inject } from 'vue'
