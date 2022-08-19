@@ -261,7 +261,6 @@ export default {
 </script>
 
 <style scoped>
-
 .video-container {
   display: flex;
   align-items: center;

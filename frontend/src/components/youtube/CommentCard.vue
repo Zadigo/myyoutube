@@ -3,12 +3,16 @@
     <div class="card-body">
       <div class="d-flex justify-content-around">
         <div class="me-3">
-          <img :src="require('@/assets/avatar1.png')" class="img-fluid rounded-circle" alt="Image 1">
+          <router-link :to="{ name: 'channel_view'}">
+            <img :src="require('@/assets/avatar1.png')" class="img-fluid rounded-circle" alt="Image 1">
+          </router-link>
         </div>
 
         <div clas="ms-1">
           <div class="d-flex justify-content-left align-items-center">
-            <span class="fw-bold me-2">{{ comment.user.username }}</span>
+            <router-link :to="{ name: 'channel_view'}">
+              <span class="fw-bold me-2">{{ comment.user.username }}</span>
+            </router-link>
             <span class="text-muted">3 weeks ago</span>
             <font-awesome-icon v-if="comment.is_pinned" icon="fa-solid fa-thumbtack" class="text-warning mx-3" />
           </div>

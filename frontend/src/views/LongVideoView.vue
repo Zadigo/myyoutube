@@ -3,7 +3,7 @@
     <section id="youtube">
       <div class="container-fluid p-0">
         <!-- Player -->
-        <base-video-player-vue :video-url="require('@/assets/video1.mp4')"></base-video-player-vue>
+        <base-video-player-vue :video-url="require('@/assets/video2_full_hd.mp4')"></base-video-player-vue>
 
         <div class="position-relative">
           <!-- Information -->
@@ -56,7 +56,9 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col-2">
-                      <img :src="require('@/assets/avatar3.png')" class="img-fluid rounded-circle" alt="Image 6">
+                      <router-link :to="{ name: 'channel_view'}">
+                        <img :src="require('@/assets/avatar3.png')" class="img-fluid rounded-circle" alt="Image 6">
+                      </router-link>
                     </div>
 
                     <div class="col-10">

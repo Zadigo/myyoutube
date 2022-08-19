@@ -22,7 +22,7 @@
           </button>
 
           <router-link :to="{ name: 'home_view' }" class="navbar-brand">
-            <img src="https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.png" height="25" loading="lazy" alt="Image 4" />
+            <img :src="require('@/assets/logo.jpg')" height="25" loading="lazy" alt="Image 4" />
           </router-link>
 
           <ul class="navbar-nav ms-auto d-flex flex-row">
@@ -51,11 +51,10 @@
 </template>
 
 <script>
-import { provide, ref } from 'vue'
-
 import BaseFooterVue from './BaseFooter.vue'
 import NavItem from '../layouts/nav/NavItem.vue'
 
+import { provide, ref } from 'vue'
 import { useDark, useScroll } from '@vueuse/core'
 import { scrollToTop } from '@/composables/utils'
 
@@ -133,7 +132,7 @@ main {
   box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
 }
 
-.router-link-exact-active {
+.sidebar .router-link-exact-active {
   z-index: 2;
   color: #fff;
   background-color: #1266f1;
@@ -158,7 +157,8 @@ main {
   right: 2%;
 }
 
-.pop-enter-active .pop-leave-active {
+.pop-enter-active,
+.pop-leave-active {
   transition: opacity .4s ease;
   transition: scale .2s ease;
 }
