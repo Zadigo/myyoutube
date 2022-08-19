@@ -24,11 +24,13 @@
                     <div class="d-flex justify-content-around">
                       <div class="btn-group">
                         <button type="button" class="btn btn-lg btn-primary" @click="likeVideo">
-                          <span class="mdi mdi-thumb-up me-2"></span>{{ currentVideo.likes }}
+                          <font-awesome-icon icon="fa-solid fa-thumbs-up" class="me-2"></font-awesome-icon>
+                          {{ currentVideo.likes }}
                         </button>
 
                         <button type="button" class="btn btn-lg btn-primary" @click="likeVideo">
-                          <span class="mdi mdi-thumb-down me-2"></span>{{ currentVideo.dislikes }}
+                          <font-awesome-icon icon="fa-solid fa-thumbs-down" class="me-2"></font-awesome-icon>
+                          {{ currentVideo.dislikes }}
                         </button>
                       </div>
 
@@ -54,7 +56,7 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col-2">
-                      <img src="http://via.placeholder.com/100x100" class="img-fluid rounded-circle" alt="Image 6">
+                      <img :src="require('@/assets/avatar3.png')" class="img-fluid rounded-circle" alt="Image 6">
                     </div>
 
                     <div class="col-10">
@@ -96,12 +98,12 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-between">
                     <button type="button" class="btn btn-sm btn-secondary btn-rounded shadow-none" @click="updateRecommendations">
-                      <span class="mdi mdi-reload me-2"></span>
+                      <font-awesome-icon icon="fa-solid fa-refresh" class="me-2" />
                       Load more
                     </button>
 
                     <router-link :to="{ name: 'home_view' }" class="btn btn-sm btn-secondary btn-rounded shadow-none">
-                      <span class="mdi mdi-expand-all me-2"></span>
+                      <font-awesome-icon icon="fa-solid fa-expand" class="me-2" />
                       See all
                     </router-link>
                   </div>
@@ -323,7 +325,7 @@
         </template>
       </base-offcanvas-vue>
     </section>
-    
+
     <hr class="my-5">
 
     <h1>Short video</h1>
@@ -431,8 +433,8 @@ import BaseDropdownButtonVue from '@/layouts/BaseDropdownButton.vue'
 import BaseModalVue from '@/layouts/BaseModal.vue'
 import BaseOffcanvasVue from '@/layouts/BaseOffcanvas.vue'
 import BaseAccordionVue from '@/layouts/BaseAccordion.vue'
-import CommentSection from '@/components/youtube/CommentSection.vue'
 import BaseSiteVue from '../layouts/BaseSite.vue'
+import CommentSection from '@/components/youtube/CommentSection.vue'
 import RecommendationDrawerVue from '../components/youtube/RecommendationDrawer.vue'
 import ListRecommendationsVue from '@/components/youtube/ListRecommendations.vue'
 
@@ -440,7 +442,7 @@ import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import useFormatting from '@/composables/formatting'
 
 export default {
-  name: 'YoutubeTemplate',
+  name: 'LongVideoView',
   components: {
     BaseVideoPlayerVue,
     BaseDropdownButtonVue,

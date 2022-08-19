@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="d-flex justify-content-around">
         <div class="me-3">
-          <img src="http://via.placeholder.com/100x100" class="img-fluid rounded-circle" alt="Image 1">
+          <img :src="require('@/assets/avatar1.png')" class="img-fluid rounded-circle" alt="Image 1">
         </div>
 
         <div clas="ms-1">
@@ -29,9 +29,18 @@
           </div>
 
           <div class="btn-group shadow-none">
-            <button type="button" class="btn btn-primary btn-sm shadow-none" @click="likeComment"><span class="mdi mdi-thumb-up me-2"></span>12.3k</button>
-            <button type="button" class="btn btn-primary btn-sm shadow-none" @click="likeComment"><span class="mdi mdi-thumb-up me-2"></span>24</button>
-            <button type="button" class="btn btn-info btn-sm shadow-none" @click="showReplyInput = !showReplyInput">Reply</button>
+            <button type="button" class="btn btn-primary btn-sm shadow-none" @click="likeComment">
+              <font-awesome-icon icon="fa-solid fa-thumbs-up" class="me-2"></font-awesome-icon>
+              12.3k
+            </button>
+            <button type="button" class="btn btn-primary btn-sm shadow-none" @click="likeComment">
+              <font-awesome-icon icon="fa-solid fa-thumbs-down" class="me-2"></font-awesome-icon>
+              24
+            </button>
+            <button type="button" class="btn btn-info btn-sm shadow-none" @click="showReplyInput = !showReplyInput">
+              <font-awesome-icon icon="fa-solid fa-message" class="me-2"></font-awesome-icon>
+              Reply
+            </button>
           </div>
 
           <input v-if="showReplyInput" :placeholder="`Reply to ${comment.user.username}`" type="text" class="form-control mt-2" @keypress.enter="createComment">

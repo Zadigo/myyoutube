@@ -7,6 +7,7 @@ import { loadFonts } from './plugins'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'mdb-ui-kit/css/mdb.min.css'
+import '@mdi/font/css/materialdesignicons.css'
 import '@/assets/style.css'
 import '@/assets/loading.css'
 import '@/plugins/fontawesome'
