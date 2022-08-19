@@ -1,0 +1,21 @@
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCircleCheck, faFaceLaugh, faHeart, faMessage, faThumbTack, faBell, faBellSlash, faPlay, faPause, faGauge, faVolumeXmark, faVolumeHigh, faVolumeLow, faVolumeUp, faCog, faClose, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faCircleCheck)
+library.add(faFaceLaugh)
+library.add(faHeart)
+library.add(faMessage)
+library.add(faThumbTack)
+library.add(faBell)
+library.add(faBellSlash)
+library.add(faPlay)
+library.add(faPause)
+library.add(faGauge)
+library.add(faVolumeUp)
+library.add(faVolumeHigh)
+library.add(faVolumeLow)
+library.add(faVolumeXmark)
+library.add(faCog)
+library.add(faClose)
+library.add(faArrowLeft)
+library.add(faArrowRight)
