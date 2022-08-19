@@ -1,10 +1,8 @@
 <template>
   <div class="video-container">
-    <div @click="playPause">
-      <video ref="videoPlayer" class="video-player" controlist="nodownload" oncontextmenu="return false;" @loadmetadata="getVideoDetails" @timeupdate="getVideoDetails" @waiting="isLoading = true" @canplay="isLoading = false">
-        <source :src="videoSource" type="video/mp4" />
-      </video>
-    </div>
+    <video ref="videoPlayer" class="video-player" controlist="nodownload" oncontextmenu="return false;" @loadmetadata="getVideoDetails" @timeupdate="getVideoDetails" @waiting="isLoading = true" @canplay="isLoading = false">
+      <source :src="videoSource" type="video/mp4" />
+    </video>
 
     <div class="actions">
       <button type="button" class="btn btn-floating btn-light" @click="playPause">
@@ -39,7 +37,7 @@ export default {
         this.isPlaying = true
         this.$refs.videoPlayer.play()
       } else {
-        this.isPlaying = true
+        this.isPlaying = false
         this.$refs.videoPlayer.pause()
       }
     }

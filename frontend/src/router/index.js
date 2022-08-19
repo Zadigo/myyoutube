@@ -16,8 +16,19 @@ const routes = [
   {
     // path: '/video/:id([a-zA-Z0-9]+)',
     path: '/short-videos',
-    name: 'short_videos_view',
-    component: loadView('ShortVideosView')
+    component: loadLayout('BaseShorts'),
+    children: [
+      {
+        path: '',
+        name: 'short_videos_view',
+        component: loadView('shorts/ListView')
+      },
+      {
+        path: '@google/video/ifFVs4GIvnudorr4356',
+        name: 'short_video_details_view',
+        component: loadView('shorts/DetailsView')
+      }
+    ]
   },
   {
     // path: '/channel/:id([a-zA-Z0-9]+)',

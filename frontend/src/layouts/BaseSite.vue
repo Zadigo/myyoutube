@@ -6,10 +6,10 @@
         <div class="position-sticky">
           <div class="list-group list-group-flush mx-3 mt-4">
             <!-- NOTE: Pass links to props -->
-            <!-- <router-link :to="{ name: 'home_view' }" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
-              <span class="mdi mdi-youtube me-3"></span>
-              <span>Youtube</span>
-            </router-link> -->
+            <router-link v-for="link in sidebarLinks" :key="link.name" :to="{ name: link.to }" class="list-group-item list-group-item-action" aria-current="true">
+              <font-awesome-icon :icon="`fa-solid fa-${link.icon}`" class="me-4"></font-awesome-icon>
+              Home
+            </router-link>
           </div>
         </div>
       </nav>
@@ -46,22 +46,24 @@
     </transition>
 
     <!-- Footer -->
-    <base-footer-vue />
+    <!-- <base-footer-vue /> -->
   </section>
 </template>
 
 <script>
-import BaseFooterVue from './BaseFooter.vue'
+// import BaseFooterVue from './BaseFooter.vue'
 import NavItem from '../layouts/nav/NavItem.vue'
 
 import { provide, ref } from 'vue'
 import { useDark, useScroll } from '@vueuse/core'
 import { scrollToTop } from '@/composables/utils'
 
+import sidebarLinks from '@/data/sidebar.json'
+
 export default {
   name: 'BaseSite',
   components: {
-    BaseFooterVue,
+    // BaseFooterVue,
     NavItem
   },
   props: {
@@ -76,6 +78,7 @@ export default {
     const { value } = useDark()
     provide('darkMode', value)
     return {
+      sidebarLinks,
       darkMode: value,
       target,
       scrollToTop,

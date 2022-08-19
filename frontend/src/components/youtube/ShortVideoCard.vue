@@ -6,7 +6,7 @@
         <div class="row">
           <div class="col-2">
             <router-link :to="{ name: 'channel_view' }">
-              <img src="https://via.placeholder.com/400x400" class="img-fluid z-depth-1 rounded-circle" alt="">
+              <img :src="require('@/assets/avatar1.png')" class="img-fluid z-depth-1 rounded-circle" alt="">
             </router-link>
           </div>
 
@@ -26,12 +26,13 @@
             <div v-if="showUserInfo" class="card position-absolute w-50 z-index-modal">
               <div class="card-header d-flex justify-content-between">
                 <div class="col-2">
-                  <img src="https://via.placeholder.com/100x100" class="img-fluid rounded-circle" alt="">
+                  <img :src="require('@/assets/avatar1.png')" class="img-fluid rounded-circle" alt="">
                 </div>
 
                 <div class="col-auto">
-                  <button type="button" class="btn btn-outline-primary">
-                    Subscribe
+                  <button type="button" class="btn btn-outline-primary" @click="subscribed = !subscribed">
+                    <span v-if="subscribed">Unsubscribe</span>
+                    <span v-else>Subscribe</span>
                   </button>
                 </div>
               </div>
@@ -47,8 +48,9 @@
               </div>
             </div>
 
-            <button type="button" class="btn btn-outline-primary">
-              Subscribe
+            <button type="button" class="btn btn-outline-primary" @click="subscribed = !subscribed">
+              <span v-if="subscribed">Unsubscribe</span>
+              <span v-else>Subscribe</span>
             </button>
           </div>
         </div>
@@ -59,7 +61,7 @@
           <div class="col-12">
             <div class="row">
               <div class="col-6">
-                <base-vertical-player :video-source="require('@/assets/vertical1.mp4')" />
+                <base-vertical-player :video-source="require(`@/assets/vertical${videoSource}.mp4`)" />
                 <!-- <img src="https://via.placeholder.com/300x500" class="rounded" alt=""> -->
               </div>
               <div class="col-auto d-flex flex-column justify-content-left">
@@ -94,10 +96,17 @@ import BaseVerticalPlayer from '@/layouts/BaseVerticalPlayer.vue'
 export default {
   name: 'ShortVideoCard',
   components: { BaseVerticalPlayer },
+  props: {
+    videoSource: {
+      type: String,
+      required: true
+    }
+  },
   data () {
     return {
-      showUserInfo: false
-    };
+      showUserInfo: false,
+      subscribed: false
+    }
   },
   // mounted () {
   //   const links = document.querySelectorAll('a#hashtag')
