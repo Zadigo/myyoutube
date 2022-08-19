@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="col-10">
-                      <router-link :to="{ name: 'home_view' }" class="fw-bold mb-0">
+                      <router-link :to="{ name: 'channel_view' }" class="fw-bold mb-0">
                         {{ currentVideo.channel.name }}
                         <font-awesome-icon v-if="currentVideo.channel.verified" icon="fa-solid fa-circle-check" class="text-primary mx-1" />
                       </router-link>
@@ -117,6 +117,7 @@
               <list-recommendations-vue v-else :recommendations="recommendations" />
             </div>
 
+            <!-- Mobile Recommendations -->
             <recommendation-drawer-vue v-else :show="showRecommendationsDrawer" :recommendations="recommendations" />
           </div>
         </div>
@@ -322,122 +323,7 @@
         </template>
       </base-offcanvas-vue>
     </section>
-
-    <hr class="my-5">
-
-    <h1>Page set algorithm</h1>
-    <section id="algorithm">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-sm-12 col-md-8">
-            <div class="card">
-              <div class="card-body">
-                <p class="alert alert-info">
-                  If no options are selected, YouTube will use your viewing history
-                  to recommend the most relevant videos
-                </p>
-                <div class="form-check form-switch my-4">
-                  <input id="recommendation-preference" class="form-check-input" type="checkbox" role="switch" />
-                  <label class="form-check-label" for="recommendation-preference">
-                    Let YouTube decide which are the most relevant videos for me
-                  </label>
-                </div>
-
-                <div class="card shadow-none">
-                  <div class="card-body">
-                    <label for="categories">Select the categories for which you will have the most interest</label>
-                    <input type="text" class="form-control p-2" placeholder="Categories" name="categories">
-                    <input type="text" class="form-control p-2 my-2" placeholder="Subcategories" name="subcategories" disabled>
-
-                    <div class="list-group list-group-flush">
-                      <div class="list-group-item ps-0">
-                        <div class="form-check form-switch">
-                          <input id="recommend-from-current" class="form-check-input" type="checkbox" role="switch" />
-                          <label class="form-check-label" for="recommend-from-current">
-                            Let YouTube recommend the most popular videos from what
-                            users have also watched based on the video that you
-                            are currently viewing
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-sm-12 col-md-4">
-            <div class="card">
-              <div class="card-header">
-                <h3>Preferred categories</h3>
-              </div>
-
-              <div class="card-body">
-                <h4 class="fw-bold h5 mb-1">Sports</h4>
-                <div class="list-group my-3">
-                  <a class="list-group-item list-group-item-action d-flex justify-content-between">
-                    <span>WNBA</span>
-                    <button type="button" class="btn btn-sm btn-rounded btn-dark shadow-none">
-                      <span class="mdi mdi-delete"></span>
-                    </button>
-                  </a>
-                </div>
-              </div>
-
-              <div class="card-footer text-right">
-                <button type="button" class="btn btn-danger">
-                  <span class="mdi mdi-delete-sweep"></span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <hr class="my-5">
-
-    <h1>Page user's channel</h1>
-    <section id="channel" class="bg-dark">
-      <div class="shadow channel-header">
-        <base-carousel />
-
-        <div class="channel-actions">
-          <div class="d-flex justify-content-left align-items-center">
-            <h3 class="display-6 fw-bold text-light me-3">My channel name</h3>
-            <font-awesome-icon icon="fa-solid fa-circle-check" class="text-white" />
-          </div>
-          <p class="fw-light text-light">310 vidéos</p>
-          <button type="button" class="btn btn-primary">
-            Subscribe
-          </button>
-        </div>
-      </div>
-
-      <div class="container">
-        <section class="row p-4">
-          <!-- TODO: This will be a component in order to iterate
-          over each video sections -->
-          <div v-for="i in 2" :key="i" class="col-12 my-2">
-            <div class="fw-bold h5 text-white mt-4"><span class="text-primary">Prime Amazon</span> Originals and Exclusives <a href>See more</a></div>
-            <div class="row">
-              <video-card-vue v-for="i in 4" :key="i" class="gx-1" />
-            </div>
-          </div>
-        </section>
-      </div>
-    </section>
-
-    <hr class="my-5">
-
-    <h1>Short videos</h1>
-    <section id="fast">
-      <div class="row">
-        <short-video-card />
-      </div>
-    </section>
-
+    
     <hr class="my-5">
 
     <h1>Short video</h1>
@@ -538,7 +424,7 @@ import video from '@/data/video'
 import { ref, provide } from 'vue'
 
 // import BaseDropGroupVue from '@/layouts/BaseDropGroup.vue'
-import BaseCarousel from '@/layouts/BaseCarousel.vue'
+
 import BaseVideoPlayerVue from '../layouts/BaseVideoPlayer.vue'
 import BaseScrollbarVue from '../layouts/BaseScrollbar.vue'
 import BaseDropdownButtonVue from '@/layouts/BaseDropdownButton.vue'
@@ -549,16 +435,13 @@ import CommentSection from '@/components/youtube/CommentSection.vue'
 import BaseSiteVue from '../layouts/BaseSite.vue'
 import RecommendationDrawerVue from '../components/youtube/RecommendationDrawer.vue'
 import ListRecommendationsVue from '@/components/youtube/ListRecommendations.vue'
-import VideoCardVue from '@/components/youtube/channel/VideoCard.vue'
 
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import ShortVideoCard from '@/components/youtube/ShortVideoCard.vue'
 import useFormatting from '@/composables/formatting'
 
 export default {
   name: 'YoutubeTemplate',
   components: {
-    BaseCarousel,
     BaseVideoPlayerVue,
     BaseDropdownButtonVue,
     BaseModalVue,
@@ -569,9 +452,7 @@ export default {
     BaseSiteVue,
     CommentSection,
     ListRecommendationsVue,
-    RecommendationDrawerVue,
-    VideoCardVue,
-    ShortVideoCard
+    RecommendationDrawerVue
   },
   setup () {
     const isLoading = ref(true)
@@ -707,17 +588,5 @@ export default {
 <style scoped>
 .fs-7 {
   font-size: .85rem;
-}
-
-.channel-header {
-  position: relative;
-}
-
-.channel-actions {
-  position: absolute;
-  z-index: 999;
-  top: 0;
-  left: 0;
-  padding: 1rem;
 }
 </style>

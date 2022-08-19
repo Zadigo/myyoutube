@@ -1,5 +1,5 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCircleCheck, faFaceLaugh, faHeart, faMessage, faThumbTack, faBell, faBellSlash, faPlay, faPause, faGauge, faVolumeXmark, faVolumeHigh, faVolumeLow, faVolumeUp, faCog, faClose, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { faCircleCheck, faFaceLaugh, faHeart, faMessage, faThumbTack, faBell, faBellSlash, faPlay, faPause, faGauge, faVolumeXmark, faVolumeHigh, faVolumeLow, faVolumeUp, faCog, faClose, faArrowLeft, faArrowRight, faTrash, faEraser } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faCircleCheck)
 library.add(faFaceLaugh)
@@ -19,3 +19,5 @@ library.add(faCog)
 library.add(faClose)
 library.add(faArrowLeft)
 library.add(faArrowRight)
+library.add(faTrash)
+library.add(faEraser)
