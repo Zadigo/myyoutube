@@ -3,5 +3,20 @@
         "name": "Home",
         "to": "home_view",
         "icon": "house"
+    },
+    {
+        "name": "Playlists",
+        "to": "playlists_view",
+        "icon": "list"
+    },
+    {
+        "name": "Notifications",
+        "to": "notifications_view",
+        "icon": "bell"
+    },
+    {
+        "name": "My studio",
+        "to": "my_studio_view",
+        "icon": "chart-simple"
     }
 ]

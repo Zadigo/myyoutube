@@ -39,7 +39,11 @@ declare function useUtilities (): {
     /** Read a user uploaded file */
     readFile (file: File): string
     /** Read multiple uploaded files */
-    readMultipleFiles (files: File[]): string[]
+    readMultipleFiles (files: FileList[]): string[]
+    /** Read a video file */
+    readVideoFile (files: FileList[]): string[]
+    /** Read a video file */
+    getVideoFrame (video: HTMLVideoElement): string
     /** Truncate a given text by k-length */
     truncate (text: string, k?: number): string
     /** Truncate a string based on it's length */

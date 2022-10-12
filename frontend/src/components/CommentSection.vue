@@ -1,3 +1,11 @@
+<doc>
+  This section regroups the comments and displays other
+  additional pieces of information on the total amount
+  of comments on the video.
+
+  Comments are iterated using "comment-card".
+</doc>
+
 <template>
   <div class="col-sm-12 col-md-8">
     <div class="card">
@@ -25,7 +33,7 @@
 
                 <div class="btn-group shadow-none my-2">
                   <button type="button" class="btn btn-sm btn-light" @click="newComment = null">
-                    Cancel
+                    {{ $t('Cancel') }}
                   </button>
 
                   <!-- Emojis -->
@@ -52,12 +60,12 @@
 
           <!-- Pinned Comments -->
           <transition-group id="pinned-comments" tag="div" name="opacity">
-            <comment-card v-for="comment in pinnedComments" :key="comment.id" :comment="comment" />
+            <comment-card v-for="comment in pinnedComments" :key="comment.id" :comment="comment" :shadow="shadow" />
           </transition-group>
 
           <!-- Comments -->
           <transition-group id="comments" tag="div" name="opacity">
-            <comment-card v-for="comment in unpinnedComments" :key="comment.id" :comment="comment" />
+            <comment-card v-for="comment in unpinnedComments" :key="comment.id" :comment="comment" :shadow="shadow" />
           </transition-group>
         </div>
       </div>
@@ -65,7 +73,7 @@
       <div class="card-footer text-center">
         <button type="button" class="btn btn-primary btn-lg" @click="getComments">
           <font-awesome-icon icon="fa-solid fa-refresh" class="me-2"></font-awesome-icon>
-          Load more
+          {{ $t('Load more') }}
         </button>
       </div>
     </div>
@@ -74,13 +82,12 @@
 
 
 <script>
-import BaseDropdownButtonVue from '@/layouts/BaseDropdownButton.vue'
-import EmojiPicker from '@/layouts/emojis/EmojiPicker.vue'
-import CommentCard from './CommentCard.vue'
-
-import { inject } from 'vue'
 import _ from 'lodash'
-import dayjs from '../../plugins/dayjs'
+import useTesting from '@/composables/testing'
+
+import BaseDropdownButtonVue from '@/layouts/BaseDropdownButton.vue'
+import CommentCard from './CommentCard.vue'
+import EmojiPicker from '@/layouts/emojis/EmojiPicker.vue'
 
 export default {
   name: 'CommentSection',
@@ -88,26 +95,32 @@ export default {
     BaseDropdownButtonVue,
     CommentCard,
     EmojiPicker
-},
+  },
+  inject: ['isLoading', 'darkMode'],
   props: {
     currentVideo: {
       type: Object,
       required: true
+    },
+    shadow: {
+      type: Boolean
     }
   },
   emits: {
     'like-video': () => true
   },
   setup () {
-    var isLoading = inject('isLoading')
+    // const isLoading = inject('isLoading')
+    const { comments } = useTesting()
     return {
-      isLoading
+      // isLoading,
+      comments
     }
   },
   data () {
     return {
       showEmojis: false,
-      comments: [],
+      // comments: [],
       newComment: null
     }
   },
@@ -133,33 +146,21 @@ export default {
       return _.filter(this.comments, ['is_pinned', true])
     }
   },
-  mounted () {
-    this.getComments()
-  },
+  // mounted () {
+  //   this.getComments(
+  //     () => {
+  //       this.isLoading = true
+  //     },
+  //     () => {
+  //       this.comments[0].is_pinned = true
+  //       this.isLoading = false
+  //       this.isLoadingRecommendations = false
+  //     }
+  //   )
+  // },
   methods: {
     async likeVideo () {
       this.$emit('like-video', true)
-    },
-    async getComments () {
-      this.isLoading = true
-      setTimeout(() => {
-        var d = dayjs('2022-1-1')
-        for (let i = 0; i < 3; i++) {
-          const createdOn = d.add(dayjs.duration({ days: Math.random() * (1, 30) + 1 }))
-          this.comments.push({
-            id: i,
-            is_pinned: false,
-            replies: [{ id: 1 }, { id: 2 }],
-            user: {
-              username: 'Lucie Paul'
-            },
-            created_on: createdOn.format('YYYY-MM-DD')
-          })
-        }
-        this.comments[0].is_pinned = true
-        this.isLoading = false
-        this.isLoadingRecommendations = false
-      }, 1000)
     },
     appendEmoji (emoji) {
       this.newComment = this.newComment + emoji

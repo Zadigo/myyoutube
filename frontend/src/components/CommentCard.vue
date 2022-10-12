@@ -1,5 +1,5 @@
 <template>
-  <div class="card shadow-none rounded-none">
+  <div :class="[shadow ? null : 'shadow-none']" class="card rounded-none">
     <div class="card-body">
       <div class="d-flex justify-content-around">
         <div class="me-3">
@@ -29,7 +29,7 @@
           for all comment/reply cards -->
           <div class="my-3">
             <div class="badge badge-danger me-1">@creator</div>
-            <div class="badge badge-light">Liked by @creator</div>
+            <div class="badge badge-light">{{ $t('Liked by x', { creator: 'creator' }) }}</div>
           </div>
 
           <div class="btn-group shadow-none">
@@ -43,16 +43,16 @@
             </button>
             <button type="button" class="btn btn-info btn-sm shadow-none" @click="showReplyInput = !showReplyInput">
               <font-awesome-icon icon="fa-solid fa-message" class="me-2"></font-awesome-icon>
-              Reply
+              {{ $t('Reply') }}
             </button>
           </div>
 
-          <input v-if="showReplyInput" :placeholder="`Reply to ${comment.user.username}`" type="text" class="form-control mt-2" @keypress.enter="createComment">
+          <input v-if="showReplyInput" :placeholder="`${$t('Reply to x', { user: comment.user.username })}`" type="text" class="form-control mt-2" @keypress.enter="createComment">
 
           <div class="mt-2">
             <button type="button" class="btn btn-light shadow-none" @click="showReplies = !showReplies">
-              <span v-if="showReplies">{{ `Hide ${comment.replies.length} replies` }}</span>
-              <span v-else>{{ `View ${comment.replies.length} replies` }}</span>
+              <span v-if="showReplies">{{ $t('Hide x replies', { count: comment.replies.length }) }}</span>
+              <span v-else>{{ $t('View x replies', { count: comment.replies.length }) }}</span>
             </button>
           </div>
 
@@ -82,6 +82,10 @@ export default {
     comment: {
       type: Object,
       required: true
+    },
+    shadow: {
+      type: Boolean,
+      default: true
     }
   },
   setup () {

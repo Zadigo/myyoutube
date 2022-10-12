@@ -3,24 +3,26 @@
     <transition name="explode" mode="out-in">
       <div v-if="expandCard" :class="[{ show: expandCard }]" class="card shadow bg-dark text-light border border-primary" @mouseleave="expandCard = false">
         <div class="indicator">prime</div>
-        <a href>
+        <router-link :to="{ name: 'video_view' }">
           <img src="https://via.placeholder.com/800x800" class="card-img-top">
-        </a>
+        </router-link>
         
         <div class="gradient"></div>
         <div class="card-body">
           <div class="d-flex justify-content-between mt-3">
             <a href class="btn btn-sm btn-primary btn-floating">
-              <span class="mdi mdi-play"></span>
+              <font-awesome-icon icon="fa-solid fa-play" />
             </a>
 
             <div class="btn-group">
               <button type="button" class="btn btn-sm btn-primary">
                 <span class="mdi mdi-play"></span>
               </button>
+              
               <button type="button" class="btn btn-sm btn-primary">
                 <span class="mdi mdi-play"></span>
               </button>
+              
               <button type="button" class="btn btn-sm btn-primary">
                 <span class="mdi mdi-play"></span>
               </button>

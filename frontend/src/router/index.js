@@ -43,14 +43,49 @@ const routes = [
       {
         path: '',
         name: 'account_view',
-        component: loadView('account/AlgorithmPreferenceView')
+        component: loadView('account/MyAccount')
+      },
+      {
+        path: 'notifications',
+        name: 'account_notifications_view',
+        component: loadView('account/NotificationsView')
       },
       {
         path: 'algorithm',
         name: 'algorithm_preference_view',
         component: loadView('account/AlgorithmPreferenceView')
+      },
+      {
+        path: 'privacy',
+        name: 'account_privacy_view',
+        component: loadView('account/PrivacyView')
+      },
+      {
+        path: 'performance',
+        name: 'account_performance_view',
+        component: loadView('account/PerformanceView')
+      },
+      {
+        path: 'advanced',
+        name: 'account_advanced_view',
+        component: loadView('account/AdvancedView')
       }
     ]
+  },
+  {
+    path: '/playlists',
+    name: 'playlists_view',
+    component: loadView('PlaylistsView')
+  },
+  {
+    path: '/notfications',
+    name: 'notifications_view',
+    component: loadView('NotificationsView')
+  },
+  {
+    path: '/my-studio',
+    name: 'my_studio_view',
+    component: loadView('MyStudioView')
   }
 ]
 

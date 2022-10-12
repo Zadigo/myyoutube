@@ -12,8 +12,10 @@
     </div>
 
     <!-- Player -->
-    <video ref="videoPlayer" class="video-player" controlist="nodownload" oncontextmenu="return false;" @loadmetadata="getVideoDetails" @timeupdate="getVideoDetails" @waiting="isLoading = true" @canplay="isLoading = false">
-      <source :src="videoSource" type="video/mp4" />
+    <!-- <video ref="videoPlayer" class="video-player" preload="metadata" controlist="nodownload" oncontextmenu="return false;" @seeked="$emit('loaded-meta-data', $refs.videoPlayer)" @loadmetadata="getVideoDetails" @timeupdate="getVideoDetails" @waiting="isLoading = true" @canplay="isLoading = false"> -->
+    <video ref="videoPlayer" class="video-player" preload="metadata" controlist="nodownload" oncontextmenu="return false;" @loadmetadata="getVideoDetails" @timeupdate="getVideoDetails" @waiting="isLoading = true" @canplay="isLoading = false">
+      <source :src="videoSource" type="video/mp4">
+      <!-- <track :src="require('assets/subtitles-en.vtt')" kind="subtitles" label="English" srclang="en" default> -->
     </video>
 
     <!-- Controls -->
@@ -131,11 +133,15 @@ export default {
       type: String,
       required: true,
     },
+    revokeUrl: {
+      type: Boolean
+    }
   },
   emits: {
     play: () => true,
     pause: () => true,
-    'time-update': () => true
+    'time-update': () => true,
+    'loaded-meta-data': () => true,
   },
   data () {
     return {
@@ -198,8 +204,33 @@ export default {
     onKeyStroke(['ArrowRight', 'l'], function (e) {
       e.preventDefault()
     })
+
+    this.$emit('loaded-meta-data', this.$refs.videoPlayer)
+  },
+  beforeUnmount () {
+    if (this.revokeUrl) {
+      const source = this.$refs.videoPlayer.querySelector('source')
+      URL.revokeObjectURL(source.src)
+    }
   },
   methods: {
+    // getFrames () {
+    //   if (this.captureFrames) {
+    //     const canvas = document.createElement('canvas')
+    //     canvas.height = this.$refs.videoPlayer.videoHeight
+    //     canvas.width = this.$refs.videoPlayer.videoWidth
+    //     console.log(canvas, this.$refs.videoPlayer.videoHeight)
+  
+    //     const ctx = canvas.getContext('2d')
+    //     ctx.drawImage(this.$refs.videoPlayer, 0, 0, canvas.width, canvas.height)
+  
+    //     const img = new Image()
+    //     const url = canvas.toDataURL()
+    //     img.src = url
+    //     img.classList.add('img-fluid')
+    //     this.$emit('frames', [img, url])
+    //   }
+    // },
     playPause () {
       if (this.$refs?.videoPlayer.paused) {
         this.isPlaying = true
@@ -286,13 +317,12 @@ export default {
   bottom: 5%;
   background: black;
   padding: 1rem;
-  z-index: 10;
   width: 80%;
   align-items: center;
   color: #fff;
   border-radius: 0.5rem;
   box-shadow: 0 4px 10px 0 rgb(0 0 0 / 20%), 0 4px 20px 0 rgb(0 0 0 / 10%);
-  z-index: 1055;
+  z-index: 50;
 }
 
 .video-control-actions {

@@ -105,7 +105,7 @@ html {
   transition: all .3s ease;
 }
 
-.modal-open::before {
+/* .modal-open::before {
   content: "";
   background-color: rgba(0, 0, 0, .5);
   filter: blur(1px);
@@ -115,7 +115,7 @@ html {
   position: absolute;
   top: 0;
   left: 0;
-}
+} */
 
 @media (min-width: 992px) {
     .modal .modal-side {
@@ -305,3 +305,5 @@ html {
 .opacity-move {
     transition: all .3s ease;
 }
+
+/* .fs-7 {} */
