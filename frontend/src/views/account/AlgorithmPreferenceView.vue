@@ -12,11 +12,21 @@
 
               <div class="card shadow-none">
                 <div class="card-body">
-                  <label for="categories">Select the categories for which you will have the most interest</label>
-                  <input type="text" class="form-control p-2" placeholder="Categories" name="categories">
-                  <input type="text" class="form-control p-2 my-2" placeholder="Subcategories" name="subcategories" disabled>
+                  <label for="categories">Select your preferred categories</label>
+                  <base-autocomplete :items="[{ text: 'Documentary' }]" @item-selected="(value) => { choices.category = value.text }">
+                    <input type="text" class="form-control p-2" placeholder="Categories" name="categories">
+                  </base-autocomplete>
+                  
+                  <base-autocomplete :items="[{ text: 'Animal' }]" class="my-2" @item-selected="(value) => { choices.subcategory = value.text }">
+                    <input :disabled="choices.category === null || choices.category === ''" type="text" class="form-control p-2" placeholder="Subcategories" name="subcategories">
+                  </base-autocomplete>
 
-                  <div class="list-group list-group-flush">
+                  <button type="button" class="btn btn-primary" @click="updateCategory">
+                    <font-awesome-icon icon="fa-solid fa-plus" class="me-2" />
+                    {{ $t('Add') }}
+                  </button>
+                  
+                  <div class="list-group list-group-flush mt-4">
                     <div class="list-group-item ps-0">
                       <div class="form-check form-switch">
                         <input id="recommend-from-current" class="form-check-input" type="checkbox" role="switch" />
@@ -58,15 +68,17 @@
             </div>
 
             <div class="card-body">
-              <h4 class="fw-bold h5 mb-1">Sports</h4>
-              <div class="list-group my-3">
-                <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
-                  <span>WNBA</span>
-                  <button type="button" class="btn btn-sm btn-rounded btn-dark shadow-none">
-                    <font-awesome-icon icon="fa-solid fa-trash" />
-                  </button>
-                </a>
-              </div>
+              <template v-for="category in categories" :key="category">
+                <h4 class="fw-bold h5 mb-1">{{ category }}</h4>
+                <div class="list-group my-3">
+                  <a v-for="subcategory in refactoredCategories[category]" :key="subcategory" class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
+                    <span>{{ subcategory }}</span>
+                    <button type="button" class="btn btn-sm btn-rounded btn-dark shadow-none">
+                      <font-awesome-icon icon="fa-solid fa-trash" />
+                    </button>
+                  </a>
+                </div>
+              </template>
             </div>
 
             <div class="card-footer text-right">
@@ -82,14 +94,61 @@
 </template>
 
 <script>
+import _ from 'lodash'
+import BaseAutocomplete from '@/layouts/bootstrap/BaseAutocomplete.vue'
 import BaseCheckboxVue from '@/layouts/bootstrap/BaseCheckbox.vue'
 // import SettingsBlock from '@/components/account/SettingsBlock.vue'
 
 export default {
   name: 'AlgorithmPreferenceView',
   components: {
+    BaseAutocomplete,
     BaseCheckboxVue
     // SettingsBlock
-}
+  },
+  data () {
+    return {
+      choices: {
+        category: null,
+        subcategory: null
+      },
+      preferredCategories: [
+        {
+          id: 1,
+          category: 'Sports',
+          subcategory: 'WNBA'
+        }
+      ]
+    }
+  },
+  computed: {
+    categories () {
+      return _.map(this.preferredCategories, (item) => {
+        return item.category
+      })
+    },
+    refactoredCategories () {
+      const items = {}
+      _.forEach(this.preferredCategories, (item) => {
+        items[item.category] = []
+      })
+      _.forEach(this.preferredCategories, (item) => {
+        items[item.category].push(item.subcategory)
+      })
+      return items
+    }
+  },
+  methods: {
+    async updateCategory () {
+      this.preferredCategories.push({
+        id: 3,
+        ...this.choices
+      })
+      this.choices = {
+        category: null,
+        subcategory: null
+      }
+    }
+  }
 }
 </script>

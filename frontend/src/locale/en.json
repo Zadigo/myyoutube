@@ -63,9 +63,11 @@
     "Signin": "Signin",
     "Password": "Password",
     "Buy gifts": "Buy gifts",
-    "Liked by x": "Liked by @{creator}",
+    "Liked by x": "Liked by {creator}",
     "Reply": "Reply",
     "Reply to x": "Reply to {user}",
     "View x replies": "View {count} replies",
-    "Hide x replies": "Hide {count} replies"
+    "Hide x replies": "Hide {count} replies",
+    "My studio": "My studio",
+    "x views": "{count} views"
 }

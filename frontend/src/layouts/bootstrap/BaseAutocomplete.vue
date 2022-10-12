@@ -42,10 +42,10 @@ export default {
     }
   },
   emits: {
-    'item-selected' (item) {
-      if (!(typeof item !== 'object')) {
-        return false
-      }
+    'item-selected' () {
+      // if (!(typeof item !== 'object')) {
+      //   return false
+      // }
       return true
     }
   },

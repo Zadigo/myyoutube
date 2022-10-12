@@ -19,17 +19,19 @@
               
               <div class="card-body">
                 <div class="list-group">
-                  <a v-for="video in searchedVideos" :key="video.id" :class="[videoSelected(item) ? 'active' : null]" href class="list-group-item list-group-item-action p-4 d-flex justify-content-left align-items-center" @click.prevent="selectVideo(video)">
+                  <a v-for="video in searchedVideos" :key="video.id" :class="[videoSelected(item) ? 'active' : null]" href class="list-group-item list-group-item-action p-4 d-flex gap-4 justify-content-left align-items-center" @click.prevent="selectVideo(video)">
                     <img src="https://via.placeholder.com/100x100" class="img-fluid rounded" alt="">
                     
                     <div class="infos p-2">
                       <h5>Quick title</h5>
+
                       <p class="mb-2">
                         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione error alias 
                         voluptatibus doloremque adipisci, inventore quas? Ipsum commodi
                       </p>
+                      
                       <p class="d-flex justify-content-left text-muted">
-                        <span>4 456 views</span> -
+                        <span>{{ $t('x views', { count: 4456}) }}</span> -
                         <span class="mx-2">400 likes</span>
                       </p>
                     </div>

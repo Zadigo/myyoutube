@@ -43,7 +43,7 @@
       <section id="videos" class="ms-3">
         <div class="card mb-2">
           <div class="card-body text-right">
-            <base-dropdown-button-vue :button-name="'sort'" :color="'light'" :items="[{ name: 'Newest' }, { name: 'Oldest' }, { name: 'Most popular' }]" @dropdown-click="dropdownClick" />
+            <base-dropdown-button-vue :items="sortingOptions" button-name="sort" color="light" />
           </div>
         </div>
 
@@ -70,7 +70,12 @@ export default {
   },
   data () {
     return {
-      showPlaylist: false
+      showPlaylist: false,
+      sortingOptions: [
+        { name: 'Newest' }, 
+        { name: 'Oldest' }, 
+        { name: 'Most popular' }
+      ],
     }
   }
 }
