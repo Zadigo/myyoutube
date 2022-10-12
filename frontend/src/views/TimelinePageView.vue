@@ -8,7 +8,7 @@
               <div class="card-body">
                 <button type="button" class="btn btn-primary shadow-none me-2">
                   <font-awesome-icon icon="fa-solid fa-filter" class="me-2"></font-awesome-icon>
-                  Filter
+                  {{ $t('Filter') }}
                 </button>
 
                 <div class="btn-group ms-auto shadow-none">
@@ -28,13 +28,13 @@
                   </select>
 
                   <select class="form-select mx-2" aria-label="Default select example">
-                    <option selected>Vidéo</option>
+                    <option selected>{{ $t('Video') }}</option>
                     <option value="1">Chaînes</option>
                     <option value="2">Playlist</option>
                   </select>
 
                   <select class="form-select" aria-label="Default select example">
-                    <option selected>Entre 4 et 20 minutes</option>
+                    <option selected>{{ $t('Between X and Y minutes', { x: 4, y: 20 }) }}</option>
                     <option selected>Plus de 20 minutes</option>
                   </select>
                 </div>
@@ -46,54 +46,13 @@
         <section v-if="showLongVideosTimeline" class="row">
           <div class="col-12">
             <div class="row">
-              <div v-for="card in 8" :key="card" class="col-3 mb-2">
-                <article class="card shadow-sm text-dark">
-                  <router-link :to="{ name: 'video_view' }">
-                    <img src="https://via.placeholder.com/800" class="card-img" alt="">
-                  </router-link>
-
-                  <div class="card-body d-flex justify-content-left">
-                    <div id="avatar">
-                      <router-link :to="{ name: 'channel_view' }">
-                        <img :src="require('@/assets/avatar1.png')" class="img-fluid rounded-circle" width="50" alt="">
-                      </router-link>
-                    </div>
-
-                    <div class="ms-4">
-                      <h5>Some video</h5>
-                      <router-link :to="{ name: 'channel_view' }">
-                        <p class="mb-1 text-muted">Jubilee</p>
-                        <p class="text-muted">{{ formatSubscribers(15395) }} views - 3 hours ago</p>
-                      </router-link>
-                    </div>
-                  </div>
-                </article>
-              </div>
+              <video-section />
             </div>
 
             <hr class="my-4">
 
             <div class="row">
-              <h3 class="fw-bold">Some recommended section</h3>
-              <div v-for="card in 8" :key="card" class="col-3 mb-2">
-                <router-link :to="{ name: 'video_view' }">
-                  <article class="card shadow-sm text-dark">
-                    <img src="https://via.placeholder.com/800" class="card-img" alt="">
-
-                    <div class="card-body d-flex justify-content-left">
-                      <div id="avatar">
-                        <img :src="require('@/assets/avatar1.png')" class="img-fluid rounded-circle" width="50" alt="">
-                      </div>
-
-                      <div class="ms-4">
-                        <h5>Some video</h5>
-                        <p class="mb-1 text-muted">Jubilee</p>
-                        <p class="text-muted">{{ formatSubscribers(15395) }} views - 3 hours ago</p>
-                      </div>
-                    </div>
-                  </article>
-                </router-link>
-              </div>
+              <video-section title="Some recommended section" />
             </div>
           </div>
         </section>
@@ -104,18 +63,13 @@
 
 <script>
 import BaseSite from '@/layouts/BaseSite.vue'
-import useFormatting  from '@/composables/formatting'
+import VideoSection from '@/components/timeline/VideoSection.vue'
 
 export default {
   name: 'TimelinePageView',
   components: {
-    BaseSite
-  },
-  setup () {
-    const { formatSubscribers } = useFormatting()
-    return {
-      formatSubscribers
-    }
+    BaseSite,
+    VideoSection
   },
   data () {
     return {

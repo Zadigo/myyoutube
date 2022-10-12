@@ -13,13 +13,19 @@ import '@/assets/loading.css'
 import '@/plugins/fontawesome'
 
 import router from './router'
+import i18n from './i18n'
 
 loadFonts()
 
 const pinia = createPinia()
 
 const app = createApp(App)
+
+// TODO: Delete on next update
+app.config.unwrapInjectedRef = true
+
 app.component('FontAwesomeIcon', FontAwesomeIcon)
 app.use(router)
 app.use(pinia)
+app.use(i18n)
 app.mount('#app')

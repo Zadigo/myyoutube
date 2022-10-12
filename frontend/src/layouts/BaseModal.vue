@@ -1,69 +1,75 @@
 <template>
-  <div :id="id" ref="link" :class="modalClasses" class="modal" role="dialog" tabindex="-1">
-    <div :class="modalDialogClasses" class="modal-dialog">
-      <div :class="modalContentClasses" class="modal-content">
-        <div class="modal-header">
-          <h5 v-if="title" class="modal-title">
-            {{ title }}
-          </h5>
-          <button type="button" class="btn-close" aria-label="Close" @click="$emit('close')"></button>
-        </div>
+  <div class="modal-wrapper">
+    <transition appear name="custom-classes" mode="out-in" enter-active-class="modal-animation dialog-fade-in-down" leave-active-class="modal-animation dialog-fade-out-up">
+      <!-- <transition name="slide" mode="out-in"> -->
+      <div v-if="show" :id="id" :class="modalClasses" :aria-modal="show" class="modal" role="dialog" tabindex="-1">
+        <div :class="modalDialogClasses" class="modal-dialog">
+          <div :class="modalContentClasses" class="modal-content">
+            <div v-if="!isFrame" class="modal-header">
+              <h5 v-if="title" class="modal-title">
+                {{ title }}
+              </h5>
+              <button type="button" class="btn-close" aria-label="Close" @click="$emit('close')"></button>
+            </div>
 
-        <div class="modal-body">
-          <slot></slot>
-        </div>
+            <div class="modal-body">
+              Google
+              <slot></slot>
+            </div>
 
-        <slot name="footer"></slot>
-        <!-- <div class="modal-footer">
-          <button type="button" class="btn btn-secondary">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div> -->
+            <slot name="footer"></slot>
+          </div>
+        </div>
       </div>
-    </div>
+    </transition>
+
+    <transition appear name="custom-classes" mode="out-in" enter-active-class="modal-animation dialog-fade-in" leave-active-class="modal-animation dialog-fade-out">
+      <div v-if="show" :class="{show}" class="modal-backdrop"></div>
+    </transition>
   </div>
 </template>
 
 <script>
-/*
- * Base bootstrap modal
- * size: modal-sm, modal-lg, modal-xl, modal-fullscreen
- **/ 
 import { inject } from 'vue'
 
 export default {
   name: 'BaseModal',
   props: {
+    centered: {
+      type: Boolean
+    },
     id: {
       type: String,
       required: true
     },
-    title: {
-      type: String
-    },
-    centered: {
-      type: Boolean
+    position: {
+      type: String,
+      default: null
     },
     scrollable: {
-      type: Boolean
-    },
-    show: {
       type: Boolean
     },
     size: {
       type: String,
       default: 'lg'
     },
+    show: {
+      type: Boolean
+    },
     staticBackdrop: {
       type: Boolean
     },
-    position: {
-      type: String,
-      default: null
+    title: {
+      type: String
     }
   },
-  emits: ['close'],
+  emits: {
+    close () {
+      return true
+    }
+  },
   setup () {
-    var darkMode = inject('darkMode')
+    const darkMode = inject('darkMode')
     return {
       darkMode
     }
@@ -71,13 +77,20 @@ export default {
   computed: {
     modalClasses () {
       let position = this.position
-      
-      if (position === 'top-left' || position === 'bottom-left') {
-        position = 'left'
-      } else if (position === 'top-right' || position === 'bottom-right') {
-        position = 'right'
-      }  
+      switch (this.position) {
+        case 'top-left':
+        case 'bottom-left':
+          position = 'left'
+          break
 
+        case 'top-right':
+        case 'bottom-right':
+          position = 'right'
+          break
+
+        default:
+          break
+      }
       return [
         this.show ? 'show' : null,
         position
@@ -111,7 +124,7 @@ export default {
     modalContentClasses () {
       return [
         this.hasPositionY ? 'rounded-0' : null,
-        this.darkMode ? 'bg-dark text-light' : 'bg-white text-dark',
+        this.darkMode ? 'bg-dark text-light' : 'bg-white text-dark'
       ]
     },
     hasPositionX () {
@@ -120,74 +133,145 @@ export default {
     },
     hasPositionY () {
       return this.position && this.position === 'top' || this.position === 'bottom'
+    },
+    isFrame () {
+      return ['top', 'bottom'].includes(this.position)
     }
   },
   watch: {
-    show (newValue) {
-      if (newValue) {
-        this.$refs.link.classList.add('show')
-        this.$refs.link.style.display = 'block'
-        this.$refs.link.ariaModal = true
-      } else {
-        this.$refs.link.classList.remove('show')
-        this.$refs.link.style.display = 'none'
-        this.$refs.link.ariaModal = null
-        this.$refs.link.ariaHidden = true
-      }
+    show () {
       this.toggleBody()
     }
   },
-  // updated() {
-  //   var body = document.querySelector('body')
-  //   if (!this.show && body.classList.contains('modal-open')) {
-  //     this.toggleBody()
-  //   } else {
-  //     this.$refs.link.style.display = 'block'
-  //   }
-  // },
   mounted () {
-    // if (this.show) {
-    //   this.toggleBody()
-    // }
-    var body = this.getBody()
-    body.addEventListener('click', this.windowListener, { passive: true })
+    const body = this.getBody()
+    body.addEventListener('click', this.backdropClick)
   },
-  unmounted () {
-    var body = this.getBody()
-    body.removeEventListener('click', this.windowListener, { passive: true })
-  },  
+  beforeUnmount () {
+    const body = this.getBody()
+    body.removeEventListener('click', this.backdropClick)
+  },
   methods: {
-    windowListener (e) {
+    toggleBody () {
+      const body = this.getBody()
+
+      if (body.classList.contains('modal-open')) {
+        body.classList.remove('modal-open')
+        body.style.overflow = null
+      } else {
+        body.classList.add('modal-open')
+        body.style.overflow = 'hidden'
+      }
+    },
+    getBody () {
+      return document.querySelector('body')
+    },
+    backdropClick (e) {
       if (e.target.classList.contains('modal')) {
         if (this.staticBackdrop) {
-          this.$refs.link.classList.add('modal-static')
+          e.target.classList.add('modal-static')
+
           setTimeout(() => {
-            this.$refs.link.classList.remove('modal-static')
-          }, 300);
+            e.target.classList.remove('modal-static')
+          }, 300)
         } else {
           this.$emit('close')
         }
       }
     },
-    toggleBody () {
-      var body = document.querySelector('body')
-
-      if (body.classList.contains('modal-open')) {
-        body.style = null
-        body.classList.remove('modal-open')
-        body.classList.add('modal-close')
-        setTimeout(() => {
-          body.classList.remove('modal-close')
-        }, 500)
-      } else {
-        body.classList.add('modal-open')
-        body.style.overflow = 'hidden'
-        // body.style.paddingRight = '17px'
-      }
-    },
-    getBody () {
-      return document.querySelector('body')
-    }
   }
 }
 </script>
+
+<style scoped>
+.modal.show {
+  display: block;
+  overflow-y: auto;
+}
+
+.modal-backdrop.show {
+  opacity: .5;
+}
+
+/* .slide-enter-active,
+.slide-leave-active {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0;
+  transform: translate3d(0, -50%, 0);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+} */
+
+.modal-animation {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+.dialog-fade-in-down {
+  animation: fade-in-down;
+}
+
+.dialog-fade-out-up {
+  animation: fade-out-up;
+}
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -10%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fade-out-up {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, -10%, 0);
+  }
+}
+
+.dialog-fade-in {
+  animation-name: fade-in;
+}
+
+.dialog-fade-out {
+  animation-name: fade-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 0.5;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+</style>

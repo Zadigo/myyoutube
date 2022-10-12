@@ -1,5 +1,211 @@
 <template>
-  <section id="account">
-    <router-view></router-view>
+  <section>
+    <header>
+      <!-- Sidebar -->
+      <nav id="sidebar" link="sidebar" class="collapse d-lg-block sidebar collapse bg-white">
+        <div class="position-sticky">
+          <div class="list-group list-group-flush mx-3 mt-4">
+            <!-- NOTE: Pass links to props -->
+            <router-link v-for="link in sidebarLinks" :key="link.name" :to="{ name: link.to }" class="list-group-item list-group-item-action" aria-current="true">
+              <font-awesome-icon :icon="`fa-solid fa-${link.icon}`" class="me-4" />
+              {{ $t(link.name) }}
+            </router-link>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Navbar -->
+      <!-- <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <router-link :to="{ name: 'home_view' }" class="navbar-brand">
+            <img :src="require('@/assets/logo.jpg')" height="25" loading="lazy" alt="Image 4" />
+          </router-link>
+        </div>
+      </nav> -->
+    </header>
+
+    <!-- Main -->
+    <main>
+      <div :class="bodyClasses" class="container pt-4">
+        <router-view></router-view>
+      </div>
+    </main>
+
+    <transition name="pop">
+      <button v-if="!arrivedState.top" id="back-to-top" class="btn btn-primary btn-floating" type="button" @click="scrollToTop">
+        <font-awesome-icon icon="fa-solid fa-arrow-up" />
+      </button>
+    </transition>
   </section>
 </template>
+
+<script>
+// import NavItem from '../layouts/nav/NavItem.vue'
+
+import { provide, ref } from 'vue'
+import { useDark, useScroll } from '@vueuse/core'
+import { scrollToTop } from '@/composables/utils'
+
+export default {
+  name: 'BaseSite',
+  components: {
+    // BaseFooterVue,
+    // NavItem
+  },
+  props: {
+    bodyClasses: {
+      type: String,
+      required: false
+    }
+  },
+  setup () {
+    const target = ref(null)
+    const { y, arrivedState } = useScroll(target)
+    const { value } = useDark()
+    provide('darkMode', value)
+    return {
+      darkMode: value,
+      target,
+      scrollToTop,
+      scrollY: y,
+      arrivedState
+    }
+  },
+  data () {
+    return {
+      sidebarLinks: [
+        {
+          "name": "Home",
+          "to": "home_view",
+          "icon": "home"
+        },
+        {
+          "name": "Account",
+          "to": "account_view",
+          "icon": "user"
+        },
+        {
+          "name": "Algorithm",
+          "to": "algorithm_preference_view",
+          "icon": "a"
+        },
+        {
+          "name": "Notifications",
+          "to": "account_notifications_view",
+          "icon": "bell"
+        },
+        {
+          "name": "Performance",
+          "to": "account_performance_view",
+          "icon": "tv"
+        },
+        {
+          "name": "Privacy",
+          "to": "account_privacy_view",
+          "icon": "lock"
+        },
+        {
+          "name": "Advanced",
+          "to": "account_advanced_view",
+          "icon": "cog"
+        }
+      ]
+
+    }
+  },
+  mounted () {
+    this.target = window.document
+  }
+}
+</script>
+
+<style scoped>
+body {
+  background-color: #fbfbfb;
+}
+
+main {
+  margin-top: 58px;
+  margin-bottom: 58px;
+}
+
+@media (min-width: 991.98px) {
+  main {
+    padding-left: 240px;
+  }
+
+  footer {
+    padding-left: 240px;
+  }
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  padding: 58px 0 0;
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+  width: 240px;
+  z-index: 600;
+}
+
+@media (max-width: 991.98px) {
+  .sidebar {
+    width: 100%;
+  }
+}
+
+.sidebar .active {
+  border-radius: 5px;
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+}
+
+.sidebar .router-link-exact-active {
+  z-index: 2;
+  color: #fff;
+  background-color: #1266f1;
+  border-color: #1266f1;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#back-to-top {
+  position: fixed;
+  z-index: 1000;
+  top: 90%;
+  right: 2%;
+}
+
+.pop-enter-active,
+.pop-leave-active {
+  transition: opacity .4s ease;
+  transition: scale .2s ease;
+}
+
+.pop-enter-from,
+.pop-leave-to {
+  opacity: 0;
+  transform: scale(1.2, 1.2);
+}
+
+.pop-enter-to,
+.pop-leave-from {
+  opacity: 1;
+  transform: scale(1, 1);
+}
+</style>

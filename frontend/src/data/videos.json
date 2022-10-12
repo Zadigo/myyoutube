@@ -2,17 +2,18 @@
     "recommendations": [
         {
             "id": 1,
-            "reference": "",
+            "reference": "axRioUiyGHbnD",
             "title": "When you realize ON AIR that your sister stole your watch",
             "url": "../assets/video1.mp4",
-            "views": "9,242,936",
+            "views": 9242936,
             "hastags": [],
             "channel": {
                 "name": "Malika Andrews - ESPN",
                 "subscribers": 345567896,
                 "verified": true,
                 "subscribed": false,
-                "notifications": true
+                "notifications": true,
+                "paid_subscription": false
             },
             "comments": {
                 "count": "6,909"

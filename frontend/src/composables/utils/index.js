@@ -71,9 +71,29 @@ export function useUtilities () {
   }
 
   function readMultipleFiles (files) {
-    return files.map((file) => {
-      return readFile(file)
+    return Object.entries(files).map((file) => {
+      return readFile({ [`${file[0]}`]: file[1] })
     })
+  }
+
+  function readVideoFile (files) {
+    return URL.createObjectURL(files[0])
+  }
+
+  // function getVideoFrame (video, frame = 0) {
+  function getVideoFrame (video) {
+    const canvas = document.createElement('canvas')
+    canvas.height = video.videoHeight
+    canvas.width = video.videoWidth
+    
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+    
+    const img = new Image()
+    const url = canvas.toDataURL()
+    img.src = url
+    img.classList.add('img-fluid')
+    return [img, url]
   }
 
   function truncate (text, k = 28) {
@@ -163,6 +183,7 @@ export function useUtilities () {
     decreaseIndex,
     formatAsPercentage,
     getVerticalScrollPercentage,
+    getVideoFrame,
     hasNull,
     indexElements,
     incrementLastId,
@@ -174,6 +195,7 @@ export function useUtilities () {
     quickSort,
     readFile,
     readMultipleFiles,
+    readVideoFile,
     scrollToSection,
     truncate
   }

@@ -3,12 +3,20 @@
     <section id="youtube">
       <div class="container-fluid p-0">
         <!-- Player -->
-        <base-video-player-vue :video-url="require('@/assets/video2_full_hd.mp4')"></base-video-player-vue>
+        <base-video-wrapper>
+          <template #default>
+            <base-video-player-vue :video-url="require('@/assets/video2_full_hd.mp4')" />
+          </template>
+        </base-video-wrapper>
+        
 
         <div class="position-relative">
           <!-- Information -->
           <div class="row">
             <div class="col-12">
+              <!-- Warning Banner -->
+              
+              <!-- Video Infos -->
               <div class="card mt-2">
                 <div class="card-body">
                   <h5 class="card-title">
@@ -34,12 +42,13 @@
                         </button>
                       </div>
 
-                      <base-dropdown-button-vue :button-name="'More'" :color="'secondary'" :items="[{ name: 'Store', icon: 'store' }, { name: 'Download', icon: 'download' }, { name: 'Save', icon: 'content-save' }, { name: 'Gift', icon: 'gift' }, { name: 'Donate', icon: 'cash' }, { name: 'Share', icon: 'share' }, { name: 'Recommendation', icon: 'star-remove-outline' }, { name: 'Report', icon: 'alert' }]" class="mx-2" @dropdown-click="dropdownClick" />
+                      <!-- More -->
+                      <base-dropdown-button-vue :items="moreButtonOptions" button-name="More" color="secondary" size="lg" class="mx-2" @dropdown-click="dropdownClick" />
 
                       <div class="btn-group">
                         <button type="button" class="btn btn-primary btn-lg" @click="currentVideo.channel.subscribed = !currentVideo.channel.subscribed">
-                          <span v-if="currentVideo.channel.subscribed">Unsubscribe</span>
-                          <span v-else>Subscribe</span>
+                          <span v-if="currentVideo.channel.subscribed">{{ $t('Unsubscribe') }}</span>
+                          <span v-else>{{ $t('Subscribe') }}</span>
                         </button>
 
                         <button v-if="currentVideo.channel.subscribed" type="button" class="btn btn-primary btn-lg" @click="currentVideo.channel.notifications = !currentVideo.channel.notifications">
@@ -51,7 +60,8 @@
                   </div>
                 </div>
               </div>
-
+              
+              <!-- Account Infos -->
               <div class="card my-2">
                 <div class="card-body">
                   <div class="row">
@@ -93,26 +103,38 @@
                   </div>
                 </div>
               </div>
+
+              <!-- Donation - Cause -->
             </div>
           </div>
 
           <div class="row">
             <!-- Comments -->
-            <comment-section :current-video="currentVideo" />
+            <comment-section :current-video="currentVideo" :shadow="false" />
+
+            <!-- Playlists -->
+            <!-- <div class="col-sm-12 col-md-4">
+              <div class="card">
+                <div v-if="inPlaylist" class="card-body">
+  
+                </div>
+              </div>
+            </div> -->
 
             <!-- Recommendations -->
             <div v-if="breakpoints.isGreater('sm')" class="col-sm-12 col-md-4">
+
               <div class="card mb-3">
                 <div class="card-body">
                   <div class="d-flex justify-content-between">
                     <button type="button" class="btn btn-sm btn-secondary btn-rounded shadow-none" @click="updateRecommendations">
                       <font-awesome-icon icon="fa-solid fa-refresh" class="me-2" />
-                      Load more
+                      {{ $t('Load more') }}
                     </button>
 
                     <router-link :to="{ name: 'home_view' }" class="btn btn-sm btn-secondary btn-rounded shadow-none">
                       <font-awesome-icon icon="fa-solid fa-expand" class="me-2" />
-                      See all
+                      {{ $t('See all') }}
                     </router-link>
                   </div>
                 </div>
@@ -134,7 +156,7 @@
       </div>
 
       <!-- Modals -->
-      <base-modal-vue id="donation" :show="showDonationModal" title="Make a donation" @close="showDonationModal = false">
+      <base-modal-vue id="donation" :show="showDonationModal" :title="$t('Make a donation')" @close="showDonationModal = false">
         <div class="row">
           <div class="col-12">
             <div class="alert alert-info">
@@ -144,12 +166,12 @@
             </div>
 
             <div class="col-12">
-              <input type="number" min="0" max="100" step="5" class="form-control">
+              <input type="range" min="0" max="50" step="5" class="form-range">
 
               <div class="form-check form-switch my-2">
                 <input id="super-donation" class="form-check-input" type="checkbox" role="switch" />
                 <label class="form-check-label" for="super-donation">
-                  Make a super donation
+                  {{ $t('Make a super donation') }}
                 </label>
               </div>
 
@@ -177,41 +199,54 @@
         <template #footer>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary">
-              Send - $15
+              {{ $t('Send') }} - {{ $n(15, 'currency', $i18n.locale) }}
             </button>
           </div>
         </template>
       </base-modal-vue>
 
-      <base-modal-vue id="store" :show="showStore" :scrollable="true" size="xl" @close="showStore = false">
-        <div class="row">
-          <div class="col-12">
-            <div class="row mb-3">
-              <div class="col-12">
-                <div class="alert alert-info my-2">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Amet sapiente fugiat incidunt quae quis sint necessitatibus sunt inventore
-                  nisi blanditiis quod optio eos, obcaecati totam ullam. Nemo, officiis obcaecati.
-                  Magnam!
+      <base-modal-vue id="store" :show="showStore" :scrollable="true" size="fullscreen" @close="showStore = false">
+        <template #default>
+          <div class="row">
+            <div class="col-12">
+              <div class="row mb-3">
+                <div class="col-12">
+                  <div class="alert alert-info my-2">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Amet sapiente fugiat incidunt quae quis sint necessitatibus sunt inventore
+                    nisi blanditiis quod optio eos, obcaecati totam ullam. Nemo, officiis obcaecati.
+                    Magnam!
+                  </div>
+
+                  <input type="search" class="form-control p-2" placeholder="Search products">
                 </div>
-
-                <input type="search" class="form-control p-2" placeholder="Search products">
               </div>
-            </div>
 
-            <div class="row">
-              <div v-for="i in 10" :key="i" class="col-2 mb-2">
-                <div class="card shadow-none">
-                  <img src="https://via.placeholder.com/500" class="card-img-top" alt="Image 8">
-                  <div class="card-body p-1 bg-transparent">
-                    <h6 class="card-title">Some product</h6>
-                    <button type="button" class="btn btn-primary btn-sm">Add to cart</button>
+              <div class="row">
+                <div v-for="i in 10" :key="i" class="col-2 mb-2">
+                  <div class="card shadow-none">
+                    <img src="https://via.placeholder.com/500" class="card-img-top" alt="Image 8">
+                    <div class="card-body p-1 bg-transparent">
+                      <h6 class="card-title">Some product</h6>
+                      <button type="button" class="btn btn-primary btn-sm">
+                        <font-awesome-icon icon="fa-solid fa-shopping-bag" class="me-2"></font-awesome-icon>
+                        {{ $t('Add to cart') }}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </template>
+
+        <template #footer>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">
+              Purchase <span class="badge text-bg-secondary">5</span> items
+            </button>
+          </div>
+        </template>
       </base-modal-vue>
 
       <base-modal-vue id="gift" :show="showGifts" :scrollable="true" size="sm" @close="showGifts = false">
@@ -223,11 +258,12 @@
             </div>
 
             <div class="list-group">
-              <a v-for="i in 10" :key="i" href class="list-group-item d-flex justify-content-between" @click.prevent>
+              <a v-for="i in 5" :key="i" href class="list-group-item d-flex justify-content-between" @click.prevent>
                 <span>Gift {{ i }}</span>
                 <div class="btn-group shadow-none">
                   <button type="button" class="btn btn-sm btn-primary">
-                    Donate
+                    <font-awesome-icon icon="fa-solid fa-circle-dollar-to-slot" class="me-2"></font-awesome-icon>
+                    {{ $t('Donate') }}
                   </button>
                 </div>
               </a>
@@ -236,7 +272,7 @@
         </div>
       </base-modal-vue>
 
-      <base-modal-vue id="report" :show="showReport" :scrollable="true" size="sm" title="Report video" @close="showReport = false">
+      <base-modal-vue id="report" :show="showReport" :scrollable="true" :title="$t('Report video')" size="sm" @close="showReport = false">
         <div class="row">
           <div class="col-12">
             <base-accordion-vue :items="reports" />
@@ -245,8 +281,8 @@
           <div class="col-12 my-4">
             <p class="mb-1">Flag the section you believe to be problematic</p>
             <div class="d-flex justify-content-between">
-              <input type="text" class="form-control p-2">
-              <input type="text" class="form-control p-2 ms-2">
+              <input type="time" class="form-control p-2">
+              <input type="time" class="form-control p-2 ms-2">
             </div>
           </div>
 
@@ -262,31 +298,28 @@
         <template #footer>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary">
-              Send
+              {{ $t('Send') }}
             </button>
           </div>
         </template>
       </base-modal-vue>
 
       <base-offcanvas-vue id="playlists" :show="showPlaylists" title="Playlists" position="end" @close="showPlaylists = false">
-        <div class="list-group">
-          <a v-for="i in 5" :key="i" href class="list-group-item d-flex justify-content-between" @click.prevent>
-            <div class="form-check my-2">
-              <input id="flexCheckChecked" class="form-check-input" type="checkbox">
-              <label class="form-check-label" for="flexCheckChecked">
-                {{ i }}
-              </label>
-            </div>
-          </a>
-        </div>
+        <base-list-group-checkbox id="playlists-group" :items="[{ name: 'Google' }]" />
+
+        <button type="button" class="btn btn-md btn-primary mt-2" @click="showPlaylistCreationInput = true">
+          <font-awesome-icon icon="fa-solid fa-plus" class="me-2" />
+          {{ $t('Create') }}
+        </button>
       </base-offcanvas-vue>
 
       <base-offcanvas-vue id="recommendation" :show="showRecommendationReport" title="Recommendation" position="end" @close="showRecommendationReport = false">
         <div class="row">
           <div class="col-12">
             <div class="alert alert-warning">
-              You can use this tool to signal that this video was not properly categorized
-              by the creator and therefore does not correspond to a result you expected
+              Use this tool to signal that this video was not properly categorized
+              by the creator and therefore does not correspond to the result you
+              were expecting
             </div>
 
             <div class="list-group my-3">
@@ -294,25 +327,27 @@
                 <div class="form-check form-switch">
                   <input id="wrong-category-alert" class="form-check-input" type="checkbox" role="switch" />
                   <label class="form-check-label" for="wrong-category-alert">
-                    This video is not in the proper category
+                    Mark as wrong category
                   </label>
                 </div>
               </div>
             </div>
 
-            <select class="form-select" aria-label="Expected category">
+            <!-- <select class="form-select" aria-label="Expected category">
               <option selected>Expected category</option>
               <option value="1">One</option>
               <option value="2">Two</option>
               <option value="3">Three</option>
-            </select>
+            </select> -->
+
+            <base-select :items="['One', 'Two']" />
 
             <div class="list-group mt-3">
               <div class="list-group-item">
                 <div class="form-check form-switch">
                   <input id="block-channel" class="form-check-input" type="checkbox" role="switch" />
                   <label class="form-check-label" for="block-channel">
-                    Block this channel
+                    {{ $t('Block this channel') }}
                   </label>
                 </div>
               </div>
@@ -323,11 +358,11 @@
         <template #footer>
           <div class="offcanvas-footer">
             <button type="button" class="btn btn-outline-danger" @click="showRecommendationReport = false">
-              Close
+              {{ $t('Close') }}
             </button>
 
             <button type="button" class="btn btn-primary ms-2">
-              Save
+              {{ $t('Save') }}
             </button>
           </div>
         </template>
@@ -337,26 +372,28 @@
 </template>
 
 <script>
-import reports from '@/data/reports'
 import video from '@/data/video'
+import reports from '@/data/reports'
+import useFormatting from '@/composables/formatting'
 
 import { ref, provide } from 'vue'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 // import BaseDropGroupVue from '@/layouts/BaseDropGroup.vue'
 
-import BaseVideoPlayerVue from '../layouts/BaseVideoPlayer.vue'
-import BaseScrollbarVue from '../layouts/BaseScrollbar.vue'
-import BaseDropdownButtonVue from '@/layouts/BaseDropdownButton.vue'
+import BaseVideoPlayerVue from '@/layouts/BaseVideoPlayer.vue'
+import BaseListGroupCheckbox from '@/layouts/bootstrap/listgroups/BaseListGroupCheckbox.vue'
+import BaseScrollbarVue from '@/layouts/BaseScrollbar.vue'
+import BaseDropdownButtonVue from '@/layouts/bootstrap/BaseDropdownButton.vue'
 import BaseModalVue from '@/layouts/BaseModal.vue'
-import BaseOffcanvasVue from '@/layouts/BaseOffcanvas.vue'
+import BaseOffcanvasVue from '@/layouts/bootstrap/BaseOffcanvas.vue'
 import BaseAccordionVue from '@/layouts/BaseAccordion.vue'
-import BaseSiteVue from '../layouts/BaseSite.vue'
-import CommentSection from '@/components/youtube/CommentSection.vue'
-import RecommendationDrawerVue from '../components/youtube/RecommendationDrawer.vue'
+import BaseSiteVue from '@/layouts/BaseSite.vue'
+import BaseSelect from '@/layouts/bootstrap/BaseSelect.vue'
+import CommentSection from '@/components/CommentSection.vue'
 import ListRecommendationsVue from '@/components/youtube/ListRecommendations.vue'
-
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import useFormatting from '@/composables/formatting'
+import RecommendationDrawerVue from '@/components/youtube/RecommendationDrawer.vue'
+import BaseVideoWrapper from '@/layouts/BaseVideoWrapper.vue'
 
 export default {
   name: 'LongVideoView',
@@ -365,14 +402,17 @@ export default {
     BaseDropdownButtonVue,
     BaseModalVue,
     BaseAccordionVue,
+    BaseListGroupCheckbox,
     // BaseDropGroupVue,
     BaseOffcanvasVue,
     BaseScrollbarVue,
     BaseSiteVue,
+    BaseSelect,
     CommentSection,
     ListRecommendationsVue,
-    RecommendationDrawerVue
-  },
+    RecommendationDrawerVue,
+    BaseVideoWrapper
+},
   setup () {
     const isLoading = ref(true)
     const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -387,7 +427,6 @@ export default {
     }
   },
   data: () => ({
-    // isLoading: true,
     isLoadingRecommendations: true,
 
     showDonationModal: false,
@@ -397,6 +436,8 @@ export default {
     showReport: false,
     showRecommendationReport: false,
     showRecommendationsDrawer: false,
+    showPlaylistCreationInput: false,
+    inPlaylist: false,
 
     sortMethod: 'Newest',
 
@@ -407,6 +448,18 @@ export default {
     totalLimit: 20,
     recommendationLimit: 5,
     cachedRecommendations: [],
+
+    moreButtonOptions: [
+      { name: 'Store', icon: 'store' }, 
+      { name: 'Download', icon: 'download' },
+      { name: 'Save', icon: 'floppy-disk' }, 
+      { name: 'Gift', icon: 'gift' }, 
+      { name: 'Donate', icon: 'money-bill' }, 
+      { name: 'Share', icon: 'share' }, 
+      { name: 'Recommendation', icon: 'star' },
+      { divider: true },
+      { name: 'Report', icon: 'triangle-exclamation' }
+    ],
 
     // Channel
     expandCard: false
@@ -426,6 +479,12 @@ export default {
         this.getVideo()
       }
     }
+  },
+  created () {
+    // http://localhost:8080/video?playlist=true
+    const inPlaylist = this.$route.query.playlist * 1
+    const result = inPlaylist === 0 || inPlaylist === 1 ? inPlaylist : 0
+    this.inPlaylist = result === 1
   },
   beforeMount () {
     this.getVideo()
@@ -507,5 +566,13 @@ export default {
 <style scoped>
 .fs-7 {
   font-size: .85rem;
+}
+
+.donators {
+  width: 80%;
+}
+
+.donators .users {
+  overflow-x: scroll;
 }
 </style>

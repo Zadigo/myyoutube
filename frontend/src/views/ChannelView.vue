@@ -19,7 +19,7 @@
       <div class="container">
         <section class="row p-4">
           <!-- TODO: This will be a component in order to iterate
-      over each video sections -->
+          over each video sections -->
           <div v-for="i in 2" :key="i" class="col-12 my-2">
             <div class="fw-bold h5 text-white mt-4"><span class="text-primary">Prime Amazon</span> Originals and Exclusives <a href>See more</a></div>
             <div class="row">
@@ -34,8 +34,8 @@
 
 <script>
 import BaseCarousel from '@/layouts/BaseCarousel.vue'
-import VideoCardVue from '@/components/youtube/channel/VideoCard.vue'
 import BaseSite from '@/layouts/BaseSite.vue';
+import VideoCardVue from '@/components/youtube/channel/VideoCard.vue'
 
 export default {
   name: 'ChannelView',
