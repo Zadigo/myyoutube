@@ -1,5 +1,5 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCircleCheck, faFaceLaugh, faHeart, faMessage, faThumbTack, faBell, faBellSlash, faPlay, faPause, faGauge, faVolumeXmark, faVolumeHigh, faVolumeLow, faVolumeUp, faCog, faClose, faArrowLeft, faArrowRight, faTrash, faEraser, faThumbsUp, faThumbsDown, faRefresh, faExpand, faArrowUp, faShare, faHouse, faShoppingBag, faCircleDollarToSlot, faList, faSort, faPlus, faUser, faTv, faLock, faA, faChartSimple, faVideoCamera, faPen, faStore, faDownload, faFloppyDisk, faGift, faMoneyBill, faStar, faExclamationTriangle, faCartShopping } from '@fortawesome/free-solid-svg-icons'
+import { faCircleCheck, faFaceLaugh, faHeart, faMessage, faThumbTack, faBell, faBellSlash, faPlay, faPause, faGauge, faVolumeXmark, faVolumeHigh, faVolumeLow, faVolumeUp, faCog, faClose, faArrowLeft, faArrowRight, faTrash, faEraser, faThumbsUp, faThumbsDown, faRefresh, faExpand, faArrowUp, faShare, faHouse, faShoppingBag, faCircleDollarToSlot, faList, faSort, faPlus, faUser, faTv, faLock, faA, faChartSimple, faVideoCamera, faPen, faStore, faDownload, faFloppyDisk, faGift, faMoneyBill, faStar, faExclamationTriangle, faCartShopping, faXmark, faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faA)
 library.add(faArrowLeft)
@@ -8,6 +8,8 @@ library.add(faArrowUp)
 library.add(faBell)
 library.add(faBellSlash)
 library.add(faVideoCamera)
+library.add(faCaretUp)
+library.add(faCaretDown)
 library.add(faCircleCheck)
 library.add(faCircleDollarToSlot)
 library.add(faCog)
@@ -48,3 +50,4 @@ library.add(faVolumeUp)
 library.add(faVolumeHigh)
 library.add(faVolumeLow)
 library.add(faVolumeXmark)
+library.add(faXmark)

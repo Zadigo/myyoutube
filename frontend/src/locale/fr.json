@@ -63,9 +63,11 @@
     "Signin": "Se connecter",
     "Password": "Mot de passe",
     "Buy gifts": "Acheter des cadeaux",
-    "Liked by x": "Aime par @{creator}",
+    "Liked by x": "Aime par {creator}",
     "Reply": "Repondre",
     "Reply to x": "Repondre à {user}",
     "View x replies": "Voir {count} commentaires",
-    "Hide x replies": "Cacher {count} commentaires"
+    "Hide x replies": "Cacher {count} commentaires",
+    "My studio": "Mon studio",
+    "x views": "{count} vues"
 }
