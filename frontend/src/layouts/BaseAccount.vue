@@ -1,8 +1,8 @@
 <template>
-  <section>
+  <section :class="{'text-bg-dark': darkMode}">
     <header>
       <!-- Sidebar -->
-      <nav id="sidebar" link="sidebar" class="collapse d-lg-block sidebar collapse bg-white">
+      <nav id="sidebar" link="sidebar" :class="[darkMode ? 'navbar-dark bg-dark' : 'navbar-light bg-white']" class="collapse d-lg-block sidebar collapse">
         <div class="position-sticky">
           <div class="list-group list-group-flush mx-3 mt-4">
             <!-- NOTE: Pass links to props -->
@@ -46,8 +46,10 @@
 <script>
 // import NavItem from '../layouts/nav/NavItem.vue'
 
-import { provide, ref } from 'vue'
-import { useDark, useScroll } from '@vueuse/core'
+// import { provide, ref } from 'vue'
+// import { useDark, useScroll } from '@vueuse/core'
+import { inject, ref } from 'vue'
+import { useScroll } from '@vueuse/core'
 import { scrollToTop } from '@/composables/utils'
 
 export default {
@@ -65,10 +67,12 @@ export default {
   setup () {
     const target = ref(null)
     const { y, arrivedState } = useScroll(target)
-    const { value } = useDark()
-    provide('darkMode', value)
+    const darkMode = inject('darkMode')
+    // const { value } = useDark()
+    // provide('darkMode', value)
     return {
-      darkMode: value,
+      // darkMode: value,
+      darkMode,
       target,
       scrollToTop,
       scrollY: y,

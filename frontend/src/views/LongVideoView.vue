@@ -19,7 +19,7 @@
               <!-- Video Infos -->
               <div class="card mt-2">
                 <div class="card-body">
-                  <h5 class="card-title">
+                  <h5 class="card-title w-100">
                     {{ currentVideo.title }}
                   </h5>
 
@@ -82,10 +82,10 @@
                       <!-- Categories -->
                       <base-scrollbar-vue :items="currentVideo.categories" class="my-3" />
 
-                      <!-- <div class="alert alert-info">
+                      <div class="alert alert-info w-50">
                         Music video/Video clip : <span class="fw-bold">UMG/Digital Universal</span>
-                        <button type="button" class="btn shadow-none mx-3">Discography</button>
-                      </div> -->
+                        <button type="button" class="btn btn-rounded mt-3">Discography</button>
+                      </div>
 
                       <p id=" description">
                         Lorem, ipsum dolor sit amet consectetur adipisicing elit.
@@ -103,6 +103,23 @@
                   </div>
                 </div>
               </div>
+
+              <!-- Albums or songs -->
+              <!-- <div class="card my-2">
+                <div class="card-body">
+                  <div class="d-flex justify-content-left gap-2">
+                    <div v-for="i in 5" :key="i" class="card">
+                      <img :src="require('@/assets/cover.jpg')" class="card-img-top" alt="">
+                      <router-link :to="{ name: 'home_view'}" class="text-dark">
+                        <div class="card-body">
+                          <h6 class="card-title">Lanae Good Good!</h6>
+                          <p class="text-muted m-0">1998</p>
+                        </div>
+                      </router-link>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
 
               <!-- Donation - Cause -->
             </div>

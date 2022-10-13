@@ -19,15 +19,28 @@
 
             <nav class="navbar mb-4 px-3">
               <div class="container">
-                <button type="button" class="btn btn-primary shadow-none" @click="showFilters=!showFilters">
+                <!-- <button type="button" class="btn btn-primary shadow-none" @click="showFilters=!showFilters">
                   <font-awesome-icon icon="fa-solid fa-filter" class="me-2"></font-awesome-icon>
                   {{ $t('Filter') }}
-                </button>
+                </button> -->
+                <ul class="nav nav-pills">
+                  <li class="nav-item">
+                    <a href :class="{active: showFilters}" class="nav-link" @click.prevent="showFilters=!showFilters">
+                      <font-awesome-icon icon="fa-solid fa-filter" class="me-2"></font-awesome-icon>
+                      {{ $t('Filter') }}
+                    </a>
+                  </li>
+                </ul>
+
+                <ul class="nav nav-pills ms-auto">
+                  <li class="nav-item"><a href :class="{active: showLongVideosTimeline}" class="nav-link" @click.prevent="showLongVideosTimeline=true">Long</a></li>
+                  <li class="nav-item"><a href :class="{active: !showLongVideosTimeline}" class="nav-link" @click.prevent="showLongVideosTimeline=false">Shorts</a></li>
+                </ul>
                 
-                <div class="btn-group ms-auto shadow-none">
+                <!-- <div class="btn-group ms-auto shadow-none">
                   <button type="button" :class="[showLongVideosTimeline ? 'active' : null ]" class="btn btn-light" @click="showLongVideosTimeline = true">Long</button>
                   <button type="button" :class="[showLongVideosTimeline ? null : 'active' ]" class="btn btn-light" @click="showLongVideosTimeline = false">Shorts</button>
-                </div>
+                </div> -->
   
                 <div v-if="showFilters" class="w-100 p-4 my-3">
                   <input type="text" class="form-control mb-2" placeholder="Search categories" multiple>
