@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import ShortVideoCard from '@/components/youtube/ShortVideoCard.vue'
+import ShortVideoCard from '@/components/timeline/ShortVideoCard.vue'
 
 export default {
   name: 'ListView',

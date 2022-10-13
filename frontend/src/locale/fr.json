@@ -69,5 +69,11 @@
     "View x replies": "Voir {count} commentaires",
     "Hide x replies": "Cacher {count} commentaires",
     "My studio": "Mon studio",
-    "x views": "{count} vues"
+    "x views": "{count} vues",
+    "Upload": "Telecharger",
+    "Cameraman": "Cadreur",
+    "Directing": "Realisation",
+    "Hair style": "Coiffure",
+    "Makeup": "Maquillage",
+    "Distribution": "Distribution"
 }

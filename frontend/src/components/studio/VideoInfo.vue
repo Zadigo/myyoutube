@@ -30,6 +30,23 @@
           </div>
         </div>
       </div>
+
+      <div class="my-3">
+        <h5>Video type</h5>
+        <p class="text-muted">
+          If your video is a music clip, you can add other additional
+          pieces of information
+        </p>
+        <div class="row">
+          <div class="col-12">
+            <base-input id="cameraman" :placeholder="$t('Cameraman')" />
+            <base-input id="directing" :placeholder="$t('Directing')" class="my-2" />
+            <base-input id="hair-style" :placeholder="$t('Hair style')" />
+            <base-input id="makeup" :placeholder="$t('Makeup')" class="my-2" />
+            <base-input id="distribution" :placeholder="$t('Distribution')" />
+          </div>
+        </div>
+      </div>
       
       <div class="my-3">
         <h5>series</h5>
@@ -154,12 +171,14 @@ import { useStudio } from '@/store/studio'
 import dayjs from '@/plugins/dayjs'
 
 import BaseCheckbox from '@/layouts/bootstrap/BaseCheckbox.vue'
+import BaseInput from '@/layouts/bootstrap/BaseInput.vue'
 import BaseVideoPlayer from '@/layouts/BaseVideoPlayer.vue'
 
 export default {
   name: 'VideoInfo',
   components: {
     BaseCheckbox,
+    BaseInput,
     BaseVideoPlayer
   },
   emits: {
