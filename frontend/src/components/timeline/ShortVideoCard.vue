@@ -93,6 +93,7 @@
 
 <script>
 import BaseVerticalPlayer from '@/layouts/BaseVerticalPlayer.vue'
+
 export default {
   name: 'ShortVideoCard',
   components: { BaseVerticalPlayer },

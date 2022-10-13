@@ -53,7 +53,7 @@ article img {
   transition: all .3s ease-in-out;
 }
 article img:hover {
-  transform: scale(1.3, 1.3);
+  transform: scale(1.15, 1.15);
 }
 article:hover {
   z-index: 1000;

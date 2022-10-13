@@ -69,5 +69,11 @@
     "View x replies": "View {count} replies",
     "Hide x replies": "Hide {count} replies",
     "My studio": "My studio",
-    "x views": "{count} views"
+    "x views": "{count} views",
+    "Upload": "Upload",
+    "Cameraman": "Cameraman",
+    "Directing": "Directing",
+    "Hair style": "Hair style",
+    "Makeup": "Makeup",
+    "Distribution": "Distribution"
 }
