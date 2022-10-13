@@ -1,8 +1,8 @@
 <template>
-  <section>
+  <section :class="{'text-bg-dark': darkMode}">
     <header>
       <!-- Sidebar -->
-      <nav id="sidebar" link="sidebar" class="collapse d-lg-block sidebar collapse bg-white">
+      <nav id="sidebar" link="sidebar" :class="[darkMode ? 'navbar-dark' : 'bg-white']" class="collapse d-lg-block sidebar collapse">
         <div class="position-sticky">
           <div class="list-group list-group-flush mx-3 mt-4">
             <!-- NOTE: Pass links to props -->
@@ -15,7 +15,7 @@
       </nav>
 
       <!-- Navbar -->
-      <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+      <nav id="main-navbar" :class="[darkMode ? 'navbar-dark bg-dark' : 'navbar-light bg-white']" class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid">
           <button class="navbar-toggler" type="button" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-bars"></i>
@@ -55,8 +55,10 @@
 // import BaseFooterVue from './BaseFooter.vue'
 import NavItem from '../layouts/nav/NavItem.vue'
 
-import { provide, ref } from 'vue'
-import { useDark, useScroll } from '@vueuse/core'
+// import { provide, ref } from 'vue'
+// import { useDark, useScroll } from '@vueuse/core'
+import { inject, ref } from 'vue'
+import { useScroll } from '@vueuse/core'
 import { scrollToTop } from '@/composables/utils'
 
 import sidebarLinks from '@/data/sidebar.json'
@@ -76,11 +78,13 @@ export default {
   setup () {
     const target = ref(null)
     const { y, arrivedState } = useScroll(target)
-    const { value } = useDark()
-    provide('darkMode', value)
+    const darkMode = inject('darkMode')
+    // const { value } = useDark()
+    // provide('darkMode', true)
     return {
       sidebarLinks,
-      darkMode: value,
+      darkMode,
+      // darkMode: value,
       target,
       scrollToTop,
       scrollY: y,
