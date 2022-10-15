@@ -1,6 +1,6 @@
 <template>
-  <!-- <div class="video-container" @click="playPause"> -->
-  <div class="video-container">
+  <!-- @click="playPause" -->
+  <div ref="videoContainer" class="video-container">
     <!-- Spinner -->
     <div v-if="isLoading" class="load-wrapp opacity-50">
       <div class="load-2">
@@ -12,123 +12,138 @@
     </div>
 
     <!-- Player -->
+    <!-- @progress="percentageLoaded" -->
+    <!-- @mousedown.right="handleInteractiveMenu" -->
     <!-- <video ref="videoPlayer" class="video-player" preload="metadata" controlist="nodownload" oncontextmenu="return false;" @seeked="$emit('loaded-meta-data', $refs.videoPlayer)" @loadmetadata="getVideoDetails" @timeupdate="getVideoDetails" @waiting="isLoading = true" @canplay="isLoading = false"> -->
-    <video ref="videoPlayer" class="video-player" preload="metadata" controlist="nodownload" oncontextmenu="return false;" @loadmetadata="getVideoDetails" @timeupdate="getVideoDetails" @waiting="isLoading = true" @canplay="isLoading = false">
+    <video ref="videoPlayer" class="video-player" preload="metadata" controlist="nodownload" oncontextmenu="return false;" @loadedmetadata="getVideoDetails" @timeupdate="getVideoDetails" @waiting="isLoading=true" @canplay="isLoading=false" @click.stop="playPause">
       <source :src="videoSource" type="video/mp4">
       <!-- <track :src="require('assets/subtitles-en.vtt')" kind="subtitles" label="English" srclang="en" default> -->
     </video>
 
     <!-- Controls -->
     <div class="video-controls">
+      <!-- Progress -->
       <div class="video-control-progress-container">
-        <div ref="videoProgress" class="progress" @click.stop.prevent="progressClick($event)">
-          <div :style="{ width: `${progress}%` }" class="current">
-            <!-- <div :style="{ left: `${progress}%` }" class="ball"></div> -->
-          </div>
+        <div ref="videoProgress" class="track" @click.stop.prevent="progressClick($event)">
+          <div :style="{ width: `${progress}%` }" class="track-low"></div>
+          <div class="track-selection"></div>
         </div>
+
+        <div :style="{ left: `${progress}%` }" class="handle"></div>
       </div>
 
-      <div class="video-control-actions">
-        <div class="d-flex justify-content-left align-items-center">
-          <button type="button" class="btn btn-light shadow-none" @click.stop="playPause">
-            <font-awesome-icon v-if="!isPlaying" icon="fa-solid fa-play" />
-            <font-awesome-icon v-else icon="fa-solid fa-pause" />
-          </button>
+      <div>
+        <transition name="opacity">
+          <div v-if="showVideoSettings" class="p-1 bg-dark" style="position: absolute; left: calc(100% - 300px); bottom: 100%;height: auto;width: 300px;margin-bottom: .5rem;border-radius: .5rem;" @mouseleave="showVideoSettings=false">
+            <div class="row p-1 mb-3">
+              <div class="col-6 justify-content-start">
+                <button v-if="showSpeedSettings || showQualitySettings" type="button" class="btn btn-light btn-sm" @click="showSpeedSettings = false, showQualitySettings = false">
+                  <font-awesome-icon icon="fa-solid fa-arrow-left" />
+                </button>
+              </div>
 
-          <div class="video-control-duration mx-3">
-            <span>{{ currentTimeFormatted }}</span>
-            <span>{{ durationFormatted }}</span>
+              <div class="col-6 d-flex justify-content-end" @click="showVideoSettings=false">
+                <button type="button" class="btn btn-light btn-sm">
+                  <font-awesome-icon icon="fa-solid fa-close" />
+                </button>
+              </div>
+            </div>
+
+            <div v-if="!showSpeedSettings && !showQualitySettings" :key="0" class="list-group">
+              <a href class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-transparent text-light border-0" @click.prevent="showSpeedSettings = true">
+                <span>
+                  <font-awesome-icon icon="fa-solid fa-gauge-simple" class="me-2" /> Playback speed
+                </span>
+                <span>{{ speed }}
+                  <font-awesome-icon icon="fa-solid fa-arrow-right" class="ms-2" />
+                </span>
+              </a>
+
+              <a href class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-transparent text-light border-0" @click.prevent="showQualitySettings = true">
+                <span>
+                  <font-awesome-icon icon="fa-solid fa-star" class="me-2" /> Quality
+                </span>
+                <span>{{ quality }}
+                  <font-awesome-icon icon="fa-solid fa-arrow-right" class="ms-2" />
+                </span>
+              </a>
+            </div>
+
+            <div v-if="showSpeedSettings" :key="1" class="list-group">
+              <a v-for="speed in speeds" :key="speed" href class="list-group-item list-group-item-action bg-transparent text-light" @click.prevent="playbackSpeedClick(speed)">
+                {{ `${speed}x` }}
+              </a>
+            </div>
+
+            <div v-if="showQualitySettings" :key="3" class="list-group">
+              <a href type="button" class="list-group-item list-group-item-action bg-transparent text-light" @click.prevent>1080p</a>
+              <a href type="button" class="list-group-item list-group-item-action bg-transparent text-light" @click.prevent>720p</a>
+              <a href type="button" class="list-group-item list-group-item-action bg-transparent text-light" @click.prevent>480p</a>
+            </div>
           </div>
-        </div>
+        </transition>
 
-        <div class="video-control-configuration-center d-flex justify-content-end">
-          <div class="video-control-settings">
-            <button type="button" class="btn btn-light" @click="showVideoSettings = !showVideoSettings">
-              <font-awesome-icon icon="fa-solid fa-cog" />
+        <transition name="opacity">
+          <div v-if="showVolume" class="video-control-volume-container" @mouseleave="showVolume=false">
+            <div ref="volumeControl" class="track" @click="volumeClick">
+              <div :style="{ width: `${volume * 100}%` }" class="track-low"></div>
+              <!-- <div class="handle"></div> -->
+            </div>
+          </div>
+        </transition>
+
+        <div class="video-control-actions">
+          <div class="d-flex justify-content-left align-items-center gap-3">
+            <button type="button" class="btn btn-light shadow-none" @click.stop="playPause">
+              <font-awesome-icon v-if="!isPlaying" icon="fa-solid fa-play" />
+              <font-awesome-icon v-else icon="fa-solid fa-pause" />
             </button>
 
-            <transition name="opacity">
-              <div v-if="showVideoSettings" class="picker">
-                <div class="row p-1">
-                  <div class="col-6 justify-content-start">
-                    <button v-if="showSpeedSettings || showQualitySettings" type="button" class="btn btn-light btn-sm" @click="showSpeedSettings = false, showQualitySettings = false">
-                      <font-awesome-icon icon="fa-solid fa-arrow-left" />
-                    </button>
-                  </div>
-
-                  <div class="col-6 d-flex justify-content-end" @click="showVideoSettings = false">
-                    <button type="button" class="btn btn-light btn-sm">
-                      <font-awesome-icon icon="fa-solid fa-close" />
-                    </button>
-                  </div>
-                </div>
-
-                <div v-if="!showSpeedSettings && !showQualitySettings" :key="0" class="list-group">
-                  <a href class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-transparent text-light border-0" @click.prevent="showSpeedSettings = true">
-                    <span>
-                      <font-awesome-icon icon="fa-solid fa-gauge" class="me-2" />
-                      Speed
-                    </span>
-                    <span>
-                      {{ speed }}
-                      <font-awesome-icon icon="fa-solid fa-arrow-right" class="ms-2" />
-                    </span>
-                  </a>
-
-                  <a href class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-transparent text-light border-0" @click.prevent="showQualitySettings = true">
-                    <span>
-                      <font-awesome-icon icon="fa-solid fa-gauge" class="me-2" />
-                      Quality
-                    </span>
-
-                    <span>
-                      {{ quality }}
-                      <font-awesome-icon icon="fa-solid fa-arrow-right" class="ms-2" />
-                    </span>
-                  </a>
-                </div>
-
-                <div v-if="showSpeedSettings" :key="1" class="list-group">
-                  <a v-for="speed in speeds" :key="speed" href class="list-group-item list-group-item-action bg-transparent text-light" @click.prevent="speedClick(speed)">
-                    {{ `${speed}x` }}
-                  </a>
-                </div>
-
-                <div v-if="showQualitySettings" :key="3" class="list-group">
-                  <a href type="button" class="list-group-item">1080p</a>
-                </div>
-                <!-- <transition-group name="opacity" mode="out-in">
-                </transition-group> -->
-              </div>
-            </transition>
+            <div class="video-control-duration mx-3">
+              <span>{{ currentTimeFormatted }}</span>
+              <span>{{ durationFormatted }}</span>
+            </div>
           </div>
 
-          <div class="video-control-volume ms-2">
-            <button ref="volume" type="button" class="btn btn-light">
-              <font-awesome-icon v-if="volume < 0.1" icon="fa-solid fa-volume-low" />
-              <font-awesome-icon v-else-if="volume >= 0.1 && volume <= 0.8" icon="fa-solid fa-volume-up" />
-              <font-awesome-icon v-else-if="volume > 0.8" icon="fa-solid fa-volume-high" />
-            </button>
+          <!-- Control configuration center -->
+          <div class="video-control-configuration-center d-flex justify-content-end">
+            <div class="video-control-settings">
+              <button type="button" class="btn btn-light" @click="showVideoSettings=!showVideoSettings">
+                <font-awesome-icon icon="fa-solid fa-cog" />
+              </button>
+            </div>
 
-            <div class="picker">
-              <div class="tracker">
-                <div :style="{ height: `30%` }" class="track"></div>
-                <div :style="{ bottom: `calc(30%) - 0.5rem` }" class="ball"></div>
-              </div>
+            <div class="video-control-volume ms-2">
+              <button type="button" class="btn btn-light" @click="showVolume=!showVolume">
+                <font-awesome-icon v-if="volume < 0.1" icon="fa-solid fa-volume-low" />
+                <font-awesome-icon v-else-if="volume >= 0.1 && volume <= 0.8" icon="fa-solid fa-volume-up" />
+                <font-awesome-icon v-else-if="volume > 0.8" icon="fa-solid fa-volume-high" />
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Interactive menu -->
+    <!-- <div ref="interactiveMenu" class="interactive-menu" @mouseleave="showInteractiveMenu=false">
+      <ul class="list-unstyled">
+        <li>Copy video url</li>
+        <li>Copy video url at current time</li>
+      </ul>
+    </div> -->
   </div>
 </template>
 
 <script>
-import { onKeyStroke } from '@vueuse/core'
+// import { onKeyStroke } from '@vueuse/core'
 
 export default {
   name: 'BaseVideoPlayer',
   props: {
+    captureFrames: {
+      type: Boolean
+    },
     videoUrl: {
       type: String,
       required: true,
@@ -138,10 +153,26 @@ export default {
     }
   },
   emits: {
-    play: () => true,
-    pause: () => true,
-    'time-update': () => true,
-    'loaded-meta-data': () => true,
+
+    play () {
+      return true
+    },
+    pause () {
+
+      return true
+    },
+    'update:time' () {
+      return true
+    },
+    'loaded-meta-data' () {
+      return true
+    },
+    'update:volume' () {
+      return true
+    },
+    'update:frames' () {
+      return true
+    }
   },
   data () {
     return {
@@ -152,12 +183,14 @@ export default {
       currentTime: 0,
       speed: '1x',
       quality: '1080p',
-      volume: 0.3,
+      volume: 0.5,
       speeds: [2, 1.75, 1.5, 1, 0.75, 0.5],
 
       showVideoSettings: false,
       showSpeedSettings: false,
-      showQualitySettings: false
+      showQualitySettings: false,
+      showVolume: false,
+      showInteractiveMenu: false
     }
   },
   computed: {
@@ -168,42 +201,52 @@ export default {
       return this.formatTime(this.duration)
     },
     progress () {
+      // Indicates the % of tthe video that was read
       return (this.currentTime / this.duration) * 100
     }
   },
+  watch: {
+    currentTime (current) {
+      if (current === this.duration) {
+        // TODO: Run an event or a callback
+        // when the video is terminated
+        console.info('terminated')
+      }
+    }
+  },
   mounted () {
-    this.getVideoDetails()
     this.videoSource = this.videoUrl
+    // this.getVideoDetails()
 
-    const self = this
-    onKeyStroke(['p', ' ', 'k'], function (e) {
-      e.preventDefault()
-      self.playPause()
-    })
-    onKeyStroke('ArrowUp', function (e) {
-      e.preventDefault()
-      let volume = self.volume += 0.1
-      if (volume >= 1) {
-        volume = 1
-      }
-      self.volume = volume
-      self.$refs.videoPlayer.volume = volume
-    })
-    onKeyStroke('ArrowDown', function (e) {
-      e.preventDefault()
-      let volume = self.volume -= 0.1
-      if (volume <= 0) {
-        volume = 0
-      }
-      self.volume = volume
-      self.$refs.videoPlayer.volume = volume
-    })
-    onKeyStroke(['ArrowLeft', 'j'], function (e) {
-      e.preventDefault()
-    })
-    onKeyStroke(['ArrowRight', 'l'], function (e) {
-      e.preventDefault()
-    })
+    // const self = this
+    // onKeyStroke(['p', ' ', 'k'], function (e) {
+    //   e.preventDefault()
+    //   self.playPause()
+    // })
+    // onKeyStroke('ArrowUp', function (e) {
+    //   e.preventDefault()
+    //   let volume = self.volume += 0.1
+    //   if (volume >= 1) {
+    //     volume = 1
+    //   }
+    //   self.volume = volume
+    //   self.$refs.videoPlayer.volume = volume
+    // })
+    // onKeyStroke('ArrowDown', function (e) {
+    //   e.preventDefault()
+    //   let volume = self.volume -= 0.1
+    //   if (volume <= 0) {
+    //     volume = 0
+    //   }
+    //   self.volume = volume
+    //   self.$refs.videoPlayer.volume = volume
+    // })
+    // onKeyStroke(['ArrowLeft', 'j'], function (e) {
+    //   e.preventDefault()
+    // })
+    // onKeyStroke(['ArrowRight', 'l'], function (e) {
+    //   e.preventDefault()
+    // })
 
     this.$emit('loaded-meta-data', this.$refs.videoPlayer)
   },
@@ -214,23 +257,6 @@ export default {
     }
   },
   methods: {
-    // getFrames () {
-    //   if (this.captureFrames) {
-    //     const canvas = document.createElement('canvas')
-    //     canvas.height = this.$refs.videoPlayer.videoHeight
-    //     canvas.width = this.$refs.videoPlayer.videoWidth
-    //     console.log(canvas, this.$refs.videoPlayer.videoHeight)
-  
-    //     const ctx = canvas.getContext('2d')
-    //     ctx.drawImage(this.$refs.videoPlayer, 0, 0, canvas.width, canvas.height)
-  
-    //     const img = new Image()
-    //     const url = canvas.toDataURL()
-    //     img.src = url
-    //     img.classList.add('img-fluid')
-    //     this.$emit('frames', [img, url])
-    //   }
-    // },
     playPause () {
       if (this.$refs?.videoPlayer.paused) {
         this.isPlaying = true
@@ -246,14 +272,71 @@ export default {
       const currentTime = (this.duration * event.offsetX) / this.$refs.videoProgress.offsetWidth
       this.currentTime = currentTime
       this.$refs.videoPlayer.currentTime = currentTime
-      this.$emit('time-update', currentTime)
+      this.$emit('update:time', currentTime)
     },
-    speedClick (speed) {
+    volumeClick (event) {
+      // Handle volume change
+      const volumeControl = this.$refs.volumeControl
+      const mousePosition = event.pageX
+      const result = mousePosition - volumeControl.getBoundingClientRect().left
+      const trackWidth = volumeControl.offsetWidth
+      let value = result / trackWidth * 100
+      value = Math.round(value / 1) * 1
+      const currentVolume = Math.max(0, Math.min(100, value))
+      this.volume = Math.round((currentVolume / 100) * 10) / 10
+      this.$emit('update:volume', this.volume)
+    },
+    percentageLoaded (event) {
+      // TODO: Handle how much of the video was loaded
+      // when the user has seeked on not seeked
+      // the video
+      // see: https://developer.mozilla.org/en-US/docs/Web/Guide/Audio_and_video_delivery/buffering_seeking_time_ranges
+      // see: https://stackoverflow.com/questions/5029519/html5-video-percentage-loaded
+      if (this.$refs?.videoPlayer) {
+        const percentageLoaded = event.target.buffered.length / this.duration
+        console.log(percentageLoaded)
+      }
+    },
+    playbackSpeedClick (speed) {
+      // Handle video speed reading change
       this.speed = `${speed}x`
       this.$refs.videoPlayer.playbackRate = speed
       this.showSpeedSettings = false
     },
+    handleInteractiveMenu (event) {
+      // TODO: Allows an interative menu on the video
+      const mousePositionX = event.clientX
+      const mousePositionY = event.clientY
+      // const containerWidth = this.$refs.videoContainer.offsetWidth
+      // const containerHeight = this.$refs.videoContainer.offsetHeight
+      // console.log(mousePositionX, mousePositionY, containerHeight, containerWidth)
+      this.showInteractiveMenu = !this.showInteractiveMenu
+      // const resultX = containerWidth - mousePositionX
+      // const resultY = containerWidth - mousePositionY
+      this.$refs.interactiveMenu.style.left = `${mousePositionX}px`
+      this.$refs.interactiveMenu.style.top = `${mousePositionY}px`
+    },
+    getFrames () {
+      // Get a couple of frames for the video
+      // for various purposes
+      if (this.captureFrames) {
+        const player = this.$refs.videoPlayer
+        const canvas = document.createElement('canvas')
+        canvas.height = player.videoHeight
+        canvas.width = player.videoWidth
+
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(player, 0, 0, canvas.width, canvas.height)
+
+        const img = new Image()
+        const url = canvas.toDataURL()
+        img.src = url
+        img.classList.add('img-fluid')
+        this.$emit('update:frames', [img, url])
+      }
+    },
     getVideoDetails () {
+      // Get the main data for the video
       if (this.$refs?.videoPlayer) {
         const player = this.$refs.videoPlayer
 
@@ -263,6 +346,13 @@ export default {
 
         this.currentTime = player.currentTime
 
+        // TODO: If we have an initial time,
+        // place the player on the current
+        // that initial time -: Use the #t=time
+        // on the src link directly
+        // see: https://blog.addpipe.com/10-advanced-features-in-html5-video-player/#startorstopthevideoatacertainpointortimestamp
+        // player.currentTime = 3
+
         if (player.paused) {
           this.isPlaying = false
           player.pause()
@@ -270,6 +360,8 @@ export default {
           this.isPlaying = true
           player.play()
         }
+
+        this.getFrames()
       }
     },
     formatTime (value) {
@@ -293,12 +385,12 @@ export default {
 
 <style scoped>
 .video-container {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
   cursor: pointer;
-  background: rgb(38, 38, 38);
+  background: rgba(38, 38, 38, 1);
   margin: 0 auto;
 }
 
@@ -306,6 +398,7 @@ export default {
   width: 100%;
   height: 100%;
   touch-action: manipulation;
+  z-index: 40;
 }
 
 .video-player source {
@@ -315,7 +408,7 @@ export default {
 .video-controls {
   position: absolute;
   bottom: 5%;
-  background: black;
+  background: rgba(38, 38, 38, .8);
   padding: 1rem;
   width: 80%;
   align-items: center;
@@ -335,10 +428,6 @@ export default {
   position: relative;
 }
 
-/* .video-control-duration span {
-  margin: 0 3px;
-} */
-
 .video-control-duration span:first-child::after {
   content: ":";
   margin: 0 3px;
@@ -346,62 +435,68 @@ export default {
 
 .video-control-speed {
   position: relative;
-  /* min-width: 60px; */
   top: 0;
 }
 
 .video-control-speed .picker {
   position: absolute;
-  left: -25%;
-  /* top: -740%; */
-  bottom: 180%;
-  background: rgb(38, 38, 38);
+  right: 100%;
+  bottom: -250%;
+  background-color: rgba(38, 38, 38, 1);
   padding: .5rem;
   border-radius: 0.5rem;
 }
 
 .video-control-progress-container {
-  display: flex;
-  width: 100%;
-}
-
-.video-control-progress-container .progress {
   position: relative;
-  display: flex;
-  flex: 1;
-  align-items: center;
-  background: rgb(38, 38, 38);
-  margin: 0 0 1rem;
-  height: .25rem;
-  width: 100%;
+  display: inline-block;
+  vertical-align: middle;
+  width: 100% !important;
+  height: 20px;
+  margin-bottom: 1rem;
 }
 
-.video-control-progress-container .current {
-  display: flex;
-  background: #dc3545;
-  /* transition: width 0.2ms; */
-  transition: width ease-in-out .5s;
-  height: .25rem;
-  /* border-radius: 6px; */
-  /* background: royalblue; */
-}
-
-.video-control-progress-container .ball {
+.video-control-progress-container .track {
   position: absolute;
-  z-index: 99;
+  cursor: pointer;
+  background-color: white;
+  background-repeat: repeat-x;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%);
+  border-radius: 4px;
+  height: 10px;
+  width: 100%;
+  margin-top: -5px;
+  top: 50%;
   left: 0;
-  bottom: -0.5rem;
-  height: 1rem;
-  width: 1rem;
-  border-radius: 1rem;
-  background: #fff;
-  /* border: 1px solid #000; */
+}
+
+.video-control-progress-container .track-low {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  background: transparent;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background-color: #0d6efd;
+  /* width: 50%; */
+}
+
+.video-control-progress-container .handle {
+  position: absolute;
+  background-color: #fff !important;
+  background-repeat: repeat-x;
+  /* box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12); */
+  top: 0;
+  width: 20px;
+  height: 20px;
+  filter: none;
+  border: 0 solid transparent;
+  border-radius: 50%;
+  margin-left: -10px;
 }
 
 .video-control-configuration-center {
-}
-
-.video-control-settings {
   position: relative;
 }
 
@@ -417,47 +512,114 @@ export default {
   z-index: 100;
 }
 
-.video-control-volume {
-  position: relative;
-}
-
-.video-control-volume .picker {
+.video-control-volume-container {
   position: absolute;
-  height: 100px;
-  padding: 1rem;
-  left: 20%;
-  top: -350%;
-  background: rgb(38, 38, 38);
-  border-radius: 0.5rem;
+  /* position: relative; */
+  background-color: rgba(38, 38, 38, .8);
+  display: inline-block;
+  vertical-align: middle;
+  width: 150px !important;
+  height: 50px;
+  margin-bottom: 1rem;
+  border-radius: .5rem;
+  bottom: 100%;
+  left: calc(100% - 150px);
+  display: inline-block;
+  vertical-align: middle;
 }
 
-.video-control-volume .picker .tracker {
-  position: relative;
-  height: 100%;
-  width: 4px;
+.video-control-volume-container .track {
+  position: absolute;
+  cursor: pointer;
+  background-color: white;
+  background-repeat: repeat-x;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%);
   border-radius: 4px;
-  background-color: #dc3545;
-}
-
-.video-control-volume .picker .current {
-  position: absolute;
-  bottom: 0;
+  height: 5px;
+  width: 100%;
+  margin-top: -5px;
+  top: 50%;
   left: 0;
-  width: 4px;
-  background-color: #fff;
 }
 
-.video-control-volume .picker .ball {
+.video-control-volume-container .track-low {
   position: absolute;
-  background-color: #fff;
-  left: -8px;
-  width: 20px;
-  height: 10px;
-  border-radius: 13px;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  background: transparent;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background-color: #0d6efd;
+  width: 50%;
+}
+
+.video-control-volume-container .handle {
+  position: absolute;
+  background-color: #fff !important;
+  background-repeat: repeat-x;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  filter: none;
+  border: 0 solid transparent;
+  border-radius: 50%;
+  /* margin-left: -10px; */
 }
 
 .load-wrapp {
   position: absolute;
   z-index: 3;
+}
+
+.opacity-enter-active,
+.opacity-leave-active {
+  transition: all .15s ease;
+}
+
+.opacity-enter-from,
+.opacity-leave-to {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
+.opacity-enter-to,
+.opacity-leave-from {
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.interactive-menu {
+  position: absolute;
+  left: 10%;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(38, 38, 38, .8);
+  color: white;
+  width: 300px;
+  height: auto;
+  border-radius: .25em;
+}
+
+.interactive-menu ul {
+  margin: 0;
+}
+
+.interactive-menu li {
+  padding: .5rem;
+}
+
+.interactive-menu li:first-child {
+  border-top-right-radius: .25em;
+  border-top-left-radius: .25em;
+}
+
+.interactive-menu li:last-child {
+  border-bottom-right-radius: .25em;
+  border-bottom-left-radius: .25em;
+}
+
+.interactive-menu li:hover {
+  background-color: rgba(38, 38, 38, .3);
 }
 </style>
