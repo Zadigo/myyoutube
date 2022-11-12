@@ -1,32 +1,25 @@
-import datetime
-import re
 
-from accounts import forms, models
+from accounts import forms
+from accounts.models import ActivationToken
 from django.contrib import auth, messages
-from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.messages import add_message, error, success
-from django.utils.decorators import method_decorator
-from django.core.mail import BadHeaderError, send_mail
-from django.http.response import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect, render, reverse
+from django.contrib.auth import authenticate, get_user_model, login, logout
+from django.http.response import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
-from django.views.decorators.cache import never_cache
 from django.views.generic import FormView, RedirectView, View
+
 
 USER_MODEL = get_user_model()
 
 
-@method_decorator(never_cache, name='post')
+# @method_decorator(never_cache, name='dispatch')
 class SignupView(FormView):
     form_class = forms.UserSignupForm
     template_name = 'pages/registration/signup.html'
     success_url = reverse_lazy('accounts:login')
 
     def post(self, request, *args, **kwargs):
-        old_form = super().post(request, *args, **kwargs)
         form = self.form_class(request.POST)
         message = {
             'level': messages.ERROR,
@@ -38,17 +31,14 @@ class SignupView(FormView):
 
             if user.exists():
                 message.update({'message': _("You already have an account")})
-                # return redirect('accounts:login')
                 return self.form_valid(form)
             
             new_user = form.save()
             if new_user:
                 return self.form_valid(form)
-                # return redirect(reverse('accounts:login'))
 
         message.update({'message': _("An error occured - SIG-ER")})
         messages.add_message(request, **message)
-        # return old_form
         return self.form_invalid(form)
 
     # def get_redirect_url(self, request, intermediate_view=None, user=None):
@@ -67,17 +57,28 @@ class LoginView(FormView):
     template_name = 'pages/registration/login.html'
     success_url = '/'
 
-    @never_cache
-    def post(self, request, *args, **kwargs):        
-        email = request.POST.get('username')
-        password = request.POST.get('password')
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            email = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, email=email, password=password)
+            if user:
+                login(request, user)
+                return self.form_valid(form)
+        # form.add_error(None, error='Account not found')
+        return self.form_invalid(form)
 
-        user = auth.authenticate(request, email=email, password=password)
-        if user:
-            auth.login(request, user)
-            return redirect(request.GET.get('next') or '/')
-        messages.error(request, _("Nous n'avons pas pu trouver votre compte"), extra_tags='alert-danger')
-        return redirect('accounts:login')
+        # email = request.POST.get('username')
+        # password = request.POST.get('password')
+
+        # user = auth.authenticate(request, email=email, password=password)
+        # if user:
+        #     auth.login(request, user)
+        #     return self.form_valid(form)
+        #     # return redirect(request.GET.get('next') or '/')
+        # messages.error(request, _("Nous n'avons pas pu trouver votre compte"), extra_tags='alert-danger')
+        # return redirect('accounts:login')
 
 
 class LogoutView(RedirectView):
@@ -85,56 +86,47 @@ class LogoutView(RedirectView):
     
     def get(self, request, *args, **kwargs):
         url = self.get_redirect_url(*args, **kwargs)
-        auth.logout(request)
+        logout(request)
         return HttpResponseRedirect(url)
 
 
-class ForgotPasswordView(View):
-    """
-    A single field form where the user can ask for
-    a password reset
-    """
-    def get(self, request, *args, **kwargs):
-        context = {'form': forms.CustomPassowordResetForm}
-        return render(request, 'pages/registration/forgot_password.html', context)
+class ForgotPasswordView(FormView):
+    form_class = forms.CustomPassowordResetForm
+    template_name = 'pages/registration/forgot_password.html'
+    success_url = reverse_lazy('accounts:forgot_password_reset')
 
     def post(self, request, **kwargs):
-        form = forms.CustomPassowordResetForm(request.POST)
+        form = self.get_form()
 
         if form.is_valid():
             email = form.cleaned_data['email']
+            user = USER_MODEL.objects.filter(email__iexact=email)
 
-            context = {'form': forms.CustomPassowordResetForm}
-
-            user = MYUSER.objects.filter(email__iexact=email)
             if user.exists():
-                try:
-                    # NOTE: Change to append a token to the url
-                    # which will help iD the user in the confirm view
-                    form.save(request, 'contact.mywebsite@gmail.com')
-                except:
-                    message = {
-                        'message': _("Une erreur est arrivé - EMA-ER"),
-                        'level': messages.ERROR,
-                        'extra_tags': 'alert-danger'
-                    }
-                else:
-                    message = {
-                        'message': _(f"Un email a été envoyé à {email}"),
-                        'level': messages.ERROR,
-                        'extra_tags': 'alert-success'
-                    }
-            else:
-                message = {
-                    'message': _("Nous n'avons pas pu vous trouvez votre addresse mail"),
-                    'level': messages.ERROR,
-                    'extra_tags': 'alert-danger'
-                }
+                form.save(request, email)
+                return self.form_valid(form)
+        form.add_error(None, 'Could not find')
+        return self.form_invalid(form)
 
-            messages.add_message(request, **message)
-            return render(request, 'pages/registration/forgot_password.html', context=context)
 
-        return redirect('accounts:login')
+class ForgotPasswordResetView(FormView):
+    form_class = forms.CustomSetPasswordForm
+    template_name = 'pages/registration/forgot_password_reset.html'
+    success_url = reverse_lazy('accounts:forgot_password_reset')
+
+    def get_form_kwargs(self):
+        params = super().get_form_kwargs()
+        # email = self.kwargs.get('email', None)
+        # params['user'] = USER_MODEL.objects.filter(email__iexact=email)
+        return params
+
+    def post(self, request, **kwargs):
+        form = self.get_form()
+
+        if form.is_valid():
+            form.save()
+            return self.form_valid(form)
+        return self.form_invalid(form)
 
 
 class UnauthenticatedPasswordResetView(View):
@@ -159,3 +151,17 @@ class UnauthenticatedPasswordResetView(View):
             form.save()
         auth.login(request, user)
         return redirect('profile')
+
+
+class ActivateAccountView(View):
+    def get(self, request, token, *args, **kwargs):
+        context = {'is_active': False}
+        token_object = get_object_or_404(ActivationToken, token=token)
+
+        if not token_object.myuser.is_active:
+            if token_object.is_valid:
+                token_object.myuser.is_active = True
+                token_object.myuser.save()
+                token_object.delete()
+                context.update(is_active=True)
+        return render(request, 'pages/registration/activate.html', context)

@@ -1,5 +1,5 @@
 from accounts import forms
-from accounts.models import MyUser, MyUserProfile
+from accounts.models import MyUser, MyUserProfile, ActivationToken
 # from django.contrib.auth import admin
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
@@ -41,5 +41,10 @@ class MyUserProfileAdmin(admin.ModelAdmin):
     search_fields = ['myuser__firstname', 'myuser__lastname', 'myuser__email']
 
 
+class ActivateAccountAdmin(admin.ModelAdmin):
+    list_display = ['token']
+
+
+custom_admin.register(ActivationToken, ActivateAccountAdmin)
 custom_admin.register(MyUser, MyUserAdmin)
 custom_admin.register(MyUserProfile, MyUserProfileAdmin)
