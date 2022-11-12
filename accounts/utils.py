@@ -1,8 +1,6 @@
-import hashlib
-import secrets
-from hashlib import md5
+from django.utils.crypto import get_random_string
 
-def new_directory_path(instance, filename):
+def avatar_path(instance, filename):
     _, extension = filename.split('.')
-    new_file_name = f'{secrets.token_hex(5)}.{extension}'
+    new_file_name = f'{get_random_string(length=30)}.{extension}'
     return f'avatars/user_{instance.myuser.id}/{new_file_name}'

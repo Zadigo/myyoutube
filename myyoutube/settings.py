@@ -1,10 +1,10 @@
-from pathlib import Path
 import os
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-FRONTEND_DIR = None
+FRONTEND_DIR = BASE_DIR / 'frontend'
 
 
 # Quick-start development settings - unsuitable for production
@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
 
-    # 'accounts',
+    'accounts',
     'mediastats',
     'uploads',
     'donations',
@@ -61,7 +61,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
@@ -92,9 +91,17 @@ WSGI_APPLICATION = 'myyoutube.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'myyoutube',
+        'USER': 'test_user',
+        'PASSWORD': 'touparet',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
 
@@ -178,14 +185,17 @@ CACHES = {
     #     'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
     #     'LOCATION': '127.0.0.1:11211'
     # },
-    'redis-cache': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient'
-        },
-        'KEY_PREFIX': 'mywebsite'
-    }
+    # 'redis-cache': {
+    #     'BACKEND': 'django_redis.cache.RedisCache',
+    #     'LOCATION': 'redis://127.0.0.1:6379/1',
+    #     'OPTIONS': {
+    #         'CLIENT_CLASS': 'django_redis.client.DefaultClient'
+    #     },
+    #     'KEY_PREFIX': 'mywebsite'
+    # }
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+
+AUTH_USER_MODEL = 'accounts.MyUser'
