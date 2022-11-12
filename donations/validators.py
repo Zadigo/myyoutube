@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 
 
-def donation_value(value):
+def donation_validator(value):
     if value < 5:
         raise ValidationError('The donation value should be above 5')
 

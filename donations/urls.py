@@ -1,5 +1,4 @@
 
-from donations.views import cancel_donation
 from django.urls import re_path
 
 from donations import views

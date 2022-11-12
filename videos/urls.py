@@ -6,10 +6,6 @@ from videos._views import feed, playlist, api
 
 app_name = 'videos'
 
-# apiurls = [
-#     re_path(r'^(?P<reference>[a-z0-9]+)/view$', api.add_view_count, name='add_view_count')
-# ]
-
 
 playlisturls = [
     re_path(r'^add-remove$', views.add_or_remove_video_in_playlist, name='add_remove_video'),

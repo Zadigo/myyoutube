@@ -3,9 +3,8 @@ from django.db import transaction
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
-from videos.models import Video
-
 from ratings.models import Rating
+from videos.models import Video
 
 
 def _retrieve_video(request):
