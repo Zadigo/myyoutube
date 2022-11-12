@@ -49,12 +49,12 @@ class MyUserChangeForm(forms.ModelForm):
 
 
 class UserLoginForm(auth_forms.AuthenticationForm):
-    username    = fields.EmailField(
+    username = fields.EmailField(
         widget=widgets.EmailInput(
             attrs={'class': 'form-control', 'placeholder': _('Email')}
         )
     )
-    password    = fields.CharField(
+    password = fields.CharField(
         strip=False, 
         widget=widgets.PasswordInput(
             attrs={'class': 'form-control', 'placeholder': _('Mot de passe'), 'autocomplete': 'current-password'}
@@ -68,13 +68,13 @@ class UserLoginForm(auth_forms.AuthenticationForm):
         if email is None and password:
             raise forms.ValidationError(_("Veuillez entrer un email ainsi qu'un mot de passe"))    
 
-        # if email and password:
-        #     self.user_cache = authenticate(self.request, email=email, password=password)
+        if email and password:
+            self.user_cache = authenticate(self.request, email=email, password=password)
 
-        #     if self.user_cache:
-        #         self.confirm_login_allowed(self.user_cache)
-        #     else:
-        #         raise forms.ValidationError("Vous n'êtes pas autorisé à vous connecté")
+            if self.user_cache:
+                self.confirm_login_allowed(self.user_cache)
+            else:
+                raise forms.ValidationError("You are not autho to login")
 
         return self.cleaned_data
 
@@ -106,9 +106,24 @@ class UserSignupForm(auth_forms.UserCreationForm):
         fields = ['firstname', 'lastname', 'email']
         model = MyUser
         widgets = {
-            'firstname': widgets.TextInput(attrs={'class': 'form-control', 'placeholder': 'Prénom'}),
-            'lastname': widgets.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nom'}),
-            'email': widgets.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+            'firstname': widgets.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Prénom'
+                }
+            ),
+            'lastname': widgets.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Nom'
+                }
+            ),
+            'email': widgets.EmailInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Email'
+                }
+            ),
         }
 
     def clean(self):
@@ -132,15 +147,19 @@ class CustomPassowordResetForm(auth_forms.PasswordResetForm):
         label=_('Email'),
         max_length=254,
         widget=forms.EmailInput(
-            attrs={'class': 'form-control', 'autocomplete': 'email', 'placeholder': 'Email'}
+            attrs={
+                'class': 'form-control',
+                'autocomplete': 'email',
+                'placeholder': 'Email'
+            }
         )
     )
 
     def save(self, request, from_email):
         super().save(
             from_email=from_email,
-            subject_template_name='components/emails/password_reset_subject.txt',
-            email_template_name='components/emails/password_reset_email.html',
+            subject_template_name='emails/password_reset_subject.txt',
+            email_template_name='emails/password_reset_email.html',
             request=request
         )
 
@@ -169,7 +188,6 @@ class CustomChangePasswordForm(CustomSetPasswordForm):
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Ancien mot de passe',
                                           'autocomplete': 'current-password', 'autofocus': True}),
     )
-
 
 
 
