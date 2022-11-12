@@ -2,15 +2,14 @@ from django.contrib.messages.api import error
 from django.db.transaction import atomic
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.views.decorators.http import require_POST
-from django.views.generic import ListView
-from notifications.models import Notification
-from mychannel.models import UserChannel
-from videos.models import Video
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-
+from django.views.decorators.http import require_POST
+from django.views.generic import ListView
 from donations.models import Donation
+from mychannel.models import UserChannel
+from notifications.models import Notification
+from videos.models import Video
 
 
 @method_decorator(cache_page(15 * 60), name='dispatch')

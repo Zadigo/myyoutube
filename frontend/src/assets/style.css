@@ -307,3 +307,13 @@ html {
 }
 
 /* .fs-7 {} */
+
+.btn-group.btn-rounded .btn:first-child {
+    border-top-left-radius: 10rem;
+    border-bottom-left-radius: 10rem;
+}
+
+.btn-group.btn-rounded .btn:last-child {
+    border-top-right-radius: 10rem;
+    border-bottom-right-radius: 10rem;
+}

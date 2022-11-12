@@ -30,22 +30,22 @@
 
                     <!-- Actions -->
                     <div class="d-flex justify-content-around">
-                      <div class="btn-group">
+                      <div class="btn-group shadow-none btn-rounded">
                         <button type="button" class="btn btn-lg btn-primary" @click="likeVideo">
-                          <font-awesome-icon icon="fa-solid fa-thumbs-up" class="me-2"></font-awesome-icon>
+                          <font-awesome-icon icon="fa-solid fa-thumbs-up" class="me-2" />
                           {{ currentVideo.likes }}
                         </button>
 
                         <button type="button" class="btn btn-lg btn-primary" @click="likeVideo">
-                          <font-awesome-icon icon="fa-solid fa-thumbs-down" class="me-2"></font-awesome-icon>
+                          <font-awesome-icon icon="fa-solid fa-thumbs-down" class="me-2" />
                           {{ currentVideo.dislikes }}
                         </button>
                       </div>
 
                       <!-- More -->
-                      <base-dropdown-button-vue :items="moreButtonOptions" button-name="More" color="secondary" size="lg" class="mx-2" @dropdown-click="dropdownClick" />
+                      <base-dropdown-button-vue :items="moreButtonOptions" button-name="More" color="secondary" size="lg" class="mx-2 shadow-none" @dropdown-click="dropdownClick" />
 
-                      <div class="btn-group">
+                      <div class="btn-group shadow-none">
                         <button type="button" class="btn btn-primary btn-lg" @click="currentVideo.channel.subscribed = !currentVideo.channel.subscribed">
                           <span v-if="currentVideo.channel.subscribed">{{ $t('Unsubscribe') }}</span>
                           <span v-else>{{ $t('Subscribe') }}</span>
@@ -246,7 +246,7 @@
                     <div class="card-body p-1 bg-transparent">
                       <h6 class="card-title">Some product</h6>
                       <button type="button" class="btn btn-primary btn-sm">
-                        <font-awesome-icon icon="fa-solid fa-shopping-bag" class="me-2"></font-awesome-icon>
+                        <font-awesome-icon icon="fa-solid fa-shopping-bag" class="me-2" />
                         {{ $t('Add to cart') }}
                       </button>
                     </div>
@@ -279,7 +279,7 @@
                 <span>Gift {{ i }}</span>
                 <div class="btn-group shadow-none">
                   <button type="button" class="btn btn-sm btn-primary">
-                    <font-awesome-icon icon="fa-solid fa-circle-dollar-to-slot" class="me-2"></font-awesome-icon>
+                    <font-awesome-icon icon="fa-solid fa-circle-dollar-to-slot" class="me-2" />
                     {{ $t('Donate') }}
                   </button>
                 </div>

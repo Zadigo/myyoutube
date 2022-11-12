@@ -1,7 +1,7 @@
+from django.http.response import JsonResponse
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
-from django.http.response import JsonResponse
 from history.models import History
 
 

@@ -32,7 +32,7 @@
             <div class="badge badge-light">{{ $t('Liked by x', { creator: 'creator' }) }}</div>
           </div>
 
-          <div class="btn-group shadow-none">
+          <div class="btn-group shadow-none btn-rounded">
             <button type="button" class="btn btn-primary btn-sm shadow-none" @click="likeComment">
               <font-awesome-icon icon="fa-solid fa-thumbs-up" class="me-2"></font-awesome-icon>
               12.3k
@@ -50,7 +50,7 @@
           <input v-if="showReplyInput" :placeholder="`${$t('Reply to x', { user: comment.user.username })}`" type="text" class="form-control mt-2" @keypress.enter="createComment">
 
           <div class="mt-2">
-            <button type="button" class="btn btn-light shadow-none" @click="showReplies = !showReplies">
+            <button type="button" class="btn btn-light shadow-none btn-rounded" @click="showReplies = !showReplies">
               <span v-if="showReplies">{{ $t('Hide x replies', { count: comment.replies.length }) }}</span>
               <span v-else>{{ $t('View x replies', { count: comment.replies.length }) }}</span>
             </button>
