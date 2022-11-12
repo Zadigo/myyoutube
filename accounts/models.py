@@ -1,15 +1,11 @@
-import os
 
-import stripe
 from accounts import managers
 from accounts.utils import avatar_path
 from accounts.validators import avatar_extension_validator
-from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models.signals import post_delete, post_save, pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _

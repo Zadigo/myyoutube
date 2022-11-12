@@ -1,18 +1,18 @@
-{% extends "pages/registration/base.html" %}
-{% load i18n %}
+{% extends "base_site.html" %}
 
-{% block title %}{% trans "Créer un compte" %}{% endblock title %}
+{% block container %}
+    <div class="row">
+        <div class="col-10">
+            <form action="post">
+                {% for field in form %}
+                    {{ field }}
+                {% endfor %}
 
-{% block social %}
-    {% include "components/registration/social.html" %}
+                <button type="submit" class="btn btn-primary">
+                    Try
+                </button>
+            </form>
+        </div>
+    </div>
 {% endblock %}
 
-{% block section_id %}signup{% endblock %}
-
-{% block registration_form %}
-    {% include "components/registration/form.html" with form_id="signup_form" button_name="S'enregistrer" %}
-{% endblock registration_form %}
-
-{% block extra_registration_links %}
-    {% include "components/registration/p_tag.html" with text="Registered with us already?" href="accounts:login" action_text="Login here" %}
-{% endblock extra_registration_links %}
