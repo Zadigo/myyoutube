@@ -199,3 +199,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 
 AUTH_USER_MODEL = 'accounts.MyUser'
+
+AUTHENTICATION_BACKENDS = [
+    # accounts
+    'accounts.backends.EmailAuthenticationBackend'
+]

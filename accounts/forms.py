@@ -1,3 +1,5 @@
+from accounts import widgets as custom_widgets
+from accounts.models import MyUser, MyUserProfile
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth import forms as auth_forms
@@ -6,9 +8,6 @@ from django.contrib.auth.tokens import default_token_generator
 from django.forms import fields, widgets
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
-
-from accounts import widgets as custom_widgets
-from accounts.models import MyUser, MyUserProfile
 
 
 class MyUserCreationForm(forms.ModelForm):
@@ -82,11 +81,24 @@ class UserLoginForm(auth_forms.AuthenticationForm):
 
 class UserSignupForm(auth_forms.UserCreationForm):
     password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new-password', 'placeholder': 'Mot de passe'}),
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'autocomplete':
+                'new-password',
+                'placeholder': 'Mot de passe'
+            }
+        ),
         strip=False,
     )
     password2 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new-password', 'placeholder': 'Confirmation du mot de passe'}),
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'autocomplete': 'new-password',
+                'placeholder': 'Confirmation du mot de passe'
+            }
+        ),
         strip=False
     )
 

@@ -1,27 +1,30 @@
 import datetime
 import re
 
+from accounts import forms, models
 from django.contrib import auth, messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages import add_message, error, success
+from django.utils.decorators import method_decorator
 from django.core.mail import BadHeaderError, send_mail
 from django.http.response import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render, reverse
+from django.urls import reverse_lazy
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.cache import never_cache
 from django.views.generic import FormView, RedirectView, View
 
-from accounts import forms, models
+USER_MODEL = get_user_model()
 
-MYUSER = auth.get_user_model()
 
+@method_decorator(never_cache, name='post')
 class SignupView(FormView):
     form_class = forms.UserSignupForm
     template_name = 'pages/registration/signup.html'
-    success_url = '/login/'
+    success_url = reverse_lazy('accounts:login')
 
-    @never_cache
     def post(self, request, *args, **kwargs):
         old_form = super().post(request, *args, **kwargs)
         form = self.form_class(request.POST)
@@ -31,28 +34,32 @@ class SignupView(FormView):
         }
         if form.is_valid():
             email = form.cleaned_data['email']
-            user = MYUSER.objects.filter(email__iexact=email)
-            if user.exists():
-                message.update({'message': _("Vous possédez déjà un compte chez nous")})
-                return redirect('accounts:login')
-            else:
-                new_user = form.save()
-                if new_user:
-                    password = form.cleaned_data.get('password2')
-                    auth.login(request, auth.authenticate(request, email=email, password=password))
-                    return self.get_redirect_url(request)
-        else:
-           message.update({'message': _("Une erreur est arrivée - SIG-ER")})
-        messages.add_message(request, **message)
-        return old_form
+            user = USER_MODEL.objects.filter(email__iexact=email)
 
-    def get_redirect_url(self, request, intermediate_view=None, user=None):
-        if intermediate_view is None:
-            return redirect(request.GET.get('next') or reverse('accounts:profile:home'))
-        if user is None:
-            return Http404('User could not identified - INT-US')
-        request.session['user'] = user.id
-        return redirect(intermediate_view)
+            if user.exists():
+                message.update({'message': _("You already have an account")})
+                # return redirect('accounts:login')
+                return self.form_valid(form)
+            
+            new_user = form.save()
+            if new_user:
+                return self.form_valid(form)
+                # return redirect(reverse('accounts:login'))
+
+        message.update({'message': _("An error occured - SIG-ER")})
+        messages.add_message(request, **message)
+        # return old_form
+        return self.form_invalid(form)
+
+    # def get_redirect_url(self, request, intermediate_view=None, user=None):
+    #     if intermediate_view is None:
+    #         return redirect(request.GET.get('next') or reverse('accounts:profile:home'))
+        
+    #     if user is None:
+    #         return Http404('User could not identified - INT-US')
+        
+    #     request.session['user'] = user.id
+    #     return redirect(intermediate_view)
 
 
 class LoginView(FormView):
