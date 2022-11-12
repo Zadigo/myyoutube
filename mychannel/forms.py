@@ -1,27 +1,26 @@
-import pickle
+# import pickle
 
 from django import forms
-from django.core.exceptions import ValidationError
+# from django.core.exceptions import ValidationError
 from django.forms import Form, fields, widgets
-from django.forms.models import ModelForm
-from nltk import tokenize
-from nltk.tokenize import WordPunctTokenizer
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+# from nltk import tokenize
+# from nltk.tokenize import WordPunctTokenizer
+# from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 from mychannel.choices import ChannelCategories
 from mychannel.models import UserChannel
 
 
-class UpdateChannelForm(ModelForm):
+class UpdateChannelForm(forms.ModelForm):
     class Meta:
         model = UserChannel
         fields = ['name', 'description', 'banner']
         widgets = {
-            'banner': forms.widgets.FileInput()
+            'banner': widgets.FileInput()
         }
 
 
-class CustomizationForm(ModelForm):
+class CustomizationForm(forms.ModelForm):
     class Meta:
         model = UserChannel
         fields = ['name', 'description']
@@ -44,26 +43,26 @@ class UploadVideoForm(Form):
         # In other words, if the video's title or description
         # contains offensive words, it cannot be uploaded to
         # to the website
-        with open('', mode='rb') as m:
-            model = pickle.load(m)
+        # with open('', mode='rb') as m:
+        #     model = pickle.load(m)
 
-            tokenizer = WordPunctTokenizer()
-            tokenizer.tokenize(cleaned_fields['title'])
+        #     tokenizer = WordPunctTokenizer()
+        #     tokenizer.tokenize(cleaned_fields['title'])
 
-            count_vectorizer = CountVectorizer()
-            count_result = count_vectorizer.fit(
-                [cleaned_fields['title'], cleaned_fields['description']]
-            )
-            vectorizer = TfidfVectorizer()
-            matrix = vectorizer.fit(count_result)
+        #     count_vectorizer = CountVectorizer()
+        #     count_result = count_vectorizer.fit(
+        #         [cleaned_fields['title'], cleaned_fields['description']]
+        #     )
+        #     vectorizer = TfidfVectorizer()
+        #     matrix = vectorizer.fit(count_result)
 
-            prediction = model.predict(matrix)
-            if prediction[-1] < .5:
-                raise ValidationError('The title or description are no valid')
+        #     prediction = model.predict(matrix)
+        #     if prediction[-1] < .5:
+        #         raise ValidationError('The title or description are no valid')
 
-        # Check whether the category is within the
-        # channel catgories
-        categories = [choice[-1] for choice in ChannelCategories.choices]
-        if cleaned_fields['category'] not in categories:
-            raise ValidationError('The category is not a valid one')
+        # # Check whether the category is within the
+        # # channel catgories
+        # categories = [choice[-1] for choice in ChannelCategories.choices]
+        # if cleaned_fields['category'] not in categories:
+        #     raise ValidationError('The category is not a valid one')
         return cleaned_fields

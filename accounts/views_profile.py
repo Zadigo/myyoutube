@@ -3,6 +3,8 @@ import json
 import re
 
 import stripe
+from accounts import forms
+from accounts.models import MyUser, MyUserProfile
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -16,9 +18,6 @@ from django.views.decorators.cache import (cache_control, cache_page,
                                            never_cache)
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView, View
-
-from accounts import forms
-from accounts.models import MyUser, MyUserProfile
 
 
 @method_decorator(cache_page(3600 * 60), name='dispatch')

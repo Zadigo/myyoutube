@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
 
-
 MYUSER = get_user_model()
 
 class EmailAuthenticationBackend(ModelBackend):
@@ -10,7 +9,6 @@ class EmailAuthenticationBackend(ModelBackend):
             user = MYUSER.objects.get(email=email)
             if user.check_password(password):
                 return user
-        
         except MYUSER.DoesNotExist:
             return None
 

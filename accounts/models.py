@@ -1,11 +1,13 @@
 import os
 
 import stripe
+from accounts import managers
+from accounts.utils import avatar_path
+from accounts.validators import avatar_extension_validator
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
-from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch import receiver
@@ -14,33 +16,46 @@ from django.utils.translation import gettext_lazy as _
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
-from accounts import managers
-from accounts.utils import new_directory_path
+# from django.contrib.auth.models import User
 
 
-class MyUser(AbstractBaseUser):
-    """Base user model for those user accounts"""
-    email = models.EmailField(max_length=255, unique=True)
-    firstname = models.CharField(max_length=100, null=True, blank=True)
-    lastname = models.CharField(max_length=100, null=True, blank=True)
-
-    is_active = models.BooleanField(default=True)
+class MyUser(AbstractBaseUser, PermissionsMixin):
+    """Base user model"""
+    email = models.EmailField(
+        max_length=255, 
+        unique=True
+    )
+    username = None
+    firstname = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True
+    )
+    lastname = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True
+    )
+    is_active = models.BooleanField(
+        default=False,
+        help_text=_(
+            'Designates whether this user should be treated as active. '
+            'Unselect this instead of deleting accounts.'
+        )
+    )
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
 
     objects = managers.MyUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
 
     def __str__(self):
         return self.email
 
-    def has_perm(self, perm, obj=None):
-        return True
-
-    def has_module_perms(self, app_label):
-        return True
+    class Meta:
+        verbose_name = _('myuser')
+        verbose_name_plural = _('myusers')
 
     @property
     def get_full_name(self):
@@ -55,24 +70,52 @@ class MyUser(AbstractBaseUser):
 
 
 class MyUserProfile(models.Model):
-    """User profile model used to complete the base user model"""
-    myuser = models.OneToOneField(MyUser, on_delete=models.CASCADE)
+    """User profile model"""
+    myuser = models.OneToOneField(
+        MyUser, 
+        on_delete=models.CASCADE
+    )
     avatar = models.ImageField(
-        upload_to=new_directory_path, blank=True, null=True)
+        upload_to=avatar_path,
+        validators=[avatar_extension_validator],
+        blank=True, 
+        null=True
+    )
     avatar_thumbnail = ImageSpecField(
         processors=ResizeToFill(width=100, height=100),
         format='JPEG',
         options={'quality': 50}
     )
     customer_id = models.CharField(
-        max_length=100, blank=True, null=True, help_text='Stripe customer ID')
-    birthdate = models.DateField(default=timezone.now, blank=True, null=True)
-    telephone = models.CharField(max_length=20, blank=True, null=True)
-    address = models.CharField(max_length=150, blank=True, null=True)
-    city = models.CharField(max_length=100, blank=True, null=True)
-    zip_code = models.IntegerField(blank=True, null=True)
-
-    objects = models.Manager()
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text='Stripe customer ID'
+    )
+    birthdate = models.DateField(
+        default=timezone.now,
+        blank=True, 
+        null=True
+    )
+    telephone = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True
+    )
+    address = models.CharField(
+        max_length=150,
+        blank=True,
+        null=True
+    )
+    city = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+    zip_code = models.IntegerField(
+        blank=True, 
+        null=True
+    )
 
     def __str__(self):
         return self.myuser.email
@@ -81,16 +124,16 @@ class MyUserProfile(models.Model):
     def get_full_address(self):
         return f'{self.address}, {self.city}, {self.zip_code}'
 
-    def clean(self, *args, **kwargs):
-        try:
-            details = stripe.Customer.create(
-                email=self.myuser.email,
-                name=self.myuser.get_full_name
-            )
-        except stripe.error.StripeError as e:
-            pass
-        else:
-            self.customer_id = details['customer_id']
+    # def clean(self, *args, **kwargs):
+    #     try:
+    #         details = stripe.Customer.create(
+    #             email=self.myuser.email,
+    #             name=self.myuser.get_full_name
+    #         )
+    #     except stripe.error.StripeError as e:
+    #         pass
+    #     else:
+    #         self.customer_id = details['customer_id']
 
 
 @receiver(post_save, sender=MyUser)
@@ -99,43 +142,43 @@ def create_user_profile(sender, instance, created, **kwargs):
         MyUserProfile.objects.create(myuser=instance)
 
 
-@receiver(post_delete, sender=MyUserProfile)
-def delete_old_avatar(sender, instance, **kwargs):
-    is_s3_backend = False
-    try:
-        is_s3_backend = settings.USE_S3
-    except:
-        pass
+# @receiver(post_delete, sender=MyUserProfile)
+# def delete_old_avatar(sender, instance, **kwargs):
+#     is_s3_backend = False
+#     try:
+#         is_s3_backend = settings.USE_S3
+#     except:
+#         pass
 
-    if not is_s3_backend:
-        if instance.avatar.url:
-            if os.path.isfile(instance.avatar.path):
-                os.remove(os.avatar.path)
-    else:
-        instance.url.delete(save=False)
+#     if not is_s3_backend:
+#         if instance.avatar.url:
+#             if os.path.isfile(instance.avatar.path):
+#                 os.remove(os.avatar.path)
+#     else:
+#         instance.url.delete(save=False)
 
 
-@receiver(pre_save, sender=MyUserProfile)
-def delete_avatar_on_update(sender, instance, **kwargs):
-    is_s3_backend = False
-    try:
-        is_s3_backend = settings.USE_S3
-    except:
-        pass
+# @receiver(pre_save, sender=MyUserProfile)
+# def delete_avatar_on_update(sender, instance, **kwargs):
+#     is_s3_backend = False
+#     try:
+#         is_s3_backend = settings.USE_S3
+#     except:
+#         pass
 
-    if not is_s3_backend:
-        if instance.pk:
-            try:
-                old_image = MyUserProfile.objects.get(pk=instance.pk)
-            except:
-                return False
-            else:
-                new_image = instance.url
-                if old_image and old_image != new_image:
-                    if os.path.isfile(old_image.url.path):
-                        os.remove(old_image.url.path)
-    else:
-        instance.url.delete(save=False)
+#     if not is_s3_backend:
+#         if instance.pk:
+#             try:
+#                 old_image = MyUserProfile.objects.get(pk=instance.pk)
+#             except:
+#                 return False
+#             else:
+#                 new_image = instance.url
+#                 if old_image and old_image != new_image:
+#                     if os.path.isfile(old_image.url.path):
+#                         os.remove(old_image.url.path)
+#     else:
+#         instance.url.delete(save=False)
 
 
 # @receiver(pre_save, sender=MyUserProfile)
