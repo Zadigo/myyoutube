@@ -31,7 +31,7 @@ INSTALLED_APPS = [
 
     'django.contrib.humanize',
 
-    'social_django',
+    # 'social_django',
     'debug_toolbar',
     'django_extensions',
     'rest_framework',
@@ -81,6 +81,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'social_django.context_processors.backends',
+                # 'social_django.context_processors.login_redirect'
             ],
         },
     },
@@ -209,7 +211,9 @@ AUTH_USER_MODEL = 'accounts.MyUser'
 
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesStandaloneBackend',
-    'accounts.backends.EmailAuthenticationBackend'
+    # 'social_core.backends.google.GoogleOAuth2',
+    'accounts.backends.EmailAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend'
 ]
 
 
@@ -235,3 +239,30 @@ AXES_RESET_ON_SUCCESS = True
 AXES_CACHE = 'memcache'
 
 # ATOMIC_REQUESTS = False
+
+
+# ocial Django
+
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+
+SOCIAL_AUTH_USER_MODEL = 'accounts.MyUser'
+
+SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+
+SOCIAL_AUTH_GOOGLE_KEY = ''
+
+SOCIAL_AUTH_GOOGLE_SECRET = ''
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/accounts/login'
+
+SOCIAL_AUTH_LOGIN_ERROR_URL = ''
+
+SOCIAL_AUTH_LOGIN_URL = ''
+
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = ''
+
+SOCIAL_AUTH_NEW_ASSOCIATION_REDIRECT_URL = ''
+
+SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/accounts/login'
+
+SOCIAL_AUTH_INACTIVE_USER_URL = '/accounts/login'
