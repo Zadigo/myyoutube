@@ -8,7 +8,7 @@ from django.http.response import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.utils.http import urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.cache import never_cache
 from django.views.decorators.debug import sensitive_post_parameters
@@ -20,32 +20,28 @@ USER_MODEL = get_user_model()
 
 @method_decorator(never_cache, name='dispatch')
 @method_decorator(sensitive_post_parameters('password'), name='dispatch')
-class SignupView(FormView):
+class SignupView(EmailMixin, FormView):
     """Signup user"""
     form_class = forms.UserSignupForm
     template_name = 'pages/registration/signup.html'
     success_url = reverse_lazy('accounts:login')
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        message = {
-            'level': messages.ERROR,
-            'extra_tags': 'alert-danger'
-        }
+        form = self.get_form()
+
         if form.is_valid():
             email = form.cleaned_data['email']
             user = USER_MODEL.objects.filter(email__iexact=email)
 
             if user.exists():
-                message.update({'message': _("You already have an account")})
-                return self.form_valid(form)
+                form.add_error(None, 'You already have an account')
+                return self.form_invalid(form)
 
             new_user = form.save()
             if new_user:
                 return self.form_valid(form)
 
-        message.update({'message': _("An error occured - SIG-ER")})
-        messages.add_message(request, **message)
+        form.add_error(None, 'Could not create account')
         return self.form_invalid(form)
 
 
