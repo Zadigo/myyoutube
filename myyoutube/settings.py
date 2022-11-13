@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'history',
     'school',
     'hero',
+    'axes'
 ]
 
 MIDDLEWARE = [
@@ -62,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'axes.middleware.AxesMiddleware'
 ]
 
 ROOT_URLCONF = 'myyoutube.urls'
@@ -176,16 +178,21 @@ MEDIA_MODEL = 'videos.Video'
 
 # CACHE
 
+# https://pypi.org/project/pymemcache/
+# https://pypi.org/project/pylibmc/
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': BASE_DIR / 'cache'
     },
-    # 'inmemcache': {
-    #     'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-    #     'LOCATION': '127.0.0.1:11211'
-    # },
-    # 'redis-cache': {
+    'memcache': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+        'LOCATION': [
+            '127.0.0.1:11211'
+        ]
+    },
+    # 'rediscache': {
     #     'BACKEND': 'django_redis.cache.RedisCache',
     #     'LOCATION': 'redis://127.0.0.1:6379/1',
     #     'OPTIONS': {
@@ -201,6 +208,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 AUTH_USER_MODEL = 'accounts.MyUser'
 
 AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend',
     'accounts.backends.EmailAuthenticationBackend'
 ]
 
@@ -214,3 +222,16 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'pendenquejohn@gmail.com'
 
 EMAIL_HOST_PASSWORD = 'xmugqwnuubuvalai'
+
+
+# https://django-axes.readthedocs.io/en/latest/2_installation.html
+
+AXES_ENABLED = False
+
+AXES_FAILURE_LIMIT = 4
+
+AXES_RESET_ON_SUCCESS = True
+
+AXES_CACHE = 'memcache'
+
+# ATOMIC_REQUESTS = False
