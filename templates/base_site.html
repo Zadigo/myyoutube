@@ -5,3 +5,30 @@
         {% block container %}{% endblock %}
     </div>
 {% endblock %}
+
+{% block vue_templates %}
+    <script id="google" type="text/x-template">
+        <button type="button" class="btn btn-primary" @click="doo">[[ title ]]</button>
+    </script>
+{% endblock %}
+
+{% block vue_components %}
+    <script>
+        const google = {
+            name: 'Google',
+            template: '#google',
+            delimiters: ['[[', ']]'],
+            data () {
+                return {
+                    title: 'Goo'
+                }
+            },
+            methods: {
+                doo () {
+                    alert('google')
+                }
+            }
+        }
+        app.component('google', google)
+    </script>
+{% endblock %}

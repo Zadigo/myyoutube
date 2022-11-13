@@ -168,14 +168,22 @@ class CustomSetPasswordForm(auth_forms.SetPasswordForm):
     new_password1 = forms.CharField(
         label=_('Nouveau mot de passe'),
         widget=forms.PasswordInput(
-            attrs={'class': 'form-control', 'placeholder': 'Nouveau mot de passe','autocomplete': 'off'}
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Nouveau mot de passe',
+                'autocomplete': 'off'
+            }
         ),
         strip=False
     )
     new_password2 = forms.CharField(
         label=_('Nouveau mot de passe confirmation'),
         widget=forms.PasswordInput(
-            attrs={'class': 'form-control', 'placeholder': 'Nouveau mot de passe confirmation', 'autocomplete': 'off'}
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Nouveau mot de passe confirmation',
+                'autocomplete': 'off'
+            }
         ),
         strip=False,
     )

@@ -14,6 +14,7 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from django.db.models.constraints import UniqueConstraint
 from django.utils.timezone import timedelta, now
+from django.contrib.auth.tokens import default_token_generator
 
 # from django.contrib.auth.models import User
 

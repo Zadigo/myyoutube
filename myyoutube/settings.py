@@ -201,6 +201,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 AUTH_USER_MODEL = 'accounts.MyUser'
 
 AUTHENTICATION_BACKENDS = [
-    # accounts
     'accounts.backends.EmailAuthenticationBackend'
 ]
+
+
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_USE_TLS = True
+
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = 'pendenquejohn@gmail.com'
+
+EMAIL_HOST_PASSWORD = 'xmugqwnuubuvalai'
