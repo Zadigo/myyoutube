@@ -1,5 +1,5 @@
 from accounts import forms
-from accounts.models import MyUser, MyUserProfile, ActivationToken
+from accounts.models import ActivationToken, MyUser, MyUserProfile
 # from django.contrib.auth import admin
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
@@ -25,7 +25,7 @@ class MyUserAdmin(admin.ModelAdmin):
                 'classes': ['wide'],
                 'fields': ['email', 'password1', 'password2', 'is_admin', 'is_staff', 'is_active']
             }
-        ],
+        ]
     ]
     ordering = ['email']
 

@@ -15,9 +15,12 @@
     <body>
         <main>
             <div id="app">
+                <google></google>
                 {% block main %}{% endblock %}
             </div>
         </main>
+
+        {% block vue_templates %}{% endblock %}
 
         <!-- Lodash -->
         <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
@@ -38,11 +41,11 @@
         <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
 
         <script>
-            axios.defaults.headers.common['Content-Type'] = 'application/json'
             axios.defaults.headers.common['Accept-Language'] = 'fr,en-US;q=0.9'
-
+            axios.defaults.headers.common['Content-Type'] = 'application/json'
+            
             const client = axios.create({
-                baseURL: 'http://127.0.0.1:8000',
+                baseURL: 'http://127.0.0.1:8000/api/v1',
                 timeout: 5000,
                 withCredentials: true
             })
@@ -59,16 +62,15 @@
         <script>
             const { createApp } = Vue
 
-            const app = createApp({
-                name: 'App'
-            })
+            const app = createApp({ name: 'App' })
 
             app.use(router)
+            app.use((app) => { app.config.globalProperties.http = axios })
+        </script>
 
-            app.use((app) => {
-                app.config.globalProperties.http = axios
-            })
+        {% block vue_components %}{% endblock %}
 
+        <script>
             app.mount('#app')
         </script>
     </body>

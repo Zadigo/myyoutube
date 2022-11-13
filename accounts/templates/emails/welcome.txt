@@ -1,0 +1,5 @@
+{% load i18n %}
+
+{% autoescape off %}
+    {% blocktrans with company_name=company %}Welcome to {{ company_name }}{% endblocktrans %}
+{% endautoescape %}
