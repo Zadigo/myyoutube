@@ -63,7 +63,7 @@ class LoginView(EmailMixin, FormView):
             user = authenticate(request, email=email, password=password)
             if user:
                 login(request, user)
-                self.send_mail({}, user.email)
+                # self.send_mail({}, user.email)
                 return self.form_valid(form)
         return self.form_invalid(form)
 

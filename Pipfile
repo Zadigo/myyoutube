@@ -25,10 +25,10 @@ pillow = "*"
 python-memcached = "*"
 redis = "*"
 sklearn = "*"
-social-auth-app-django = "*"
 django-axes = "*"
 psycopg2 = "*"
 pymemcache = "*"
+social-auth-app-django = "*"
 
 [dev-packages]
 autopep8 = "*"

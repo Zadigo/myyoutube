@@ -19,7 +19,7 @@ urlpatterns = [
     path('history/', include('history.urls')),
     path('videos/', include('videos.urls')),
     path('', include('hero.urls')),
-
+    # path('', include('social_django.urls', namespace='social')),
     path('admin/', custom_admin.urls),
     # path('admin/', admin.site.urls),
 ]
