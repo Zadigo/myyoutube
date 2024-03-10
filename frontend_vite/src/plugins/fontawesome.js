@@ -1,4 +1,23 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faBell, faChartSimple, faCog, faHome, faList, faCaretDown, faThumbsDown, faThumbsUp, faUser, faCircleCheck, faSort, faBars, faUpload, faPen, faEllipsisVertical, faEllipsis, faA, faTv, faLock, faTrash } from '@fortawesome/free-solid-svg-icons'
 
+library.add(faA)
+library.add(faBars)
+library.add(faBell)
+library.add(faChartSimple)
+library.add(faCaretDown)
+library.add(faCircleCheck)
+library.add(faCog)
+library.add(faHome)
+library.add(faList)
+library.add(faPen)
+library.add(faSort)
+library.add(faThumbsUp)
+library.add(faThumbsDown)
 library.add(faUser)
+library.add(faUpload)
+library.add(faEllipsis)
+library.add(faEllipsisVertical)
+library.add(faTv)
+library.add(faLock)
+library.add((faTrash))
