@@ -132,3 +132,5 @@ dmypy.json
 cache
 media/uploads/
 media/CACHE/
+
+node_modules/

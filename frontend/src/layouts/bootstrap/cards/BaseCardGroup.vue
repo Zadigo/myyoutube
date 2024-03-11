@@ -6,17 +6,17 @@
 
 <script>
 export default {
-  name: 'BaseCardGroup',
+  name: 'BaseCardGroup'
 }
 </script>
 
-<style>
+<!-- <style scoped>
 .card-group .card.hoverable:hover {
-  border-radius: .5rem;
+  border-radius: .5rem !important;
   border: none;
   z-index: 10;
 }
 .card-group .card {
   border: 1px solid rgba(0, 0, 0, 0.175);
 }
-</style>
+</style> -->

@@ -1,5 +1,5 @@
 <template>
-  <div ref="link" :class="[darkMode ? 'dark' : null]" class="input-menu">
+  <div ref="link" :class="autocompleteClasses" class="input-menu">
     <div class="input-group">
       <slot></slot>     
 
@@ -17,9 +17,13 @@
       <ul v-if="showMenu" :class="[showMenu ? 'show' : null]" class="items">
         <li v-for="(item, i) in filterValues" :key="i" class="item" @click.prevent="selectValue(item)">
           {{ item.text }}
+          <!-- <div v-if="selectMultiple" class="d-flex justify-content-between align-items-center">
+            <base-checkbox />
+            <span>{{ item.text }}</span>
+          </div> -->
         </li>
 
-        <li v-if="filterValues.length === 0" class="item" @click.prevent="selectValue(item)">
+        <li v-if="filterValues.length === 0" class="item" @click.prevent>
           Nothing to show
         </li>
       </ul>
@@ -35,17 +39,23 @@ export default {
   props: {
     items: {
       type: Array,
-      default: () => []
+      // default: () => []
+      default () {
+        return []
+      }
     },
     clearable: {
       type: Boolean
     }
+    // selectMultiple: {
+    //   type: Boolean
+    // }
   },
   emits: {
-    'item-selected' () {
-      // if (!(typeof item !== 'object')) {
-      //   return false
-      // }
+    'item-selected' (item) {
+      if (!(typeof item !== 'object')) {
+        return false
+      }
       return true
     }
   },
@@ -76,20 +86,25 @@ export default {
           return item.text.includes(this.value) || item.text === this.value
         })
       }
+    },
+    autocompleteClasses () {
+      return [
+        {
+          dark: this.darkMode
+        }
+      ]
     }
   },
   mounted () {
-    this.target = this.$refs.link.querySelector("input")
-    // this.inputHeight = target.offsetHeight
-    // this.$refs.link.querySelector(".items").style.marginTop = "10px"
-    this.target.addEventListener("focusin", this.handleInputFocus)
-    this.target.addEventListener("focusout", this.handleInputFocusLeave)
-    this.target.addEventListener("keyup", this.handleInputKeyUp)
+    this.target = this.$refs.link.querySelector('input')
+    this.target.addEventListener('focusin', this.handleInputFocus)
+    this.target.addEventListener('focusout', this.handleInputFocusLeave)
+    this.target.addEventListener('keyup', this.handleInputKeyUp)
   },
   beforeUnmount () {
-    this.target.removeEventListener("focusin", this.handleInputFocus)
-    this.target.removeEventListener("focusout", this.handleInputFocusLeave)
-    this.target.removeEventListener("keyup", this.handleInputKeyUp)
+    this.target.removeEventListener('focusin', this.handleInputFocus)
+    this.target.removeEventListener('focusout', this.handleInputFocusLeave)
+    this.target.removeEventListener('keyup', this.handleInputKeyUp)
   },
   methods: {
     handleInputFocus () {
@@ -104,7 +119,7 @@ export default {
     selectValue (item) {
       this.selected = item
       this.target.value = item.text
-      this.$emit("item-selected", item)
+      this.$emit('item-selected', item)
     },
     handleClearInput () {
       this.value = null
@@ -116,7 +131,7 @@ export default {
 
 <style scoped>
   /* TODO: Improve dark mode */
-.input-menu {
+  .input-menu {
     position: relative;
   }
 

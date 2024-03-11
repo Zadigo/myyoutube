@@ -23,7 +23,7 @@ export default {
   computed: {
     cardClasses () {
       return [
-        this.darkMode ? 'text-bg-dark' : null,
+        this.darkMode ? 'bg-dark' : null,
         this.hoverable ? 'hoverable' : null
       ]
     },

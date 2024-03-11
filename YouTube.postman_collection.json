@@ -1,0 +1,320 @@
+{
+	"info": {
+		"_postman_id": "d693efaa-78aa-48f7-8278-449b101af0a5",
+		"name": "YouTube",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8871030"
+	},
+	"item": [
+		{
+			"name": "Videos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Set default video\", () => {\r",
+							"    const video = pm.response.json()[0]\r",
+							"    pm.environment.set(\"video_reference\", video.reference)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/videos/list",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"videos",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Videos search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Set default video\", () => {\r",
+							"    const video = pm.response.json()[0]\r",
+							"    pm.environment.set(\"video_reference\", video.reference)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "level",
+							"type": "text"
+						},
+						{
+							"key": "tags",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "username",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "channel",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "age_restricted",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "category",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "recorded_on",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "recorded_after",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "recorded_before",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "recording_language",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "created_on",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "this_year",
+							"value": "false",
+							"type": "text"
+						},
+						{
+							"key": "last_week",
+							"value": "true",
+							"type": "text"
+						},
+						{
+							"key": "this_month",
+							"value": "false",
+							"type": "text"
+						},
+						{
+							"key": "today",
+							"value": "false",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/videos/search",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"videos",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Video",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "{{video_reference}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/videos/detail/{{video_reference}}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"videos",
+						"detail",
+						"{{video_reference}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Channels",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Set default channel\", () => {\r",
+							"    const channel = pm.response.json()[0]\r",
+							"    pm.environment.set(\"channel_reference\", channel.reference)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/channels/list",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"channels",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Channel",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/channels/details/{{channel_reference}}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"channels",
+						"details",
+						"{{channel_reference}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Channel search",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "video_name",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "tags",
+							"value": "Fashion",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/channels/search/{{channel_reference}}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"channels",
+						"search",
+						"{{channel_reference}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

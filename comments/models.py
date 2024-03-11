@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+
 from videos.models import Video
 
 MYUSER = get_user_model()
@@ -9,7 +11,10 @@ class AbstractComment(models.Model):
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
     user = models.ForeignKey(MYUSER, on_delete=models.CASCADE)
     content = models.TextField(max_length=500)
-    from_creator = models.BooleanField(default=False)
+    from_creator = models.BooleanField(
+        default=False,
+        help_text=_('Comment written by the content creator')
+    )
     pinned = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
 
@@ -18,22 +23,24 @@ class AbstractComment(models.Model):
 
 
 class Comment(AbstractComment):
-    created_on = models.DateTimeField(auto_now_add=True)
+    """Represents a base comment"""
 
-    objects = models.Manager()
+    class Meta:
+        ordering = ['-created_on']
 
     def __str__(self):
         return self.user.username
 
 
 class Reply(AbstractComment):
+    """Represents a reply to a comment"""
     video = None
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
 
-    objects = models.Manager()
-
     class Meta:
-        verbose_name_plural = 'Replies'
+        verbose_name = _('reply')
+        verbose_name_plural = _('replies')
+        ordering = ['-created_on']
 
     def __str__(self):
         return self.user.username

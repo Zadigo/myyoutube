@@ -1,11 +1,11 @@
 <template>
-  <div ref="link" class="collapse-wrapper">
+  <div class="collapse-wrapper">
     <a :aria-expanded="show" :aria-controls="id" class="btn btn-primary" href role="button" @click.prevent="handleCollapse">
       {{ buttonName }}
     </a>
 
     <transition name="slide" mode="out-in">
-      <div v-if="show" :id="id" :class="[show ? 'show' : null]" class="collapse mt-1">
+      <div v-if="show" :id="id" :class="{ show }" class="collapse mt-1">
         <slot :dark-mode="darkMode"></slot>
       </div>
     </transition>
@@ -34,15 +34,10 @@ export default {
   setup () {
     const show = ref(false)
     const darkMode = inject('darkMode', false)
-    const collapseElement = null
     return {
       darkMode,
-      show,
-      collapseElement
+      show
     }
-  },
-  mounted () {
-    this.collapseElement = this.$refs.link.querySelector('.collapse')
   },
   methods: {
     handleCollapse () {
@@ -56,18 +51,16 @@ export default {
 <style scoped>
 .slide-enter-active,
 .slide-leave-active {
-  transition: all .15s ease;
+  transition: all .45s ease-in-out;
 }
 .slide-enter-from,
 .slide-leave-to {
   opacity: 0;
-  /* transform: scale(.9, .9); */
-  transform: translateY(-10%);
+  transform: translateY(-5%);
 }
 .slide-enter-to,
 .slide-leave-from {
   opacity: 1;
-  /* transform: scale(1, 1); */
   transform: translateY(0%);
 }
 </style>

@@ -1,4 +1,3 @@
-import json
 import uuid
 
 from django.contrib import messages
@@ -10,12 +9,38 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
 from django.views.generic import DetailView, ListView
-
 from videos.choices import VisibilityChoices
 from videos.models import Playlist, Video
+from videos.serializers import VideoSerializer
+
+import json
+from django.utils.safestring import mark_safe
 
 
-class BaseDetailView(DetailView):
+class FeedMixin(ListView):
+    model = Video
+    queryset = Video.objects.filter(active=True)
+    context_object_name = 'videos'
+    serializer_class = VideoSerializer
+
+    def get_serializer(self, many=True):
+        return self.serializer_class(self.get_queryset(), many=many)
+
+    def get_context_data(self, **kwargs):
+        serializer = self.get_serializer()
+        kwargs.update(vue_videos=mark_safe(json.dumps(serializer.data)))
+        return super().get_context_data(**kwargs)
+
+
+class FeedView(FeedMixin):
+    template_name = 'pages/feed.html'
+
+
+class SearchView(FeedMixin):
+    template_engine = 'pages/search.html'
+
+
+class VideoDetailMixin(DetailView):
     model = Video
     queryset = Video.objects.all()
     context_object_name = 'video'
@@ -43,21 +68,7 @@ class BaseDetailView(DetailView):
         return video
 
 
-class FeedMixin(ListView):
-    model = Video
-    queryset = Video.objects.filter(active=True)
-    context_object_name = 'videos'
-
-
-class FeedView(FeedMixin, ListView):
-    template_name = 'pages/feed.html'
-
-
-class SearchView(FeedMixin, ListView):
-    template_engine = 'pages/search.html'
-
-
-class VideoView(BaseDetailView):
+class VideoView(VideoDetailMixin):
     template_name = 'pages/video.html'
 
     def get(self, request, *args, **kwargs):

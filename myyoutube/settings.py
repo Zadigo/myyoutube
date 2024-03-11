@@ -29,12 +29,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'django.contrib.humanize',
-
     # 'social_django',
+    'django.contrib.humanize',
     'debug_toolbar',
     'django_extensions',
     'rest_framework',
+    'rest_framework.authtoken',
 
     'accounts',
     'mediastats',
@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'history',
     'school',
     'hero',
-    'axes'
+    # 'axes'
 ]
 
 MIDDLEWARE = [
@@ -63,7 +63,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'axes.middleware.AxesMiddleware'
+    # 'axes.middleware.AxesMiddleware'
 ]
 
 ROOT_URLCONF = 'myyoutube.urls'
@@ -94,21 +94,23 @@ WSGI_APPLICATION = 'myyoutube.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'myyoutube',
+#         'USER': 'test_user',
+#         'PASSWORD': 'touparet',
+#         'HOST': 'localhost',
+#         'PORT': '5432'
+#     }
+# }
+
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'myyoutube',
-        'USER': 'test_user',
-        'PASSWORD': 'touparet',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -159,19 +161,19 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-# UPLOADS
+# Uploads
 
 DEFAULT_FILE_STORAGE = 'uploads.storage.CustomFileSystemStorage'
 
 
-# DEBUG
+# Debug
 
 INTERNAL_IPS = [
     '127.0.0.1'
 ]
 
 
-# MODELS
+# Models
 
 NOTIFICATION_MODEL = 'notifications.Notification'
 
@@ -188,12 +190,12 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': BASE_DIR / 'cache'
     },
-    'memcache': {
-        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-        'LOCATION': [
-            '127.0.0.1:11211'
-        ]
-    },
+    # 'memcache': {
+    #     'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+    #     'LOCATION': [
+    #         '127.0.0.1:11211'
+    #     ]
+    # },
     # 'rediscache': {
     #     'BACKEND': 'django_redis.cache.RedisCache',
     #     'LOCATION': 'redis://127.0.0.1:6379/1',
@@ -210,7 +212,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 AUTH_USER_MODEL = 'accounts.MyUser'
 
 AUTHENTICATION_BACKENDS = [
-    'axes.backends.AxesStandaloneBackend',
+    # 'axes.backends.AxesStandaloneBackend',
     # 'social_core.backends.google.GoogleOAuth2',
     'accounts.backends.EmailAuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend'
@@ -223,9 +225,9 @@ EMAIL_USE_TLS = True
 
 EMAIL_PORT = 587
 
-EMAIL_HOST_USER = 'pendenquejohn@gmail.com'
+EMAIL_HOST_USER = ''
 
-EMAIL_HOST_PASSWORD = 'xmugqwnuubuvalai'
+EMAIL_HOST_PASSWORD = ''
 
 
 # https://django-axes.readthedocs.io/en/latest/2_installation.html
@@ -241,7 +243,7 @@ AXES_CACHE = 'memcache'
 # ATOMIC_REQUESTS = False
 
 
-# ocial Django
+# Social Django
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 
@@ -266,3 +268,26 @@ SOCIAL_AUTH_NEW_ASSOCIATION_REDIRECT_URL = ''
 SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/accounts/login'
 
 SOCIAL_AUTH_INACTIVE_USER_URL = '/accounts/login'
+
+
+# Rest framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication'
+    ]
+}
+
+# Cors
+
+CORS_ALLOW_ALL_ORIGINS = False
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173'
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173'
+]

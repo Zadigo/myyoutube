@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.shortcuts import reverse
 from django.utils import timezone
-
+from django.utils.translation import gettext_lazy as _ 
 from stories.utils import stories_directory_path
 
 MYUSER = get_user_model()
@@ -19,9 +19,11 @@ class Story(models.Model):
     created_on = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name_plural = 'Stories'
+        verbose_name_plural = _('stories')
         indexes = [
-            models.Index(fields=['video'])
+            models.Index(
+                fields=['video']
+            )
         ]
 
     def __str__(self):

@@ -8,7 +8,11 @@ from django.urls import include, path
 
 urlpatterns = [
     path('__debug__/', include(debug_toolbar.urls)),
-    
+
+    path('api/v1/accounts/', include('accounts.api.urls')),
+    path('api/v1/channels/', include('mychannel.api_urls')),
+    path('api/v1/videos/', include('videos.api.urls')),
+
     path('accounts/', include('accounts.urls')),
     path('reports/', include('reports.urls')),
     path('donations/', include('donations.urls')),
@@ -25,5 +29,11 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(
+        settings.STATIC_URL,
+        document_root=settings.STATIC_ROOT
+    )
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )
