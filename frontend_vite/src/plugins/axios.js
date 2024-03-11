@@ -12,7 +12,7 @@ function getBaseURL () {
 const client = axios.create({
   baseURL: getBaseURL(),
   withCredentials: true,
-  timeout: 1000
+  timeout: 10000
 })
 
 client.defaults.headers.common['content-type'] = 'application/json'
@@ -21,7 +21,7 @@ client.interceptors.request.use(
   request => {
     const store = useAuthentication()
     if (store.token) {
-      request.headers.Authorization = `Bearer ${store.token}`
+      request.headers.Authorization = `Token ${store.token}`
     }
     return request
   },

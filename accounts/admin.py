@@ -5,6 +5,8 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
 from myadmin.sites import custom_admin
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.admin import TokenAdmin
 
 
 class MyUserAdmin(admin.ModelAdmin):
@@ -24,9 +26,9 @@ class MyUserAdmin(admin.ModelAdmin):
     ]
     add_fieldsets = [
         [None, {
-                'classes': ['wide'],
-                'fields': ['email', 'password1', 'password2', 'is_admin', 'is_staff', 'is_active']
-            }
+            'classes': ['wide'],
+            'fields': ['email', 'password1', 'password2', 'is_admin', 'is_staff', 'is_active']
+        }
         ]
     ]
     ordering = ['email']
@@ -51,3 +53,4 @@ custom_admin.register(ActivationToken, ActivateAccountAdmin)
 custom_admin.register(MyUser, MyUserAdmin)
 custom_admin.register(MyUserProfile, MyUserProfileAdmin)
 custom_admin.register(Group)
+custom_admin.register(Token, TokenAdmin)

@@ -16,11 +16,9 @@ import { aliases, fa } from 'vuetify/iconsets/fa'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '@mdi/font/css/materialdesignicons.css'
 import 'mdb-ui-kit/css/mdb.min.css'
+import 'vuetify/styles'
 import './style.css'
 import './dashboard.css'
-
-
-import 'vuetify/styles'
 
 const defaultPlugins = createPlugins()
 const pinia = createPinia()

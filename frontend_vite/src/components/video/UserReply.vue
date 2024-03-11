@@ -1,16 +1,19 @@
 <template>
-  <article class="card my-1 shadow-none">
+  <article class="card my-1 shadow-none" aria-label="">
     <div class="card-body">
       <div class="d-flex justify-content-around">
         <div class="me-3">
-          <a href="/channel" class="">
-            <img src="/avatar3.png" class="img-fluid rounded-circle" width="80" alt="Image 3" />
-          </a>
+          <router-link :to="{ name: 'channel_details', params: { id: 'ch_noienozinfoz' } }" aria-label="">
+            <v-img src="/avatar3.png" class="img-fluid rounded-circle" width="40px" alt="Image 3"></v-img>
+          </router-link>
         </div>
 
         <div clas="ms-1">
           <div class="d-flex justify-content-left">
-            <a href="/channel" class=""><span class="fw-bold me-2">Cee Dee</span></a><span class="text-muted">3 weeks ago</span>
+            <router-link :to="{ name: 'channel_details', params: { id: 'ch_noienozinfoz' } }" aria-label="">
+              <span class="fw-bold me-2">Cee Dee</span>
+              <span class="text-body-tertiary">3 weeks ago</span>
+            </router-link>
           </div>
 
           <p class="card-text">
@@ -40,3 +43,19 @@
     </div>
   </article>
 </template>
+
+<script>
+export default {
+  name: 'UserReply',
+  props: {
+    reply: {
+      type: Object,
+      default: () => {},
+      required: false
+    }
+  },
+  beforeMount () {
+    this.reply
+  }
+}
+</script>

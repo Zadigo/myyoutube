@@ -23,13 +23,15 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import SettingsCard from '../../components/settings/SettingsCard.vue'
 import _ from 'lodash'
+import { ref } from 'vue'
+// import { watchDeep } from '@vueuse/core'
+
+import SettingsCard from '../../components/settings/SettingsCard.vue'
 
 const notificationOptions = [
   {
-    "action": "channel_activity",
+    "action": "channel_activities",
     "label": "Notify me about activity from the channels I'm subscribed to"
   },
   {
@@ -55,18 +57,45 @@ const notificationOptions = [
 ]
 
 export default {
+  name: 'NotificationsPage',
   components: {
     SettingsCard
   },
   setup () {
     const requestData = ref({})
+
     _.forEach(notificationOptions, (option) => {
       requestData[option.action] = false
     })
+
     return {
       requestData,
       notificationOptions
     }
-  }
+  },
+  watch: {
+    requestData: {
+      handler () {
+        this.updateNotifications()
+      },
+      deep: true
+    }
+  },
+  beforeMount () {
+    this.requestNotifications()
+  },
+  methods: {
+    async requestNotifications () {
+      try {
+        const response = await this.$client.get('accounts/notifications')
+        console.log(response.data)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    updateNotifications: _.debounce(async function () {
+      await this.requestNotifications()
+    }, 2000)
+  },
 }
 </script>

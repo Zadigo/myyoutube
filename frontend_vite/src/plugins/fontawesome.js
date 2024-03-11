@@ -1,5 +1,9 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBell, faChartSimple, faCog, faHome, faList, faCaretDown, faThumbsDown, faThumbsUp, faUser, faCircleCheck, faSort, faBars, faUpload, faPen, faEllipsisVertical, faEllipsis, faA, faTv, faLock, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faBell, faChartSimple, faCog, faHome, faList, faCaretDown, faThumbsDown, faThumbsUp, faUser, faCircleCheck, faSort, faBars, faUpload, faPen, faEllipsisVertical, faEllipsis, faA, faTv, faLock, faTrash, faStar, faPlus, faArrowLeft, faFaceSmile, faComment, faStore, faDownload, faSave, faGift, faDollarSign, faShare, faBellSlash, faUserMinus, faBullhorn, faPlay, faStop, faPause } from '@fortawesome/free-solid-svg-icons'
+import { faThumbsUp as farThumbsUp, faThumbsDown as farThumbsDown } from '@fortawesome/free-regular-svg-icons'
+
+library.add(farThumbsUp)
+library.add(farThumbsDown)
 
 library.add(faA)
 library.add(faBars)
@@ -21,3 +25,20 @@ library.add(faEllipsisVertical)
 library.add(faTv)
 library.add(faLock)
 library.add((faTrash))
+library.add(faStar)
+library.add(faPlus)
+library.add(faArrowLeft)
+library.add(faFaceSmile)
+library.add(faComment)
+library.add(faStore)
+library.add(faDownload)
+library.add(faSave)
+library.add(faGift)
+library.add(faDollarSign)
+library.add(faShare)
+library.add(faBellSlash)
+library.add(faUserMinus)
+library.add(faBullhorn)
+library.add(faPlay)
+library.add(faStop)
+library.add(faPause)
