@@ -1,16 +1,16 @@
 <template>
   <!-- bottom-0 end-0 -->
   <div class="toast-container position-fixed top-0 end-0 p-3">
-    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header">
+    <div :class="{ show }" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div :class="{ 'bg-dark text-white': darkMode }" class="toast-header">
         <!-- <img src="" class="rounded me-2" alt="..."> -->
         <strong class="me-auto">Bootstrap</strong>
         <small>11 mins ago</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        <button type="button" class="btn-close" aria-label="Close" @click="$emit('close'), show = !show"></button>
       </div>
-      <!-- :class="[darkMode ? 'bg-dark': null]" -->
-      <div class="toast-body">
-        Hello, world! This is a toast message.
+
+      <div :class="{ 'bg-dark text-white': darkMode }" class="toast-body">
+        {{ item.text }}
       </div>
     </div>
   </div>
@@ -22,8 +22,11 @@ import { inject } from 'vue'
 export default {
   name: 'BaseToast',
   props: {
-    show: {
-      type: Boolean
+    item: {
+      type: Object,
+      default () {
+        return {}
+      }
     }
   },
   emits: {
@@ -32,41 +35,29 @@ export default {
     }
   },
   setup () {
-    const darkMode = inject('darkMode')
+    const darkMode = inject('darkMode', false)
     return {
       darkMode
     }
   },
   data () {
     return {
-      toasts: [],
-      modelValue: false
+      show: true,
+      internalToast: {},
     }
   },
-  computed: {
-    state: {
-      get () {
-        return this.modelValue || this.show
-      },
-      set (value) {
-        setTimeout(() => {
-          this.modelValue = false
-          return this.$emit('close', value)
-        }, 3000);
-      }
-    }
+  mounted () {
+    // this.$refs.link.addEventListener('')
   }
   // watch: {
   //   show (current) {
   //     if (current) {
-  //       this.modelValue = true
-  //       this.toasts.push(1)
   //       setTimeout(() => {
-  //         this.modelValue = false
-  //       }, 3000);
+  //         this.show = false
+  //       }, 3000)
   //     }
   //   }
-  // },
+  // }
 }
 </script>
 

@@ -4,7 +4,7 @@
 
 <template>
   <div class="offcanvas-wrapper">
-    <div :id="id" ref="link" :class="offcanvasClasses" class="offcanvas" tabindex="-1" aria-labelledby="offcanvasLabel">
+    <div :id="id" ref="link" :class="offcanvasClasses" tabindex="-1" aria-labelledby="offcanvasLabel">
       <div class="offcanvas-header">
         <h5 v-if="title" id="offcanvasLabel" class="offcanvas-title">
           {{ title }}
@@ -18,7 +18,9 @@
   
       <slot name="footer"></slot>
     </div>
-    <div v-if="show && !allowScroll" :class="[show ? 'show' : null]" class="offcanvas-backdrop fade" @click="handleStatic"></div>
+
+    <!-- Backdrop -->
+    <div v-if="show && !allowScroll" :class="{ show }" class="offcanvas-backdrop fade" @click="handleStatic"></div>
   </div>
 </template>
 
@@ -62,9 +64,12 @@ export default {
   computed: {
     offcanvasClasses () {
       return [
-        this.show ? 'show' : null,
+        'offcanvas',
+        {
+          'text-bg-dark': this.darkMode,
+          show: this.show
+        },
         // this.darkMode ? 'bg-dark text-light' : 'bg-white text-dark',
-        this.darkMode ? 'text-bg-dark' : null,
         {
           [`offcanvas-${this.position}`]: true
         }
@@ -73,7 +78,7 @@ export default {
   },
   watch: {
     show (current) {
-      var body = document.querySelector('body')
+      const body = document.body
       if (current) {
         if (!this.allowScroll) {
           body.style.overflow = 'hidden'
@@ -91,9 +96,6 @@ export default {
     }
   },
   methods: {
-    getBody () {
-      return document.querySelector('body')
-    },
     handleStatic () {
       if (!this.staticBackdrop) {
         this.$emit('close')

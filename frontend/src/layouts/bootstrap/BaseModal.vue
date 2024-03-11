@@ -1,29 +1,28 @@
 <template>
   <div ref="link" class="modal-wrapper">
-    <!-- <transition appear name="custom-classes" mode="out-in" enter-active-class="modal-animation dialog-fade-in-down" leave-active-class="modal-animation dialog-fade-out-up"> -->
-    <!-- <transition name="slide" mode="out-in"> -->
-    <div v-if="show" :id="id" :class="modalClasses" :aria-modal="show" class="modal" role="dialog" tabindex="-1">
-      <div :class="modalDialogClasses" class="modal-dialog">
-        <div :class="modalContentClasses" class="modal-content">
-          <div v-if="!isFrame" class="modal-header">
-            <h5 v-if="title" class="modal-title">
-              {{ title }}
-            </h5>
-            <button type="button" class="btn-close" aria-label="Close" @click="$emit('close')"></button>
+    <transition :name="currentAnimation">
+      <div v-if="show" :id="id" :class="modalClasses" :aria-modal="show" class="modal" role="dialog" tabindex="-1">
+        <div :class="modalDialogClasses" class="modal-dialog">
+          <div :class="modalContentClasses" class="modal-content">
+            <div v-if="!isFrame" class="modal-header">
+              <h5 v-if="title" class="modal-title">
+                {{ title }}
+              </h5>
+              <button type="button" class="btn-close" aria-label="Close" @click="$emit('close')"></button>
+            </div>
+  
+            <div class="modal-body">
+              <slot></slot>
+            </div>
+  
+            <slot name="footer"></slot>
           </div>
-
-          <div class="modal-body">
-            <slot></slot>
-          </div>
-
-          <slot name="footer"></slot>
         </div>
       </div>
-    </div>
-    <!-- </transition> -->
-
-    <transition appear name="custom-classes" mode="out-in" enter-active-class="modal-animation dialog-fade-in" leave-active-class="modal-animation dialog-fade-out">
-      <div v-if="show && !nonInvasive" :class="{show}" class="modal-backdrop"></div>
+    </transition>
+    
+    <transition name="modal-backdrop">
+      <div v-if="show && !nonInvasive" :class="{ show }" class="modal-backdrop"></div>
     </transition>
   </div>
 </template>
@@ -34,12 +33,12 @@ import { inject } from 'vue'
 export default {
   name: 'BaseModal',
   props: {
-    centered: {
-      type: Boolean
-    },
     id: {
       type: String,
       required: true
+    },
+    centered: {
+      type: Boolean
     },
     nonInvasive: {
       type: Boolean
@@ -94,8 +93,9 @@ export default {
           break
       }
       return [
-        // 'fade',
-        this.show ? 'show' : null,
+        {
+          show: this.show
+        },
         position
       ]
     },
@@ -118,10 +118,10 @@ export default {
 
       return [
         {
-          [`modal-${this.size}`]: true
-        },
-        this.centered ? 'modal-dialog-centered' : null,
-        this.scrollable ? 'modal-dialog-scrollable' : null
+          [`modal-${this.size}`]: true,
+          'modal-dialog-centered': this.centered,
+          'modal-dialog-scrollable': this.scrollable
+        }
       ]
     },
     modalContentClasses () {
@@ -129,6 +129,25 @@ export default {
         this.hasPositionY ? 'rounded-0' : null,
         this.darkMode ? 'bg-dark text-light' : 'bg-white text-dark'
       ]  
+    },
+    currentAnimation () {
+      if (this.position === 'fullscreen') {
+        return 'modal-from-bottom'
+      }
+
+      if (this.position === 'top-left' || this.position === 'bottom-left') {
+        return 'modal-from-left'
+      }
+
+      if (this.position === 'top-right' || this.position === 'bottom-right') {
+        return 'modal-from-right'
+      }
+
+      if (this.position === 'bottom') {
+        return 'modal-from-bottom'
+      }
+
+      return 'modal-from-top'
     },
     hasPositionX () {
       const positions = ['right', 'left', 'top-right', 'top-left', 'bottom-left', 'bottom-right']
@@ -204,68 +223,4 @@ export default {
 .modal-backdrop.show {
   opacity: .5;
 }
-
-/* .modal-animation {
-  animation-duration: 0.5s;
-  animation-fill-mode: both;
-}
-
-.dialog-fade-in-down {
-  animation: fade-in-down;
-}
-
-.dialog-fade-out-up {
-  animation: fade-out-up;
-}
-
-@keyframes fade-in-down {
-  from {
-    opacity: 0;
-    transform: translate3d(0, -10%, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes fade-out-up {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-    transform: translate3d(0, -10%, 0);
-  }
-}
-
-.dialog-fade-in {
-  animation-name: fade-in;
-}
-
-.dialog-fade-out {
-  animation-name: fade-out;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 0.5;
-  }
-}
-
-@keyframes fade-out {
-  from {
-    opacity: 0.5;
-  }
-
-  to {
-    opacity: 0;
-  }
-} */
 </style>

@@ -1,3 +1,7 @@
+<doc>
+  Reprents a single video
+</doc>
+
 <template>
   <base-site-vue>
     <section id="youtube">
@@ -43,15 +47,50 @@
                       </div>
 
                       <!-- More -->
-                      <base-dropdown-button-vue :items="moreButtonOptions" button-name="More" color="secondary" size="lg" class="mx-2 shadow-none" @dropdown-click="dropdownClick" />
+                      <!-- <base-dropdown-button-vue :items="moreButtonOptions" button-name="More" color="secondary" size="lg" class="mx-2 shadow-none" @dropdown-click="dropdownClick" /> -->
+                      <base-dropdown-button id="more-options" v-slot="{show}" link-name="More" btn-classes="btn-lg btn-rounded mx-2 shadow-none">
+                        <dropdown-menu :show="show" animation="slide">
+                          <dropdown-item @click="showStore = true">
+                            <font-awesome-icon icon="fa-solid fa-store" class="me-2"></font-awesome-icon> Store
+                          </dropdown-item>
+
+                          <dropdown-item @click="showDownload = true">
+                            <font-awesome-icon icon="fa-solid fa-download" class="me-2"></font-awesome-icon> Download
+                          </dropdown-item>
+
+                          <dropdown-item @click="showPlaylists = true">
+                            <font-awesome-icon icon="fa-solid fa-floppy-disk" class="me-2"></font-awesome-icon> Save
+                          </dropdown-item>
+
+                          <dropdown-item @click="showGifts = true">
+                            <font-awesome-icon icon="fa-solid fa-gift" class="me-2"></font-awesome-icon> Gift
+                          </dropdown-item>
+
+                          <dropdown-item @click="showDonationModal = true">
+                            <font-awesome-icon icon="fa-solid fa-money-bill" class="me-2"></font-awesome-icon> Donate
+                          </dropdown-item>
+
+                          <dropdown-item @click="showShare = true">
+                            <font-awesome-icon icon="fa-solid fa-share" class="me-2"></font-awesome-icon> Share
+                          </dropdown-item>
+
+                          <dropdown-item @click="showRecommendationReport = true">
+                            <font-awesome-icon icon="fa-solid fa-star" class="me-2"></font-awesome-icon> Recommendation
+                          </dropdown-item>
+
+                          <dropdown-item @click="showReport = true">
+                            <font-awesome-icon icon="fa-solid fa-triangle-exclamation" class="me-2"></font-awesome-icon> Report
+                          </dropdown-item>
+                        </dropdown-menu>
+                      </base-dropdown-button>
 
                       <div class="btn-group shadow-none">
-                        <button type="button" class="btn btn-primary btn-lg" @click="currentVideo.channel.subscribed = !currentVideo.channel.subscribed">
+                        <button type="button" class="btn btn-primary btn-lg btn-rounded" @click="currentVideo.channel.subscribed = !currentVideo.channel.subscribed">
                           <span v-if="currentVideo.channel.subscribed">{{ $t('Unsubscribe') }}</span>
                           <span v-else>{{ $t('Subscribe') }}</span>
                         </button>
 
-                        <button v-if="currentVideo.channel.subscribed" type="button" class="btn btn-primary btn-lg" @click="currentVideo.channel.notifications = !currentVideo.channel.notifications">
+                        <button v-if="currentVideo.channel.subscribed" type="button" class="btn btn-primary btn-lg btn-rounded" @click="currentVideo.channel.notifications = !currentVideo.channel.notifications">
                           <font-awesome-icon v-if="currentVideo.channel.notifications" icon="fa-solid fa-bell-slash" />
                           <font-awesome-icon v-else icon="fa-solid fa-bell" />
                         </button>
@@ -289,6 +328,15 @@
         </div>
       </base-modal-vue>
 
+      <!-- TODO: Modal does not show -->
+      <base-modal-test id="share" :show="showShare" size="sm" @close="showShare = false">
+        <div class="row">
+          <div class="col-12">
+            Social
+          </div>
+        </div>
+      </base-modal-test>
+
       <base-modal-vue id="report" :show="showReport" :scrollable="true" :title="$t('Report video')" size="sm" @close="showReport = false">
         <div class="row">
           <div class="col-12">
@@ -322,7 +370,7 @@
       </base-modal-vue>
 
       <base-offcanvas-vue id="playlists" :show="showPlaylists" title="Playlists" position="end" @close="showPlaylists = false">
-        <base-list-group-checkbox id="playlists-group" :items="[{ name: 'Google' }]" />
+        <!-- <base-list-group-checkbox id="playlists-group" :items="[{ name: 'My playlist'}]" /> -->
 
         <button type="button" class="btn btn-md btn-primary mt-2" @click="showPlaylistCreationInput = true">
           <font-awesome-icon icon="fa-solid fa-plus" class="me-2" />
@@ -399,10 +447,14 @@ import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 // import BaseDropGroupVue from '@/layouts/BaseDropGroup.vue'
 
 import BaseVideoPlayerVue from '@/layouts/BaseVideoPlayer.vue'
-import BaseListGroupCheckbox from '@/layouts/bootstrap/listgroups/BaseListGroupCheckbox.vue'
+// import BaseListGroupCheckbox from '@/layouts/bootstrap/listgroups/BaseListGroupCheckbox.vue'
 import BaseScrollbarVue from '@/layouts/BaseScrollbar.vue'
-import BaseDropdownButtonVue from '@/layouts/bootstrap/BaseDropdownButton.vue'
+// import BaseDropdownButtonVue from '@/layouts/bootstrap/BaseDropdownButton.vue'
+import BaseDropdownButton from '@/layouts/bootstrap/buttons/BaseDropdownButton.vue'
+import DropdownMenu from '@/layouts/bootstrap/buttons/DropdownMenu.vue'
+import DropdownItem from '@/layouts/bootstrap/buttons/DropdownItem.vue'
 import BaseModalVue from '@/layouts/BaseModal.vue'
+import BaseModalTest from '@/layouts/bootstrap/BaseModal.vue'
 import BaseOffcanvasVue from '@/layouts/bootstrap/BaseOffcanvas.vue'
 import BaseAccordionVue from '@/layouts/BaseAccordion.vue'
 import BaseSiteVue from '@/layouts/BaseSite.vue'
@@ -416,10 +468,13 @@ export default {
   name: 'LongVideoView',
   components: {
     BaseVideoPlayerVue,
-    BaseDropdownButtonVue,
+    BaseDropdownButton,
+    DropdownItem,
+    DropdownMenu,
     BaseModalVue,
+    BaseModalTest,
     BaseAccordionVue,
-    BaseListGroupCheckbox,
+    // BaseListGroupCheckbox,
     // BaseDropGroupVue,
     BaseOffcanvasVue,
     BaseScrollbarVue,
@@ -446,6 +501,7 @@ export default {
   data: () => ({
     isLoadingRecommendations: true,
 
+    showShare: false,
     showDonationModal: false,
     showPlaylists: false,
     showStore: false,
@@ -466,17 +522,17 @@ export default {
     recommendationLimit: 5,
     cachedRecommendations: [],
 
-    moreButtonOptions: [
-      { name: 'Store', icon: 'store' }, 
-      { name: 'Download', icon: 'download' },
-      { name: 'Save', icon: 'floppy-disk' }, 
-      { name: 'Gift', icon: 'gift' }, 
-      { name: 'Donate', icon: 'money-bill' }, 
-      { name: 'Share', icon: 'share' }, 
-      { name: 'Recommendation', icon: 'star' },
-      { divider: true },
-      { name: 'Report', icon: 'triangle-exclamation' }
-    ],
+    // moreButtonOptions: [
+    //   { name: 'Store', icon: 'store' }, 
+    //   { name: 'Download', icon: 'download' },
+    //   { name: 'Save', icon: 'floppy-disk' }, 
+    //   { name: 'Gift', icon: 'gift' }, 
+    //   { name: 'Donate', icon: 'money-bill' }, 
+    //   { name: 'Share', icon: 'share' }, 
+    //   { name: 'Recommendation', icon: 'star' },
+    //   { divider: true },
+    //   { name: 'Report', icon: 'triangle-exclamation' }
+    // ],
 
     // Channel
     expandCard: false
@@ -544,38 +600,38 @@ export default {
         this.upperLimit = upperLimit
       }
     },
-    dropdownClick (params) {
-      var index = params[0]
-      switch (index) {
-        case 0:
-          this.showStore = true
-          break
+    // dropdownClick (params) {
+    //   var index = params[0]
+    //   switch (index) {
+    //     case 0:
+    //       this.showStore = true
+    //       break
 
-        case 2:
-          this.showPlaylists = true
-          break
+    //     case 2:
+    //       this.showPlaylists = true
+    //       break
 
-        case 3:
-          this.showGifts = true
-          break
+    //     case 3:
+    //       this.showGifts = true
+    //       break
 
-        case 4:
-          this.showDonationModal = true
-          break
+    //     case 4:
+    //       this.showDonationModal = true
+    //       break
 
-        case 6:
-          this.showRecommendationReport = true
-          break
+    //     case 6:
+    //       this.showRecommendationReport = true
+    //       break
 
-        case 7:
-          this.showReport = true
-          break
+    //     case 7:
+    //       this.showReport = true
+    //       break
 
-        default:
-          console.log(index)
-          break
-      }
-    }
+    //     default:
+    //       console.log(index)
+    //       break
+    //   }
+    // }
   }
 }
 </script>

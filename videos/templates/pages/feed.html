@@ -85,11 +85,17 @@
     </script>
 {% endblock %}
 
-{% block vuejs_scripts %}
+{% block vuejs_components %}
     <script>
-        var filterscomponent = {
+        const FiltersComponent = {
             name: "FiltersComponent",
             template: '#filters-component',
+            setup () {
+                const videos = inject('videos')
+                return {
+                    videos
+                }
+            },
             data() {
                 return {
                     clicked: false
@@ -97,18 +103,41 @@
             }
         }
         
-        var videoscomponent = {
+        const VideosComponent = {
             name: "VideosComponent",
-            template: '#videos-component'
+            template: '#videos-component',
+            setup () {
+                const videos = inject('videos')
+                return {
+                    videos
+                }
+            },
         }
 
-        app.component("feed-view", {
+        const FeedView = {
             name: "FeedView",
             template: "#feed-view",
             components: {
-                "videos-component": videoscomponent,
-                "filters-component": filterscomponent
+                "videos-component": VideosComponent,
+                "filters-component": FiltersComponent
+            },
+            setup () {
+                const videos = ref([])
+                provide('videos', videos)
+                return {
+                    videos
+                }
+            },
+            beforeMount () {
+                this.getVideos()
+            },
+            methods: {
+                async getVideos () {
+                    this.videos = JSON.parse('{{ vue_videos }}')
+                }
             }
-        })
+        }
+
+        app.component("feed-view", FeedView)
     </script>
 {% endblock %}

@@ -6,7 +6,7 @@
         <div class="position-sticky">
           <div class="list-group list-group-flush mx-3 mt-4">
             <!-- NOTE: Pass links to props -->
-            <router-link v-for="link in sidebarLinks" :key="link.name" :to="{ name: link.to }" class="list-group-item list-group-item-action" aria-current="true">
+            <router-link v-for="link in sidebarLinks" :key="link.name" :to="{ name: link.to }" class="list-group-item list-group-item-action border-0" aria-current="true">
               <font-awesome-icon :icon="`fa-solid fa-${link.icon}`" class="me-4" />
               {{ $t(link.name) }}
             </router-link>
@@ -52,16 +52,15 @@
 </template>
 
 <script>
-// import BaseFooterVue from './BaseFooter.vue'
-import NavItem from '../layouts/nav/NavItem.vue'
-
+import sidebarLinks from '@/data/sidebar.json'
 // import { provide, ref } from 'vue'
 // import { useDark, useScroll } from '@vueuse/core'
+// import BaseFooterVue from './BaseFooter.vue'
 import { inject, ref } from 'vue'
 import { useScroll } from '@vueuse/core'
 import { scrollToTop } from '@/composables/utils'
 
-import sidebarLinks from '@/data/sidebar.json'
+import NavItem from '../layouts/nav/NavItem.vue'
 
 export default {
   name: 'BaseSite',

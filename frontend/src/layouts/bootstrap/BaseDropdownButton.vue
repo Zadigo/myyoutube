@@ -4,7 +4,7 @@
   <div ref="link" class="dropdown">
     <button :id="id" :class="buttonClasses" :aria-expanded="show" class="btn dropdown-toggle" type="button" @click="toggleShow">
       <!-- <span v-if="icon" :class="{ [`mdi-${icon}`]: true }" class="mdi me-2"></span> -->
-      <font-awesome-icon v-if="icon" :icon="`fa-solid fa-${item.icon}`" class="me-2" />
+      <!-- <font-awesome-icon v-if="icon" :icon="`fa-solid fa-${item.icon}`" class="me-2" /> -->
       {{ buttonName }}
     </button>
 
@@ -57,9 +57,9 @@ export default {
     id: {
       type: String
     },
-    icon: {
-      type: String
-    },
+    // icon: {
+    //   type: String
+    // },
     items: {
       type: Array,
       required: true

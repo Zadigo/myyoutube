@@ -1,11 +1,14 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+
 from donations.validators import donation_validator
 from mychannel.models import UserChannel
 
 MYUSER = get_user_model()
 
 class Donation(models.Model):
+    """Represents a donation to a
+    content creator"""
     user = models.ForeignKey(
         MYUSER, 
         on_delete=models.SET_NULL, 

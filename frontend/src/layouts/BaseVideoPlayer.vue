@@ -153,7 +153,6 @@ export default {
     }
   },
   emits: {
-
     play () {
       return true
     },

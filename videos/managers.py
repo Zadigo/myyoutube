@@ -3,6 +3,7 @@ from django.db.models.expressions import When, Case
 from django.db.models import F
 from django.db.models.fields import BooleanField
 from django.utils.functional import cached_property
+from videos.choices import VisibilityChoices
 
 
 class VideoManager(QuerySet):
@@ -19,6 +20,9 @@ class VideoManager(QuerySet):
                 return 'disliked'
         else:
             return False
+
+    def active_videos(self):
+        return self.filter(visibility=VisibilityChoices.PUBLIC, active=True)
 
 
 class PlaylistManager(QuerySet):

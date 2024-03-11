@@ -1,6 +1,11 @@
 from django.contrib import admin
-from notifications import models
+from notifications.models import Notification
+from accounts.admin import custom_admin
 
-@admin.register(models.Notification)
+
 class NotificationAdmin(admin.ModelAdmin):
-    list_display = ['user', 'created_on']
+    list_display = ['user', 'created_on', 'read']
+    date_hierarchy = 'created_on'
+
+
+custom_admin.register(Notification, NotificationAdmin)

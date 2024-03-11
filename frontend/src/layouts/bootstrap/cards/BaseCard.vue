@@ -1,65 +1,36 @@
 <template>
   <div ref="link" :class="cardClasses" class="card">
+    <!-- Header -->
     <div v-if="hasHeader" class="card-header">
       <slot name="header"></slot>
     </div>
-    <!-- bottom -->
+
+    <!-- Image Top -->
     <img v-if="image && imagePosition === 'top'" :src="image" :alt="imageAlt" :class="imageClasses">
     
     <div v-if="overlay" class="card-img-overlay">
       <slot></slot>
     </div>
+
+    <!-- Body -->
     <div v-else class="card-body">
-      <h5 v-if="title" class="card-title">
-        {{ title }}
-        <!-- <button type="button" class="btn btn-floating bg-white shadow-none" @click="reveal=true">
-          <font-awesome-icon icon="fa-solid fa-ellipsis-vertical" />
-        </button> -->
-      </h5>
+      <h5 v-if="title" class="card-title">{{ title }}</h5>
       <h6 v-if="subtitle" class="card-subtitle mb-2 text-muted">{{ subtitle }}</h6>
+      
       <p class="card-text"><slot name="body"></slot></p>
+      
       <a v-for="(link, i) in links" :key="i" href="#" class="card-link">Card link</a>
     </div>
 
     <slot></slot>
 
+    <!-- Image Bottom -->
     <img v-if="image && imagePosition === 'bottom'" :src="image" :alt="imageAlt" :class="imageClasses">
     
+    <!-- Footer -->
     <div v-if="!overlay && hasFooter" class="card-footer">
       <slot name="footer"></slot>
     </div>
-
-    <!-- <transition name="slide">
-      <div v-show="reveal" class="reveal">
-        <div class="row">
-          <div class="col-12 mb-2">
-            <button type="button" class="btn-close me-auto" @click="reveal=false"></button>
-          </div>
-        </div>
-        <slot name="reveal"></slot>
-      </div>
-    </transition> -->
-
-    <!-- <a class="btn btn-floating btn-primary text-white halfway-fab" href>
-      <font-awesome-icon icon="fa-solid fa-plus" />
-    </a> -->
-
-    <!-- <div class="stats">
-      <div class="one-third">
-        <div class="stat">$20</div>
-        <div class="stat-value">Training</div>
-      </div>
-    
-      <div class="one-third">
-        <div class="stat">16</div>
-        <div class="stat-value">Speed</div>
-      </div>
-    
-      <div class="one-third">
-        <div class="stat">$150</div>
-        <div class="stat-value">Cost</div>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -119,10 +90,12 @@ export default {
   computed: {
     cardClasses () {
       return [
-        this.darkMode ? 'text-bg-dark': null,
-        this.hoverable ? 'hoverable' : null,
-        this.overlay ? 'text-bg-dark': null,
-        this.hasReveal ? 'card-reveal': null
+        {
+          'bg-dark': this.darkMode,
+          'hoverable': this.hoverable,
+          'text-bg-dark': this.overlay,
+          'card-reveal': this.hasReveal
+        }
       ]
     },
     imageClasses () {
@@ -158,6 +131,10 @@ export default {
 </script>
 
 <style scoped>
+.card {
+  position: relative;
+}
+
 .text-bg-dark {
   color: #fff !important;
   background-color: rgba(33, 37, 41, 1, 1) !important;
@@ -213,7 +190,7 @@ export default {
   transition: .3s ease-out;
 }
 
-.card-reveal {
+/* .card-reveal {
   overflow: hidden;
 }
 .reveal {
@@ -226,7 +203,7 @@ export default {
   border-radius: calc(.5rem - 1px);
   z-index: 5;
   padding: 1rem;
-}
+} */
 .slide-enter-active,
 .slide-leave-active {
   transition: all .3s ease-in-out;
