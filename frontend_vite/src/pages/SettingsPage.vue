@@ -30,10 +30,27 @@
 
         <settings-card title="Membership" subtitle="Manage what you share on YouTube" class="card mt-1">
           <template #default>
-            <h2>No subscriptions</h2>
-            <v-btn class="mt-3" rounded="xl" size="x-large" color="warning" flat @click="showSubscriptions = true">
-              Choose a subscription
-            </v-btn>
+            <v-item-group v-model="currentSubscription" selected-class="bg-primary">
+              <v-container>
+                <v-row>
+                  <v-col v-for="subscription in subscriptions" :key="subscription" cols="12" md="4">
+                    <v-item v-slot="{ selectedClass, toggle }">
+                      <v-card :class="[selectedClass]" class="d-flex align-center" height="200" dark @click="toggle">
+                        <div class="text-h5 flex-grow-1 text-center">
+                          {{ subscription }}
+                        </div>
+                      </v-card>
+                    </v-item>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-item-group>
+
+            <div class="text-center">
+              <v-btn :disabled="currentSubscription < 1" class="mt-3" rounded="xl" size="x-large" color="warning" flat @click="showSubscriptions = true">
+                Payment <font-awesome-icon :icon="[ 'fas', 'fa-arrow-right' ]" />
+              </v-btn>
+            </div>
           </template>
         </settings-card>
 
@@ -53,10 +70,35 @@
     </div>
 
     <!-- Modals -->
-    <v-dialog v-model="showSubscriptions" persistent>
+    <v-dialog v-model="showSubscriptions" width="700px" persistent>
       <v-card>
         <v-card-text>
-          Something
+          <!-- <v-stepper v-model="currentPaymentStep" :items="['Address', 'Payment']" model-value="0">
+            <template #item.1>
+              <v-card title="Address" flat>
+                <v-form id="address" @submit.prevent>
+                  <input type="text" autocomplete="address-level1">
+                  <v-text-field autocomplete="address-level1"></v-text-field>
+                </v-form>
+              </v-card>
+            </template>
+
+            <template #:item.2>
+              <v-card title="Payment" flat>
+                <v-form id="paymment" @submit.prevent>
+                  <div id="payment">
+                    <v-text-field placeholder="Card number" aria-placeholder="Card number" autocomplete="cc-number" variant="outlined"></v-text-field>
+
+                    <div class="d-flex justify-content-between gap-2">
+                      <v-text-field autocomplete="cc-exp-month" placeholder="Expiry month" variant="outlined"></v-text-field>
+                      <v-text-field autocomplete="cc-exp-year" placeholder="Expiry year" variant="outlined"></v-text-field>
+                      <v-text-field autocomplete="cc-csc" placeholder="CVV" variant="outlined"></v-text-field>
+                    </div>
+                  </div>
+                </v-form>
+              </v-card>
+            </template>
+          </v-stepper> -->
         </v-card-text>
 
         <v-card-actions>
@@ -79,6 +121,12 @@
 import { ref } from 'vue'
 import SettingsCard from '../components/settings/SettingsCard.vue'
 
+const subscriptions = [
+  'Free',
+  'YouTube+',
+  'YouTube++'
+]
+
 export default {
   components: {
     SettingsCard
@@ -86,7 +134,12 @@ export default {
   setup () {
     const professionalAccount = ref(false)
     const showSubscriptions = ref(false)
+    const currentSubscription = ref(0)
+    const currentPaymentStep= ref(1)
     return {
+      currentPaymentStep,
+      currentSubscription,
+      subscriptions,
       professionalAccount,
       showSubscriptions
     }

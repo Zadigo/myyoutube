@@ -13,7 +13,7 @@ const routes = [
         component: async () => import('../pages/FeedPage.vue')
       },
       {
-        path: 'video/:id(vd_\\w+)',
+        path: 'video/:id(vid_[a-zA-Z]+)',
         name: 'video_details',
         meta: {
           requiresAuthentication: false,
@@ -22,13 +22,22 @@ const routes = [
         component: async () => import('../pages/VideoPage.vue')
       },
       {
+        path: 'channel/:id(ch_[a-zA-Z0-9]+)',
+        name: 'channel_details',
+        meta: {
+          requiresAuthentication: false,
+          requiresNav: true
+        },
+        component: async () => import('../pages/ChannelPage.vue')
+      },
+      {
         path: 'playlists',
         name: 'playlists',
         meta: {
           requiresAuthentication: true,
           requiresNav: true
         },
-        component: async () => import('../pages/FeedPage.vue')
+        component: async () => import('../pages/PlaylistsPage.vue')
       },
       {
         path: 'notifications',
