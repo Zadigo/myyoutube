@@ -16,8 +16,9 @@ def get_videos(request, **kwargs):
 
 
 @api_view(['post'])
-def get_video(request, reference, **kwargs):
-    video = get_object_or_404(models.Video, reference=reference)
+def get_video(request, video_id, **kwargs):
+    """Get the details for the current video"""
+    video = get_object_or_404(models.Video, video_id=video_id)
     serializer = serializers.VideoSerializer(instance=video)
     return Response(serializer.data)
 

@@ -1,10 +1,12 @@
 import calendar
 
 from django.db.models import Q
-from django.db.models.functions import ExtractDay, ExtractMonth, ExtractYear, ExtractWeek
+from django.db.models.functions import (ExtractDay, ExtractMonth, ExtractWeek,
+                                        ExtractYear)
 from django.utils.timezone import now
 from rest_framework import fields
 from rest_framework.serializers import Serializer
+
 from accounts.api.serializers import UserSerializer
 from mychannel.serializers import ChannelPlaylistSerializer, ChannelSerializer
 from videos import choices
@@ -12,7 +14,8 @@ from videos import choices
 
 class VideoSerializer(Serializer):
     id = fields.IntegerField()
-    reference = fields.CharField()
+    title = fields.CharField()
+    video_id = fields.CharField()
     user_channel = ChannelSerializer()
     video = fields.FileField()
     channel_playlist = ChannelPlaylistSerializer()

@@ -84,11 +84,11 @@
           <hr class="text-body-tertiary">
 
           <!-- Comment Actions -->
-          <user-comment-actions />
+          <user-comment-actions @new-comment="handleNewComment" />
 
           <!-- Comments -->
           <transition-group id="comments" tag="div">
-            <user-comment v-for="comment in comments" :key="comment" :comment="{}" />
+            <user-comment v-for="comment in comments" :key="comment.id" :comment="comment" />
           </transition-group>
         </div>
       </div>
@@ -238,7 +238,7 @@ export default {
     const showClassificationDrawer = ref(false)
     const showReportModal = ref(false)
     const showGiftsModal = ref(false)
-    const comments = ref([1, 2, 3])
+    const comments = ref([{}, {}, {}])
 
     provide('currentVideo', currentVideo)
 
@@ -257,13 +257,35 @@ export default {
   },
   methods: {
     async requestVideoDetails () {
+      // Get all the details to display the
+      // video correctly to the user
       try {
         const videoID = this.$route.params.id
         const response = await this.$client.post(`/videos/detail/${videoID}`)
         this.currentVideo = response.data
+
+        setTimeout(() => {
+          this.requestVideoComments()
+        }, 2000);
       } catch (e) {
         console.log(e)
       }
+    },
+    async requestVideoComments () {
+      // Get all the comments for the current video
+      // in a delayed manner for performance optimization
+      try {
+        const videoID = this.$route.params.id
+        const response = await this.$client.get(`/comments/${videoID}`)
+        this.comments = response.data
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    handleNewComment (comment) {
+      // Append the newly created comment at the
+      // start of the current comment list
+      this.comments.unshift(comment)
     },
     mediaPath (path) {
       if (path) {

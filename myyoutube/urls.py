@@ -1,14 +1,15 @@
 import debug_toolbar
-
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from myadmin.sites import custom_admin
 from django.urls import include, path
+
+from myadmin.sites import custom_admin
 
 urlpatterns = [
     path('__debug__/', include(debug_toolbar.urls)),
 
+    path('api/v1/comments/', include('comments.api.urls')),
     path('api/v1/accounts/', include('accounts.api.urls')),
     path('api/v1/channels/', include('mychannel.api_urls')),
     path('api/v1/videos/', include('videos.api.urls')),

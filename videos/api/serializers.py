@@ -12,7 +12,7 @@ from mychannel.serializers import ChannelPlaylistSerializer, ChannelSerializer
 
 class VideoSerializer(Serializer):
     id = fields.IntegerField()
-    reference = fields.CharField()
+    video_id = fields.CharField()
     user_channel = ChannelSerializer()
     video = fields.FileField()
     channel_playlist = ChannelPlaylistSerializer()

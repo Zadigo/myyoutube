@@ -15,7 +15,7 @@ const client = axios.create({
   timeout: 10000
 })
 
-client.defaults.headers.common['content-type'] = 'application/json'
+// client.defaults.headers.common['Content-Type'] = 'application/json'
 
 client.interceptors.request.use(
   request => {

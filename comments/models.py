@@ -29,7 +29,13 @@ class Comment(AbstractComment):
         ordering = ['-created_on']
 
     def __str__(self):
-        return self.user.username
+        return f'Comment: {self.user}'
+    
+    @property
+    def number_of_replies(self):
+        """Returns the number of replies
+        for the given comment"""
+        return self.reply_set.count()
 
 
 class Reply(AbstractComment):
@@ -43,4 +49,4 @@ class Reply(AbstractComment):
         ordering = ['-created_on']
 
     def __str__(self):
-        return self.user.username
+        return f'Reply: {self.user}'
