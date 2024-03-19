@@ -76,12 +76,26 @@ const routes = [
       },
       {
         path: 'my-studio',
-        name: 'my_studio',
-        meta: {
-          requiresAuthentication: true,
-          requiresNav: true
-        },
-        component: async () => import('../pages/StudioPage.vue')
+        children: [
+          {
+            path: '',
+            name: 'my_studio',
+            meta: {
+              requiresAuthentication: true,
+              requiresNav: true
+            },
+            component: async () => import('../pages/StudioPage.vue')
+          },
+          {
+            path: 'videos/:id',
+            name: 'edit_my_studio_video',
+            meta: {
+              requiresAuthentication: true,
+              requiresNav: true
+            },
+            component: async () => import('../pages/studio/EditVideoPage.vue')
+          }
+        ]
       },
       {
         path: 'settings',

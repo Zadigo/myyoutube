@@ -6,7 +6,8 @@ from videos.api import views
 app_name = 'videos_api'
 
 urlpatterns = [
-    re_path(r'^detail/(?P<reference>vid_[a-zA-Z]+)$', api_views.get_video),
+    re_path(r'^studio/videos', views.ListUserVideos.as_view()),
+    re_path(r'^detail/(?P<video_id>vid_[a-zA-Z0-9]+)$', api_views.get_video),
     re_path(r'^search$', api_views.search_videos),
     re_path(r'^viewing-profile', views.ViewingProfile.as_view()),
     re_path(r'^list$', api_views.get_videos)

@@ -1,16 +1,18 @@
+from django.contrib import admin, messages
+from django.utils.translation import gettext_lazy as _
+
 from accounts.admin import custom_admin
-from django.contrib import admin
+from myyoutube.utils import create_id
+from videos.models import (Playlist, PreferredAd, PreferredCategory,
+                           Subscription, Tag, Video, ViewingProfile)
 
-from videos.models import Video, Tag, Playlist, ViewingProfile, PreferredAd, PreferredCategory, Subscription
 
-
-# @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
     list_display = ['title', 'category', 'visibility', 'created_on']
     search_fields = ['title', 'category', 'visibility']
     date_hierarchy = 'created_on'
-    readonly_fields = ['reference']
-    actions = ['activate', 'deactivate']
+    readonly_fields = ['video_id']
+    actions = ['activate', 'deactivate', 'generate_video_ids']
 
     def activate(self, queryset):
         return queryset.update(active=True)
@@ -18,14 +20,23 @@ class VideoAdmin(admin.ModelAdmin):
     def deactivate(self, queryset):
         return queryset.update(active=False)
 
-# @admin.register(Tag)
+    def generate_video_ids(self, request, queryset):
+        # if queryset.count() > 1:
+        #     messages.error(request, 'Only select one video', fail_silently=True)
+        #     return False
+
+        for video in queryset:
+            video.video_id = create_id('vid')
+            video.save()
+
+        message = _(f"Changed the id for {queryset.count()} videos")
+        messages.success(request, message)
 
 
 class TagAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
-# @admin.register(Playlist)
 class PlaylistAdmin(admin.ModelAdmin):
     list_display = ['name', 'user', 'visibility', 'created_on']
     search_fields = ['name', 'user__username', 'visibility']

@@ -15,14 +15,7 @@
             <v-btn disabled>Something</v-btn>
           </div>
 
-          <p>
-            I can’t stop smiling. I once “borrowed “ my brother’s shoes
-            and accidentally ran into him and his friends. The whole time i
-            was talking to them his eyes were laser focused on the shoes. I
-            tried cutting the conversation short but at some point he leaned
-            closer and went “ is that my shoes“. He roasted me but it was all
-            lighthearted and fun. I can totally relate to the sisters
-          </p>
+          <p>{{ comment.content }}</p>
 
           <div class="my-3">
             <div class="badge badge-danger me-1">@creator</div>
@@ -48,8 +41,8 @@
             </v-btn>
           </div>
 
-          <v-btn rounded="xl" color="secondary" variant="text" class="mt-3" @click="showReplies = !showReplies">
-            Voir 2 commentaires
+          <v-btn v-if="hasReplies" rounded="xl" color="secondary" variant="text" class="mt-3" @click="showReplies = !showReplies">
+            Voir {{ comment.number_of_replies }} commentaires
           </v-btn>
 
           <!-- Replies -->
@@ -65,7 +58,8 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref } from 'vue'
+// import dayjs from '../../plugins/dayjs'
 import UserReply from './UserReply.vue'
 
 export default {
@@ -85,6 +79,12 @@ export default {
 
     return {
       showReplies
+    }
+  },
+  computed: {
+    hasReplies () {
+      // Checks if the comment has replies
+      return this.comment.number_of_replies >= 1
     }
   }
 }

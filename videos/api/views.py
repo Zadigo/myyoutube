@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import APIView, api_view
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
-
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from videos import models, serializers
 from videos.choices import VisibilityChoices
 
@@ -53,4 +53,18 @@ class ViewingProfile(APIView):
         serializer.save()
 
         serializer = self.serializer_class(instance=profile)
+        return Response(serializer.data)
+
+
+class ListUserVideos(APIView):
+    """Use this view for maniapulating data or actions
+    on the `/my-studio` endpoint of the frontend"""
+
+    http_method_names = ['get', 'post']
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.VideoSerializer
+
+    def get(self, request, *args, **kwargs):
+        videos = models.Video.objects.filter(user=request.user)
+        serializer = self.serializer_class(instance=videos, many=True)
         return Response(serializer.data)

@@ -4,7 +4,8 @@ import os
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models.signals import post_delete, post_save, pre_delete
+from django.db.models.signals import (post_delete, post_save, pre_delete,
+                                      pre_save)
 from django.dispatch import receiver
 from django.shortcuts import reverse
 from django.utils import timezone
@@ -12,6 +13,7 @@ from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 
 from mychannel.models import ChannelPlaylist, UserChannel
+from myyoutube.utils import create_id
 from videos import choices
 from videos.choices import (CategoryChoices, CommentingStrategy,
                             LanguageChoices, VisibilityChoices)
@@ -67,7 +69,7 @@ class Video(models.Model):
         MYUSER,
         on_delete=models.CASCADE
     )
-    reference = models.CharField(
+    video_id = models.CharField(
         max_length=15,
         blank=True,
         unique=True
@@ -98,7 +100,7 @@ class Video(models.Model):
         default=CategoryChoices.ENTERTAINMENT
     )
     tags = models.ManyToManyField(
-        Tag, 
+        Tag,
         blank=True
     )
     visibility = models.CharField(
@@ -269,6 +271,12 @@ class ViewingProfile(models.Model):
 
     def __str__(self):
         return f'Viewing profile: {self.user}'
+
+
+@receiver(pre_save, sender=Video)
+def create_video_id(instance, **kwargs):
+    if instance.video_id is None:
+        instance.video_id = create_id('vid')
 
 
 @receiver(post_delete, sender=Video)
