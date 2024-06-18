@@ -84,7 +84,16 @@ const routes = [
               requiresAuthentication: true,
               requiresNav: true
             },
-            component: async () => import('../pages/StudioPage.vue')
+            component: async () => import('../pages/studio/HomePage.vue')
+          },
+          {
+            path: 'upload',
+            name: 'my_studio_upload',
+            meta: {
+              requiresAuthentication: true,
+              requiresNav: true
+            },
+            component: async () => import('../pages/studio/UploadPage.vue')
           },
           {
             path: 'videos/:id',
