@@ -1,5 +1,6 @@
 from django.db.models import Choices
 
+
 class VisibilityChoices(Choices):
     PUBLIC = 'Public'
     PRIVATE = 'Private'
@@ -17,6 +18,7 @@ class CategoryChoices(Choices):
 class LanguageChoices(Choices):
     FRENCH = 'French'
     ENGLISH = 'English'
+    OTHER = 'Other'
 
 
 class CommentingStrategy(Choices):

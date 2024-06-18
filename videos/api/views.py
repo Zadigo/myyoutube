@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.decorators import APIView, api_view
+from rest_framework.decorators import APIView, api_view, permission_classes
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
@@ -91,3 +91,12 @@ class ListUserVideos(APIView):
         videos = models.Video.objects.filter(user=request.user)
         serializer = self.serializer_class(instance=videos, many=True)
         return Response(serializer.data)
+
+
+@api_view(['post'])
+@permission_classes([IsAuthenticated])
+def upload_video(request, **kwargs):
+    serializer = serializers.ValidateVideoUpload(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save(request)
+    return Response(serializer.data)
