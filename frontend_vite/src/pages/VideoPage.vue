@@ -15,50 +15,34 @@
     </section>
 
     <section class="row mt-4">
+      <!-- Comments -->
       <div class="col-8">
-        <div class="card">
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-              <h2 class="h4 m-0">6,909 Comments</h2>
+        <suspense>
+          <template #default>
+            <comment-section />
+          </template>
 
-              <v-menu>
-                <template #activator="{ props }">
-                  <v-btn v-bind="props" rounded="xl" color="primary" flat>
-                    <font-awesome-icon :icon="['fas', 'fa-sort']" class="me-3" />
-                    Sort
-                  </v-btn>
-                </template>
-
-                <v-list>
-                  <v-list-item v-for="sortAction in sortActions" :key="sortAction">
-                    <v-list-item-title>{{ sortAction }}</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </div>
-          </div>
-
-          <hr class="text-body-tertiary">
-
-          <!-- Comment Actions -->
-          <user-comment-actions @new-comment="handleNewComment" />
-
-          <!-- Comments -->
-          <transition-group id="comments" tag="div">
-            <user-comment v-for="comment in comments" :key="comment.id" :comment="comment" />
-          </transition-group>
-        </div>
+          <template #fallback>
+            Google
+          </template>
+        </suspense>
       </div>
 
       <!-- Recommendations -->
       <div class="col-4">
         <div class="card">
-          <div class="card-body"></div>
+          <div class="card-body">
+            Filters
+          </div>
         </div>
 
         <suspense>
           <template #default>
             <recommendation-section />
+          </template>
+
+          <template #fallback>
+            Google
           </template>
         </suspense>
       </div>
@@ -176,24 +160,19 @@ import { storeToRefs } from 'pinia'
 import reportTypes from '../data/report_types.json'
 
 import BaseVideoPlayer from '../components/BaseVideoPlayer.vue'
-import UserComment from '../components/video/UserComment.vue'
 import UserVideoActions from '../components/video/UserVideoActions.vue'
-import UserCommentActions from '../components/video/UserCommentActions.vue'
 import VideoInformation from 'src/components/video/VideoInformation.vue'
-
-const sortActions = [
-  'Newest',
-  'Oldest'
-]
 
 export default {
   name: 'VideoPage',
   components: {
     BaseVideoPlayer,
-    UserComment,
-    UserCommentActions,
     UserVideoActions,
     VideoInformation,
+    CommentSection: defineAsyncComponent({
+      loader: () => import('src/components/video/AsyncCommentSection.vue'),
+      delay: 600
+    }),
     RecommendationSection: defineAsyncComponent({
       loader: () => import('src/components/video/UserRecommendations.vue')
     })
@@ -205,18 +184,15 @@ export default {
     const showClassificationDrawer = ref(false)
     const showReportModal = ref(false)
     const showGiftsModal = ref(false)
-    const comments = ref([{}, {}, {}])
 
     provide('currentVideo', currentVideo)
 
     return {
       currentVideo,
-      comments,
       reportTypes,
       showGiftsModal,
       showClassificationDrawer,
-      showReportModal,
-      sortActions
+      showReportModal
     }
   },
   mounted () {
@@ -230,34 +206,13 @@ export default {
         const videoID = this.$route.params.id
         const response = await this.$client.post(`/videos/detail/${videoID}`)
         this.currentVideo = response.data
-
-        setTimeout(() => {
-          this.requestVideoComments()
-        }, 2000)
       } catch (e) {
         console.log(e)
       }
-    },
-    async requestVideoComments () {
-      // Get all the comments for the current video
-      // in a delayed manner for performance optimization
-      try {
-        const videoID = this.$route.params.id
-        const response = await this.$client.get(`/comments/${videoID}`)
-        this.comments = response.data
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    handleNewComment (comment) {
-      // Append the newly created comment at the
-      // start of the current comment list
-      this.comments.unshift(comment)
     },
     mediaPath (path) {
       if (path) {
         const instance = new URL(path, import.meta.env.VITE_ROOT_DEVELOPMENT_URL)
-        console.log(instance.toString())
         return instance.toString()
       } else {
         return ''

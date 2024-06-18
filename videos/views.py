@@ -1,3 +1,4 @@
+import json
 import uuid
 
 from django.contrib import messages
@@ -6,15 +7,14 @@ from django.db import transaction
 from django.http import Http404
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
 from django.views.generic import DetailView, ListView
+
+from videos.api.serializers import VideoSerializer
 from videos.choices import VisibilityChoices
 from videos.models import Playlist, Video
-from videos.serializers import VideoSerializer
-
-import json
-from django.utils.safestring import mark_safe
 
 
 class FeedMixin(ListView):

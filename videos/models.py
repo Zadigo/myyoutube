@@ -191,10 +191,6 @@ class Video(models.Model):
     def __str__(self):
         return f'Video: {self.title}'
 
-    def clean(self):
-        if not self.reference:
-            self.reference = f'vid_{get_random_string(5)}'
-
     def get_absolute_url(self):
         return reverse('videos:detail', args=[self.reference])
 

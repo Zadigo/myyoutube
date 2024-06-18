@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from mychannel import models, serializers
-from videos import serializers as videos_serializers
+from videos.api import serializers as videos_serializers
 
 
 def get_channel(request, reference):

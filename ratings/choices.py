@@ -10,3 +10,7 @@ class RatingFor(Choices):
     VIDEO = 'Video'
     REPLY = 'Reply'
     
+
+class SubscriptionModes(Choices):
+    ALL = 'All'
+    NONE = 'None'

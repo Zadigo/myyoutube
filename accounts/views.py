@@ -1,6 +1,4 @@
 
-from accounts import forms
-from accounts.models import ActivationToken
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.tokens import default_token_generator
@@ -13,7 +11,10 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.cache import never_cache
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import FormView, RedirectView, View
+
+from accounts import forms
 from accounts.mixins import EmailMixin
+from accounts.models import ActivationToken
 
 USER_MODEL = get_user_model()
 
@@ -49,6 +50,7 @@ class SignupView(EmailMixin, FormView):
 @method_decorator(sensitive_post_parameters('password'), name='dispatch')
 class LoginView(EmailMixin, FormView):
     """Login user"""
+
     form_class = forms.UserLoginForm
     template_name = 'pages/registration/login.html'
     success_url = '/'
@@ -110,7 +112,7 @@ class ForgotPasswordResetView(FormView):
         uid = self.kwargs['uidb64']
         token = self.kwargs['token']
         user = get_object_or_404(
-            USER_MODEL, 
+            USER_MODEL,
             id=urlsafe_base64_decode(uid).decode()
         )
         if not default_token_generator.check_token(user, token):
@@ -130,6 +132,7 @@ class ForgotPasswordResetView(FormView):
 
 class ActivateAccountView(EmailMixin, View):
     """Activate account"""
+
     def get(self, request, token, *args, **kwargs):
         context = {'is_active': False}
         token_object = get_object_or_404(ActivationToken, token=token)

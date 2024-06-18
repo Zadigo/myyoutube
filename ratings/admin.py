@@ -1,13 +1,11 @@
 from django.contrib import admin
 
-from ratings.models import Rating
-
 from accounts.admin import custom_admin
-# @admin.register(Rating)
+from ratings.models import Rating
 
 
 class RatingsAdmin(admin.ModelAdmin):
-    list_display = ['rating_type', 'video', 'created_on']
+    list_display = ['video', 'rating_type', 'created_on']
     search_fields = ['video__title', 'video__category']
     date_hierarchy = 'created_on'
 
