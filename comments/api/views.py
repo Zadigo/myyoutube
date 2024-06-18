@@ -12,8 +12,14 @@ from videos.models import Video
 @api_view(['get'])
 def list_comments(request, video_id, **kwargs):
     """Return all the comments from the current video"""
+    sort_descending = request.GET.get('desc', 'true')
     video = get_object_or_404(Video, video_id=video_id)
-    comments = video.comment_set.all()
+    
+    fields = ['-id', '-created_on']
+    if sort_descending != 'true':
+        fields = ['id', 'created_on']
+    comments = video.comment_set.order_by(*fields)
+
     serializer = serializers.CommentSerializer(
         instance=comments,
         many=True
@@ -31,6 +37,10 @@ def create_comment(request, video_id, **kwargs):
     video = get_object_or_404(Video, video_id=video_id)
     comment = serializer.save(request, video)
 
+    if request.user == video.user:
+        comment.from_creator = True
+        comment.save()
+
     # notification = Notification.objects.create()
 
     serializer = serializers.CommentSerializer(instance=comment)
@@ -46,10 +56,14 @@ def create_reply(request, comment_id, **kwargs):
     reply = serializer.save()
 
     comment = get_object_or_404(Comment, comment_id=comment_id)
-    comment.reply_set.create(
+    reply = comment.reply_set.create(
         user=request.user,
         content=None
     )
+
+    if request.user == comment.video.user:
+        reply.from_creator = True
+        reply.save()
 
     serializer = serializers.ReplySerializer(instance=reply)
     return Response(serializer.data)

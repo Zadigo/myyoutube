@@ -1,12 +1,11 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import APIView, api_view
-from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from videos import models
 from videos.api import serializers
-from videos.choices import VisibilityChoices
 
 
 @api_view(['post'])
@@ -27,10 +26,15 @@ def get_videos(request, **kwargs):
 @api_view(['post'])
 def get_video(request, video_id, **kwargs):
     """Returns the details for a specific given video"""
-    video = get_object_or_404(models.Video, video_id=video_id)
+    video = get_object_or_404(
+        models.Video,
+        video_id=video_id,
+    )
 
-    if not video.active or not video.visibility != 'Public':
-        return Response({}, status=404)
+    if not video.active or video.visibility == 'Private':
+        raise PermissionDenied(detail={
+            'video': 'Is not active or Private'
+        })
 
     serializer = serializers.VideoSerializer(instance=video)
     return Response(serializer.data)
@@ -44,7 +48,7 @@ def search_videos(request, **kwargs):
         visibility='Public'
     )
     serializer = serializers.SearchSerializer(
-        instance=queryset, 
+        instance=queryset,
         data=request.data
     )
     serializer.is_valid(raise_exception=True)
@@ -80,7 +84,7 @@ class ListUserVideos(APIView):
     on the `/my-studio` endpoint of the frontend"""
 
     http_method_names = ['get', 'post']
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser, IsAuthenticated]
     serializer_class = serializers.VideoSerializer
 
     def get(self, request, *args, **kwargs):

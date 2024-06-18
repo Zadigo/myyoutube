@@ -13,8 +13,10 @@
           </template>
 
           <v-list>
-            <v-list-item v-for="sortAction in sortActions" :key="sortAction">
-              <v-list-item-title>{{ sortAction }}</v-list-item-title>
+            <v-list-item v-for="sortAction in sortActions" :key="sortAction" @click="handleSortComments(sortAction)">
+              <v-list-item-title>
+                {{ sortAction }}
+              </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -46,7 +48,6 @@ const sortActions = [
   'Oldest'
 ]
 
-
 export default {
   name: 'AsyncCommentSection',
   components: {
@@ -56,13 +57,18 @@ export default {
   async setup () {
     const route = useRoute()
     const comments = ref([])
+    const queryParams = ref({
+      desc: true
+    })
     
     async function requestVideoComments () {
       // Get all the comments for the current video
       // in a delayed manner for performance optimization
       try {
         const videoID = route.params.id
-        const response = await client.get(`/comments/${videoID}`)
+        const response = await client.get(`/comments/${videoID}`, {
+          params: queryParams.value
+        })
         comments.value = response.data
       } catch (e) {
         console.log(e)
@@ -82,7 +88,9 @@ export default {
       comments,
       pinnedComments,
       unpinnedComments,
-      sortActions
+      queryParams,
+      sortActions,
+      requestVideoComments
     }
   },
   methods: {
@@ -90,6 +98,17 @@ export default {
       // Append the newly created comment by implementing it
       // at the start of the current comment list
       this.comments.unshift(comment)
+    },
+    async handleSortComments (method) {
+      if (method === 'Newest') {
+        this.queryParams.desc = true
+      }
+        
+      if (method === 'Oldest') {
+        this.queryParams.desc = false
+      }
+
+      await this.requestVideoComments()
     }
   }
 }

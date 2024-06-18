@@ -17,6 +17,7 @@ USER_MODEL = get_user_model()
 
 class MediaView(models.Model):
     """Collects the views for a given video"""
+    
     reference = models.CharField(
         max_length=100,
         help_text=_('Unique reference for the view'),
