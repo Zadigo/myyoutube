@@ -12,6 +12,7 @@ from mychannel.serializers import ChannelPlaylistSerializer, ChannelSerializer
 from videos import choices
 from videos.api import validators
 from videos.models import Video
+from videos.processing import get_video_metadata
 
 
 
@@ -180,9 +181,16 @@ class ValidateVideoUpload(Serializer):
         if validated_data['recording_date'] is None:
             validated_data['recording_date'] = now().date()
 
-        # instance = Video.objects.create(
-        #     user=request.user,
-        #     **validated_data
-        # )
-        instance = Video.objects.first()
+        instance = Video.objects.create(
+            user=request.user,
+            **validated_data
+        )
+
+        details = get_video_metadata(instance.video.path)
+        instance.duration = details.duration
+        instance.width = details.size[0]
+        instance.height = details.size[1]
+        instance.framerate = details.framerate
+        instance.save()
+        
         return instance

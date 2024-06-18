@@ -5,6 +5,7 @@ from accounts.admin import custom_admin
 from myyoutube.utils import create_id
 from videos.models import (Playlist, PreferredAd, PreferredCategory,
                            Subscription, Tag, Video, ViewingProfile)
+from videos.processing import get_video_metadata
 
 
 class VideoAdmin(admin.ModelAdmin):
@@ -12,7 +13,17 @@ class VideoAdmin(admin.ModelAdmin):
     search_fields = ['title', 'category', 'visibility']
     date_hierarchy = 'created_on'
     readonly_fields = ['video_id']
-    actions = ['activate', 'deactivate', 'generate_video_ids']
+    actions = ['activate', 'deactivate',
+               'generate_video_ids', 'get_metadata']
+
+    def get_metadata(self, request, queryset):
+        for item in queryset:
+            details = get_video_metadata(item.video.path)
+            item.width = details.size[0]
+            item.height = details.size[1]
+            item.framerate = details.framerate
+            item.duration = details.duration
+            item.save()
 
     def activate(self, queryset):
         return queryset.update(active=True)

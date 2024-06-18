@@ -40,15 +40,15 @@ class Playlist(models.Model):
     """Represents a user's playlist"""
 
     user = models.ForeignKey(
-        MYUSER, 
-        on_delete=models.CASCADE, 
+        MYUSER,
+        on_delete=models.CASCADE,
         blank=True
     )
     name = models.CharField(
         max_length=50
     )
     videos = models.ManyToManyField(
-        'Video', 
+        'Video',
         blank=True
     )
     visibility = models.CharField(
@@ -149,6 +149,18 @@ class Video(models.Model):
         blank=True,
         null=True
     )
+    framerate = models.FloatField(
+        default=0
+    )
+    duration = models.FloatField(
+        default=0
+    )
+    width = models.PositiveIntegerField(
+        default=0
+    )
+    height = models.PositiveIntegerField(
+        default=0
+    )
     views = models.PositiveIntegerField(
         default=0
     )
@@ -183,6 +195,14 @@ class Video(models.Model):
                 name='active_and_visible_videos',
                 condition=(
                     models.Q(visibility=True) &
+                    models.Q(active=True)
+                )
+            ),
+            models.Index(
+                fields=['duration'],
+                name='less_than_ten_minutes',
+                condition=(
+                    models.Q(duration__lte=10) &
                     models.Q(active=True)
                 )
             )
@@ -302,7 +322,7 @@ class ViewingProfile(models.Model):
 
 @receiver(pre_save, sender=Video)
 def create_video_id(instance, **kwargs):
-    if instance.video_id is None:
+    if not instance.video_id:
         instance.video_id = create_id('vid')
 
 
