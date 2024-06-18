@@ -98,5 +98,6 @@ class ListUserVideos(APIView):
 def upload_video(request, **kwargs):
     serializer = serializers.ValidateVideoUpload(data=request.data)
     serializer.is_valid(raise_exception=True)
-    serializer.save(request)
-    return Response(serializer.data)
+    video = serializer.save(request)
+    return_serializer = serializers.VideoSerializer(instance=video)
+    return Response(return_serializer.data)

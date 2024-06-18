@@ -1,5 +1,22 @@
-import cv2
+import dataclasses
 import pathlib
+
+import cv2
+from moviepy.editor import VideoFileClip
+
+
+@dataclasses.dataclass
+class VideoDetails:
+    duration: float
+    size: list
+    framerate: float = None
+
+
+def get_video_metadata(path):
+    video = VideoFileClip(path)
+    details = VideoDetails(video.duration, video.size)
+    details.framerate = video.fps
+    return details
 
 
 def get_video_frames(path, k=2):
