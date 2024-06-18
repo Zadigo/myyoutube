@@ -7,9 +7,12 @@ from rest_framework import fields
 from rest_framework.serializers import Serializer
 
 from accounts.api.serializers import UserSerializer
+from mychannel.models import UserChannel
 from mychannel.serializers import ChannelPlaylistSerializer, ChannelSerializer
 from videos import choices
 from videos.api import validators
+from videos.models import Video
+
 
 
 class VideoSerializer(Serializer):
@@ -116,4 +119,70 @@ class ValidateViewingProfile(Serializer):
         setattr(instance, 'account_type', validated_data['account_type'])
         setattr(instance, 'night_mode', validated_data['night_mode'])
         instance.save()
+        return instance
+
+
+class ValidateVideoUpload(Serializer):
+    video = fields.FileField(
+        validators=[validators.validate_file]
+    )
+    title = fields.CharField(
+        validators=[validators.validate_video_title]
+    )
+    description = fields.CharField()
+    age_restricted = fields.BooleanField(
+        default=False
+    )
+    category = fields.ChoiceField(
+        choices.CategoryChoices.choices,
+        default=choices.CategoryChoices.ENTERTAINMENT
+    )
+    # tags = fields.JSONField()
+    recording_date = fields.DateTimeField(
+        allow_null=True
+    )
+    recording_location = fields.CharField(
+        allow_null=True
+    )
+    recording_language = fields.ChoiceField(
+        choices.LanguageChoices.choices,
+        default=choices.LanguageChoices.FRENCH
+    )
+    comment_strategy = fields.ChoiceField(
+        choices.CommentingStrategy.choices,
+        default=choices.CommentingStrategy.ALLOW_ALL_COMMENTS
+    )
+    ratings_are_visible = fields.BooleanField(
+        default=True
+    )
+    channel_playlist = fields.CharField(
+        allow_null=True
+    )
+    visibility = fields.ChoiceField(
+        choices.VisibilityChoices.choices,
+        default=choices.VisibilityChoices.PUBLIC
+    )
+
+    def save(self, request, **kwargs):
+        setattr(self, '_request', request)
+        return super().save(**kwargs)
+
+    def create(self, validated_data):
+        request = getattr(self, '_request')
+
+        channel = UserChannel.objects.get(user=request.user)
+        queryset = channel.channelplaylist_set.filter(
+            name=validated_data['channel_playlist']
+        )
+        if queryset.exists():
+            validated_data['channel_playlist'] = queryset.get()
+
+        if validated_data['recording_date'] is None:
+            validated_data['recording_date'] = now().date()
+
+        # instance = Video.objects.create(
+        #     user=request.user,
+        #     **validated_data
+        # )
+        instance = Video.objects.first()
         return instance
