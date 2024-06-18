@@ -9,14 +9,17 @@ USER_MODEL = get_user_model()
 
 class AbstractComment(models.Model):
     video = models.ForeignKey(
-        Video, 
+        Video,
         on_delete=models.CASCADE
     )
     user = models.ForeignKey(
-        USER_MODEL, 
+        USER_MODEL,
         on_delete=models.CASCADE
     )
     content = models.TextField(max_length=500)
+    # to_be_reviewed = models.BooleanField(
+    #     default=False
+    # )
     from_creator = models.BooleanField(
         default=False,
         help_text=_('Comment written by the content creator')
@@ -37,10 +40,17 @@ class Comment(AbstractComment):
 
     class Meta:
         ordering = ['-created_on']
+        # indexes = [
+        #     models.Index(
+        #         fields=['to_be_reviewed'],
+        #         name='comments_to_be_reviewed',
+        #         condition=models.Q(to_be_reviewed=True)
+        #     )
+        # ]
 
     def __str__(self):
         return f'Comment: {self.user}'
-    
+
     @property
     def number_of_replies(self):
         """Returns the number of replies
@@ -57,6 +67,13 @@ class Reply(AbstractComment):
         verbose_name = _('reply')
         verbose_name_plural = _('replies')
         ordering = ['-created_on']
+        # indexes = [
+        #     models.Index(
+        #         fields=['to_be_reviewed'],
+        #         name='comments_to_be_reviewed',
+        #         condition=models.Q(to_be_reviewed=True)
+        #     )
+        # ]
 
     def __str__(self):
         return f'Reply: {self.user}'

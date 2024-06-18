@@ -26,13 +26,13 @@
 
       <div class="video-control-actions">
         <div class="d-flex justify-content-left align-items-center gap-3">
-          <button type="button" class="btn btn-light shadow-none" @click.stop="handlePlayPause">
+          <button type="button" class="btn btn-primary shadow-none" @click.stop="handlePlayPause">
             <font-awesome-icon v-if="!isPlaying" :icon="[ 'fas', 'fa-play' ]" />
             <font-awesome-icon v-else :icon="[ 'fas', 'fa-pause' ]" />
           </button>
 
           <div class="video-control-duration mx-3">
-            <span>{{ currentTimeFormatted }}</span>
+            <span>{{ currentTimeFormatted }}</span> /
             <span>{{ durationFormatted }}</span>
           </div>
         </div>
@@ -40,16 +40,16 @@
         <!-- Control configuration center -->
         <div class="video-control-configuration-center d-flex justify-content-end">
           <div class="video-control-settings">
-            <button type="button" class="btn btn-light" @click="showVideoSettings = !showVideoSettings">
+            <button type="button" class="btn btn-primary" @click="showVideoSettings = !showVideoSettings">
               <font-awesome-icon icon="fa-solid fa-cog" />
             </button>
           </div>
 
           <div class="video-control-volume ms-2">
-            <button type="button" class="btn btn-light" @click="showVolume = !showVolume">
-              <font-awesome-icon v-if="volume < 0.1" icon="fa-solid fa-volume-low" />
-              <font-awesome-icon v-else-if="volume >= 0.1 && volume <= 0.8" icon="fa-solid fa-volume-up" />
-              <font-awesome-icon v-else-if="volume > 0.8" icon="fa-solid fa-volume-high" />
+            <button type="button" class="btn btn-primary" @click="showVolume = !showVolume">
+              <font-awesome-icon v-if="volume < 0.1" icon="fas fa-volume-low" />
+              <font-awesome-icon v-else-if="volume >= 0.1 && volume <= 0.8" icon="fas fa-volume-up" />
+              <font-awesome-icon v-else-if="volume > 0.8" icon="fas fa-volume-high" />
             </button>
           </div>
         </div>
@@ -59,8 +59,8 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import { useCounter } from '@vueuse/core'
+import { ref, computed } from 'vue'
+import { useCounter, watchOnce } from '@vueuse/core'
 
 export default {
   name: 'BaseVideoPlayer',
@@ -89,10 +89,21 @@ export default {
 
     const isLoading = ref(true)
     const isPlaying = ref(false)
+    const wasPlayed = ref(false)
+
+    watchOnce(isPlaying, () => {
+      // Indicates that the video was
+      // played once by the user
+      wasPlayed.value= true
+    })
     
     const duration = ref(0)
     const currentTime = ref(0)
     const volume = ref(0.5)
+
+    const completionPercentage = computed(() => {
+      return Math.floor((currentTime.value / duration.value) * 100)
+    })
 
     const speed = ref('1x')
     const quality = ref('1080p')
@@ -103,7 +114,7 @@ export default {
     const showInteractiveMenu = ref(false)
     const showVideoSettings = ref(true)
     const showQualitySettings = ref(true)
-    
+
     return {
       playCount: count,
       incrementCounter: inc,
@@ -112,9 +123,11 @@ export default {
       speeds,
       volume,
       duration,
+      completionPercentage,
       currentTime,
       isPlaying,
       isLoading,
+      wasPlayed,
       showVolume,
       showSpeedSettings,
       showInteractiveMenu,
@@ -128,6 +141,12 @@ export default {
     },
     durationFormatted () {
       return this.formatTime(this.duration)
+    },
+    isEnded () {
+      // Indicates that the viddeo has ended, in other
+      // words that the current time is equals the total
+      // video duration time
+      return this.currentTimeFormatted === this.durationFormatted
     }
   },
   mounted () {
@@ -138,7 +157,7 @@ export default {
     URL.revokeObjectURL(source.src)
   },
   methods: {
-    async handlePlayPause () {
+    handlePlayPause () {
       // Allows the user to either play or pause
       // the current video
       if (this.$refs?.videoPlayer.paused) {
@@ -152,7 +171,7 @@ export default {
         this.$emit('pause', [ this.progress, this.formatTime(this.currentTime) ])
       }
     },
-    async handleVolumeClick () {
+    handleVolumeClick () {
 
     },
     getVideoDetails () {
@@ -175,7 +194,8 @@ export default {
     },
     formatTime (value) {
       // Formats the time to a human readable
-      // format for the user
+      // format for the user to track the
+      // time at which the video is currently at
       let hours = Math.floor(value / 3600)
       let minutes = Math.floor((value % 3600) / 60)
       let seconds = Math.floor(value % 60)
