@@ -5,7 +5,7 @@
         <img src="/avatar3.png" width="60" height="60" class="img-fluid rounded-circle" alt="">
         <div class="actions" style="width: 100%;">
           <v-textarea v-model="requestData.content" label="" variant="outlined" clearable></v-textarea>
-
+          
           <div class="d-flex gap-2">
             <v-btn color="secondary" size="small" rounded="xl" flat>
               Cancel
@@ -41,9 +41,7 @@ export default {
   },
   setup () {
     const requestData = ref({ content: '' })
-    return {
-      requestData
-    }
+    return { requestData }
   },
   methods: {
     async requestCreateComment () {

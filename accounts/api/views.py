@@ -1,10 +1,21 @@
-from rest_framework.decorators import (APIView, api_view,
-                                       authentication_classes,
-                                       permission_classes)
+from rest_framework.decorators import APIView, api_view
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from accounts.api import serializers
+
+
+@api_view(['post'])
+def login(request, **kwargs):
+    serializer = serializers.ValidateLoginSerializer(
+        data=request.data
+    )
+    serializer.is_valid(raise_exception=True)
+    token = serializer.save(request)
+
+    token_serializer = serializers.TokenSerializer(instance=token)
+    return Response(token_serializer.data)
+
 
 # @api_view(['get', 'post'])
 # @permission_classes([IsAuthenticated, IsAdminUser])

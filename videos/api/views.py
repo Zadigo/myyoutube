@@ -1,42 +1,61 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import APIView, api_view
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from videos import models, serializers
+
+from videos import models
+from videos.api import serializers
 from videos.choices import VisibilityChoices
 
 
 @api_view(['post'])
 def get_videos(request, **kwargs):
-    """Returns all the videos from the plateform"""
-    queryset = models.Video.objects.all()
-    serializer = serializers.VideoSerializer(instance=queryset, many=True)
+    """Returns all the videos from the plateform that
+    are active and with visibility set to Public"""
+    queryset = models.Video.objects.filter(
+        active=True,
+        visibility='Public'
+    )
+    serializer = serializers.VideoSerializer(
+        instance=queryset,
+        many=True
+    )
     return Response(serializer.data)
 
 
 @api_view(['post'])
-def get_video(request, reference, **kwargs):
+def get_video(request, video_id, **kwargs):
     """Returns the details for a specific given video"""
-    video = get_object_or_404(models.Video, reference=reference)
+    video = get_object_or_404(models.Video, video_id=video_id)
+
+    if not video.active or not video.visibility != 'Public':
+        return Response({}, status=404)
+
     serializer = serializers.VideoSerializer(instance=video)
     return Response(serializer.data)
 
 
 @api_view(['post'])
 def search_videos(request, **kwargs):
-    queryset = models.Video.objects.active_videos()
+    """Searches all the videos from the platform"""
+    queryset = models.Video.objects.filter(
+        active=True,
+        visibility='Public'
+    )
     serializer = serializers.SearchSerializer(
-        instance=queryset, data=request.data)
+        instance=queryset, 
+        data=request.data
+    )
     serializer.is_valid(raise_exception=True)
-    data = serializer.search(request)
-    return Response(data)
+    return Response(serializer.search(request))
 
 
 class ViewingProfile(APIView):
     serializer_class = serializers.ViewingProfileSerializer
     http_method_names = ['get', 'post']
-    permission_classes = []
+    # authentication_classes = [IsAuthenticated]
+    # permission_classes = []
 
     def get(self, request, **kwargs):
         profile = get_object_or_404(models.ViewingProfile, user=request.user)
@@ -45,7 +64,7 @@ class ViewingProfile(APIView):
 
     def post(self, request, **kwargs):
         profile = get_object_or_404(models.ViewingProfile, user=request.user)
-        serializer = serializers.ValidateUpdateViewingProfile(
+        serializer = serializers.ValidateViewingProfile(
             instance=profile,
             data=request.data
         )

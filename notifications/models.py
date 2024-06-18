@@ -1,19 +1,20 @@
-from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.db import models
-
-from videos.models import Video
-from django.dispatch import receiver
 from django.db.models.signals import post_save
-from notifications.choices import NotificationTypes
+from django.dispatch import receiver
+from django.utils.translation import gettext_lazy as _
 
-MYUSER = get_user_model()
+from notifications.choices import NotificationTypes
+from videos.models import Video
+
+USER_MODEL = get_user_model()
 
 
 class Notification(models.Model):
     """Represents a user notification"""
+
     user = models.ForeignKey(
-        MYUSER,
+        USER_MODEL,
         on_delete=models.CASCADE,
         help_text=_('User to notify')
     )
@@ -28,21 +29,26 @@ class Notification(models.Model):
         choices=NotificationTypes.choices,
         default=NotificationTypes.FOLLOW
     )
-    read = models.BooleanField(default=False)
-    created_on = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(
+        default=False
+    )
+    created_on = models.DateTimeField(
+        auto_now_add=True
+    )
 
     class Meta:
         ordering = ['-created_on', '-pk']
 
     def __str__(self):
-        return self.user.username
+        return f'Notification: {self.user.username}'
 
 
 class PreferredNotification(models.Model):
     """Reprsents notification choices for
     a given user"""
+    
     user = models.ForeignKey(
-        MYUSER,
+        USER_MODEL,
         models.CASCADE
     )
     subscribed_channel_activity = models.BooleanField(default=True)
@@ -67,7 +73,7 @@ class PreferredNotification(models.Model):
         return f'Notification choices: {self.user}'
 
 
-@receiver(post_save, sender=MYUSER)
+@receiver(post_save, sender=USER_MODEL)
 def create_notification_choices(instance, created, **kwargs):
     if created:
         PreferredNotification.objects.create(user=instance)

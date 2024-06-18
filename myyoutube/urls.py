@@ -9,6 +9,7 @@ from myadmin.sites import custom_admin
 urlpatterns = [
     path('__debug__/', include(debug_toolbar.urls)),
 
+    path('api/v1/ratings/', include('ratings.api.urls')),
     path('api/v1/comments/', include('comments.api.urls')),
     path('api/v1/accounts/', include('accounts.api.urls')),
     path('api/v1/channels/', include('mychannel.api_urls')),
