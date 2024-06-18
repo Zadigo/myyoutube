@@ -33,8 +33,14 @@
 
           <div class="btn-group shadow-none">
             <button type="button" class="btn btn-primary btn-sm shadow-none">
-              <span class="mdi mdi-thumb-up me-2"></span>12.3k</button><button type="button" class="btn btn-primary btn-sm shadow-none">
-              <span class="mdi mdi-thumb-down me-2"></span>26</button><button type="button" class="btn btn-info btn-sm shadow-none">
+              <span class="mdi mdi-thumb-up me-2"></span>12.3k
+            </button>
+              
+            <button type="button" class="btn btn-primary btn-sm shadow-none">
+              <span class="mdi mdi-thumb-down me-2"></span>26
+            </button>
+              
+            <button type="button" class="btn btn-info btn-sm shadow-none">
               Repondre
             </button>
           </div>

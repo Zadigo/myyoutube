@@ -4,7 +4,7 @@ import pathlib
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models.signals import post_delete, pre_save, post_save
+from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch import receiver
 from django.shortcuts import reverse
 from django.utils.crypto import get_random_string
@@ -30,6 +30,7 @@ class ChannelTag(models.Model):
 
 class ChannelPlaylist(models.Model):
     """Represents a playlist for a channel"""
+
     user_channel = models.ForeignKey('UserChannel', on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     description = None
@@ -129,11 +130,15 @@ class UserChannel(models.Model):
     class Meta:
         ordering = ['created_on']
         indexes = [
-            models.Index(fields=['name'])
+            models.Index(
+                fields=['is_verified'],
+                name='verified_channel',
+                condition=models.Q(is_verified=True)
+            )
         ]
 
     def __str__(self):
-        return self.name
+        return f'UserChannel: {self.name}'
 
     def get_absolute_url(self):
         return reverse('mychannel:detail', args=[self.reference])

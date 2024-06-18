@@ -1,5 +1,6 @@
 import datetime
 import os
+import pathlib
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -37,20 +38,33 @@ class Tag(models.Model):
 
 class Playlist(models.Model):
     """Represents a user's playlist"""
-    user = models.ForeignKey(MYUSER, on_delete=models.CASCADE, blank=True)
-    name = models.CharField(max_length=50)
-    videos = models.ManyToManyField('Video', blank=True)
+
+    user = models.ForeignKey(
+        MYUSER, 
+        on_delete=models.CASCADE, 
+        blank=True
+    )
+    name = models.CharField(
+        max_length=50
+    )
+    videos = models.ManyToManyField(
+        'Video', 
+        blank=True
+    )
     visibility = models.CharField(
         max_length=50,
         choices=VisibilityChoices.choices,
         default=VisibilityChoices.PUBLIC
     )
-    created_on = models.DateTimeField(auto_now_add=True)
+    created_on = models.DateTimeField(
+        auto_now_add=True
+    )
 
     objects = PlaylistManager.as_manager()
 
     class Meta:
         indexes = [
+            # TODO: Remove
             models.Index(fields=['name', 'user', 'visibility'])
         ]
 
@@ -154,11 +168,28 @@ class Video(models.Model):
     class Meta:
         ordering = ['-pk', 'created_on']
         indexes = [
-            models.Index(fields=['title', 'category'])
+            models.Index(
+                fields=['active'],
+                name='active_videos',
+                condition=models.Q(active=True)
+            ),
+            models.Index(
+                fields=['visibility'],
+                name='visible_videos',
+                condition=models.Q(visibility=True)
+            ),
+            models.Index(
+                fields=['active', 'visibility'],
+                name='active_and_visible_videos',
+                condition=(
+                    models.Q(visibility=True) &
+                    models.Q(active=True)
+                )
+            )
         ]
 
     def __str__(self):
-        return self.title
+        return f'Video: {self.title}'
 
     def clean(self):
         if not self.reference:
@@ -281,16 +312,15 @@ def create_video_id(instance, **kwargs):
 
 @receiver(post_delete, sender=Video)
 def delete_video(sender, instance, **kwargs):
-    is_s3_backend = False
-    try:
-        is_s3_backend = settings.USE_S3
-    except:
-        pass
+    is_s3_backend = getattr(settings, 'USE_S3', False)
 
     if not is_s3_backend:
         if instance.url:
-            if os.path.isfile(instance.url.path):
-                os.remove(instance.url.path)
+            path = pathlib.Path(instance.url.path)
+            if path.exists() and path.is_file():
+                path.unlink()
+            # if os.path.isfile(instance.url.path):
+            #     os.remove(instance.url.path)
     else:
         instance.url.delete(save=False)
 

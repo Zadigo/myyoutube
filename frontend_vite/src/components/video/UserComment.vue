@@ -1,5 +1,5 @@
 <template>
-  <article class="card shadow-none">
+  <article class="card shadow-none" aria-label="">
     <div class="card-body">
       <div class="d-flex align-items-start gap-4">
         <router-link :to="{ name: 'channel_details', params: { id: 'ch_noienozinfoz' } }" aria-label="">
@@ -59,7 +59,6 @@
 
 <script>
 import { ref } from 'vue'
-// import dayjs from '../../plugins/dayjs'
 import UserReply from './UserReply.vue'
 
 export default {

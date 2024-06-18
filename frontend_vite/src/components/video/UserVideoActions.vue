@@ -2,30 +2,32 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h1 class="h4">When you realize ON AIR that your sister stole your watch</h1>
+        <h1 class="h4" aria-label="">When you realize ON AIR that your sister stole your watch</h1>
+
         <div class="d-flex justify-content-between align-items-center mt-3">
           <div id="left" class="d-flex justify-content-left gap-4">
-            <router-link :to="{ name: 'channel_details', params: { id: 'ch_noienozinfoz' } }" aria-label="">
+            <router-link :to="{ name: 'channel_details', params: { id: currentVideo.user_channel?.reference } }" aria-label="">
               <img src="/avatar1.png" class="img-fluid rounded-circle" width="50" height="50" alt="">
             </router-link>
-            <h3 class="h6">User name</h3>
+
+            <h3 class="h6" aria-label="User name">User name</h3>
           </div>
 
           <div id="right">
             <v-btn size="large" rounded="xl" color="primary" class="me-1" flat @click="handleLike">
-              <font-awesome-icon v-if="isLiked" icon="fas fa-thumbs-up" class="mr-2" />
+              <font-awesome-icon v-if="requestData.liked" icon="fas fa-thumbs-up" class="mr-2" />
               <font-awesome-icon v-else icon="far fa-thumbs-up" class="mr-2" />
               Like
             </v-btn>
 
-            <v-btn size="large" rounded="xl" color="primary" class="me-3" flat @click="handleLike">
-              <font-awesome-icon v-if="isDisliked" icon="fas fa-thumbs-down" class="mr-2" />
+            <v-btn size="large" rounded="xl" color="primary" class="me-3" flat @click="handleUnlike">
+              <font-awesome-icon v-if="requestData.unliked" icon="fas fa-thumbs-down" class="mr-2" />
               <font-awesome-icon v-else icon="far fa-thumbs-down" class="mr-2" />
               Dislike
             </v-btn>
 
             <v-menu transition="slide-x-transition">
-              <template v-slot:activator="{ props }">
+              <template #activator="{ props }">
                 <v-btn size="large" rounded="xl" v-bind="props" color="primary" flat>
                   <font-awesome-icon icon="fas fa-caret-down" class="mr-2" />
                   More
@@ -42,8 +44,8 @@
               </v-list>
             </v-menu>
             
-            <v-menu v-if="isSubscribed" transition="slide-x-transition">
-              <template v-slot:activator="{ props }">
+            <v-menu v-if="requestData.subscription.active" transition="slide-x-transition">
+              <template #activator="{ props }">
                 <v-btn v-bind="props" size="large" rounded="xl" color="secondary" class="ml-5" flat>
                   <font-awesome-icon icon="fas fa-bell-slash" />
                 </v-btn>
@@ -52,14 +54,14 @@
               <v-list>
                 <v-list-item value="All">
                   <v-list-item-title>
-                    <font-awesome-icon icon="fas fa-bullhorn" class="me-2" />
+                    <font-awesome-icon icon="fas fa-bullhorn" class="me-2" @click="handleSubscriptionMode('All')" />
                     All
                   </v-list-item-title>
                 </v-list-item>
 
                 <v-list-item value="None">
                   <v-list-item-title>
-                    <font-awesome-icon icon="fas fa-bell-slash" class="me-2" />
+                    <font-awesome-icon icon="fas fa-bell-slash" class="me-2" @click="handleSubscriptionMode('None')" />
                     None
                   </v-list-item-title>
                 </v-list-item>
@@ -115,6 +117,10 @@ const menuItems = [
     icon: 'fa-star'
   },
   {
+    name: 'Community note',
+    icon: 'fa-note-sticky'
+  },
+  {
     name: 'Report',
     icon: 'fa-store'
   }
@@ -134,23 +140,42 @@ export default {
     }
   },
   setup () {
-    const isSubscribed = ref(false)
-    const isLiked = ref(false)
-    const isUnliked = ref(false)
+    const requestData = ref({
+      liked: false,
+      unliked: false,
+      subscription: {
+        active: false,
+        mode: null
+      }
+    })
 
     const currentVideo = inject('currentVideo')
 
     return {
+      requestData,
       currentVideo,
-      isLiked,
-      isUnliked,
-      isSubscribed,
       menuItems
+    }
+  },
+  watch: {
+    'requestData.subscription.active' (n) {
+      if (!n) {
+        this.requestData.subscription.mode = null
+      }
     }
   },
   methods: {
     async handleLike () {
-      this.isLiked = !this.isLiked
+      this.requestData.liked = !this.requestData.liked
+    },
+    async handleUnlike () {
+      this.requestData.unliked = !this.requestData.unliked
+    },
+    async handleSubscription () {
+      this.requestData.subscription.active = !this.requestData.subscription.active
+    },
+    handleSubscriptionMode (mode) {
+      this.requestData.subscription.mode = mode
     },
     handleMoreAction (action) {
       switch (action.name) {
@@ -170,9 +195,6 @@ export default {
           break
       }
       console.log(action)
-    },
-    handleSubscription () {
-      this.isSubscribed = !this.isSubscribed
     }
   }
 }

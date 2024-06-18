@@ -1,4 +1,5 @@
 
+from django.apps.registry import apps
 from django.contrib.auth.models import (AbstractBaseUser, AbstractUser,
                                         PermissionsMixin)
 from django.contrib.auth.tokens import default_token_generator
@@ -13,7 +14,7 @@ from django.utils.timezone import now, timedelta
 from django.utils.translation import gettext_lazy as _
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
-from django.apps.registry import apps
+
 from accounts import managers
 from accounts.utils import avatar_path
 from accounts.validators import avatar_extension_validator
@@ -57,6 +58,13 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _('myuser')
         verbose_name_plural = _('myusers')
+        indexes = [
+            models.Index(
+                fields=['is_active'],
+                name='active_accounts',
+                condition=models.Q(is_active=True)
+            )
+        ]
 
     @property
     def get_full_name(self):
