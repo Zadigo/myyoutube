@@ -6,7 +6,7 @@
           <div class="card-header">
             <div class="d-flex justify-content-between gap-4 align-items-center">
               <div class="actions">
-                <v-btn class="me-2" color="primary" rounded="xl">
+                <v-btn :to="{ name: 'my_studio_upload' }" class="me-2" color="primary" rounded="xl">
                   <font-awesome-icon :icon="['fas', 'fa-upload']" class="me-2" />
                   Upload
                 </v-btn>
@@ -46,7 +46,6 @@
 
                   <v-btn color="primary" rounded="xl">
                     <font-awesome-icon :icon="['fas', 'fa-ellipsis-vertical']" />
-
                   </v-btn>
                 </div>
               </article>
