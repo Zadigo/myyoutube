@@ -2,6 +2,12 @@
   <section id="algorithm">
     <div class="row">
       <div class="col-8 offset-md-2">
+        <div class="card mb-2">
+          <div class="card-body">
+            <h2>Customize your viewing experience</h2>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-8">
             <div class="card">
@@ -71,12 +77,31 @@
         </template>
       </settings-card>
     </div>
+
+    <div class="col-8 offset-md-2">
+      <settings-card title="Blocked keywords" subtitle="Block videos containing certain specific keywords">
+        <template #default>
+          <v-text-field v-model="blockedKeyword" variant="outlined" placeholder="Enter a keyword to block" @keypress.enter="handleAddBlockedKeyWord"></v-text-field>
+
+          <div class="list-group">
+            <div v-for="(word, i) in blockedKeywords" :key="i" class="list-group-item d-flex justify-content-between align-items-center">
+              <span>{{ word }}</span>
+
+              <v-btn variant="text" rounded @click="handleRemoveBlockedKeyword(i)">
+                <font-awesome-icon :icon="['fa', 'trash']"></font-awesome-icon>
+              </v-btn>
+            </div>
+          </div>
+        </template>
+      </settings-card>
+    </div>
   </section>
 </template>
 
 <script>
 import _ from 'lodash'
 import { computed, ref } from 'vue'
+import { useRefHistory } from '@vueuse/core'
 import categories from '../../data/categories.json'
 import SettingsCard from '../../components/settings/SettingsCard.vue'
 
@@ -87,6 +112,10 @@ export default {
   setup () {
     const selectedCategory = ref(null)
     const selectedSubcategory = ref(null)
+
+    const blockedKeyword = ref(null)
+    const blockedKeywords = ref([])
+    const { history, undo, redo } = useRefHistory(blockedKeywords)
 
     const subcategories = computed(() => {
       const category = _.find(categories, { title: selectedCategory.value })
@@ -113,6 +142,11 @@ export default {
     })
     return {
       requestData,
+      history,
+      undo,
+      redo,
+      blockedKeyword,
+      blockedKeywords,
       categories,
       subcategories,
       selectedCategory,
@@ -137,7 +171,14 @@ export default {
           subcategories: [this.selectedSubcategory]
         })
       }
-    }
+    },
+    async handleAddBlockedKeyWord () {
+      this.blockedKeywords.push(this.blockedKeyword)
+      this.blockedKeyword = null
+    },
+    async handleRemoveBlockedKeyword (index) {
+      this.blockedKeywords.splice(index, 1)
+    } 
   }
 }
 </script>

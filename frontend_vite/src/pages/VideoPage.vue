@@ -7,54 +7,11 @@
     </section>
 
     <section class="row mt-4">
+      <!-- Actions -->
       <user-video-actions @gifts="showGiftsModal = true" @report="showReportModal = true" @classify="showClassificationDrawer = true" />
 
       <!-- Information -->
-      <div class="col-12 mt-4">
-        <div class="card">
-          <div class="card-body">
-            <div class="d-flex flex-row justify-content-around align-items-start gap-3">
-              <router-link :to="{ name: 'channel_details', params: { id: currentVideo.user_channel?.reference } }" aria-label="">
-                <img src="/avatar1.png" class="img-fluid rounded-circle" width="120" height="120" alt="">
-              </router-link>
-
-              <div class="information">
-                <v-btn :to="{ name: 'channel_details', params: { id: currentVideo.user_channel?.reference } }" class="px-0" color="primary" variant="plain">
-                  <span class="fw-bold">Malika Andrews - ESPN</span>
-                  <font-awesome-icon icon="fa fa-circle-check" class="ms-4" />
-                </v-btn>
-                <p class="text-body-tertiary">345.6K subscribers</p>
-
-                <v-sheet class="mx-auto" max-width="800px">
-                  <v-slide-group show-arrows>
-                    <v-slide-group-item v-for="n in 10" :key="n" v-slot="{ isSelected, toggle }">
-                      <v-btn :color="isSelected ? 'success' : undefined" class="ma-2" rounded @click="toggle">
-                        Options {{ n }}
-                      </v-btn>
-                    </v-slide-group-item>
-                  </v-slide-group>
-                </v-sheet>
-
-                <p class="fw-light">
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Sequi porro iure repellat optio, ipsum ducimus veniam natus
-                  ipsam dolor, suscipit distinctio vero? Labore repellendus
-                  ipsum et cumque fuga? Ullam, nam! Lorem ipsum dolor sit amet
-                  consectetur adipisicing elit. Voluptates id pariatur
-                  fuga molestiae aperiam inventore repellendus, dolorum
-                  ducimus saepe fugiat minima quisquam. Deleniti, ratione?
-                  Quis et harum ullam ab nam.
-                </p>
-
-                <v-btn color="primary" variant="plain">
-                  <font-awesome-icon icon="fa fa-caret-down" class="me-2" />
-                  More
-                </v-btn>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <video-information />
     </section>
 
     <section class="row mt-4">
@@ -65,7 +22,7 @@
               <h2 class="h4 m-0">6,909 Comments</h2>
 
               <v-menu>
-                <template v-slot:activator="{ props }">
+                <template #activator="{ props }">
                   <v-btn v-bind="props" rounded="xl" color="primary" flat>
                     <font-awesome-icon :icon="['fas', 'fa-sort']" class="me-3" />
                     Sort
@@ -99,7 +56,11 @@
           <div class="card-body"></div>
         </div>
 
-        <recommendation-section />
+        <suspense>
+          <template #default>
+            <recommendation-section />
+          </template>
+        </suspense>
       </div>
     </section>
 
@@ -131,7 +92,7 @@
         </div>
       </div>
 
-      <template v-slot:append>
+      <template #append>
         <div class="d-flex justify-content-end gap-2 mt-3 p-4">
           <v-btn variant="outlined" color="primary" rounded="xl" flat @click="showClassificationDrawer = false">
             Cancel
@@ -196,11 +157,21 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog id="notes" width="400" persistent>
+      <v-card>
+        <v-card-text>
+
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </section>
 </template>
 
 <script>
 import { defineAsyncComponent, provide, ref } from 'vue'
+import { useFeed } from '../store/feed'
+import { storeToRefs } from 'pinia'
 
 import reportTypes from '../data/report_types.json'
 
@@ -208,8 +179,7 @@ import BaseVideoPlayer from '../components/BaseVideoPlayer.vue'
 import UserComment from '../components/video/UserComment.vue'
 import UserVideoActions from '../components/video/UserVideoActions.vue'
 import UserCommentActions from '../components/video/UserCommentActions.vue'
-import { useFeed } from '../store/feed'
-import { storeToRefs } from 'pinia'
+import VideoInformation from 'src/components/video/VideoInformation.vue'
 
 const sortActions = [
   'Newest',
@@ -223,12 +193,9 @@ export default {
     UserComment,
     UserCommentActions,
     UserVideoActions,
+    VideoInformation,
     RecommendationSection: defineAsyncComponent({
-      loader: () => import('../components/video/UserRecommendations.vue'),
-      loadingComponent: null,
-      delay: 4000,
-      errorComponent: null,
-      timeout: 5000
+      loader: () => import('src/components/video/UserRecommendations.vue')
     })
   },
   setup () {
@@ -266,7 +233,7 @@ export default {
 
         setTimeout(() => {
           this.requestVideoComments()
-        }, 2000);
+        }, 2000)
       } catch (e) {
         console.log(e)
       }
@@ -289,7 +256,8 @@ export default {
     },
     mediaPath (path) {
       if (path) {
-        const instance = new URL(path, import.meta.env.VITE_DEVELOPMENT_URL)
+        const instance = new URL(path, import.meta.env.VITE_ROOT_DEVELOPMENT_URL)
+        console.log(instance.toString())
         return instance.toString()
       } else {
         return ''

@@ -1,6 +1,7 @@
 <template>
   <v-menu>
-    <template v-slot:activator="{ props }">
+    <!-- v-slot:activator="{ props }" -->
+    <template #activator="{ props }">
       <v-btn v-bind="props" color="secondary" size="small" rounded="xl" flat>
         <font-awesome-icon icon="fas fa-face-smile" />
       </v-btn>
