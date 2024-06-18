@@ -4,19 +4,29 @@ from django.utils.translation import gettext_lazy as _
 
 from videos.models import Video
 
-MYUSER = get_user_model()
+USER_MODEL = get_user_model()
 
 
 class AbstractComment(models.Model):
-    video = models.ForeignKey(Video, on_delete=models.CASCADE)
-    user = models.ForeignKey(MYUSER, on_delete=models.CASCADE)
+    video = models.ForeignKey(
+        Video, 
+        on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(
+        USER_MODEL, 
+        on_delete=models.CASCADE
+    )
     content = models.TextField(max_length=500)
     from_creator = models.BooleanField(
         default=False,
         help_text=_('Comment written by the content creator')
     )
-    pinned = models.BooleanField(default=False)
-    created_on = models.DateTimeField(auto_now_add=True)
+    pinned = models.BooleanField(
+        default=False
+    )
+    created_on = models.DateTimeField(
+        auto_now_add=True
+    )
 
     class Meta:
         abstract = True
