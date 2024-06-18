@@ -29,6 +29,7 @@ social-auth-app-django = "*"
 autopep8 = "*"
 opencv-python = "*"
 opencv-python-headless = "*"
+moviepy = "*"
 
 [dev-packages]
 
