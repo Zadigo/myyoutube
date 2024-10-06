@@ -1,4 +1,3 @@
-import calendar
 
 from django.db.models.functions import (ExtractDay, ExtractMonth, ExtractWeek,
                                         ExtractYear, Now)
@@ -15,9 +14,9 @@ from videos.models import Video
 from videos.processing import get_video_metadata
 
 
-
 class VideoSerializer(Serializer):
     id = fields.IntegerField()
+    title = fields.CharField()
     video_id = fields.CharField()
     user_channel = ChannelSerializer()
     video = fields.FileField()
@@ -92,6 +91,10 @@ class ViewingProfileSerializer(Serializer):
     playlists_private = None
     subscriptions_private = None
     personalize_ads = None
+
+
+class SubcategoriesSerializer(Serializer):
+    title = fields.CharField()
 
 
 class ValidateViewingProfile(Serializer):
@@ -192,5 +195,5 @@ class ValidateVideoUpload(Serializer):
         instance.height = details.size[1]
         instance.framerate = details.framerate
         instance.save()
-        
+
         return instance

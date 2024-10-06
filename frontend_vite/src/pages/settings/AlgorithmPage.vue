@@ -23,7 +23,7 @@
                 <p>Select your preferred categories</p>
                 <div class="actions">
                   <v-select v-model="selectedCategory" :items="categories" placeholder="Select the main category" variant="outlined"></v-select>
-                  <v-select v-model="selectedSubcategory" :items="subcategories" placeholder="Select the sub category" variant="outlined"></v-select>
+                  <v-select v-model="selectedSubcategory" :items="subCategories" placeholder="Select the sub category" variant="outlined"></v-select>
                   <v-btn color="primary" rounded="xl" flat @click="handleAddCategory">
                     <v-icon icon="mdi-plus"></v-icon>
                     Add
@@ -101,7 +101,9 @@
 <script>
 import _ from 'lodash'
 import { computed, ref } from 'vue'
-import { useRefHistory } from '@vueuse/core'
+import { client } from 'src/plugins'
+import { useRefHistory, whenever } from '@vueuse/core'
+import { useVueSession } from 'src/plugins'
 import categories from '../../data/categories.json'
 import SettingsCard from '../../components/settings/SettingsCard.vue'
 
@@ -110,6 +112,7 @@ export default {
     SettingsCard
   },
   setup () {
+    const { session } = useVueSession()
     const selectedCategory = ref(null)
     const selectedSubcategory = ref(null)
 
@@ -117,16 +120,26 @@ export default {
     const blockedKeywords = ref([])
     const { history, undo, redo } = useRefHistory(blockedKeywords)
 
-    const subcategories = computed(() => {
-      const category = _.find(categories, { title: selectedCategory.value })
-      return category?.subcategories || []
+    // const subcategories = computed(() => {
+    //   const category = _.find(categories, { title: selectedCategory.value })
+    //   return category?.subcategories || []
+    // })
+
+    const subCategories = ref([])
+
+    const hasSelectedCategory = computed(() => {
+      return selectedCategory.value !== null
     })
     
-    // watch(selectedCategory, (n, o) => {
-    //   if (n !== o) {
-    //     selectedSubcategory.value === null
-    //   }
-    // })
+    async function getCategories () {
+      const response = await client.get(`videos/categories/${selectedCategory.value.toLowerCase()}/sub-categories`)
+      subCategories.value = response.data
+      session.create(selectedCategory.value, response.data)
+    }
+
+    whenever(hasSelectedCategory, () => {
+      getCategories()
+    })
     
     const requestData = ref({
       preferred_categories: [
@@ -148,7 +161,7 @@ export default {
       blockedKeyword,
       blockedKeywords,
       categories,
-      subcategories,
+      subCategories,
       selectedCategory,
       selectedSubcategory
     }

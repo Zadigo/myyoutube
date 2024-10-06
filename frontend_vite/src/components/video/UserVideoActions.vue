@@ -137,6 +137,9 @@ export default {
     },
     gifts () {
       return true
+    },
+    save () {
+      return true
     }
   },
   setup () {
@@ -151,7 +154,10 @@ export default {
 
     const currentVideo = inject('currentVideo')
 
+    const playlists = ref([])
+
     return {
+      playlists,
       requestData,
       currentVideo,
       menuItems
@@ -174,13 +180,34 @@ export default {
     async handleSubscription () {
       this.requestData.subscription.active = !this.requestData.subscription.active
     },
-    handleSubscriptionMode (mode) {
-      this.requestData.subscription.mode = mode
+    async handleSave () {
+      try {
+        let simplePlaylists
+
+        if (this.$session.keyExists('simple_playlists')) {
+          simplePlaylists = this.$session.retrieve('simple_playlists')
+        } else {
+          const response = await this.$client.get('/playlists/', {
+            params: {
+              simple: 1
+            }
+          })
+          simplePlaylists = response.data
+          this.$session.create('simple_playlists', simplePlaylists)
+        }
+        this.$emit('save', simplePlaylists)
+      } catch (e) {
+        console.log('requestSaveToPlaylist', e)
+      }
     },
     handleMoreAction (action) {
       switch (action.name) {
         case 'Recommendations':
           this.$emit('classify')
+          break
+
+        case 'Save':
+          this.handleSave()
           break
 
         case 'Report':
@@ -195,6 +222,9 @@ export default {
           break
       }
       console.log(action)
+    },
+    handleSubscriptionMode (mode) {
+      this.requestData.subscription.mode = mode
     }
   }
 }

@@ -1,5 +1,6 @@
-import axios from 'axios'
 import { useAuthentication } from '../store/authentication'
+
+import axios from 'axios'
 
 function getBaseURL () {
   if (import.meta.env.MODE === 'development') {
@@ -14,8 +15,6 @@ const client = axios.create({
   withCredentials: true,
   timeout: 10000
 })
-
-// client.defaults.headers.common['Content-Type'] = 'application/json'
 
 client.interceptors.request.use(
   request => {

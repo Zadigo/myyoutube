@@ -1,16 +1,13 @@
-import datetime
 import os
 import pathlib
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models.signals import (post_delete, post_save, pre_delete,
-                                      pre_save)
+from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 from django.shortcuts import reverse
 from django.utils import timezone
-from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 
 from mychannel.models import ChannelPlaylist, UserChannel
@@ -18,10 +15,10 @@ from myyoutube.utils import create_id
 from videos import choices
 from videos.choices import (CategoryChoices, CommentingStrategy,
                             LanguageChoices, VisibilityChoices)
-from videos.managers import PlaylistManager, VideoManager
-from videos.utils import stories_directory_path, video_directory_path
+from videos.managers import VideoManager
+from videos.utils import video_directory_path
 
-MYUSER = get_user_model()
+USER_MODEL = get_user_model()
 
 
 class Tag(models.Model):
@@ -36,51 +33,12 @@ class Tag(models.Model):
         return self.name
 
 
-class Playlist(models.Model):
-    """Represents a user's playlist"""
-
-    user = models.ForeignKey(
-        MYUSER,
-        on_delete=models.CASCADE,
-        blank=True
-    )
-    name = models.CharField(
-        max_length=50
-    )
-    videos = models.ManyToManyField(
-        'Video',
-        blank=True
-    )
-    visibility = models.CharField(
-        max_length=50,
-        choices=VisibilityChoices.choices,
-        default=VisibilityChoices.PUBLIC
-    )
-    created_on = models.DateTimeField(
-        auto_now_add=True
-    )
-
-    objects = PlaylistManager.as_manager()
-
-    class Meta:
-        indexes = [
-            # TODO: Remove
-            models.Index(fields=['name', 'user', 'visibility'])
-        ]
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        pass
-
-
 class Video(models.Model):
     """Represents the details for a given
     video uploaded on the plateform"""
 
     user = models.ForeignKey(
-        MYUSER,
+        USER_MODEL,
         on_delete=models.CASCADE
     )
     video_id = models.CharField(
@@ -254,7 +212,7 @@ class ViewingProfile(models.Model):
     the user viewing experience on the platform"""
 
     user = models.ForeignKey(
-        MYUSER,
+        USER_MODEL,
         models.CASCADE,
     )
     account_type = models.CharField(

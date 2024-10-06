@@ -9,8 +9,10 @@ channelsettings = [
     re_path(r'^delete', views.delete, name='delete'),
     re_path(r'^upload$', views.UploadVideoView.as_view(), name='upload'),
     re_path(r'^customize', views.CustomizeChannelView.as_view(), name='customize'),
-    re_path(r'^video/(?P<video_reference>[a-z0-9]+)/edit',
-            views.EditVideoView.as_view(), name='video'),
+    re_path(
+        r'^video/(?P<video_reference>[a-z0-9]+)/edit',
+        views.EditVideoView.as_view(), name='video'
+    ),
     re_path(r'^videos$', views.ChannelVideosView.as_view(), name='videos'),
 ]
 

@@ -157,7 +157,9 @@ class UserChannel(models.Model):
 
 
 class BlockedChannel(models.Model):
-    """Represents channels blocked by the viewer"""
+    """Represents a channeld that was blocked by 
+    the current viewer"""
+
     channel = models.ForeignKey(
         UserChannel,
         models.CASCADE,

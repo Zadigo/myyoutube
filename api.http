@@ -1,0 +1,19 @@
+POST http://127.0.0.1:8000/api/v1/playlists/create HTTP/1.1
+Content-Type: application/json
+Authorization: Token e7fd852212dde1b0f34063e9b08acb588806dedf
+
+{
+    "name": "My playlist",
+    "description": null,
+    "is_intelligent": "false"
+}
+
+POST http://127.0.0.1:8000/api/v1/videos/list HTTP/1.1
+Content-Type: application/json
+
+{
+    
+}
+
+GET http://127.0.0.1:8000/api/v1/videos/categories/sports/sub-categories HTTP/1.1
+

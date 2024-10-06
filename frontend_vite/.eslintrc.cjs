@@ -3,16 +3,16 @@ module.exports = {
     ignorePatterns: [
         '**/node_modules/**'
     ],
-    settings: {
-        'import/resolver': {
-            vite: {
-                alias: {
-                    map: [['@', './src']],
-                    extensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs', '.json', '.vue'],
-                },
-            }
-        }
-    },
+    // settings: {
+    //     'import/resolver': {
+    //         vite: {
+    //             alias: {
+    //                 map: [['@', './src']],
+    //                 extensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs', '.json', '.vue'],
+    //             },
+    //         }
+    //     }
+    // },
     parserOptions: {
         ecmaVersion: 2021,
         sourceType: 'module',

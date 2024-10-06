@@ -1,5 +1,10 @@
 <template>
   <div class="card-body">
+    <h4>Age restriction</h4>
+    <p class="text-muted">Choose when to publish and who can see your video</p>
+    
+    <v-checkbox label="Age restricted"></v-checkbox>
+
     <h4>Visibility</h4>
     <p class="text-muted">Choose when to publish and who can see your video</p>
     
