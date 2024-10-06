@@ -3,8 +3,8 @@ from django.utils.translation import gettext_lazy as _
 
 from accounts.admin import custom_admin
 from myyoutube.utils import create_id
-from videos.models import (Playlist, PreferredAd, PreferredCategory,
-                           Subscription, Tag, Video, ViewingProfile)
+from videos.models import (PreferredAd, PreferredCategory, Tag, Video,
+                           ViewingProfile)
 from videos.processing import get_video_metadata
 
 
@@ -48,14 +48,6 @@ class TagAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
-class PlaylistAdmin(admin.ModelAdmin):
-    list_display = ['name', 'user', 'visibility', 'created_on']
-    search_fields = ['name', 'user__username', 'visibility']
-    sortable_by = ['name', 'visibility']
-    filter_horizontal = ['videos']
-    date_hierarchy = 'created_on'
-
-
 class ViewingProfileAdmin(admin.ModelAdmin):
     list_display = ['user', 'account_type']
 
@@ -70,7 +62,7 @@ class PreferredCategoryAdmin(admin.ModelAdmin):
 
 custom_admin.register(Video, VideoAdmin)
 custom_admin.register(Tag, TagAdmin)
-custom_admin.register(Playlist, PlaylistAdmin)
+# custom_admin.register(Playlist, PlaylistAdmin)
 custom_admin.register(ViewingProfile, ViewingProfileAdmin)
 custom_admin.register(PreferredAd, PreferredAdAdmin)
 custom_admin.register(PreferredCategory, PreferredCategoryAdmin)

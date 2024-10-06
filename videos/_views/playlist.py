@@ -5,15 +5,17 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
 from django.views.generic import DetailView
+
+from playlists.models import Playlist
 from videos.choices import VisibilityChoices
-from videos.models import Playlist, Video
+from videos.models import Video
 
 
 class PlaylistView(DetailView):
     model = Playlist
     template_name = 'pages/playlist.html'
     context_object_name = 'playlist'
-    
+
     def get_queryset(self):
         return super().get_queryset()
 
@@ -25,7 +27,7 @@ def new_playlist(request, **kwargs):
     reference = request.POST.get('reference', None)
     playlist_name = request.POST.get('name', None)
 
-    if (playlist_name is not None and 
+    if (playlist_name is not None and
             reference is not None):
         visibility = request.POST.get('visibility', VisibilityChoices.PUBLIC)
         visibilities = {
@@ -37,7 +39,7 @@ def new_playlist(request, **kwargs):
             visibility = visibilities[visibility]
         except:
             visibility = VisibilityChoices.PUBLIC
-        
+
         new_playlist = Playlist.objects.create(
             user=request.user,
             name=playlist_name,
@@ -46,7 +48,7 @@ def new_playlist(request, **kwargs):
 
         video = get_object_or_404(Video, reference=reference)
         new_playlist.videos.add(video)
-    
+
         data.update({'state': True, 'id': new_playlist.id})
     else:
         messages.error(
@@ -70,7 +72,7 @@ def add_or_remove_video_in_playlist(request, **kwargs):
     if reference is not None and playlist_id is not None:
         video = get_object_or_404(Video, reference=reference)
         playlist_to_add = get_object_or_404(Playlist, id=playlist_id)
-        
+
         playlists = video.playlist_set.filter(
             id=playlist_id
         )

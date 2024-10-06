@@ -34,7 +34,7 @@ export default {
       // Returns all the videos based on personnalized
       // recommendations for the feed
       try {
-        const response = await client.post('/videos/list')
+        const response = await client.post('/videos/')
         feedStore.videos = response.data
       } catch (e) {
         console.log(e)

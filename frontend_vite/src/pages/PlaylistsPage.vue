@@ -2,6 +2,7 @@
   <section id="playlists">
     <div class="row">
       <div class="col-5">
+        <!-- Playlist Details -->
         <div v-if="showPlaylistDetails" class="card shadow-sm">
           <div class="card-body">
             <v-img src="/avatar1.png"></v-img>
@@ -13,15 +14,13 @@
           <hr>
 
           <div class="card-body">
-            <h3>Item name</h3>
-            <p class="fw-light">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, est, nihil 
-              soluta unde, provident sed molestias suscipit repellat ipsam iure quisquam enim 
-              impedit quas totam ea quaerat modi at vero?
-            </p>
+            <h3>{{ currentPlaylist.name }}</h3>
+            <p v-if="currentPlaylist.description" class="fw-light">{{ currentPlaylist.description }}</p>
+            <p v-else class="">No description</p>
           </div>
         </div>
         
+        <!-- Playlists -->
         <div v-else class="card shadow-sm">
           <div class="card-body">
             <v-btn class="me-2" color="primary" rounded="xl" size="small" flat @click="showCreatePlaylist = true">
@@ -37,8 +36,13 @@
             <hr>
 
             <div class="list-group">
-              <a v-for="i in 4" :key="i" href class="list-group-item list-group-item-action p-3" @click.prevent="showPlaylistDetails = true">
-                {{ i }}
+              <a v-for="playlist in playlists" :key="playlist.id" href class="list-group-item list-group-item-action p-3" @click.prevent="currentPlaylist = playlist, showPlaylistDetails = true">
+                <article :data-id="playlist.playlist_id" :aria-labelledby="playlist.name">
+                  <p class="fw-bold">{{ playlist.name }}</p>
+                  <p v-if="playlist.description" class="fw-light m-0">
+                    {{ playlist.description }}
+                  </p>
+                </article>
               </a>
             </div>
           </div>
@@ -46,31 +50,35 @@
       </div>
       
       <div class="col-7">
-        <div class="card shadow-sm">
+        <header class="card shadow-sm">
           <div class="card-body">
           </div>
-        </div>
+        </header>
 
+        <!-- Videos -->
         <div class="row mt-5">
-          <div class="col-12">
-            <router-link :to="{ name: 'video_details', params: { id: 'vd_sinefozineo' } }">
-              <div v-for="i in 100" :key="i" class="card shadow-sm mb-2">
-                <div class="card-body p-2">
-                  <div class="d-flex justify-content-around align-items-center">
+          <div v-if="hasVideos" class="col-12">
+            <article v-for="video in playlistVideos" :key="video.id" :aria-labelledby="video.title" class="card shadow-sm mb-2">
+              <div class="card-body p-2">
+                <div class="d-flex justify-content-around align-items-center">
+                  <router-link :to="{ name: 'video_details', params: { id: video.video_id } }">
                     <div class="video">
                       <v-img src="/avatar3.png" width="140"></v-img>
                     </div>
-                    <div class="information">
-                      <h3 class="h4">Video title</h3>
-                      <router-link :to="{ name: 'channel_details', params: { id: 'ch_noienozinfoz' } }" aria-label="">
-                        <p class="fw-bold">The creator account</p>
-                      </router-link>
-                      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
-                    </div>
+                  </router-link>
+
+                  <div class="information">
+                    <h3 class="h4">{{ video.title }}</h3>
+
+                    <router-link :to="{ name: 'channel_details', params: { id: 'ch_noienozinfoz' } }" aria-label="">
+                      <p class="fw-bold">The creator account</p>
+                    </router-link>
+
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
                   </div>
                 </div>
               </div>
-            </router-link>
+            </article>
           </div>
         </div>
       </div>
@@ -81,8 +89,10 @@
       <v-card>
         <v-card-text>
           <v-form @submit.prevent>
-            <v-text-field placeholder="Playlist name" variant="outlined"></v-text-field>
-            <v-switch label="Private" inset hide-details></v-switch>
+            <v-text-field v-model="requestData.name" placeholder="Name" variant="outlined"></v-text-field>
+            <v-text-field v-model="requestData.description" placeholder="Description" variant="outlined"></v-text-field>
+            <v-switch v-model="requestData.is_intelligent" label="Private" inset hide-details></v-switch>
+
             <div v-show="isIntelligent" id="intelligent-functionnalities" class="mt-4">
               <div class="d-flex gap-2">
                 <v-select :items="videoDetails" variant="outlined"></v-select>
@@ -95,6 +105,7 @@
 
         <v-card-actions>
           <v-btn @click="showCreatePlaylist = false">Close</v-btn>
+          <v-btn @click="requestCreatePlaylist">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -102,7 +113,9 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+// import _ from 'lodash'
+import { computed, ref } from 'vue'
+import { whenever } from '@vueuse/core'
 
 const videoDetails = [
   'Name',
@@ -115,9 +128,33 @@ export default {
     const showCreatePlaylist = ref(false)
     const isIntelligent = ref(false)
     const showPlaylistDetails = ref(false)
+
+    const currentPlaylist = ref({})
+    const playlists = ref([])
+    const playlistVideos = ref([])
+
+    const requestData = ref({
+      name: null,
+      description: null,
+      is_intelligent: false
+    })
+
+    const hasVideos = computed(() => {
+      return playlistVideos.value.length > 0
+    })
+
+    whenever(showPlaylistDetails, () => {
+      playlistVideos.value = currentPlaylist.value.videos
+    })
+
     return {
+      hasVideos,
+      playlists,
+      currentPlaylist,
+      playlistVideos,
       showPlaylistDetails,
       videoDetails,
+      requestData,
       showCreatePlaylist,
       isIntelligent
     }
@@ -126,6 +163,38 @@ export default {
     showCreatePlaylist (n) {
       if (!n) {
         this.isIntelligent = false
+      }
+    }
+  },
+  beforeMount () {
+    this.requestPlaylists()
+  },
+  methods: {
+    async requestPlaylists () {
+      try {
+        if (this.$session.keyExists('playlists')) {
+          this.playlists = this.$session.retrieve('playlists')
+        } else {
+          const response = await this.$client.get('/playlists/', this.requestData)
+          this.playlists = response.data
+          this.$session.create('playlists', this.playlists)
+        }
+      } catch (e) {
+        console.error('requestPlaylists', e)
+      }
+    },
+    async requestCreatePlaylist () {
+      try {
+        const response = await this.$client.post('/playlists/create', this.requestData)
+        this.playlists.push(response.data)
+        this.showCreatePlaylist = false
+        this.requestData = {
+          name: null,
+          description: null,
+          is_intelligent: false
+        }
+      } catch (e) {
+        console.error(e)
       }
     }
   }

@@ -10,11 +10,12 @@ from django.shortcuts import get_object_or_404
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, View
 
+from playlists.models import Playlist
 from videos.api.serializers import VideoSerializer
 from videos.choices import VisibilityChoices
-from videos.models import Playlist, Video
+from videos.models import Video
 
 
 class FeedMixin(ListView):

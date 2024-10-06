@@ -1,7 +1,10 @@
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView
-from videos.models import Playlist, Video
+
+from playlists.models import Playlist
+from videos.models import Video
+
 from ..utils import vue_dict
 
 

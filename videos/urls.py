@@ -2,16 +2,27 @@ from django.urls import re_path
 from django.urls.conf import include, path
 
 from videos import views
-from videos._views import feed, playlist, api
+from videos._views import api, feed, playlist
 
 app_name = 'videos'
 
 
 playlisturls = [
-    re_path(r'^add-remove$', views.add_or_remove_video_in_playlist,
-            name='add_remove_video'),
-    re_path(r'^new-playlist$', views.new_playlist, name='new'),
-    re_path(r'(?P<pk>\d+)', views.PlaylistView.as_view(), name='detail')
+    re_path(
+        r'^add-remove$', 
+        views.add_or_remove_video_in_playlist,
+        name='add_remove_video'
+    ),
+    re_path(
+        r'^new-playlist$', 
+        views.new_playlist, 
+        name='new'
+    ),
+    re_path(
+        r'(?P<pk>\d+)', 
+        views.PlaylistView.as_view(), 
+        name='detail'
+    )
 ]
 
 

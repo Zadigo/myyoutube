@@ -1,18 +1,23 @@
 import { axios, client } from './axios'
 import { loadFonts } from './font'
-import './fontawesome'
+import { useVueSession } from './vue-storages'
+
 import dayjs from './dayjs'
 
-loadFonts()
+import './fontawesome'
 
 function createPlugins () {
   return (app) => {
+    loadFonts()
+
     app.config.globalProperties.$axios = axios
     app.config.globalProperties.$client = client
     app.config.globalProperties.$date = dayjs
 
     if (import.meta.env.MODE === 'development') {
       window.dayjs = dayjs
+      window.client = client
+      window.axios = axios
     }
     app.mixin({
       data () {
@@ -25,3 +30,8 @@ function createPlugins () {
 }
 
 export default createPlugins
+
+export {
+  client,
+  useVueSession
+}

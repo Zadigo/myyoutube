@@ -29,6 +29,12 @@ export default {
     }
   },
   methods: {
+    async requestPreviewFile () {
+      // Upload the file to the backend so
+      // that we can get information on the
+      // video that the user is trying to upload
+      
+    },
     handleUpload (e) {
       this.fileToUpload = e.target.files
       this.$emit('next', e.target.files)

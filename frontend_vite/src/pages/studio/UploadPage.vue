@@ -6,8 +6,9 @@
           <component :is="uploadComponents[uploadStep]" @update:data="handleChange" @next="increase" @cancel="decrease" />
 
           <div class="card-footer">
-            <button type="button" class="btn btn-primary" @click="decrease">Previous</button>
-            <button type="button" class="btn btn-primary" @click="increase">Next</button>
+            <button :disabled="isFirstStep" type="button" class="btn btn-primary" @click="decrease">Previous</button>
+            <button v-if="isFinalStep" type="button" class="btn btn-primary">Complete</button>
+            <button v-else type="button" class="btn btn-primary" @click="increase">Next</button>
           </div>
         </div>
       </div>
@@ -16,7 +17,8 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+
 import UploadComponent from '../../components/studio/UploadComponent.vue'
 import VideoInformationComponent from '../../components/studio/VideoInformationComponent.vue'
 import VideoVisibilityComponent from '../../components/studio/VideoVisibilityComponent.vue'
@@ -36,7 +38,17 @@ export default {
       description: null
     })
 
+    const isFinalStep = computed(() => {
+      return uploadStep.value === 3
+    })
+
+    const isFirstStep = computed(() => {
+      return uploadStep.value === 0
+    })
+
     return {
+      isFirstStep,
+      isFinalStep,
       uploadStep,
       requestData,
       uploadComponents: [
