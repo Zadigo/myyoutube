@@ -1,10 +1,11 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faThumbsDown as farThumbsDown, faThumbsUp as farThumbsUp } from '@fortawesome/free-regular-svg-icons'
-import { faA, faArrowLeft, faBars, faBell, faBellSlash, faBullhorn, faCaretDown, faChartSimple, faCircleCheck, faCog, faComment, faDollarSign, faDownload, faEllipsis, faEllipsisVertical, faFaceSmile, faGift, faHome, faList, faLock, faNoteSticky, faPause, faPen, faPlay, faPlus, faSave, faShare, faSort, faStar, faStop, faStore, faThumbsDown, faThumbsUp, faTrash, faTv, faUpload, faUser, faUserMinus, faVolumeHigh, faVolumeLow, faVolumeUp } from '@fortawesome/free-solid-svg-icons'
+import { faA, faArrowLeft, faArrowRight, faBars, faBell, faBellSlash, faBullhorn, faCaretDown, faChartSimple, faCircleCheck, faCog, faComment, faDollarSign, faDownload, faEllipsis, faEllipsisVertical, faFaceSmile, faGift, faHome, faList, faLock, faNoteSticky, faPause, faPen, faPlay, faPlus, faSave, faShare, faSort, faStar, faStop, faStore, faThumbsDown, faThumbsUp, faTrash, faTv, faUpload, faUser, faUserMinus, faVolumeHigh, faVolumeLow, faVolumeUp } from '@fortawesome/free-solid-svg-icons'
 
 
 library.add(faA)
 library.add(faBars)
+library.add(faArrowRight)
 library.add(faArrowLeft)
 library.add(faBell)
 library.add(faBellSlash)

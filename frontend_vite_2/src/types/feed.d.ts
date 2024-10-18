@@ -1,3 +1,5 @@
+import { CustomUser } from "./authentication"
+
 export interface VideosFeedResponseData {
     id: number
     title: string
@@ -11,6 +13,7 @@ export interface VideosFeedResponseData {
         channelplaylist_set: string[]
         tags: string[]
     },
+    user: CustomUser
     video: string
     channel_playlist: null
 }
@@ -28,6 +31,7 @@ export interface Video {
         channelplaylist_set: []
         tags: []
     },
+    user: CustomUser
     video: string
     channel_playlist: null
 }

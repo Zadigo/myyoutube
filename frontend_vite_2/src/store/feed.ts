@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
-import { VideosFeedResponseData, Video } from '../types/feed'
+import { Video } from '../types/feed'
 
 interface RootState {
-    videos: VideosFeedResponseData[],
+    videos: Video[],
     currentVideo: Video | null
 }
 

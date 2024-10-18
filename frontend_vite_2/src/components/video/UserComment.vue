@@ -1,15 +1,15 @@
 <template>
-  <article class="card shadow-none" aria-label="">
+  <article :aria-label="`Comment n°${comment.id}`" class="card shadow-none">
     <div class="card-body">
       <div class="d-flex align-items-start gap-4">
-        <router-link :to="{ name: 'channel_details', params: { id: 'ch_noienozinfoz' } }" aria-label="">
+        <router-link :to="{ name: 'channel_details', params: { id: comment.user_channel } }" aria-label="">
           <v-img src="/avatar2.png" width="80" height="80" class="img-fluid rounded-circle" alt="" />
         </router-link>
 
         <div class="content">
           <div class="mb-3">
-            <v-btn :to="{ name: 'channel_details', params: { id: 'ch_noienozinfoz' } }" color="secondary" variant="plain">
-              Lucie Paul
+            <v-btn :to="{ name: 'channel_details', params: { id: comment.user_channel } }" color="secondary" variant="plain">
+              {{ comment.user.get_full_name }}
             </v-btn>
 
             <v-btn class="mx-2" disabled>
@@ -41,7 +41,7 @@
             </v-btn>
             
             <v-btn color="primary" size="small" rounded="xl" flat>
-              <font-awesome-icon v-if="comment?.is_disliked" icon="fas fa-thumbs-down" class="me-2" />
+              <font-awesome-icon v-if="!comment?.is_disliked" icon="fas fa-thumbs-down" class="me-2" />
               <font-awesome-icon v-else icon="far fa-thumbs-up" class="me-2" />
               24
             </v-btn>
@@ -59,7 +59,7 @@
           <!-- Replies -->
           <transition id="replies" tag="div" name="pop" mode="in-out">
             <div v-if="showReplies" class="replies">
-              <user-reply v-for="i in 2" :key="i" :reply="{}" />
+              <user-reply v-for="i in 3" :key="i" :reply="{}" />
             </div>
           </transition>
         </div>
@@ -94,8 +94,10 @@ export default defineComponent({
     }
   },
   computed: {
+    /**
+     * Checks if the comment has replies 
+     */
     hasReplies () {
-      // Checks if the comment has replies
       return this.comment.number_of_replies >= 1
     }
   }

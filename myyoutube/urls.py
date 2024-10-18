@@ -66,7 +66,7 @@ urlpatterns = [
     path('', include('hero.urls')),
     # path('', include('social_django.urls', namespace='social')),
     path('admin/secondary/', custom_admin.urls),
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
 ]
 
 if settings.DEBUG:

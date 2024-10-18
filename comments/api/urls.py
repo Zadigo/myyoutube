@@ -12,7 +12,7 @@ urlpatterns = [
     ),
     re_path(
         r'^(?P<video_id>vid\_[a-zA-Z0-9]+)$',
-        views.CommentAPI.as_view(),
+        views.ListComments.as_view(),
         name='comments'
     )
 ]

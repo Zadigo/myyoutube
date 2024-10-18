@@ -10,7 +10,10 @@
     <v-card width="300">
       <div class="container">
         <article v-for="category in categories" :key="category" class="mt-4" :aria-label="category">
-          <h5 class="text-body-secondary fw-light">{{ category }}</h5>
+          <h5 class="text-body-secondary fw-light">
+            {{ category }}
+          </h5>
+          
           <v-btn v-for="(emoji, index) in emojis[category]" :key="`emoji_${index}`" variant="text" @click.prevent="handleEmojiClick(emoji)">
             {{ emoji }}
           </v-btn>

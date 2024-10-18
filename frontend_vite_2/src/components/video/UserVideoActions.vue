@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-body">
         <h1 class="h4" aria-label="">
-          When you realize ON AIR that your sister stole your watch
+          {{ currentVideo?.title }}
         </h1>
 
         <div v-if="currentVideo" class="d-flex justify-content-between align-items-center mt-3">
@@ -13,7 +13,7 @@
             </router-link>
 
             <h3 class="h6" aria-label="User name">
-              User name
+              {{ currentVideo.user.get_full_name }}
             </h3>
           </div>
 

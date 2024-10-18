@@ -112,71 +112,71 @@ const Router = createRouter({
                 //         }
                 //     ]
                 // },
-                // {
-                //     path: 'settings',
-                //     children: [
-                //         {
-                //             path: '',
-                //             name: 'settings',
-                //             meta: {
-                //             requiresAuthentication: true,
-                //             requiresNav: false,
-                //             requiresSettingsNav: true
-                //             },
-                //             component: async () => import('../pages/SettingsPage.vue')
-                //         },
-                //         {
-                //             path: 'algorithm',
-                //             name: 'settings_algorithm',
-                //             meta: {
-                //             requiresAuthentication: true,
-                //             requiresNav: false,
-                //             requiresSettingsNav: true
-                //             },
-                //             component: async () => import('../pages/settings/AlgorithmPage.vue')
-                //         },
-                //         {
-                //             path: 'notifications',
-                //             name: 'settings_notifications',
-                //             meta: {
-                //             requiresAuthentication: true,
-                //             requiresNav: false,
-                //             requiresSettingsNav: true
-                //             },
-                //             component: async () => import('../pages/settings/NotificationsPage.vue')
-                //         },
-                //         {
-                //             path: 'performance',
-                //             name: 'settings_performance',
-                //             meta: {
-                //             requiresAuthentication: true,
-                //             requiresNav: false,
-                //             requiresSettingsNav: true
-                //             },
-                //             component: async () => import('../pages/settings/PerformancePage.vue')
-                //         },
-                //         {
-                //             path: 'privacy',
-                //             name: 'settings_privacy',
-                //             meta: {
-                //             requiresAuthentication: true,
-                //             requiresNav: false,
-                //             requiresSettingsNav: true
-                //             },
-                //             component: async () => import('../pages/settings/PrivacyPage.vue')
-                //         },
-                //         {
-                //             path: 'advanced',
-                //             name: 'settings_advanced',
-                //             meta: {
-                //             requiresAuthentication: true,
-                //             requiresNav: false,
-                //             requiresSettingsNav: true
-                //             },
-                //             component: async () => import('../pages/settings/AdvancedPage.vue')
-                //         }
-                //     ]
-                // }
+                {
+                    path: 'settings',
+                    children: [
+                        {
+                            path: '',
+                            name: 'settings',
+                            meta: {
+                                requiresAuthentication: true,
+                                requiresNav: false,
+                                requiresSettingsNav: true
+                            },
+                            component: async () => import('../pages/SettingsPage.vue')
+                        },
+                        {
+                            path: 'algorithm',
+                            name: 'settings_algorithm',
+                            meta: {
+                            requiresAuthentication: true,
+                            requiresNav: false,
+                            requiresSettingsNav: true
+                            },
+                            component: async () => import('../pages/settings/AlgorithmPage.vue')
+                        },
+                        {
+                            path: 'notifications',
+                            name: 'settings_notifications',
+                            meta: {
+                                requiresAuthentication: true,
+                                requiresNav: false,
+                                requiresSettingsNav: true
+                            },
+                            component: async () => import('../pages/settings/NotificationsPage.vue')
+                        },
+                        {
+                            path: 'performance',
+                            name: 'settings_performance',
+                            meta: {
+                                requiresAuthentication: true,
+                                requiresNav: false,
+                                requiresSettingsNav: true
+                            },
+                            component: async () => import('../pages/settings/PerformancePage.vue')
+                        },
+                        {
+                            path: 'privacy',
+                            name: 'settings_privacy',
+                            meta: {
+                                requiresAuthentication: true,
+                                requiresNav: false,
+                                requiresSettingsNav: true
+                            },
+                            component: async () => import('../pages/settings/PrivacyPage.vue')
+                        },
+                        {
+                            path: 'advanced',
+                            name: 'settings_advanced',
+                            meta: {
+                                requiresAuthentication: true,
+                                requiresNav: false,
+                                requiresSettingsNav: true
+                            },
+                            component: async () => import('../pages/settings/AdvancedPage.vue')
+                        }
+                    ]
+                }
             ]
         },
         {

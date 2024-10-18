@@ -17,8 +17,10 @@ const useAuthentication = defineStore('authentication', {
          */
         loadFromCache() {
             const authentication = this.$session.retrieve<LoginResponse>('authentication')
-            this.accessToken = authentication.access
-            this.refreshToken = authentication.refresh
+            if (authentication) {
+                this.accessToken = authentication.access
+                this.refreshToken = authentication.refresh
+            }
         }
     },
     getters: {

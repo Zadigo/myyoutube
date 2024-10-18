@@ -3,10 +3,16 @@
     <div v-for="video in videos" :key="video.id" class="col-3 my-1">
       <router-link :to="{ name: 'video_details', params: { id: video.video_id } }" :data-id="video.video_id">
         <article class="card shadow-sm" :aria-label="video.title">
+          <base-skeleton :loading="true" height="100px" />
+
           <div class="card-body">
-            <h1 class="h4 card-title">
+            <h1 class="h5 fw-bold card-title mb-1">
               {{ video.title }}
             </h1>
+
+            <p class="fw-light">
+              {{ video.user.get_full_name }}
+            </p>
           </div>
         </article>
       </router-link>
@@ -21,14 +27,19 @@
 <script lang="ts">
 import { client } from '@/plugins/axios';
 import { useFeed } from '@/store/feed';
-import { VideosFeedResponseData } from '@/types/feed';
+import { Video } from '@/types/feed';
 import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
 
+import BaseSkeleton from '../BaseSkeleton.vue';
+
 export default defineComponent({
   name: 'AsyncFeed',
+  components: {
+    BaseSkeleton
+  },
   emits: {
-    'feed-loaded' (_videos: VideosFeedResponseData[]) {
+    'feed-loaded' (_videos: Video[]) {
       return true
     }
   },
@@ -38,7 +49,7 @@ export default defineComponent({
 
     async function requestVideos () {
       try {
-        const response = await client.get<VideosFeedResponseData>('/videos/')
+        const response = await client.get<Video[]>('/videos/')
         feedStore.videos = response.data
       } catch (e) {
         // Handle error
