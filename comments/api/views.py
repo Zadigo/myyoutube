@@ -2,68 +2,40 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, RetrieveUpdateAPIView, GenericAPIView
 
 from comments.api import serializers
-from comments.models import Comment
+from comments.models import Comment, Reply
 from notifications.models import Notification
 from videos.models import Video
 
 
-@api_view(['get'])
-def list_comments(request, video_id, **kwargs):
-    """Return all the comments from the current video"""
-    sort_descending = request.GET.get('desc', 'true')
-    video = get_object_or_404(Video, video_id=video_id)
-    
-    fields = ['-id', '-created_on']
-    if sort_descending != 'true':
-        fields = ['id', 'created_on']
-    comments = video.comment_set.order_by(*fields)
+class CommentAPI(GenericAPIView):
+    serializer_class = serializers.CommentSerializer
+    queryset = Comment.objects.all()
+    permission_classes = []
+    lookup_field = 'reference'
+    lookup_url_kwarg = 'video_id'
 
-    serializer = serializers.CommentSerializer(
-        instance=comments,
-        many=True
-    )
-    return Response(serializer.data)
+    def get(self, request, video_id, *args, **kwargs):
+        sort_descending = request.GET.get('desc', 'true')
+        video = get_object_or_404(Video, video_id=video_id)
 
+        fields = ['-id', '-created_on']
+        if sort_descending != 'true':
+            fields = ['id', 'created_on']
 
-@api_view(['post'])
-@permission_classes([IsAdminUser, IsAuthenticated])
-def create_comment(request, video_id, **kwargs):
-    """Creates a new comment on the current video"""
-    serializer = serializers.ValidateCommentSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-
-    video = get_object_or_404(Video, video_id=video_id)
-    comment = serializer.save(request, video)
-
-    if request.user == video.user:
-        comment.from_creator = True
-        comment.save()
-
-    # notification = Notification.objects.create()
-
-    serializer = serializers.CommentSerializer(instance=comment)
-    return Response(serializer.data)
+        comments = video.comment_set.order_by(*fields)
+        serializer = self.get_serializer(instance=comments, many=True)
+        return Response(serializer.data)
 
 
-@api_view(['post'])
-@permission_classes([IsAdminUser, IsAuthenticated])
-def create_reply(request, comment_id, **kwargs):
-    """Creates a new reply to a comment"""
-    serializer = serializers.ValidateReplySerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    reply = serializer.save()
+class CreateReplyAPI(CreateAPIView):
+    serializer_class = serializers.ReplySerializer
+    queryset = Comment.objects.all()
+    permission_classes = []
 
-    comment = get_object_or_404(Comment, comment_id=comment_id)
-    reply = comment.reply_set.create(
-        user=request.user,
-        content=None
-    )
-
-    if request.user == comment.video.user:
-        reply.from_creator = True
-        reply.save()
-
-    serializer = serializers.ReplySerializer(instance=reply)
-    return Response(serializer.data)
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['comment'] = self.get_object()
+        return context

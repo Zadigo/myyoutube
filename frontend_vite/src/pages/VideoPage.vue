@@ -2,13 +2,14 @@
   <section id="video">
     <section class="row">
       <div class="col-12">
-        <base-video-player :video-source="mediaPath(currentVideo.video)" />
+        <!-- <base-video-player :video-source="mediaPath(currentVideo.video)" /> -->
+        <base-video-player :video-source="`http://127.0.0.1:8000/api/v1/videos/s/${currentVideo.video_id}`" />
       </div>
     </section>
 
     <section class="row mt-4">
       <!-- Actions -->
-    <user-video-actions @gifts="showGiftsModal = true" @report="showReportModal = true" @classify="showClassificationDrawer = true" @save="handleSave" />
+      <user-video-actions @gifts="showGiftsModal = true" @report="showReportModal = true" @classify="showClassificationDrawer = true" @save="handleSave" />
 
       <!-- Information -->
       <video-information />
@@ -167,18 +168,20 @@
   </section>
 </template>
 
-<script>
-import { defineAsyncComponent, provide, ref } from 'vue'
-import { useFeed } from '../store/feed'
+<script lang="ts">
+import { defineAsyncComponent, provide, ref, defineComponent } from 'vue'
+import { useFeed } from '@/store/feed'
 import { storeToRefs } from 'pinia'
 
-import reportTypes from '../data/report_types.json'
+import reportTypes from '@/data/report_types.json'
 
-import BaseVideoPlayer from '../components/BaseVideoPlayer.vue'
-import UserVideoActions from '../components/video/UserVideoActions.vue'
-import VideoInformation from 'src/components/video/VideoInformation.vue'
+import { Video } from '@/types/feed'
 
-export default {
+import BaseVideoPlayer from '@/components/BaseVideoPlayer.vue'
+import UserVideoActions from '@/components/video/UserVideoActions.vue'
+import VideoInformation from '@/components/video/VideoInformation.vue'
+
+export default defineComponent({
   name: 'VideoPage',
   components: {
     BaseVideoPlayer,
@@ -226,7 +229,7 @@ export default {
       // video correctly to the user
       try {
         const videoID = this.$route.params.id
-        const response = await this.$client.post(`/videos/${videoID}`)
+        const response = await this.$client.post<Video>(`/videos/${videoID}`)
         this.currentVideo = response.data
       } catch (e) {
         console.log(e)
@@ -245,7 +248,7 @@ export default {
       this.showSaveModal = true
       this.availablePlaylists = playlists
     },
-    mediaPath (path) {
+    mediaPath (path: string) {
       if (path) {
         const instance = new URL(path, import.meta.env.VITE_ROOT_DEVELOPMENT_URL)
         return instance.toString()
@@ -254,5 +257,5 @@ export default {
       }
     }
   }
-}
+})
 </script>
