@@ -11,13 +11,18 @@ from videos.choices import CommentingStrategy
 
 class CommentSerializer(ModelSerializer):
     user = UserSerializer(read_only=True)
+    user_channel = fields.CharField(read_only=True)
+    is_liked = fields.BooleanField(read_only=True, default=False)
+    is_disliked = fields.BooleanField(read_only=True, default=False)
 
     class Meta:
         model = Comment
         fields = [
             'id', 'user', 'content',
             'from_creator', 'pinned',
-            'number_of_replies', 'created_on'
+            'user_channel', 'number_of_replies',
+            'is_liked', 'is_disliked',
+            'created_on'
         ]
 
     def save(self, **kwargs):

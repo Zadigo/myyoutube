@@ -4,7 +4,7 @@
       <div class="d-flex justify-content-around">
         <div class="me-3">
           <router-link :to="{ name: 'channel_details', params: { id: 'ch_noienozinfoz' } }" aria-label="">
-            <v-img src="/avatar3.png" class="img-fluid rounded-circle" width="40px" alt="Image 3"></v-img>
+            <v-img src="/avatar3.png" class="img-fluid rounded-circle" width="40px" alt="Image 3" />
           </router-link>
         </div>
 
@@ -33,11 +33,11 @@
 
           <div class="btn-group shadow-none">
             <button type="button" class="btn btn-primary btn-sm shadow-none">
-              <span class="mdi mdi-thumb-up me-2"></span>12.3k
+              <span class="mdi mdi-thumb-up me-2" />12.3k
             </button>
               
             <button type="button" class="btn btn-primary btn-sm shadow-none">
-              <span class="mdi mdi-thumb-down me-2"></span>26
+              <span class="mdi mdi-thumb-down me-2" />26
             </button>
               
             <button type="button" class="btn btn-info btn-sm shadow-none">
@@ -51,13 +51,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { VideoComment } from '@/types/comments';
+import { defineComponent, PropType } from 'vue'
 
 export default defineComponent({
   name: 'UserReply',
   props: {
     reply: {
-      type: Object,
+      type: Object as PropType<VideoComment>, 
       default: () => {},
       required: false
     }

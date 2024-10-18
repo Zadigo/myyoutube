@@ -15,7 +15,7 @@
       <nav v-show="$route.meta.requiresNav" id="main-navbar" class="navbar navbar-expand-lg fixed-top navbar-light bg-white">
         <div class="container-fluid">
           <button class="navbar-toggler" type="button" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-            <font-awesome-icon :icon="[ 'fas', 'fa-bars' ]" />
+            <font-awesome-icon icon="bars" />
           </button>
           
           <v-btn rounded="xl" text flat @click="showSidebar = !showSidebar">

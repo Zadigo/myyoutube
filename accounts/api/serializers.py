@@ -9,6 +9,7 @@ class UserSerializer(Serializer):
     id = fields.IntegerField()
     firstname = fields.CharField()
     lastname = fields.CharField()
+    get_full_name = fields.CharField()
 
 
 class TokenSerializer(Serializer):
@@ -34,7 +35,7 @@ class ValidateLoginSerializer(Serializer):
 
         if user is None:
             raise AuthenticationFailed(detail='Could not authenticate user')
-        
+
         if not user.is_active:
             raise AuthenticationFailed(detail='User is not active')
 

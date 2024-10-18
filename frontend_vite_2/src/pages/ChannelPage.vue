@@ -11,7 +11,7 @@
 
       <div class="information">
         <h1 class="text-light">
-          {{ currentChannel.name }}
+          {{ currentChannel?.name }}
         </h1>
 
         <p class="text-light fw-light">
@@ -27,9 +27,9 @@
   </section>
 </template>
 
-<script type="ts">
+<script lang="ts">
 import { useChannels } from '@/store/channels';
-import { UserChannel } from '@/type/channels';
+import { UserChannel } from '@/types/channels';
 import { storeToRefs } from 'pinia';
 import { defineComponent, ref } from 'vue';
 
@@ -43,7 +43,6 @@ export default defineComponent({
   setup () {
     const store = useChannels()
     const { currentChannel } = storeToRefs(store)
-
     const hasCarousel = ref(false)
 
     return {
@@ -63,8 +62,8 @@ export default defineComponent({
         const channelID = this.$route.params.id
         const response = await this.$client.post<UserChannel>(`channels/${channelID}`)
         this.currentChannel = response.data
-      } catch (e) {
-        console.log(e)
+      } catch {
+        // Handle error
       }
     },
   }

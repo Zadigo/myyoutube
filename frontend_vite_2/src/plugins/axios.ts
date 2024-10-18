@@ -1,4 +1,5 @@
 import { useAuthentication } from '../store/authentication'
+import { VueSessionInstance } from './vue-storages'
 
 import axios from 'axios'
 
@@ -34,19 +35,21 @@ client.interceptors.request.use(
   }
 )
 
-// client.interceptors.response.use(
-//   response => {
-//     const store = useAuthentication()
-//     store
-//     return response
-//   },
-//   error => {
-//     return Promise.reject(error)
-//   }
-// )
+client.interceptors.response.use(
+  response => {
+    console.log(response.status === 401)
+    if (response.status === 401) {
+      const store = useAuthentication()
+      store.accessToken = null
+      store.refreshToken = null
+      VueSessionInstance.remove('authentication')
+    }
+    return response
+  }
+)
 
 export {
-  client,
   authClient,
-  axios
+  axios, client
 }
+

@@ -1,8 +1,6 @@
 
 from django.apps.registry import apps
-from django.contrib.auth.models import (AbstractBaseUser, AbstractUser,
-                                        PermissionsMixin)
-from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, User
 from django.core.mail import send_mail
 from django.db import models
 from django.db.models.constraints import UniqueConstraint
@@ -18,16 +16,31 @@ from imagekit.processors import ResizeToFill
 from accounts import managers
 from accounts.utils import avatar_path
 from accounts.validators import avatar_extension_validator
+from django.contrib.auth.validators import UnicodeUsernameValidator
 
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
     """Base user model"""
 
+    username_validator = UnicodeUsernameValidator()
+
     email = models.EmailField(
         max_length=255,
         unique=True
     )
-    username = None
+    username = models.CharField(
+        verbose_name=_("username"),
+        max_length=150,
+        unique=True,
+        help_text=_(
+            "Required. 150 characters or fewer. "
+            "Letters, digits and @/./+/-/_ only."
+        ),
+        validators=[username_validator],
+        error_messages={
+            "unique": _("A user with that username already exists."),
+        },
+    )
     firstname = models.CharField(
         max_length=100,
         null=True,
@@ -74,8 +87,13 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         return self.firstname
 
-    def email_user(self, subject, message, from_email=None, **kwargs):
-        send_mail(subject, message, from_email, [self.email], **kwargs)
+    @property
+    def get_short_name(self):
+        return self.firstname
+
+    def clean(self):
+        super().clean()
+        self.email = self.__class__.objects.normalize_email(self.email)
 
 
 class MyUserProfile(models.Model):
@@ -125,6 +143,12 @@ class MyUserProfile(models.Model):
         blank=True,
         null=True
     )
+    is_professional = models.BooleanField(
+        default=False
+    )
+    created_on = models.DateTimeField(
+        auto_now=True
+    )
 
     def __str__(self):
         return f'My User Profile: {self.myuser.email}'
@@ -132,17 +156,6 @@ class MyUserProfile(models.Model):
     @property
     def get_full_address(self):
         return f'{self.address}, {self.city}, {self.zip_code}'
-
-    # def clean(self, *args, **kwargs):
-    #     try:
-    #         details = stripe.Customer.create(
-    #             email=self.myuser.email,
-    #             name=self.myuser.get_full_name
-    #         )
-    #     except stripe.error.StripeError as e:
-    #         pass
-    #     else:
-    #         self.customer_id = details['customer_id']
 
 
 class ActivationToken(models.Model):

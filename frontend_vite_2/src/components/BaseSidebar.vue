@@ -7,10 +7,10 @@
 
     <hr class="my-4">
 
-    <!-- <router-link :to="{ name: 'settings' }" class="list-group-item list-group-item-action border-0" aria-current="true">
+    <router-link :to="{ name: 'settings' }" class="list-group-item list-group-item-action border-0" aria-current="true">
       <font-awesome-icon :icon="['fas', 'fa-cog']" class="me-3" />
       Settings
-    </router-link> -->
+    </router-link>
   </div>
 </template>
 

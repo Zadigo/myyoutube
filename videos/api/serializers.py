@@ -21,6 +21,7 @@ class VideoSerializer(Serializer):
     user_channel = ChannelSerializer()
     video = fields.FileField()
     channel_playlist = ChannelPlaylistSerializer()
+    user = UserSerializer()
 
 
 class SearchSerializer(Serializer):

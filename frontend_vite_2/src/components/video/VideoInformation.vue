@@ -3,16 +3,19 @@
     <div class="card">
       <div class="card-body">
         <div class="d-flex flex-row justify-content-around align-items-start gap-3">
-          <router-link :to="{ name: 'channel_details', params: { id: currentVideo.user_channel?.reference } }" aria-label="">
+          <router-link :to="{ name: 'channel_details', params: { id: currentVideo?.user_channel?.reference } }" aria-label="">
             <img src="/avatar1.png" class="img-fluid rounded-circle" width="120" height="120" alt="">
           </router-link>
 
           <div class="information">
-            <v-btn :to="{ name: 'channel_details', params: { id: currentVideo.user_channel?.reference } }" class="px-0" color="primary" variant="plain">
-              <span class="fw-bold">Malika Andrews - ESPN</span>
+            <v-btn :to="{ name: 'channel_details', params: { id: currentVideo?.user_channel.reference } }" class="px-0" color="primary" variant="plain">
+              <span class="fw-bold">{{ currentVideo?.user_channel.name }}</span>
               <font-awesome-icon icon="fa fa-circle-check" class="ms-4" />
             </v-btn>
-            <p class="text-body-tertiary">345.6K subscribers</p>
+            
+            <p class="text-body-tertiary">
+              345.6K subscribers
+            </p>
 
             <v-sheet class="mx-auto" max-width="800px">
               <v-slide-group show-arrows>
@@ -48,12 +51,12 @@
 
 <script lang="ts">
 import { defineComponent, inject } from 'vue'
-import { CurrentVideo } from '@/types/feed'
+import { Video } from '@/types/feed'
 
 export default defineComponent({
   name: 'VideoInformation',
   setup () {
-    const currentVideo = inject<CurrentVideo>('currentVideo')
+    const currentVideo = inject<Video>('currentVideo')
     return {
       currentVideo
     }
