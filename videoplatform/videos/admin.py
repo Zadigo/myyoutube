@@ -1,11 +1,10 @@
+from accounts.sites import custom_admin_site
 from django.contrib import admin, messages
 from django.utils.translation import gettext_lazy as _
-
-from accounts.sites import custom_admin_site
-from videoplatform.utils import create_id
-from videos.models import (PreferredAd, PreferredCategory, Tag, Video,
-                           ViewingProfile)
+from videos.models import Tag, Video
 from videos.processing import get_video_metadata
+
+from videoplatform.utils import create_id
 
 
 class VideoAdmin(admin.ModelAdmin):
@@ -48,21 +47,6 @@ class TagAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
-class ViewingProfileAdmin(admin.ModelAdmin):
-    list_display = ['user', 'account_type']
-
-
-class PreferredAdAdmin(admin.ModelAdmin):
-    pass
-
-
-class PreferredCategoryAdmin(admin.ModelAdmin):
-    pass
-
-
 custom_admin_site.register(Video, VideoAdmin)
 custom_admin_site.register(Tag, TagAdmin)
 # custom_admin_site.register(Playlist, PlaylistAdmin)
-custom_admin_site.register(ViewingProfile, ViewingProfileAdmin)
-custom_admin_site.register(PreferredAd, PreferredAdAdmin)
-custom_admin_site.register(PreferredCategory, PreferredCategoryAdmin)

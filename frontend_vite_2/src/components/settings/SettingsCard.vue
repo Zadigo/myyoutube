@@ -2,11 +2,13 @@
   <div class="card mt-1">
     <div class="card-header">
       <h3>{{ title }}</h3>
-      <p class="m-0 text-muted">{{ subtitle }}</p>
+      <p class="m-0 text-muted">
+        {{ subtitle }}
+      </p>
     </div>
 
     <div class="card-body">
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>

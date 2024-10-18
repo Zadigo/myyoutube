@@ -63,7 +63,7 @@ urlpatterns = [
     path('ratings/', include('ratings.urls')),
     path('history/', include('history.urls')),
     path('videos/', include('videos.urls')),
-    path('admin/secondary/', custom_admin_site.registerurls),
+    path('admin/secondary/', custom_admin_site.urls),
     path('admin/', admin.site.urls),
     path('', include('hero.urls')),
 ]

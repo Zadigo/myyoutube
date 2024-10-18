@@ -15,7 +15,7 @@
         "model": "accounts.UserProfile",
         "pk": 1,
         "fields": {
-            "myuser": 1,
+            "user": 1,
             "avatar": null,
             "customer_id": null,
             "birthdate": "1997-01-01",

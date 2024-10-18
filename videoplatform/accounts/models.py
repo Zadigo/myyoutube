@@ -1,8 +1,7 @@
 
-from accounts import managers
+from accounts import choices, managers
 from accounts.utils import avatar_path
 from accounts.validators import avatar_extension_validator
-from django.apps.registry import apps
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
@@ -55,19 +54,21 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             'Unselect this instead of deleting accounts.'
         )
     )
-    is_admin = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False)
+    is_admin = models.BooleanField(
+        default=False
+    )
+    is_staff = models.BooleanField(
+        default=False
+    )
 
     objects = managers.CustomUserManager()
 
     USERNAME_FIELD = 'email'
 
     def __str__(self):
-        return f'My User: {self.email}'
+        return f'CustomUser: {self.email}'
 
     class Meta:
-        verbose_name = _('myuser')
-        verbose_name_plural = _('myusers')
         indexes = [
             models.Index(
                 fields=['is_active'],
@@ -95,7 +96,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class UserProfile(models.Model):
     """User profile model"""
-    myuser = models.OneToOneField(
+    user = models.OneToOneField(
         CustomUser,
         on_delete=models.CASCADE
     )
@@ -136,6 +137,11 @@ class UserProfile(models.Model):
         blank=True,
         null=True
     )
+    subscription = models.CharField(
+        max_length=100,
+        choices=choices.SubscriptionChoice.choices,
+        default=choices.SubscriptionChoice.FREE
+    )
     zip_code = models.IntegerField(
         blank=True,
         null=True
@@ -147,16 +153,137 @@ class UserProfile(models.Model):
         auto_now=True
     )
 
+    class Meta:
+        indexes = [
+            models.Index(
+                fields=['is_professional'],
+                name='pro_accounts',
+                condition=models.Q(is_professional=True)
+            )
+        ]
+
     def __str__(self):
-        return f'My User Profile: {self.myuser.email}'
+        return f'My User Profile: {self.user.email}'
 
     @property
     def get_full_address(self):
         return f'{self.address}, {self.city}, {self.zip_code}'
 
 
+class Subscription(models.Model):
+    pass
+
+
+class PreferredAd(models.Model):
+    alcohol = models.BooleanField(default=True)
+    dating = models.BooleanField(default=True)
+    gambling = models.BooleanField(default=True)
+    pregnancy_parenting = models.BooleanField(default=True)
+    weight_loss = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'Ad preference: {self.pk}'
+
+
+class PreferredCategory(models.Model):
+    """The categories that the user prefers
+    to watch on the platform"""
+
+    name = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+    sub_category = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class ViewingProfile(models.Model):
+    """Encapsulates the different settings that adjusts
+    the user viewing experience on the platform"""
+
+    user = models.ForeignKey(
+        CustomUser,
+        models.CASCADE,
+    )
+    account_type = models.CharField(
+        max_length=100,
+        choices=choices.AccountTypes.choices,
+        default=choices.AccountTypes.BASIC
+    )
+    subscriptions = models.ManyToManyField(
+        Subscription,
+        blank=True
+    )
+    night_mode = models.BooleanField(
+        default=False
+    )
+    algorithm_decides = models.BooleanField(
+        default=False,
+        help_text=_(
+            "Lets the algorithm "
+            "decide relevant videos"
+        )
+    )
+    recommend_popular_videos = models.BooleanField(
+        default=False,
+        help_text=_(
+            "Recommend popular videos based on viewing "
+            "history and currently viewed video"
+        )
+    )
+    preferred_categories = models.ManyToManyField(
+        PreferredCategory,
+        help_text=_("Categories the user prefers to watch"),
+        related_name='preferred_categories',
+        blank=True
+    )
+    preferred_ad = models.ForeignKey(
+        PreferredAd,
+        models.CASCADE,
+        related_name='preferred_ad',
+        blank=True,
+        null=True
+    )
+    performance = models.CharField(
+        max_length=100,
+        choices=choices.Performance.choices,
+        default=choices.Performance.AUTO
+    )
+    blocked_keywords = models.JSONField(
+        blank=True,
+        null=True
+    )
+    playlists_private = models.BooleanField(
+        default=False
+    )
+    subscriptions_private = models.BooleanField(
+        default=False
+    )
+    personalize_ads = models.BooleanField(
+        default=False
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'preferred_ad'],
+                name='one_preferred_ad_by_user'
+            )
+        ]
+
+    def __str__(self):
+        return f'Viewing profile: {self.user}'
+
+
 class ActivationToken(models.Model):
-    myuser = models.ForeignKey(
+    user = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE
     )
@@ -165,8 +292,13 @@ class ActivationToken(models.Model):
         blank=True,
         null=True
     )
-    expiration_date = models.DateTimeField(blank=True, null=True)
-    creation_date = models.DateTimeField(auto_now=True)
+    expiration_date = models.DateTimeField(
+        blank=True,
+        null=True
+    )
+    creation_date = models.DateTimeField(
+        auto_now=True
+    )
 
     def __str__(self):
         return self.token or 'tok-'
@@ -174,7 +306,7 @@ class ActivationToken(models.Model):
     class Meta:
         constraints = [
             UniqueConstraint(
-                fields=['token', 'myuser'],
+                fields=['token', 'user'],
                 name='one_token_per_user'
             )
         ]
@@ -195,16 +327,15 @@ class ActivationToken(models.Model):
 @receiver(post_save, sender=CustomUser)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        UserProfile.objects.create(myuser=instance)
-        model = apps.get_model('videos.ViewingProfile')
-        profile, state = model.objects.get_or_create(user=instance)
+        UserProfile.objects.create(user=instance)
+        ViewingProfile.objects.create(user=instance)
 
 
 # @receiver(post_save, sender=CustomUser)
 # def create_activation_token(sender, instance, created, **kwargs):
 #     if created:
 #         ActivationToken.objects.create(
-#             myuser=instance,
+#             user=instance,
 #             token=get_random_string(length=30)
 #         )
 

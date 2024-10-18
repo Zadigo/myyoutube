@@ -9,3 +9,4 @@ export interface CustomUser {
   lastname: string
   get_full_name: string
 }
+

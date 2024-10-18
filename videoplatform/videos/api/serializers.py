@@ -98,33 +98,33 @@ class SubcategoriesSerializer(Serializer):
     title = fields.CharField()
 
 
-class ValidateViewingProfile(Serializer):
-    account_type = fields.ChoiceField(
-        choices.AccountTypes.choices,
-        default=choices.AccountTypes.BASIC
-    )
-    subscriptions = None
-    night_mode = fields.BooleanField(default=False)
-    algorithm_decides = None
-    recommend_popular_videos = fields.BooleanField(
-        default=True
-    )
-    preferred_categories = None
-    preferred_ad = None
-    performance = None
-    playlists_private = None
-    subscriptions_private = None
-    personalize_ads = None
-    blocked_channels = fields.JSONField()
-    blocked_keywords = fields.JSONField(
-        validators=[validators.validate_keywords]
-    )
+# class ValidateViewingProfile(Serializer):
+#     account_type = fields.ChoiceField(
+#         choices.AccountTypes.choices,
+#         default=choices.AccountTypes.BASIC
+#     )
+#     subscriptions = None
+#     night_mode = fields.BooleanField(default=False)
+#     algorithm_decides = None
+#     recommend_popular_videos = fields.BooleanField(
+#         default=True
+#     )
+#     preferred_categories = None
+#     preferred_ad = None
+#     performance = None
+#     playlists_private = None
+#     subscriptions_private = None
+#     personalize_ads = None
+#     blocked_channels = fields.JSONField()
+#     blocked_keywords = fields.JSONField(
+#         validators=[validators.validate_keywords]
+#     )
 
-    def update(self, instance, validated_data):
-        setattr(instance, 'account_type', validated_data['account_type'])
-        setattr(instance, 'night_mode', validated_data['night_mode'])
-        instance.save()
-        return instance
+#     def update(self, instance, validated_data):
+#         setattr(instance, 'account_type', validated_data['account_type'])
+#         setattr(instance, 'night_mode', validated_data['night_mode'])
+#         instance.save()
+#         return instance
 
 
 class ValidateVideoUpload(Serializer):

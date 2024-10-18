@@ -11,7 +11,7 @@
         </div>
       </div>
     </div>
-    <div v-if="showArrow" class="bottom_arrow"></div>
+    <div v-if="showArrow" class="bottom_arrow" />
   </div>
 </template>
 
