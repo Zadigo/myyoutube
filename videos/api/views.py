@@ -1,5 +1,10 @@
 import json
+import os
+import pathlib
+import re
 from functools import lru_cache
+from pathlib import Path
+from wsgiref.util import FileWrapper
 
 import pandas
 from django.conf import settings
@@ -7,15 +12,21 @@ from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db.models import BooleanField, Case, Q, When
 from django.db.models.functions import StrIndex
+from django.http import Http404, HttpResponse, StreamingHttpResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import APIView, api_view, permission_classes
-from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
-from rest_framework.generics import GenericAPIView
+from rest_framework.exceptions import (AuthenticationFailed, NotFound,
+                                       PermissionDenied)
+from rest_framework.generics import (GenericAPIView, ListAPIView,
+                                     RetrieveAPIView)
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ViewSet
 
+from comments.api.serializers import CommentSerializer
+from comments.models import Comment
 from mychannel.models import BlockedChannel
 from videos import models
 from videos.api import serializers
@@ -35,7 +46,7 @@ class ListVideoCategories(GenericViewSet):
     http_method_names = ['get']
     serializer_class = serializers.SubcategoriesSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def list(self, request, *args, **kwargs):
         data = list(map(lambda x: {'title': x}, self.get_queryset()))
 
@@ -93,20 +104,11 @@ class ListVideoSubcategories(GenericViewSet):
         return data
 
 
-class ListVideos(ListModelMixin, GenericAPIView):
-    http_method_names = ['post']
+class ListVideos(ListAPIView):
+    queryset = models.Video.objects.filter(active=True, visibility='Public')
     serializer_class = serializers.VideoSerializer
     pagination_class = None
-    queryset = models.Video.objects.filter(active=True, visibility='Public')
     permission_classes = []
-
-    def post(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.serializer_class(instance=queryset, many=True)
-        return Response(serializer.data)
-
-    def paginate_queryset(self, queryset):
-        return super().paginate_queryset(queryset)
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -163,21 +165,24 @@ def get_videos(request, **kwargs):
     return Response(serializer.data)
 
 
-@api_view(['post'])
-def get_video(request, video_id, **kwargs):
-    """Returns the details for a specific given video"""
-    video = get_object_or_404(
-        models.Video,
-        video_id=video_id,
-    )
+class GetVideo(RetrieveAPIView):
+    queryset = models.Video.objects.all()
+    serializer_class = serializers.VideoSerializer
+    permission_classes = []
+    lookup_field = 'video_id'
+    lookup_url_kwarg = 'video_id'
 
-    if not video.active or video.visibility == 'Private':
-        raise PermissionDenied(detail={
-            'video': 'Is not active or Private'
-        })
-
-    serializer = serializers.VideoSerializer(instance=video)
-    return Response(serializer.data)
+    def get_object(self):
+        video = super().get_object()
+        if not video.active or video.visibility == 'Private':
+            raise PermissionDenied(
+                **{
+                    'detail': {
+                        'video': 'Is not active or Private'
+                    }
+                }
+            )
+        return video
 
 
 @api_view(['post'])
@@ -241,3 +246,91 @@ def upload_video(request, **kwargs):
     video = serializer.save(request)
     return_serializer = serializers.VideoSerializer(instance=video)
     return Response(return_serializer.data)
+
+
+class VideoStreamView(APIView):
+    """Endpoint used to stream an uploaded video
+    to the frontend without loading the full content
+    in memory"""
+
+    def get(self, request, video_id):
+        video = get_object_or_404(
+            models.Video,
+            video_id=video_id,
+        )
+
+        if video.video.path is None:
+            raise NotFound(detail='Video not found')
+
+        video_path = pathlib.Path(video.video.path)
+
+        # Check if the video file exists
+        if not video_path.exists():
+            raise NotFound(detail='Video not found')
+
+        video_size = os.path.getsize(video_path)
+        range_header = request.headers.get('Range', None)
+
+        # If no Range header, return the whole video
+        if range_header is None:
+            response = StreamingHttpResponse(
+                open(video_path, 'rb'),
+                content_type='video/mp4'
+            )
+            response['Content-Length'] = str(video_size)
+            return response
+
+        # Handle Range request (partial content)
+        range_match = re.match(r'bytes=(\d+)-(\d+)?', range_header)
+        if range_match:
+            start = int(range_match.group(1))
+            end = range_match.group(2)
+            if end is not None:
+                end = int(end)
+            else:
+                end = video_size - 1
+        else:
+            return Response(status=416)  # Range Not Satisfiable
+
+        # Prepare response for partial content
+        response = StreamingHttpResponse(
+            open(video_path, 'rb'),
+            content_type='video/mp4',
+            status=206
+        )
+        response['Content-Length'] = str(end - start + 1)
+        response['Content-Range'] = f'bytes {start}-{end}/{video_size}'
+
+        # Seek to the start byte in the file
+        video_file = open(video_path, 'rb')
+        video_file.seek(start)
+        response.streaming_content = iter(lambda: video_file.read(8192), b'')
+
+        return response
+
+
+class CreateCommentAPI(GenericAPIView):
+    serializer_class = CommentSerializer
+    queryset = models.Video.objects.all()
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'video_id'
+    lookup_url_kwarg = 'video_id'
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['video'] = self.get_object()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        video = self.get_object()
+        comment = serializer.save()
+
+        if request.user == video.user:
+            comment.from_creator = True
+            comment.save()
+
+        # notification = Notification.objects.create()
+        return Response(serializer.data)

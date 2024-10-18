@@ -60,8 +60,12 @@ class Comment(AbstractComment):
 
 class Reply(AbstractComment):
     """Represents a reply to a comment"""
+    
     video = None
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    comment = models.ForeignKey(
+        Comment, 
+        on_delete=models.CASCADE
+    )
 
     class Meta:
         verbose_name = _('reply')

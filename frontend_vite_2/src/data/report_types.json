@@ -1,0 +1,30 @@
+[
+    {
+        "title": "Sexual content",
+        "reports": [
+            "Graphic sexual activity",
+            "Nudity",
+            "Suggestive - Without nudity",
+            "Content involving minors",
+            "Abusive title or description",
+            "Other sexual content"
+        ]
+    },
+    {
+        "title": "Violent or repulsive content",
+        "reports": [
+            "Adults fighting",
+            "Physical attack",
+            "Youth violence",
+            "Animal abuse"
+        ]
+    },
+    {
+        "title": "Hatred or abusive content",
+        "reports": [
+            "Promotes hatred or violence",
+            "Abusing vulnerable individuals",
+            "Abusive title or description"
+        ]
+    }
+]
