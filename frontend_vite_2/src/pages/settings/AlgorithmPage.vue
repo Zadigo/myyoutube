@@ -43,7 +43,9 @@
             <div class="card">
               <div class="card-body">
                 <div v-for="category in requestData.preferred_categories" :key="category.title" class="category mt-3">
-                  <h2 class="h5">{{ category.title }}</h2>
+                  <h2 class="h5">
+                    {{ category.title }}
+                  </h2>
 
                   <div class="list-group">
                     <div v-for="subcategory in category.subcategories" :key="subcategory" class="list-group-item d-flex justify-content-between align-items-center">
@@ -108,6 +110,7 @@ import { client } from '@/plugins/axios'
 
 import categories from '@/data/categories.json'
 import SettingsCard from '@/components/settings/SettingsCard.vue'
+import { CustomUser } from '@/types/authentication'
 
 export default defineComponent({
   components: {
@@ -180,7 +183,7 @@ export default defineComponent({
   methods: {
     async handleAccountDetails () {
       try {
-        const response = await this.$client.get<AxiosResponseData>('/accounts/base')
+        const response = await this.$client.get<CustomUser>('/accounts/base')
         this.requestData = response.data
       } catch {
         // Handle error

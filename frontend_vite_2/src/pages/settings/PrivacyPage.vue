@@ -61,9 +61,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 import SettingsCard from '@/components/settings/SettingsCard.vue';
+import { CustomUser } from '@/types/authentication';
 
 const sensitiveCategories = [
   'Alcohol',
@@ -78,14 +79,16 @@ export default defineComponent({
     SettingsCard
   },
   setup () {
+    const requestData = ref<CustomUser | null>(null)
     return {
+      requestData,
       sensitiveCategories
     }
   },
   methods: {
     async handleAccountDetails () {
       try {
-        const response = await this.$client.get<AxiosResponseData>('/accounts/base')
+        const response = await this.$client.get<CustomUser>('/accounts/base')
         this.requestData = response.data
       } catch {
         // Handle error

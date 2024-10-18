@@ -1,13 +1,14 @@
-from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.generics import GenericAPIView
-from rest_framework.mixins import CreateModelMixin, ListModelMixin, UpdateModelMixin
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-
 from playlists.api.serializers import (PlaylistSerializer,
-                                       SimplePlaylistSerializer, ValidateAddToPlaylist,
+                                       SimplePlaylistSerializer,
+                                       ValidateAddToPlaylist,
                                        ValidateCreatePlaylist)
 from playlists.models import Playlist
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import (CreateModelMixin, ListModelMixin,
+                                   UpdateModelMixin)
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 
 class ListPlaylists(ListModelMixin, GenericAPIView):
@@ -68,8 +69,8 @@ class AddToPlaylist(UpdateModelMixin, GenericAPIView):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(
-            instance, 
-            data=request.data, 
+            instance,
+            data=request.data,
             partial=partial
         )
         serializer.is_valid(raise_exception=True)

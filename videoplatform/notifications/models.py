@@ -3,7 +3,6 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
-
 from notifications.choices import NotificationTypes
 from videos.models import Video
 
@@ -44,18 +43,28 @@ class Notification(models.Model):
 
 
 class PreferredNotification(models.Model):
-    """Reprsents notification choices for
+    """Represents notification choices for
     a given user"""
     
     user = models.ForeignKey(
         USER_MODEL,
         models.CASCADE
     )
-    subscribed_channel_activity = models.BooleanField(default=True)
-    video_recommendation = models.BooleanField(default=True)
-    channel_activity = models.BooleanField(default=True)
-    replies_activity = models.BooleanField(default=True)
-    mentions = models.BooleanField(default=True)
+    subscribed_channel_activity = models.BooleanField(
+        default=True
+    )
+    video_recommendation = models.BooleanField(
+        default=True
+    )
+    channel_activity = models.BooleanField(
+        default=True
+    )
+    replies_activity = models.BooleanField(
+        default=True
+    )
+    mentions = models.BooleanField(
+        default=True
+    )
     repost = models.BooleanField(
         default=True,
         help_text=_("When other users repost the user's content")

@@ -1,5 +1,5 @@
 from accounts import forms
-from accounts.models import ActivationToken, CustomUser, UserProfile
+from accounts.models import ActivationToken, CustomUser, PreferredAd, PreferredCategory, UserProfile, ViewingProfile
 from accounts.sites import custom_admin_site
 from django.contrib import admin
 from django.contrib.auth.forms import AdminPasswordChangeForm
@@ -86,15 +86,33 @@ class CustomUserAdmin(admin.ModelAdmin):
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ['myuser', 'telephone']
-    search_fields = ['customuser__firstname',
-                     'customuser__lastname', 'customuser__email']
+    list_display = ['user', 'telephone']
+    search_fields = [
+        'customuser__firstname',
+        'customuser__lastname',
+        'customuser__email'
+    ]
 
 
 class ActivateAccountAdmin(admin.ModelAdmin):
     list_display = ['token']
 
 
+class ViewingProfileAdmin(admin.ModelAdmin):
+    list_display = ['user', 'account_type']
+
+
+class PreferredAdAdmin(admin.ModelAdmin):
+    pass
+
+
+class PreferredCategoryAdmin(admin.ModelAdmin):
+    pass
+
+
 custom_admin_site.register(ActivationToken, ActivateAccountAdmin)
-custom_admin_site.register(CustomUser, UserProfile)
+custom_admin_site.register(CustomUser, CustomUserAdmin)
 custom_admin_site.register(UserProfile, UserProfileAdmin)
+custom_admin_site.register(ViewingProfile, ViewingProfileAdmin)
+custom_admin_site.register(PreferredAd, PreferredAdAdmin)
+custom_admin_site.register(PreferredCategory, PreferredCategoryAdmin)

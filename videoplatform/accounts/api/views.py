@@ -1,34 +1,15 @@
+from accounts.api import serializers
+from accounts.models import CustomUser
 from rest_framework.decorators import APIView
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
-from accounts.api import serializers
-from accounts.models import CustomUser
 
-
-class BaseAccountDetails(RetrieveAPIView):
+class BaseAccountDetails(RetrieveUpdateAPIView):
     queryset = CustomUser.objects.all()
+    serializer_class = None
     permission_classes = []
-
-
-# @api_view(['get', 'post'])
-# @permission_classes([IsAuthenticated, IsAdminUser])
-# def update_notifications(request, **kwargs):
-#     print(request.GET)
-#     user_serializer_class = serializers.UserSerializer
-#     if request.GET:
-#         user_serializer = user_serializer_class(instance=request.user)
-#         return Response(user_serializer.data)
-
-#     if request.POST:
-#         serializer = serializers.ValidateUpdateNotifications(
-#             instance=request.user,
-#             data=request.data
-#         )
-#         serializer.is_valid(raise_exception=True)
-#         user_serializer = user_serializer_class(instance=request.user)
-#         return Response(user_serializer.data)
 
 
 class UpdateNotifications(APIView):
