@@ -1,10 +1,8 @@
+import { CustomUser } from "./authentication"
+
 export interface UserChannel {
     reference: string
-    user: {
-        id: number
-        firstname: string
-        lastname: string
-    }
+    user: CustomUser
     name: string
     description: string
     banner: string

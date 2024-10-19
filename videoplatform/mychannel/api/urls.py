@@ -6,6 +6,11 @@ app_name = 'api_channels'
 
 urlpatterns = [
     re_path(
+        r'^(?P<channel_id>ch_[a-zA-Z0-9]+)/block$',
+        views.SearchUserChannelAPI.as_view(),
+        name='search_channel'
+    ),
+    re_path(
         r'^(?P<channel_id>ch_[a-zA-Z0-9]+)/search$',
         views.SearchUserChannelAPI.as_view(),
         name='search_channel'
@@ -14,6 +19,11 @@ urlpatterns = [
         r'^(?P<channel_id>ch_[a-zA-Z0-9]+)$',
         views.UserChannelAPI.as_view(),
         name='user_channel'
+    ),
+    re_path(
+        r'^blocked$',
+        views.BlockedChannelsAPI.as_view(),
+        name='blocked_channels'
     ),
     re_path(
         r'^$',

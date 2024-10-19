@@ -1,15 +1,40 @@
 from accounts.api import serializers
-from accounts.models import CustomUser
+from accounts.models import CustomUser, UserProfile, ViewingProfile
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import APIView
 from rest_framework.generics import RetrieveAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 
-class BaseAccountDetails(RetrieveUpdateAPIView):
-    queryset = CustomUser.objects.all()
-    serializer_class = None
+class RetrieveMixin:
     permission_classes = []
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(user__is_active=True)
+
+
+class BaseAccountDetails(RetrieveMixin, RetrieveUpdateAPIView):
+    queryset = UserProfile.objects.all()
+    serializer_class = serializers.UserProfileSerializer
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, user=1)
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+
+class ViewingProfileDetails(RetrieveMixin, RetrieveUpdateAPIView):
+    queryset = ViewingProfile.objects.all()
+    serializer_class = serializers.ViewingProfileSerializer
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, user=1)
+        self.check_object_permissions(self.request, obj)
+        return obj
 
 
 class UpdateNotifications(APIView):

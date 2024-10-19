@@ -4,6 +4,7 @@ from rest_framework.mixins import Response
 from rest_framework.permissions import AllowAny
 
 from comments.api.serializers import ReplySerializer
+from mychannel.api import serializers
 from mychannel import models
 from mychannel.api.serializers import UserChannelSerializer
 from mychannel.serializers import SearchSerializer
@@ -51,3 +52,11 @@ class SearchUserChannelAPI(GenericAPIView):
             many=True
         )
         return Response(serializer.data)
+
+
+class BlockedChannelsAPI(ListAPIView):
+    queryset = models.BlockedChannel.objects.all()
+    serializer_class = serializers.BlockedChannelSerializer
+    permission_classes = []
+
+

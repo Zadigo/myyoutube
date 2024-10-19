@@ -34,3 +34,4 @@ class BlockedChannelSerializer(Serializer):
 class SearchSerializer(Serializer):
     video_name = fields.CharField(required=False)
     tags = fields.ListField()
+
