@@ -16,7 +16,7 @@ class UserProfileSerializer(ModelSerializer):
     class Meta:
         model = UserProfile
         fields = [
-            'id', 'avatar', 'avatar_thumbnail',
+            'id', 'avatar',
             'birthdate', 'telephone', 'address',
             'city', 'zip_code', 'is_professional'
         ]
@@ -38,11 +38,11 @@ class PreferredCategory(ModelSerializer):
         fields = ['name', 'sub_category']
 
 
-class ViewingProfileCategory(ModelSerializer):
+class ViewingProfileSerializer(ModelSerializer):
     class Meta:
         model = ViewingProfile
         fields = [
-            'account_type', 'subscriptions',
+            'id', 'account_type', 'subscriptions',
             'night_mode', 'algorithm_decides',
             'recommend_popular_videos', 'preferred_categories',
             'performance', 'playlists_private', 'subscriptions_private',

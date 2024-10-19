@@ -33,11 +33,11 @@ const navLinks = [
   //   to: 'notifications',
   //   icon: 'fas fa-bell'
   // },
-  // {
-  //   name: 'My studio',
-  //   to: 'my_studio',
-  //   icon: 'fas fa-chart-simple'
-  // }
+  {
+    name: 'My studio',
+    to: 'my_studio',
+    icon: 'fas fa-chart-simple'
+  }
 ]
 
 export default defineComponent({

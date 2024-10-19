@@ -67,11 +67,12 @@
       <settings-card title="Blocked channels" subtitle="Channels that you blocked and do not want to see">
         <template #default>
           <div class="list-group">
-            <div v-for="i in 5" :key="i" class="list-group-item d-flex justify-content-between align-items-center">
+            <div v-for="blockedChannel in blockedChannels" :key="blockedChannel.channel.reference" class="list-group-item d-flex justify-content-between align-items-center">
               <div class="d-flex justify-content-start align-items-center gap-3">
                 <v-avatar image="/avatar1.png" size="20" />
-                <span>Something</span>
+                <span>{{ blockedChannel.channel.name }}</span>
               </div>
+
               <v-btn color="danger" variant="text">
                 <font-awesome-icon :icon="['fas', 'fa-trash']" />
               </v-btn>
@@ -110,7 +111,7 @@ import { client } from '@/plugins/axios'
 
 import categories from '@/data/categories.json'
 import SettingsCard from '@/components/settings/SettingsCard.vue'
-import { CustomUser } from '@/types/authentication'
+import { BlockedChannel, CustomUser } from '@/types/authentication'
 
 export default defineComponent({
   components: {
@@ -121,6 +122,7 @@ export default defineComponent({
     const selectedCategory = ref(null)
     const selectedSubcategory = ref(null)
 
+    const blockedChannels = ref<BlockedChannel[]>([])
     const blockedKeyword = ref(null)
     const blockedKeywords = ref([])
     const { history, undo, redo } = useRefHistory(blockedKeywords)
@@ -165,6 +167,7 @@ export default defineComponent({
       history,
       undo,
       redo,
+      blockedChannels,
       blockedKeyword,
       blockedKeywords,
       categories,
@@ -180,11 +183,28 @@ export default defineComponent({
       }
     }
   },
+  created() {
+    this.requestBlockedChannels()
+  },
   methods: {
+    /**
+     * 
+     */
     async handleAccountDetails () {
       try {
         const response = await this.$client.get<CustomUser>('/accounts/base')
         this.requestData = response.data
+      } catch {
+        // Handle error
+      }
+    },
+    /**
+     * 
+     */
+    async requestBlockedChannels () {
+      try {
+        const response = await this.$client.get<BlockedChannel[]>('/user-channels/blocked')
+        this.blockedChannels = response.data
       } catch {
         // Handle error
       }

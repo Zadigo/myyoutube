@@ -16,7 +16,7 @@ from mychannel.choices import ChannelCategories
 from mychannel.utils import banners_directory_path
 from videoplatform.utils import create_id
 
-MYUSER = get_user_model()
+USER_MODEL = get_user_model()
 
 
 class ChannelTag(models.Model):
@@ -57,7 +57,7 @@ class UserChannel(models.Model):
         unique=True
     )
     user = models.ForeignKey(
-        MYUSER,
+        USER_MODEL,
         on_delete=models.CASCADE,
         blank=True,
         null=True
@@ -112,7 +112,7 @@ class UserChannel(models.Model):
         null=True
     )
     subscribers = models.ManyToManyField(
-        MYUSER,
+        USER_MODEL,
         related_name='channel_subscribers',
         blank=True
     )
@@ -166,7 +166,7 @@ class BlockedChannel(models.Model):
         blank=True
     )
     user = models.ForeignKey(
-        MYUSER,
+        USER_MODEL,
         models.CASCADE,
         blank=True
     )

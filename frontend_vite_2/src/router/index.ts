@@ -80,38 +80,38 @@ const Router = createRouter({
                 //     // meta: { requiresAuthentication: false },
                 //     // component: async () => import('../pages/NotificationsPage.vue')
                 // },
-                // {
-                //     path: 'my-studio',
-                //     children: [
-                //         {
-                //             path: '',
-                //             name: 'my_studio',
-                //             meta: {
-                //             requiresAuthentication: true,
-                //             requiresNav: true
-                //             },
-                //             component: async () => import('../pages/studio/HomePage.vue')
-                //         },
-                //         {
-                //             path: 'upload',
-                //             name: 'my_studio_upload',
-                //             meta: {
-                //             requiresAuthentication: true,
-                //             requiresNav: true
-                //             },
-                //             component: async () => import('../pages/studio/UploadPage.vue')
-                //         },
-                //         {
-                //             path: 'videos/:id',
-                //             name: 'edit_my_studio_video',
-                //             meta: {
-                //             requiresAuthentication: true,
-                //             requiresNav: true
-                //             },
-                //             component: async () => import('../pages/studio/EditVideoPage.vue')
-                //         }
-                //     ]
-                // },
+                {
+                    path: 'my-studio',
+                    children: [
+                        {
+                            path: '',
+                            name: 'my_studio',
+                            meta: {
+                            requiresAuthentication: true,
+                            requiresNav: true
+                            },
+                            component: async () => import('../pages/studio/HomePage.vue')
+                        },
+                        {
+                            path: 'upload',
+                            name: 'my_studio_upload',
+                            meta: {
+                            requiresAuthentication: true,
+                            requiresNav: true
+                            },
+                            component: async () => import('../pages/studio/UploadPage.vue')
+                        },
+                        {
+                            path: 'videos/:id',
+                            name: 'edit_my_studio_video',
+                            meta: {
+                            requiresAuthentication: true,
+                            requiresNav: true
+                            },
+                            component: async () => import('../pages/studio/EditVideoPage.vue')
+                        }
+                    ]
+                },
                 {
                     path: 'settings',
                     children: [

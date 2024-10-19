@@ -14,8 +14,9 @@ if ENV_PATH.exists():
 
 
 def get_debug():
-    debug = os.getenv('DEBUG')
+    debug = os.getenv('DEBUG', '0')
     return True if debug == '1' else False
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
