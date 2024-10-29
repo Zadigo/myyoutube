@@ -36,6 +36,15 @@ const Router = createRouter({
                     },
                     component: async () => import('../pages/ChannelPage.vue')
                 },
+                {
+                    path: 'fact-checking-center',
+                    name: 'fact_checking_center',
+                    meta: {
+                        requiresAuthentication: false,
+                        requiresNav: true
+                    },
+                    component: async () => import('../pages/FactCheckingPage.vue')
+                },
                 // {
                 //     path: 'playlists',
                 //     name: 'playlists',

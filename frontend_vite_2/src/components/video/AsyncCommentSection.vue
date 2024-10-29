@@ -38,10 +38,9 @@
 </template>
 
 <script lang="ts">
-import _ from 'lodash'
+import { client } from '@/plugins/axios'
 import { computed, defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { client } from '@/plugins/axios'
 
 import { VideoComment } from '@/types/comments'
 
@@ -64,9 +63,9 @@ export default defineComponent({
     const comments = ref<VideoComment[]>([])
     const queryParams = ref({ desc: true })
     
+    // Get all the comments for the current video
+    // in a delayed manner for performance optimization
     async function requestVideoComments () {
-      // Get all the comments for the current video
-      // in a delayed manner for performance optimization
       try {
         const videoID = route.params.id
         const response = await client.get<VideoComment[]>(`/comments/${videoID}`, {
@@ -81,11 +80,12 @@ export default defineComponent({
 
     const pinnedComments = computed(() => {
       // return _.filter(comments.value, { pinned: true })
-      return comments.value.filter(c => c.pinned === true)
+      return comments.value.filter(x => x.pinned === true)
     })
 
     const unpinnedComments = computed(() => {
-      return _.filter(comments.value, { pinned: false })
+      // return _.filter(comments.value, { pinned: false })
+      return comments.value.filter(x => x.pinned === false)
     })
 
     return {
@@ -105,6 +105,9 @@ export default defineComponent({
     async handleNewComment (comment: VideoComment) {
       this.comments.unshift(comment)
     },
+    /**
+     * 
+     */
     async handleSortComments (method: 'Newest' | 'Oldest') {
       if (method === 'Newest') {
         this.queryParams.desc = true

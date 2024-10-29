@@ -117,20 +117,6 @@ main {
   }
 }
 
-.sidebar .active {
-  border-radius: 5px;
-  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
-}
-
-.sidebar .router-link-exact-active {
-  z-index: 2;
-  color: #fff;
-  background-color: #1266f1;
-  border-color: #1266f1;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
-}
-
 .sidebar-sticky {
   position: relative;
   top: 0;
@@ -145,24 +131,6 @@ main {
   z-index: 1000;
   top: 90%;
   right: 2%;
-}
-
-.pop-enter-active,
-.pop-leave-active {
-  transition: opacity .4s ease;
-  transition: scale .2s ease;
-}
-
-.pop-enter-from,
-.pop-leave-to {
-  opacity: 0;
-  transform: scale(1.2, 1.2);
-}
-
-.pop-enter-to,
-.pop-leave-from {
-  opacity: 1;
-  transform: scale(1, 1);
 }
 
 .sidebar-enter-active,

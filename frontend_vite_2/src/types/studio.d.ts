@@ -15,4 +15,5 @@ export interface FileUploadRequestData {
     visibility: boolean
     category: string | null
     subcategory: string | null
+    age_restricted: boolean
 }

@@ -29,7 +29,8 @@
               <font-awesome-icon v-else icon="far fa-thumbs-down" class="mr-2" />
               Dislike
             </v-btn>
-
+            
+            <!-- Extra Actions -->
             <v-menu transition="slide-x-transition">
               <template #activator="{ props }">
                 <v-btn size="large" rounded="xl" v-bind="props" color="primary" flat>
@@ -93,6 +94,11 @@
 import { Video } from '@/types/feed';
 import { defineComponent, inject, ref } from 'vue'
 
+interface MenuItem {
+  name: string
+  icon: string
+}
+
 const menuItems = [
   {
     name: 'Store',
@@ -125,6 +131,10 @@ const menuItems = [
   {
     name: 'Community note',
     icon: 'fa-note-sticky'
+  },
+  {
+    name: 'Fact check',
+    icon: 'fa-police'
   },
   {
     name: 'Report',
@@ -221,7 +231,7 @@ export default defineComponent({
     /**
      * 
      */
-    handleMoreAction (action) {
+    handleMoreAction (action: MenuItem) {
       switch (action.name) {
         case 'Recommendations':
           this.$emit('classify')
@@ -237,6 +247,10 @@ export default defineComponent({
 
         case 'Gift':
           this.$emit('gifts')
+          break
+
+        case 'Fact check':
+          this.$router.push({ name: 'fact_checking_center', params: { v: this.$route.params.id } })
           break
       
         default:

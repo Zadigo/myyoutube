@@ -14,11 +14,11 @@ import * as directives from "vuetify/directives";
 import { aliases, mdi } from "vuetify/iconsets/mdi";
 import colors from "vuetify/util/colors";
 
+import './style.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap';
 import 'mdb-ui-kit/css/mdb.min.css';
 import 'vuetify/styles';
-import './style.scss';
 
 
 

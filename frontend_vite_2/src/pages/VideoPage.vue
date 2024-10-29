@@ -196,16 +196,16 @@
 </template>
 
 <script lang="ts">
+import { storeToRefs } from 'pinia'
 import { defineAsyncComponent, defineComponent, provide, ref } from 'vue'
 import { useFeed } from '../store/feed'
-import { storeToRefs } from 'pinia'
 
 import { Video } from '@/types/feed'
 
 import reportTypes from '../data/report_types.json'
 
-import BaseVideoPlayer from '@/components/BaseVideoPlayer.vue'
 import BaseSkeleton from '@/components/BaseSkeleton.vue'
+import BaseVideoPlayer from '@/components/BaseVideoPlayer.vue'
 import UserVideoActions from '@/components/video/UserVideoActions.vue'
 import VideoInformation from '@/components/video/VideoInformation.vue'
 
@@ -262,6 +262,7 @@ export default defineComponent({
       try {
         const videoID = this.$route.params.id
         const response = await this.$client.get<Video>(`/videos/${videoID}`)
+        
         this.currentVideo = response.data
         this.isLoading = false
       } catch (e) {

@@ -49,3 +49,24 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss">
+$active_color: #1266f1;
+$box_shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+
+.list-group-item {
+  &.active {
+    border-radius: 5px;
+    box-shadow: $box_shadow;
+  }
+  
+  &.router-link-exact-active {
+    z-index: 2;
+    color: #fff;
+    background-color: $active_color;
+    border-color: $active_color;
+    border-radius: 5px;
+    box-shadow: $box_shadow;
+  }
+}
+</style>

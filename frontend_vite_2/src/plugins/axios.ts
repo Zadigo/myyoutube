@@ -25,6 +25,13 @@ const authClient = axios.create({
   timeout: 10000
 })
 
+const quartClient = axios.create({
+  baseURL: 'http://127.0.0.1:5000/api/v1/',
+  withCredentials: true,
+  headers: { 'Content-Type': 'application/json' },
+  timeout: 10000
+})
+
 client.interceptors.request.use(
   request => {
     const store = useAuthentication()
@@ -37,19 +44,27 @@ client.interceptors.request.use(
 
 client.interceptors.response.use(
   response => {
-    console.log(response.status === 401)
-    if (response.status === 401) {
+    return response
+  },
+  error => {
+    if ([401].includes(error.status)) {
+      console.error('yep', error)
       const store = useAuthentication()
+
       store.accessToken = null
       store.refreshToken = null
+
       VueSessionInstance.remove('authentication')
+
+      store.loadFromCache()
     }
-    return response
+    return  Promise.reject(error)
   }
 )
 
 export {
   authClient,
-  axios, client
+  axios, client,
+  quartClient
 }
 

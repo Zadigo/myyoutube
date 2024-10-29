@@ -5,13 +5,17 @@
         <v-text-field v-model="requestData.title" type=" text" placeholder="Title" variant="solo-filled" flat />
 
         <div class="alert alert-info fw-light">
+          <p class="fw-bold">
+            Video ranking
+          </p>
+
           In order for you video to rank correctly, you should describe as much as possible and
           precisely what your video is about then select a category/sub-category that matches
           exactly the subject of the video you are uploading. Users may consider you video to
           be unfit if the category/sub-category don't match what they were expecting.
         </div>
 
-        <v-textarea v-model="requestData.description" cols="30" rows="7" class="my-1" placeholder="Description" variant="solo-filled" flat />
+        <v-textarea v-model="requestData.description" cols="30" rows="7" class="my-1" placeholder="Description" variant="solo-filled" flat no-resize />
 
         <v-autocomplete v-model="requestData.category" :items="categories" item-title="title" item-value="title" variant="solo-filled" placeholder="Select a category" flat auto-select-first>
           <v-text-field />
@@ -23,7 +27,8 @@
       </div>
 
       <div class="col-5">
-        <base-video-player :video-source="store.previewUrl" :revoke-url="true" @loaded-meta-data="handleFrameInformation" />
+        <!-- TODO: Upload the video at first in order to edit it afterwards -->
+        <!-- <base-video-player :video-source="store.previewUrl" :revoke-url="true" @loaded-meta-data="handleFrameInformation" /> -->
 
         <div class="mt-3">
           <h5>Thumbnail</h5>
@@ -44,7 +49,52 @@
     </div>
 
     <div class="row">
-      Something
+      <!-- Paid promotion -->
+      <div class="col-12">
+        <p class="fw-bold">
+          Paid promotion
+        </p>
+
+        <p class="fw-light">
+          If you accepted anything of value from a third party to make your video, 
+          you must let us know. we'll show viewers a message that tells them your 
+          video contains paid promotion.
+        </p>
+        
+        <v-switch label="My video contains paid promotion like a product placement, sponsorship, or endorsement" inset />
+        
+        <p class="fw-light">
+          By selecting this box, you confirm that the paid promotion 
+          follows our ad policies and any applicable laws and regulations. Learn more
+        </p>
+      </div>
+
+      <!-- Tags -->
+      <div class="col-12">
+        <p class="fw-bold">
+          Tags
+        </p>
+
+        <p class="fw-light">
+          Tags can be useful if content in your video is 
+          commonly misspelled. Otherwise, tags play a minimal role in helping 
+          viewers find your video. Learn more
+        </p>
+
+        <v-combobox variant="solo-filled" placeholder="Add tag" :items="tags" flat chips multiple />
+      </div>
+
+      <div class="col-12">
+        <p class="fw-bold">
+          Language
+        </p>
+
+        <p class="fw-light">
+          Select your video's language
+        </p>
+
+        <v-select variant="solo-filled" flat />
+      </div>
     </div>
   </div>
 </template>
@@ -56,7 +106,7 @@ import { Categories, FileUploadRequestData, Subcategories } from '@/types/studio
 import { whenever } from '@vueuse/core';
 import { computed, defineComponent, inject, ref } from 'vue';
 
-import BaseVideoPlayer from 'src/components/BaseVideoPlayer.vue';
+// import BaseVideoPlayer from 'src/components/BaseVideoPlayer.vue';
 
 type StringOrNull = string | null
 
@@ -70,7 +120,7 @@ interface ReturnData {
 export default defineComponent({
   name:'VideoInformationComponent',
   components: {
-    BaseVideoPlayer
+    // BaseVideoPlayer
   },
   emits: {
     'update:data' (_data: ReturnData) {
@@ -118,8 +168,10 @@ export default defineComponent({
     })
 
     const requestData = inject<FileUploadRequestData>('requestData')
+    const tags = ref<string[]>([])
 
     return {
+      tags,
       requestData,
       hasCategory,
       categories,

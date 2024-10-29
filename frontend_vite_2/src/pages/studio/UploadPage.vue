@@ -1,24 +1,25 @@
 <template>
   <section id="uploads">
     <div class="row">
-      <div class="col-12">
-        <div class="card">
+      <div class="col-10 offset-md-1 mb-4">
+        <base-stepper :steps="steps" @update:step="(value) => uploadStep = value" />
+      </div>
+      
+      <div class="col-10 offset-md-1">
+        <div class="card shadow-sm">
           <keep-alive>
             <component :is="uploadComponents[uploadStep]" @update:file="handleUpdateFile" @update:data="handleChange" @next="increase" @cancel="decrease" />
           </keep-alive>
 
           <div class="card-footer d-flex justify-content-end gap-2">
-            <button :disabled="isFirstStep" type="button" class="btn btn-primary" @click="decrease">
-              Previous
-            </button>
-            
             <button v-if="isFinalStep" type="button" class="btn btn-primary" @click="handleUploadVideo">
               Complete
             </button>
 
-            <button v-else type="button" class="btn btn-primary" @click="increase">
+            <v-btn v-else variant="tonal" color="dark" rounded @click="increase">
               Next
-            </button>
+              <font-awesome-icon icon="arrow-right" class="ms-2" />
+            </v-btn>
           </div>
         </div>
       </div>
@@ -27,17 +28,39 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, provide, ref } from 'vue'
 import { FileUploadRequestData } from '@/types/studio';
+import { computed, defineComponent, provide, ref } from 'vue';
 
-import UploadComponent from '@/components/studio/UploadComponent.vue'
-import VideoInformationComponent from '@/components/studio/VideoInformationComponent.vue'
-import VideoVisibilityComponent from '@/components/studio/VideoVisibilityComponent.vue'
+import BaseStepper from '@/components/BaseStepper.vue';
+import FinalizeComponent from '@/components/studio/FinalizeComponent.vue';
+import UploadComponent from '@/components/studio/UploadComponent.vue';
+import VideoInformationComponent from '@/components/studio/VideoInformationComponent.vue';
+import VideoVisibilityComponent from '@/components/studio/VideoVisibilityComponent.vue';
 
+const steps = [
+  {
+    id: 1,
+    title: 'Upload videos'
+  },
+  {
+    id: 2,
+    title: 'Information'
+  },
+  {
+    id: 3,
+    title: 'Publication'
+  },
+  {
+    id: 4,
+    title: 'Finalize'
+  }
+]
 
 export default defineComponent({
   name: 'UploadPage',
   components: {
+    BaseStepper,
+    FinalizeComponent,
     UploadComponent,
     VideoInformationComponent,
     VideoVisibilityComponent
@@ -52,7 +75,8 @@ export default defineComponent({
       recording_location: null,
       visibility: true,
       category: null,
-      subcategory: null
+      subcategory: null,
+      age_restricted: false
     })
 
     const isFirstStep = computed(() => {
@@ -66,6 +90,7 @@ export default defineComponent({
     provide('requestData', requestData)
 
     return {
+      steps,
       isFirstStep,
       isFinalStep,
       uploadStep,
@@ -73,7 +98,8 @@ export default defineComponent({
       uploadComponents: [
         'upload-component',
         'video-information-component',
-        'video-visibility-component'
+        'video-visibility-component',
+        'finalize-component'
       ]
     }
   },

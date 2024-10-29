@@ -1,6 +1,10 @@
 <template>
   <v-app>
-    <router-view />
+    <router-view v-slot="{ Component }">
+      <transition name="blur">
+        <component :is="Component" />
+      </transition>
+    </router-view>
   </v-app>
 </template>
 
