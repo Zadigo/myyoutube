@@ -2,7 +2,7 @@
   <div class="card-body">
     <div class="row">
       <div class="col-7">
-        <v-text-field v-model="returnData.title" type=" text" placeholder="Title" variant="solo-filled" flat @keypress="handleChange" />
+        <v-text-field v-model="requestData.title" type=" text" placeholder="Title" variant="solo-filled" flat />
 
         <div class="alert alert-info fw-light">
           In order for you video to rank correctly, you should describe as much as possible and
@@ -11,13 +11,13 @@
           be unfit if the category/sub-category don't match what they were expecting.
         </div>
 
-        <v-textarea v-model="returnData.description" cols="30" rows="7" class="my-1" placeholder="Description" variant="solo-filled" flat @keypress="handleChange" />
+        <v-textarea v-model="requestData.description" cols="30" rows="7" class="my-1" placeholder="Description" variant="solo-filled" flat />
 
-        <v-autocomplete v-model="returnData.category" :items="categories" item-title="title" item-value="title" variant="solo-filled" placeholder="Select a category" flat auto-select-first>
+        <v-autocomplete v-model="requestData.category" :items="categories" item-title="title" item-value="title" variant="solo-filled" placeholder="Select a category" flat auto-select-first>
           <v-text-field />
         </v-autocomplete>
 
-        <v-autocomplete v-model="returnData.subcategory" :items="subCategories" item-title="title" item-value="title" variant="solo-filled" placeholder="Select a sub-category" flat auto-select-first>
+        <v-autocomplete v-model="requestData.subcategory" :items="subCategories" item-title="title" item-value="title" variant="solo-filled" placeholder="Select a sub-category" flat auto-select-first>
           <v-text-field />
         </v-autocomplete>
       </div>
@@ -27,6 +27,7 @@
 
         <div class="mt-3">
           <h5>Thumbnail</h5>
+          
           <p class="text-muted">
             Select or upload a picture that shows what's in your video.
             A good thumbnail stands out and draws viewers'
@@ -50,10 +51,21 @@
 
 <script lang="ts">
 import { client } from '@/plugins/axios';
+import { useVueLocalStorage } from '@/plugins/vue-storages';
+import { Categories, FileUploadRequestData, Subcategories } from '@/types/studio';
 import { whenever } from '@vueuse/core';
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, inject, ref } from 'vue';
 
 import BaseVideoPlayer from 'src/components/BaseVideoPlayer.vue';
+
+type StringOrNull = string | null
+
+interface ReturnData {
+  title: StringOrNull
+  description: StringOrNull
+  category: StringOrNull
+  subcategory: StringOrNull
+}
 
 export default defineComponent({
   name:'VideoInformationComponent',
@@ -61,7 +73,7 @@ export default defineComponent({
     BaseVideoPlayer
   },
   emits: {
-    'update:data' () {
+    'update:data' (_data: ReturnData) {
       return true
     }
   },
@@ -69,34 +81,47 @@ export default defineComponent({
     const store = {}
     const frames = ref(null)
 
-    const returnData = ref({
+    const returnData = ref<ReturnData>({
       title: null,
       description: null,
       category: null,
       subcategory: null
     })
 
-    const categories = ref([])
-    const subCategories = ref([])
+    const categories = ref<Categories[]>([])
+    const subCategories = ref<Subcategories[]>([])
 
     const hasCategory = computed(() => {
       return returnData.value.category !== null
     })
 
+    const { instance } = useVueLocalStorage()
+
+    /**
+     * 
+     */
     async function getSubcategories () {
       try {
-        const response = await client.get(`/videos/categories/${returnData.value.category}/sub-categories`)
-        subCategories.value = response.data
-      } catch (e) {
-        console.error('getSubcategories', e)
+        if (instance.keyExists('subcategories')) {
+          subCategories.value = instance.retrieve('subcategories')
+        } else {
+          const response = await client.get(`/videos/categories/${returnData.value.category}/sub-categories`)
+          subCategories.value = response.data
+          instance.create('subcategories', response.data)
+        }
+      } catch {
+        // Handle error
       }
     }
     whenever(hasCategory, () => {
       getSubcategories()
     })
 
+    const requestData = inject<FileUploadRequestData>('requestData')
+
     return {
-    hasCategory,
+      requestData,
+      hasCategory,
       categories,
       subCategories,
       store,
@@ -110,15 +135,26 @@ export default defineComponent({
   methods: {
     async requestCategories () {
       try {
-        const response = await this.$client.get('/videos/categories')
-        this.categories = response.data
-      } catch (e) {
-        console.error('requestCategories', e)
+        if (this.$localstorage.keyExists('categories')) {
+          this.categories = this.$localstorage.retrieve('categories')
+        } else {
+          const response = await this.$client.get<Categories[]>('/videos/categories')
+          this.categories = response.data
+          this.$localstorage.create('categories', response.data)
+        }
+      } catch {
+        // Handle error
       }
     },
+    /**
+     * 
+     */
     handleFrameInformation () {
       
     },
+    /**
+     * 
+     */
     handleChange () {
       this.$emit('update:data', this.returnData)
     }

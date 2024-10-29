@@ -20,10 +20,11 @@ import { defineComponent, ref } from 'vue'
 export default defineComponent({
   name: 'UploadComponent',
   emits: {
-    'next': () => true
+    'update:file': (_data: File) => true
   },
   setup () {
     const fileToUpload = ref<HTMLInputElement | null>(null)
+    
     return {
       fileToUpload
     }
@@ -37,8 +38,8 @@ export default defineComponent({
     },
     handleUpload (e: Event) {
       if (e) {
-        this.fileToUpload = <HTMLInputElement>e.target?.files
-        this.$emit('next', e.target.files)
+        this.fileToUpload = <HTMLInputElement>e.target?.files[0]
+        this.$emit('update:file', e.target?.files[0])
       }
     }
   }

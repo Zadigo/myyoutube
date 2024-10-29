@@ -14,14 +14,21 @@
 
     <v-date-picker />
     
-    <v-switch label="Public" inset />
+    <v-switch v-model="requestData.visibility" label="Public" inset />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { FileUploadRequestData } from '@/types/studio';
+import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
-  name: 'VideoVisiblityComponent'
+  name: 'VideoVisiblityComponent',
+  setup() {
+    const requestData = inject<FileUploadRequestData>('requestData')
+    return {
+      requestData
+    }
+  }
 })
 </script>

@@ -1,13 +1,12 @@
 
+from accounts.api.serializers import UserSerializer
 from django.db.models.functions import (ExtractDay, ExtractMonth, ExtractWeek,
                                         ExtractYear, Now)
 from django.utils.timezone import now
-from rest_framework import fields
-from rest_framework.serializers import Serializer
-
-from accounts.api.serializers import UserSerializer
 from mychannel.models import UserChannel
 from mychannel.serializers import ChannelPlaylistSerializer, ChannelSerializer
+from rest_framework import fields
+from rest_framework.serializers import Serializer
 from videos import choices
 from videos.api import validators
 from videos.models import Video
@@ -17,11 +16,14 @@ from videos.processing import get_video_metadata
 class VideoSerializer(Serializer):
     id = fields.IntegerField()
     title = fields.CharField()
+    description = fields.CharField()
     video_id = fields.CharField()
     user_channel = ChannelSerializer()
+    age_restricted = fields.BooleanField()
     video = fields.FileField()
     channel_playlist = ChannelPlaylistSerializer()
     user = UserSerializer()
+    created_on = fields.DateTimeField()
 
 
 class SearchSerializer(Serializer):
@@ -134,28 +136,30 @@ class ValidateVideoUpload(Serializer):
     title = fields.CharField(
         validators=[validators.validate_video_title]
     )
-    description = fields.CharField()
+    description = fields.CharField(
+        allow_null=True
+    )
     age_restricted = fields.BooleanField(
         default=False
     )
     category = fields.ChoiceField(
         choices.CategoryChoices.choices,
-        default=choices.CategoryChoices.ENTERTAINMENT
+        default='Entertainment'
     )
     # tags = fields.JSONField()
     recording_date = fields.DateTimeField(
-        allow_null=True
+        default=now
     )
     recording_location = fields.CharField(
         allow_null=True
     )
     recording_language = fields.ChoiceField(
         choices.LanguageChoices.choices,
-        default=choices.LanguageChoices.FRENCH
+        default='French'
     )
     comment_strategy = fields.ChoiceField(
         choices.CommentingStrategy.choices,
-        default=choices.CommentingStrategy.ALLOW_ALL_COMMENTS
+        default='Allow all comments'
     )
     ratings_are_visible = fields.BooleanField(
         default=True
@@ -165,15 +169,16 @@ class ValidateVideoUpload(Serializer):
     )
     visibility = fields.ChoiceField(
         choices.VisibilityChoices.choices,
-        default=choices.VisibilityChoices.PUBLIC
+        default='Public'
     )
 
-    def save(self, request, **kwargs):
-        setattr(self, '_request', request)
-        return super().save(**kwargs)
+    # def save(self, request, **kwargs):
+    #     setattr(self, '_request', request)
+    #     return super().save(**kwargs)
 
     def create(self, validated_data):
-        request = getattr(self, '_request')
+        request = self._context['request']
+        # request = getattr(self, '_request')
 
         channel = UserChannel.objects.get(user=request.user)
         queryset = channel.channelplaylist_set.filter(

@@ -120,10 +120,10 @@ class ListVideos(ListAPIView):
             blocked_channels = BlockedChannel.objects.filter(
                 user=self.request.user
             )
-            if blocked_channels.exists():
-                queryset = queryset.exclude(
-                    video__user_channel__in=blocked_channels
-                )
+            # if blocked_channels.exists():
+            #     queryset = queryset.exclude(
+            #         user_channel__in=list(blocked_channels)
+            #     )
 
             # 2. Get the blocked keywords that the user
             # has specified an if they are present in
@@ -145,9 +145,6 @@ class UploadVideo(CreateModelMixin, GenericAPIView):
     http_method_names = ['post']
     serializer_class = serializers.ValidateVideoUpload
     permission_classes = [IsAuthenticated]
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request)
 
 
 @api_view(['post'])
@@ -241,9 +238,12 @@ class ListUserVideos(APIView):
 @api_view(['post'])
 @permission_classes([IsAuthenticated])
 def upload_video(request, **kwargs):
-    serializer = serializers.ValidateVideoUpload(data=request.data)
+    serializer = serializers.ValidateVideoUpload(
+        data=request.data, 
+        context={'request': request}
+    )
     serializer.is_valid(raise_exception=True)
-    video = serializer.save(request)
+    video = serializer.save()
     return_serializer = serializers.VideoSerializer(instance=video)
     return Response(return_serializer.data)
 

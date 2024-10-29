@@ -3,6 +3,7 @@ import { CustomUser } from "./authentication"
 export interface VideosFeedResponseData {
     id: number
     title: string
+    description: string
     video_id: string
     user_channel: {
         number: number
@@ -13,9 +14,11 @@ export interface VideosFeedResponseData {
         channelplaylist_set: string[]
         tags: string[]
     },
+    age_restricted: boolean
     user: CustomUser
     video: string
     channel_playlist: null
+    created_on: string
 }
 
 export interface Video {

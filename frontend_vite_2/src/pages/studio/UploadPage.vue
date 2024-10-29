@@ -3,14 +3,16 @@
     <div class="row">
       <div class="col-12">
         <div class="card">
-          <component :is="uploadComponents[uploadStep]" @update:data="handleChange" @next="increase" @cancel="decrease" />
+          <keep-alive>
+            <component :is="uploadComponents[uploadStep]" @update:file="handleUpdateFile" @update:data="handleChange" @next="increase" @cancel="decrease" />
+          </keep-alive>
 
-          <div class="card-footer">
+          <div class="card-footer d-flex justify-content-end gap-2">
             <button :disabled="isFirstStep" type="button" class="btn btn-primary" @click="decrease">
               Previous
             </button>
             
-            <button v-if="isFinalStep" type="button" class="btn btn-primary">
+            <button v-if="isFinalStep" type="button" class="btn btn-primary" @click="handleUploadVideo">
               Complete
             </button>
 
@@ -25,11 +27,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, provide, ref } from 'vue'
+import { FileUploadRequestData } from '@/types/studio';
 
 import UploadComponent from '@/components/studio/UploadComponent.vue'
 import VideoInformationComponent from '@/components/studio/VideoInformationComponent.vue'
 import VideoVisibilityComponent from '@/components/studio/VideoVisibilityComponent.vue'
+
 
 export default defineComponent({
   name: 'UploadPage',
@@ -40,19 +44,26 @@ export default defineComponent({
   },
   setup () {
     const uploadStep = ref(0)
-    const requestData = ref({
+    const requestData = ref<FileUploadRequestData>({
       video: null,
       title: null,
-      description: null
+      description: null,
+      channel_playlist: null,
+      recording_location: null,
+      visibility: true,
+      category: null,
+      subcategory: null
+    })
+
+    const isFirstStep = computed(() => {
+      return uploadStep.value === 0
     })
 
     const isFinalStep = computed(() => {
       return uploadStep.value === 3
     })
 
-    const isFirstStep = computed(() => {
-      return uploadStep.value === 0
-    })
+    provide('requestData', requestData)
 
     return {
       isFirstStep,
@@ -80,11 +91,45 @@ export default defineComponent({
       this.uploadStep = this.uploadStep - 1
     },
     /**
+     * Handle the data coming from the components
+     * in order to update the request data property
+     */
+    handleChange (data: Record<string, string | number>) {
+      this.requestData = {...this.requestData, ...data}
+    },
+    handleUpdateFile (data: File) {
+      this.requestData.video = data
+      this.increase()
+    },
+    /**
      * 
      */
-    handleChange (data) {
-      console.log(data)
-      this.requestData = {...this.requestData, ...data}
+    async handleUploadVideo () {
+      try {
+        if (this.requestData.video) {
+          const form = new FormData()
+          form.append('video', this.requestData.video)
+
+          if (this.requestData.title) {
+            form.append('title', this.requestData.title)
+          }
+          
+          form.append('description', this.requestData.description || '')
+          form.append('channel_playlist', this.requestData.channel_playlist || '')
+          form.append('recording_location', this.requestData.recording_location || '')
+  
+          await this.$client.post('/videos/studio/upload', form, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+        } else {
+          console.error('There is no video')
+        }
+        this.$router.push({ name: 'my_studio' })
+      } catch {
+        // Handle error
+      }
     }
   }
 })

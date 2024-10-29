@@ -42,7 +42,7 @@ class Video(models.Model):
         on_delete=models.CASCADE
     )
     video_id = models.CharField(
-        max_length=15,
+        max_length=100,
         blank=True,
         unique=True
     )
