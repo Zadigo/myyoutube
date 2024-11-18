@@ -138,11 +138,21 @@ const Router = createRouter({
                             path: 'algorithm',
                             name: 'settings_algorithm',
                             meta: {
-                            requiresAuthentication: true,
-                            requiresNav: false,
-                            requiresSettingsNav: true
+                                requiresAuthentication: true,
+                                requiresNav: false,
+                                requiresSettingsNav: true
                             },
                             component: async () => import('../pages/settings/AlgorithmPage.vue')
+                        },
+                        {
+                            path: 'moderation',
+                            name: 'moderation_center',
+                            meta: {
+                                requiresAuthentication: true,
+                                requiresNav: false,
+                                requiresSettingsNav: true
+                            },
+                            component: async () => import('../pages/settings/ModerationPage.vue')
                         },
                         {
                             path: 'notifications',

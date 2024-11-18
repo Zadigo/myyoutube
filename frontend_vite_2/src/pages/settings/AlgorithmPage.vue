@@ -62,70 +62,29 @@
         </div>
       </div>
     </div>
-    
-    <div class="col-8 offset-md-2">
-      <settings-card title="Blocked channels" subtitle="Channels that you blocked and do not want to see">
-        <template #default>
-          <div class="list-group">
-            <div v-for="blockedChannel in blockedChannels" :key="blockedChannel.channel.reference" class="list-group-item d-flex justify-content-between align-items-center">
-              <div class="d-flex justify-content-start align-items-center gap-3">
-                <v-avatar image="/avatar1.png" size="20" />
-                <span>{{ blockedChannel.channel.name }}</span>
-              </div>
-
-              <v-btn color="danger" variant="text">
-                <font-awesome-icon :icon="['fas', 'fa-trash']" />
-              </v-btn>
-            </div>
-          </div>
-        </template>
-      </settings-card>
-    </div>
-
-    <div class="col-8 offset-md-2">
-      <settings-card title="Blocked keywords" subtitle="Block videos containing certain specific keywords">
-        <template #default>
-          <v-text-field v-model="blockedKeyword" variant="outlined" placeholder="Enter a keyword to block" @keypress.enter="handleAddBlockedKeyWord" />
-
-          <div class="list-group">
-            <div v-for="(word, i) in blockedKeywords" :key="i" class="list-group-item d-flex justify-content-between align-items-center">
-              <span>{{ word }}</span>
-
-              <v-btn variant="text" rounded @click="handleRemoveBlockedKeyword(i)">
-                <font-awesome-icon icon="trash" />
-              </v-btn>
-            </div>
-          </div>
-        </template>
-      </settings-card>
-    </div>
   </section>
 </template>
 
 <script lang="ts">
 import _ from 'lodash'
 import { computed, defineComponent, ref } from 'vue'
-import { useRefHistory, whenever } from '@vueuse/core'
+import { whenever } from '@vueuse/core'
 import { useVueSession } from '@/plugins/vue-storages'
 import { client } from '@/plugins/axios'
+import { CustomUser } from '@/types/authentication'
 
 import categories from '@/data/categories.json'
-import SettingsCard from '@/components/settings/SettingsCard.vue'
-import { BlockedChannel, CustomUser } from '@/types/authentication'
+// import SettingsCard from '@/components/settings/SettingsCard.vue'
 
 export default defineComponent({
+  name: 'AlgorithmPage',
   components: {
-    SettingsCard
+    // SettingsCard
   },
   setup () {
     const { instance } = useVueSession()
     const selectedCategory = ref(null)
     const selectedSubcategory = ref(null)
-
-    const blockedChannels = ref<BlockedChannel[]>([])
-    const blockedKeyword = ref(null)
-    const blockedKeywords = ref([])
-    const { history, undo, redo } = useRefHistory(blockedKeywords)
 
     // const subcategories = computed(() => {
     //   const category = _.find(categories, { title: selectedCategory.value })
@@ -138,8 +97,6 @@ export default defineComponent({
       return selectedCategory.value !== null
     })
 
-    
-    
     async function getCategories () {
       const response = await client.get(`videos/categories/${selectedCategory.value.toLowerCase()}/sub-categories`)
       subCategories.value = response.data
@@ -164,12 +121,6 @@ export default defineComponent({
     })
     return {
       requestData,
-      history,
-      undo,
-      redo,
-      blockedChannels,
-      blockedKeyword,
-      blockedKeywords,
       categories,
       subCategories,
       selectedCategory,
@@ -182,9 +133,6 @@ export default defineComponent({
         this.selectedSubcategory === null
       }
     }
-  },
-  created() {
-    this.requestBlockedChannels()
   },
   methods: {
     /**
@@ -201,19 +149,9 @@ export default defineComponent({
     /**
      * 
      */
-    async requestBlockedChannels () {
-      try {
-        const response = await this.$client.get<BlockedChannel[]>('/user-channels/blocked')
-        this.blockedChannels = response.data
-      } catch {
-        // Handle error
-      }
-    },
-    /**
-     * 
-     */
     handleAddCategory () {
       const category = _.find(this.requestData.preferred_categories, { title: this.selectedCategory })
+      
       if (category) {
         category.subcategories.push(this.selectedSubcategory)
       } else {
@@ -222,20 +160,7 @@ export default defineComponent({
           subcategories: [this.selectedSubcategory]
         })
       }
-    },
-    /**
-     * 
-     */
-    async handleAddBlockedKeyWord () {
-      this.blockedKeywords.push(this.blockedKeyword)
-      this.blockedKeyword = null
-    },
-    /**
-     * 
-     */
-    async handleRemoveBlockedKeyword (index) {
-      this.blockedKeywords.splice(index, 1)
-    } 
+    }
   }
 })
 </script>

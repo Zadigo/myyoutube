@@ -24,6 +24,11 @@ const navLinks = [
   {
     name: 'Algorithm',
     to: 'settings_algorithm',
+    icon: 'fas fa-microchip'
+  },
+  {
+    name: 'Moderation',
+    to: 'moderation_center',
     icon: 'fas fa-a'
   },
   {

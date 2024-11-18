@@ -20,8 +20,6 @@ import 'bootstrap/dist/js/bootstrap';
 import 'mdb-ui-kit/css/mdb.min.css';
 import 'vuetify/styles';
 
-
-
 const app = createApp(App)
 
 const pinia = createPinia()
