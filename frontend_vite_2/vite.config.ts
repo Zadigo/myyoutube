@@ -79,7 +79,18 @@ export default defineConfig(({ mode }) => {
     ],
     test: {
       globals: true,
-      environment: 'happy-dom'
+      environment: 'happy-dom',
+      setupFiles: 'tests/setupVuetify.ts',
+      css: true,
+      pool: 'vmThreads',
+      alias: {
+        '@': resolve(__dirname, './src')
+      },
+      server: {
+        deps: {
+          inline: ['vuetify']
+        }
+      }
     },
   };
 });
