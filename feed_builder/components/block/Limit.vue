@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12">
         <div class="d-flex gap-2">
-          <v-text-field v-model="limit" :min="0" variant="solo-filled" hide-details flat @change="emit('define-option', limit)" />
+          <v-text-field v-model="limit" :min="0" variant="solo-filled" hide-details flat @change="emit('define-options', limit)" />
         </div>
       </div>
     </div>
@@ -24,7 +24,7 @@ defineProps({
 })
 
 const emit = defineEmits({
-  'define-option' (_limit: number) {
+  'define-options' (_limit: number) {
     return true
   }
 })

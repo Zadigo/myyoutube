@@ -18,7 +18,7 @@
       
       <div class="col-sm-12 col-md-12 mt-4">
         <TransitionGroup name="opacity" mode="out-in">
-          <component :is="component.name" v-for="(component, i) in createdComponents" :key="i" :index="i" class="my-1" @delete-block="handleDeleteBlock" />
+          <component :is="component.name" v-for="(component, i) in createdComponents" :key="i" :index="i" class="my-1" @define-options="handleDefineOption" @delete-block="handleDeleteBlock" />
         </TransitionGroup>
       </div>
     </div>
@@ -29,6 +29,7 @@
 import Source from '@/components/block/Source.vue'
 import Regex from '@/components/block/Regex.vue'
 import Sort from '~/components/block/Sort.vue'
+import Limit from '@/components/block/Limit.vue'
 
 type Blocks = 'Source' | 'Remove' | 'RegExp' | 'Replace' | 'Sort' | 'Limit'
 
@@ -49,6 +50,7 @@ const blocks: Blocks[] = [
 export default defineNuxtComponent({
   name: 'Index',
   components: {
+    Limit,
     Source,
     Sort,
     Regex
@@ -69,16 +71,22 @@ export default defineNuxtComponent({
       }
     ])
 
+    const store = useFeed()
+
     useHead({
       title: 'Feed creator'
     })
 
     return {
       createdComponents,
+      store,
       blocks
     }
   },
   methods: {
+    /**
+     * 
+     */
     handleAddBlock (block: Blocks) {
       let blockName = block.toLowerCase()
       
@@ -87,14 +95,29 @@ export default defineNuxtComponent({
       }
 
       const lastItem = this.createdComponents[this.createdComponents.length - 1]
+      const data = { position: 0, name: blockName }
+      
+      if (lastItem) {
+        data.position = lastItem.position + 1  
+      }
 
-      this.createdComponents.push({
-        position: lastItem.position + 1,
-        name: blockName
-      })
+      this.createdComponents.push(data)
     },
+    /**
+     * 
+     */
     handleDeleteBlock (index: number) {
       this.createdComponents.splice(index, 1)
+    },
+    /**
+     * 
+     */
+    async handleDefineOption () {
+      this.store.isLoading = true
+
+      setTimeout(() => {
+        this.store.isLoading = false
+      }, 2000);
     }
   }
 })

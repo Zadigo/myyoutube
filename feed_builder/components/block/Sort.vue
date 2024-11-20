@@ -2,11 +2,11 @@
   <BlockBase @delete-block="handleDeleteBlock(index)">
     <div class="row">
       <div class="col-6">
-        <v-select v-model="sortSelection.sort_by" :items="sortBy" variant="solo-filled" hide-details flat @change="emit('define-option', sortSelection)" />
+        <v-select v-model="sortSelection.sort_by" :items="sortBy" variant="solo-filled" hide-details flat @change="emit('define-options', sortSelection)" />
       </div>
       
       <div class="col-6">
-        <v-select v-model="sortSelection.direction" :items="['Ascending', 'Descending']" variant="solo-filled" hide-details flat @change="emit('define-option', sortSelection)" />
+        <v-select v-model="sortSelection.direction" :items="['Ascending', 'Descending']" variant="solo-filled" hide-details flat @change="emit('define-options', sortSelection)" />
       </div>
     </div>
   </BlockBase>
@@ -31,16 +31,16 @@ const sortBy = [
 const { handleDeleteBlock } = useBlocks()
 
 const emit = defineEmits({
-  'define-option' (_data: SortOptions) {
+  'define-options' (_data: SortOptions) {
     return true
   }
 })
 
 defineProps({
-    index: {
-        type: Number,
-        required: true
-    }
+  index: {
+    type: Number,
+    required: true
+  }
 })
 
 const sortSelection = ref<SortOptions>({
