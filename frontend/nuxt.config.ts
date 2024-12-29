@@ -64,6 +64,7 @@ export default defineNuxtConfig({
     icons: {
       regular: [],
       solid: [
+        'bars',
         'chart-simple',
         'cog',
         'home'

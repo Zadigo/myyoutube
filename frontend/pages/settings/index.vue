@@ -59,7 +59,7 @@
         <settings-card title="Vos chaînes YouTube" subtitle="Manage what you share on YouTube">
           <template #default>
             <div class="list-group my-2">
-              <router-link :to="{ name: 'feed' }" class="list-group-item list-group-item-action">
+              <NuxtLink to="/" class="list-group-item list-group-item-action">
                 <div class="d-flex align-items-center gap-3">
                   <v-avatar image="/avatar1.png" size="30" alt="" />
                   
@@ -67,7 +67,7 @@
                     Channel name 1
                   </p>
                 </div>
-              </router-link>
+              </NuxtLink>
             </div>
           </template>
         </settings-card>

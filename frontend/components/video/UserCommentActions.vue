@@ -14,7 +14,7 @@
             <emoji-picker @emoji-click="hanlePickEmoji" />
 
             <v-btn color="secondary" size="small" rounded="xl" flat @click="handleCreateComment ">
-              <font-awesome-icon icon="fas fa-comment" class="me-2" />
+              <font-awesome icon="fas fa-comment" class="me-2" />
               Comment
             </v-btn>
           </div>
@@ -25,12 +25,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { VideoComment } from '@/types/comments'
+import { ref } from 'vue'
+import { VideoComment } from '~/types'
 
 import EmojiPicker from '@/components/emojis/EmojiPicker.vue'
 
-export default defineComponent({
+export default defineNuxtComponent({
   name: 'UserCommentActions',
   components: {
     EmojiPicker

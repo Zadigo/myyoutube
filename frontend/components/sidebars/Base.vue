@@ -1,6 +1,6 @@
 <template>
   <div class="list-group list-group-flush mx-3 mt-4">
-    <NuxtLink v-for="navLink in navLinks" :key="navLink.to" :to="{ name: navLink.to }" class="list-group-item list-group-item-action border-0" aria-current="true">
+    <NuxtLink v-for="navLink in navLinks" :key="navLink.to" :to="navLink.to" class="list-group-item list-group-item-action border-0" aria-current="true">
       <font-awesome :icon="navLink.icon" class="me-3" />
       {{ navLink.name }}
     </NuxtLink>
@@ -31,11 +31,11 @@ const navLinks = [
   //   to: 'notifications',
   //   icon: 'fas fa-bell'
   // },
-  {
-    name: 'My studio',
-    to: '/my-studio',
-    icon: 'chart-simple'
-  }
+  // {
+  //   name: 'My studio',
+  //   to: '/my-studio',
+  //   icon: 'chart-simple'
+  // }
 ]
 </script>
 

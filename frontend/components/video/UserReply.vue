@@ -3,17 +3,17 @@
     <div class="card-body">
       <div class="d-flex justify-content-around">
         <div class="me-3">
-          <router-link :to="{ name: 'channel_details', params: { id: 'ch_noienozinfoz' } }" aria-label="">
+          <NuxtLink :to="{ name: 'channel_details', params: { id: 'ch_noienozinfoz' } }" aria-label="">
             <v-img src="/avatar3.png" class="img-fluid rounded-circle" width="40px" alt="Image 3" />
-          </router-link>
+          </NuxtLink>
         </div>
 
         <div clas="ms-1">
           <div class="d-flex justify-content-left">
-            <router-link :to="{ name: 'channel_details', params: { id: 'ch_noienozinfoz' } }" aria-label="">
+            <NuxtLink :to="{ name: 'channel_details', params: { id: 'ch_noienozinfoz' } }" aria-label="">
               <span class="fw-bold me-2">Cee Dee</span>
               <span class="text-body-tertiary">3 weeks ago</span>
-            </router-link>
+            </NuxtLink>
           </div>
 
           <p class="card-text">
@@ -50,21 +50,15 @@
   </article>
 </template>
 
-<script lang="ts">
-import { VideoComment } from '@/types/comments';
-import { defineComponent, PropType } from 'vue'
+<script setup>
+import type { PropType } from 'vue';
+import type { VideoComment } from '~/types';
 
-export default defineComponent({
-  name: 'UserReply',
-  props: {
-    reply: {
-      type: Object as PropType<VideoComment>, 
-      default: () => {},
-      required: false
-    }
-  },
-  beforeMount () {
-    this.reply
+defineProps({
+  reply: {
+    type: Object as PropType<VideoComment>, 
+    default: () => {},
+    required: false
   }
 })
 </script>

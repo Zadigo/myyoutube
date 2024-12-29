@@ -2,7 +2,7 @@
   <section id="video">
     <section class="row">
       <div v-if="currentVideo" class="col-12">
-        <BaseVideoPlayer :video-source="`http://127.0.0.1:8000/api/v1/videos/s/${currentVideo.video_id}`" />
+        <BaseVideoPlayer :video-source="videoSource" />
       </div>
     </section>
 
@@ -21,7 +21,7 @@
     <section class="row mt-4">
       <!-- Comments -->
       <div class="col-8">
-        <suspense>
+        <Suspense>
           <template #default>
             <VideoAsyncCommentSection />
           </template>
@@ -29,7 +29,7 @@
           <template #fallback>
             <BaseSkeleton :loading="true" />
           </template>
-        </suspense>
+        </Suspense>
       </div>
 
       <!-- Recommendations -->
@@ -195,77 +195,82 @@
 </template>
 
 <script setup>
-import { storeToRefs } from 'pinia'
-import { defineAsyncComponent, provide, ref } from 'vue'
+// import { storeToRefs } from 'pinia'
+// import { defineAsyncComponent, provide, ref } from 'vue'
 
-import type { VideoInfo, Playlist } from '~/types'
+// import type { VideoInfo, Playlist } from '~/types'
 
-import reportTypes from '~/data/report_types.json'
+// import reportTypes from '~/data/report_types.json'
 
-const AsyncRecommendationSection = defineAsyncComponent({
-  loader: () => import('~/components/video/UserRecommendations.vue')
-})
+// const AsyncRecommendationSection = defineAsyncComponent({
+//   loader: () => import('~/components/video/UserRecommendations.vue')
+// })
 
-const { $client } = useNuxtApp()
-const { mediaPath } = useDjangoUtilies()
-const route = useRoute()
-const isLoading = ref(true)
-const store = useFeed()
-const { currentVideo } = storeToRefs(store)
+// const { $client } = useNuxtApp()
+// const { mediaPath } = useDjangoUtilies()
+// const route = useRoute()
+// const isLoading = ref(true)
+// const store = useFeed()
+// const { currentVideo } = storeToRefs(store)
 
-const showClassificationDrawer = ref(false)
-const showReportModal = ref(false)
-const showGiftsModal = ref(false)
-const showSaveModal = ref(false)
+// const showClassificationDrawer = ref(false)
+// const showReportModal = ref(false)
+// const showGiftsModal = ref(false)
+// const showSaveModal = ref(false)
 
-const availablePlaylists = ref<Playlist[]>([])
+// const availablePlaylists = ref([])
 
-const selectedPlaylistId = ref(null)
-provide('currentVideo', currentVideo)
+// const selectedPlaylistId = ref(null)
+// provide('currentVideo', currentVideo)
 
-function useVideoDetails () {
-  const { currentVideo } = useFeed()
+// const videoSource = computed(() => {
+//   return `http://127.0.0.1:8000/api/v1/videos/s/${currentVideo.value.video_id}`
+// })
 
-  async function requestVideoDetails () {
-    try {
-      const videoID = route.params.id
-      const response = await $client.get<Video>(`/videos/${videoID}`)
+// function useVideoDetails () {
+//   const { currentVideo } = useFeed()
+
+//   async function requestVideoDetails () {
+//     try {
+//       const videoID = route.params.id
+//       const response = await $client.get<VideoInfo>(`/videos/${videoID}`)
       
-      currentVideo.value = response.data
-      isLoading.value = false
-    } catch (e) {
-      console.log(e)
-    }
-  }
+//       currentVideo.value = response.data
+//       isLoading.value = false
+//     } catch (e) {
+//       console.log(e)
+//     }
+//   }
 
-  return {
-    requestVideoDetails,
-  }
-}
+//   return {
+//     requestVideoDetails,
+//   }
+// }
 
-function usePlaylist () {
-  async function requestSaveToPlaylist () {
-    try {
-      await $client.post(`/playlists/${selectedPlaylistId.value}/add`, {
-        video: route.params.id
-      })
-    } catch (e) {
-      console.error('requestSaveToPlaylist', e)
-    }
-  }
+// function usePlaylist () {
+//   async function requestSaveToPlaylist () {
+//     try {
+//       await $client.post(`/playlists/${selectedPlaylistId.value}/add`, {
+//         video: route.params.id
+//       })
+//     } catch (e) {
+//       console.error('requestSaveToPlaylist', e)
+//     }
+//   }
 
-  function handleSave (playlists: Playlist[]) {
-    showSaveModal.value = true
-    availablePlaylists .value = playlists
-  }
+//   function handleSave (playlists) {
+//     showSaveModal.value = true
+//     availablePlaylists .value = playlists
+//   }
   
-  return {
-    handleSave,
-    requestSaveToPlaylist
-  }
-}
+//   return {
+//     handleSave,
+//     requestSaveToPlaylist
+//   }
+// }
 
-const { requestVideoDetails } = useVideoDetails()
+// const { requestVideoDetails } = useVideoDetails()
+// const { handleSave, requestSaveToPlaylist } = usePlaylist()
 
-onMounted(requestVideoDetails)
+// onMounted(requestVideoDetails)
 </script>

@@ -25,13 +25,13 @@
 </template>
 
 <script setup>
-import type { Video } from '~/types'
+import type { VideoInfo } from '~/types'
 
 import { useFeed } from '~/stores/feed';
 import { storeToRefs } from 'pinia';
 
 const emit = defineEmits({
-  'feed-loaded' (_videos: Video[]) {
+  'feed-loaded' (_videos: VideoInfo[]) {
       return true
     }
 })

@@ -16,14 +16,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, PropType, ref } from 'vue';
+import type { PropType } from 'vue'
+import { onBeforeMount, ref } from 'vue';
 
 interface Step {
   id: number
   title: string
 }
 
-export default defineComponent({
+export default defineNuxtComponent({
   name: 'BaseStepper',
   props: {
     steps: {

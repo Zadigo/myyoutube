@@ -38,11 +38,9 @@
 </template>
 
 <script lang="ts">
-import { client } from '@/plugins/axios'
 import { computed, defineComponent, ref } from 'vue'
-import { useRoute } from 'vue-router'
 
-import { VideoComment } from '@/types/comments'
+import type { VideoComment } from '~/types'
 
 import UserComment from './UserComment.vue'
 import UserCommentActions from './UserCommentActions.vue'
@@ -59,6 +57,7 @@ export default defineComponent({
     UserCommentActions
   },
   async setup () {
+    const { $client } = useNuxtApp()
     const route = useRoute()
     const comments = ref<VideoComment[]>([])
     const queryParams = ref({ desc: true })
@@ -68,7 +67,7 @@ export default defineComponent({
     async function requestVideoComments () {
       try {
         const videoID = route.params.id
-        const response = await client.get<VideoComment[]>(`/comments/${videoID}`, {
+        const response = await $client.get<VideoComment[]>(`/comments/${videoID}`, {
           params: queryParams.value
         })
         comments.value = response.data

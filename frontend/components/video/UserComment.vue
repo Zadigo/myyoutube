@@ -2,9 +2,9 @@
   <article :aria-label="`Comment n°${comment.id}`" class="card shadow-none">
     <div class="card-body">
       <div class="d-flex align-items-start gap-4">
-        <router-link :to="{ name: 'channel_details', params: { id: comment.user_channel } }" aria-label="">
+        <NuxtLink :to="{ name: 'channel_details', params: { id: comment.user_channel } }" aria-label="">
           <v-img src="/avatar2.png" width="80" height="80" class="img-fluid rounded-circle" alt="" />
-        </router-link>
+        </NuxtLink>
 
         <div class="content">
           <div class="mb-3">
@@ -35,19 +35,19 @@
 
           <div class="d-flex gap-2 mt-4">
             <v-btn color="primary" size="small" rounded="xl" flat>
-              <font-awesome-icon v-if="comment?.is_liked" icon="fas fa-thumbs-up" class="me-2" />
-              <font-awesome-icon v-else icon="far fa-thumbs-up" class="me-2" />
+              <font-awesome v-if="comment?.is_liked" icon="fas fa-thumbs-up" class="me-2" />
+              <font-awesome v-else icon="far fa-thumbs-up" class="me-2" />
               12.3k
             </v-btn>
             
             <v-btn color="primary" size="small" rounded="xl" flat>
-              <font-awesome-icon v-if="!comment?.is_disliked" icon="fas fa-thumbs-down" class="me-2" />
-              <font-awesome-icon v-else icon="far fa-thumbs-up" class="me-2" />
+              <font-awesome v-if="!comment?.is_disliked" icon="fas fa-thumbs-down" class="me-2" />
+              <font-awesome v-else icon="far fa-thumbs-up" class="me-2" />
               24
             </v-btn>
 
             <v-btn color="primary" size="small" rounded="xl" flat>
-              <font-awesome-icon icon="fas fa-comment" class="me-2" />
+              <font-awesome icon="fas fa-comment" class="me-2" />
               Answer
             </v-btn>
           </div>
@@ -68,38 +68,23 @@
   </article>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType, ref } from 'vue'
-import { VideoComment } from '@/types/comments';
+<script setup>
+import { ref } from 'vue';
 
-import UserReply from './UserReply.vue'
+import type { PropType } from 'vue';
+import type { VideoComment } from '~/types';
 
-export default defineComponent({
-  name: 'UserComment',
-  components: {
-    UserReply
-  },
-  props: {
-    comment: {
-      type: Object as PropType<VideoComment>,
-      default: () => {},
-      required: false
-    }
-  },
-  setup () {
-    const showReplies = ref(false)
-
-    return {
-      showReplies
-    }
-  },
-  computed: {
-    /**
-     * Checks if the comment has replies 
-     */
-    hasReplies () {
-      return this.comment.number_of_replies >= 1
-    }
+defineProps({
+  comment: {
+    type: Object as PropType<VideoComment>,
+    default: () => {},
+    required: false
   }
+})
+
+const showReplies = ref(false)
+
+const hasReplies = computed(() => {
+  return this.comment.number_of_replies >= 1
 })
 </script>

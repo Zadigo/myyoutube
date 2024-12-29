@@ -3,14 +3,14 @@
     <div class="card">
       <div class="card-body">
         <div class="d-flex flex-row justify-content-around align-items-start gap-3">
-          <router-link :to="{ name: 'channel_details', params: { id: currentVideo?.user_channel?.reference } }" aria-label="">
+          <NuxtLink :to="{ name: 'channel_details', params: { id: currentVideo?.user_channel?.reference } }" aria-label="">
             <img src="/avatar1.png" class="img-fluid rounded-circle" width="120" height="120" alt="">
-          </router-link>
+          </NuxtLink>
 
           <div class="information">
             <v-btn :to="{ name: 'channel_details', params: { id: currentVideo?.user_channel.reference } }" class="px-0" color="primary" variant="plain">
               <span class="fw-bold">{{ currentVideo?.user_channel.name }}</span>
-              <font-awesome-icon icon="fa fa-circle-check" class="ms-4" />
+              <font-awesome icon="fa fa-circle-check" class="ms-4" />
             </v-btn>
             
             <p class="text-body-tertiary">
@@ -39,7 +39,7 @@
             </p>
 
             <v-btn color="primary" variant="plain">
-              <font-awesome-icon icon="fa fa-caret-down" class="me-2" />
+              <font-awesome icon="fa fa-caret-down" class="me-2" />
               More
             </v-btn>
           </div>
@@ -49,17 +49,9 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, inject } from 'vue'
-import { Video } from '@/types/feed'
+<script setup>
+import { inject } from 'vue'
+import type { VideoInfo } from '~/types'
 
-export default defineComponent({
-  name: 'VideoInformation',
-  setup () {
-    const currentVideo = inject<Video>('currentVideo')
-    return {
-      currentVideo
-    }
-  }
-})
+const currentVideo = inject<VideoInfo>('currentVideo')
 </script>

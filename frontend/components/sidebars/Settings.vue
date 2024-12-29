@@ -1,9 +1,9 @@
 <template>
   <div class="list-group list-group-flush mx-3 mt-4">
-    <router-link v-for="navLink in navLinks" :key="navLink.to" :to="{ name: navLink.to }" class="list-group-item list-group-item-action border-0" aria-current="true">
-      <font-awesome-icon :icon="navLink.icon" class="me-3" />
+    <NuxtLink v-for="navLink in navLinks" :key="navLink.to" :to="navLink.to" class="list-group-item list-group-item-action border-0" aria-current="true">
+      <font-awesome :icon="navLink.icon" class="me-3" />
       {{ navLink.name }}
-    </router-link>
+    </NuxtLink>
   </div>
 </template>
 
@@ -13,8 +13,8 @@ import { defineComponent } from 'vue';
 const navLinks = [
   {
     name: 'Feed',
-    to: 'feed',
-    icon: 'fas fa-home'
+    to: '/',
+    icon: 'home'
   },
   {
     name: 'My account',

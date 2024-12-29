@@ -8,9 +8,9 @@
 
         <div v-if="currentVideo" class="d-flex justify-content-between align-items-center mt-3">
           <div v-if="currentVideo.user_channel" id="left" class="d-flex justify-content-left gap-4">
-            <router-link :to="{ name: 'channel_details', params: { id: currentVideo.user_channel?.reference } }" aria-label="">
+            <NuxtLink :to="{ name: 'channel_details', params: { id: currentVideo.user_channel?.reference } }" aria-label="">
               <img src="/avatar1.png" class="img-fluid rounded-circle" width="50" height="50" alt="">
-            </router-link>
+            </NuxtLink>
 
             <h3 class="h6" aria-label="User name">
               {{ currentVideo.user.get_full_name }}
@@ -19,14 +19,14 @@
 
           <div id="right">
             <v-btn size="large" rounded="xl" color="primary" class="me-1" flat @click="handleLike">
-              <font-awesome-icon v-if="requestData.liked" icon="fas fa-thumbs-up" class="mr-2" />
-              <font-awesome-icon v-else icon="far fa-thumbs-up" class="mr-2" />
+              <font-awesome v-if="requestData.liked" icon="fas fa-thumbs-up" class="mr-2" />
+              <font-awesome v-else icon="far fa-thumbs-up" class="mr-2" />
               Like
             </v-btn>
 
             <v-btn size="large" rounded="xl" color="primary" class="me-3" flat @click="handleUnlike">
-              <font-awesome-icon v-if="requestData.unliked" icon="fas fa-thumbs-down" class="mr-2" />
-              <font-awesome-icon v-else icon="far fa-thumbs-down" class="mr-2" />
+              <font-awesome v-if="requestData.unliked" icon="fas fa-thumbs-down" class="mr-2" />
+              <font-awesome v-else icon="far fa-thumbs-down" class="mr-2" />
               Dislike
             </v-btn>
             
@@ -34,7 +34,7 @@
             <v-menu transition="slide-x-transition">
               <template #activator="{ props }">
                 <v-btn size="large" rounded="xl" v-bind="props" color="primary" flat>
-                  <font-awesome-icon icon="fas fa-caret-down" class="mr-2" />
+                  <font-awesome icon="fas fa-caret-down" class="mr-2" />
                   More
                 </v-btn>
               </template>
@@ -42,7 +42,7 @@
               <v-list>
                 <v-list-item v-for="menuItem in menuItems" :key="menuItem.name" :value="menuItem" @click="handleMoreAction(menuItem)">
                   <v-list-item-title>
-                    <font-awesome-icon :icon="[ 'fas', menuItem.icon ]" class="me-2" />
+                    <font-awesome :icon="[ 'fas', menuItem.icon ]" class="me-2" />
                     {{ menuItem.name }}
                   </v-list-item-title>
                 </v-list-item>
@@ -59,21 +59,21 @@
               <v-list>
                 <v-list-item value="All">
                   <v-list-item-title>
-                    <font-awesome-icon icon="fas fa-bullhorn" class="me-2" @click="handleSubscriptionMode('All')" />
+                    <font-awesome icon="fas fa-bullhorn" class="me-2" @click="handleSubscriptionMode('All')" />
                     All
                   </v-list-item-title>
                 </v-list-item>
 
                 <v-list-item value="None">
                   <v-list-item-title>
-                    <font-awesome-icon icon="fas fa-bell-slash" class="me-2" @click="handleSubscriptionMode('None')" />
+                    <font-awesome icon="fas fa-bell-slash" class="me-2" @click="handleSubscriptionMode('None')" />
                     None
                   </v-list-item-title>
                 </v-list-item>
                 
                 <v-list-item value="Unsubsribe" @click="handleSubscription">
                   <v-list-item-title>
-                    <font-awesome-icon icon="fas fa-user-minus" class="me-2" />
+                    <font-awesome icon="fas fa-user-minus" class="me-2" />
                     Unsubscribe
                   </v-list-item-title>
                 </v-list-item>
@@ -91,8 +91,8 @@
 </template>
 
 <script lang="ts">
-import { Video } from '@/types/feed';
-import { defineComponent, inject, ref } from 'vue'
+import { VideoInfo } from '~/types';
+import { inject, ref } from 'vue'
 
 interface MenuItem {
   name: string
@@ -142,7 +142,7 @@ const menuItems = [
   }
 ]
 
-export default defineComponent({
+export default defineNuxtComponent({
   name: 'UserVideoActions',
   emits: {
     classify () {
@@ -168,7 +168,7 @@ export default defineComponent({
       }
     })
 
-    const currentVideo = inject<Video>('currentVideo')
+    const currentVideo = inject<VideoInfo>('currentVideo')
 
     const playlists = ref([])
 
