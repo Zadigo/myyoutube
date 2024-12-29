@@ -1,0 +1,58 @@
+{
+    "recommendations": [
+        {
+            "id": 1,
+            "reference": "axRioUiyGHbnD",
+            "title": "When you realize ON AIR that your sister stole your watch",
+            "url": "../assets/video1.mp4",
+            "views": 9242936,
+            "hastags": [],
+            "channel": {
+                "name": "Malika Andrews - ESPN",
+                "subscribers": 345567896,
+                "verified": true,
+                "subscribed": false,
+                "notifications": true,
+                "paid_subscription": false
+            },
+            "comments": {
+                "count": "6,909"
+            },
+            "likes": "14.5K",
+            "dislikes": "345",
+            "liked": false,
+            "genre": "Talk",
+            "categories": [
+                "Black Girl Talk",
+                "Reaction Channel",
+                "General Podcast",
+                "Beauty Talk",
+                "Vlog",
+
+                "Makeup Tutorial",
+                "Cooking Tutorial",
+
+                "Python Coding",
+                "Javascript Coding",
+                "VueJS Coding",
+                "VBA Coding",
+
+                "Society Games",
+                "Video Games",
+                
+                "News",
+                
+                "Afro",
+                "Classical",
+                "Pop",
+                "Rap",
+
+                "Television"
+            ],
+            "created_on": "May 3, 2022"
+        }
+    ],
+    "sections": {
+        "music": []
+    }
+}

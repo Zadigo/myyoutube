@@ -10,17 +10,18 @@ import MockAdapter from 'axios-mock-adapter';
 
 const mock = new MockAdapter(client);
 
+
 describe('FeedPage', () => {
     beforeEach(() => {
         setActivePinia(createPinia())
     })
-
+    
     afterEach(() => {
         mock.reset()
         vi.clearAllMocks()
     })
 
-    it('can render', async () => {
+    it('can render an empty video feed', async () => {
         mock.onGet('/video/').reply(200, {
             data: [],
         });

@@ -1,0 +1,70 @@
+{
+    "id": 1,
+    "title": "When you realize ON AIR that your sister stole your watch",
+    "url": "../assets/video2_full_hd.mp4",
+    "views": "9,242,936",
+    "hastags": [],
+    "channel": {
+        "name": "Malika Andrews - ESPN",
+        "subscribers": 345567896,
+        "verified": true,
+        "subscribed": false,
+        "notifications": true
+    },
+    "comments": {
+        "count": "6,909"
+    },
+    "likes": "14.5K",
+    "dislikes": "345",
+    "liked": false,
+    "genre": "Talk",
+    "categories": [
+        "Black Girl Talk",
+        "Reaction Channel",
+        "General Podcast",
+        "Beauty Talk",
+        "Vlog",
+
+        "Makeup Tutorial",
+        "Cooking Tutorial",
+
+        "Python Coding",
+        "Javascript Coding",
+        "VueJS Coding",
+        "VBA Coding",
+
+        "Society Games",
+        "Video Games",
+        
+        "News",
+        
+        "Afro",
+        "Classical",
+        "Pop",
+        "Rap",
+
+        "Television"
+    ],
+    "created_on": "May 3, 2022",
+    "recommendations": [
+        {
+            "id": 2,
+            "title": "When you try to ride life with a HORSE",
+            "url": "../assets/video1.mp4",
+            "views": "19,242,936",
+            "hastags": [],
+            "channel": {
+                "name": "Malika Andrews - ESPN",
+                "subscribers": "324K",
+                "subscribed": false
+            },
+            "comments": {
+                "count": "6,909"
+            },
+            "likes": "14.5K",
+            "dislikes": "345",
+            "liked": false,
+            "created_on": "May 3, 2022"
+        }
+    ]
+}
