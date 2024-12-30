@@ -7,6 +7,8 @@ from pathlib import Path
 from wsgiref.util import FileWrapper
 
 import pandas
+from comments.api.serializers import CommentSerializer
+from comments.models import Comment
 from django.conf import settings
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
@@ -14,6 +16,8 @@ from django.db.models import BooleanField, Case, Q, When
 from django.db.models.functions import StrIndex
 from django.http import Http404, HttpResponse, StreamingHttpResponse
 from django.shortcuts import get_object_or_404
+from mychannel.models import BlockedChannel
+from rest_framework import generics, status
 from rest_framework.decorators import APIView, api_view, permission_classes
 from rest_framework.exceptions import (AuthenticationFailed, NotFound,
                                        PermissionDenied)
@@ -24,10 +28,6 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ViewSet
-
-from comments.api.serializers import CommentSerializer
-from comments.models import Comment
-from mychannel.models import BlockedChannel
 from videos import models
 from videos.api import serializers
 
@@ -235,17 +235,19 @@ class ListUserVideos(APIView):
         return Response(serializer.data)
 
 
-@api_view(['post'])
-@permission_classes([IsAuthenticated])
-def upload_video(request, **kwargs):
-    serializer = serializers.ValidateVideoUpload(
-        data=request.data, 
-        context={'request': request}
-    )
-    serializer.is_valid(raise_exception=True)
-    video = serializer.save()
-    return_serializer = serializers.VideoSerializer(instance=video)
-    return Response(return_serializer.data)
+class UploadVideo(generics.GenericAPIView):
+    serializer_class = serializers.ValidateVideoUpload
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        return_serializer = serializers.VideoSerializer(
+            instance=serializer.instance
+        )
+        return Response(data=return_serializer.data, status=status.HTTP_201_CREATED)
 
 
 class VideoStreamView(APIView):

@@ -172,28 +172,29 @@ class ValidateVideoUpload(Serializer):
         default='Public'
     )
 
-    # def save(self, request, **kwargs):
-    #     setattr(self, '_request', request)
-    #     return super().save(**kwargs)
-
     def create(self, validated_data):
         request = self._context['request']
-        # request = getattr(self, '_request')
 
         channel = UserChannel.objects.get(user=request.user)
         queryset = channel.channelplaylist_set.filter(
             name=validated_data['channel_playlist']
         )
+
         if queryset.exists():
             validated_data['channel_playlist'] = queryset.get()
 
         if validated_data['recording_date'] is None:
             validated_data['recording_date'] = now().date()
 
-        instance = Video.objects.create(
-            user=request.user,
-            **validated_data
-        )
+        # TODO: Allow creation of multiple videos
+        videos = validated_data.pop('video')
+
+        for file in request.data.getlist('video'):
+            instance = Video.objects.create(
+                user=request.user,
+                video=file,
+                **validated_data
+            )
 
         details = get_video_metadata(instance.video.path)
         instance.duration = details.duration

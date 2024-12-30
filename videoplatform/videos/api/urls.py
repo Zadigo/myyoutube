@@ -1,5 +1,4 @@
 from django.urls import re_path
-
 from videos.api import views
 
 app_name = 'videos_api'
@@ -7,11 +6,14 @@ app_name = 'videos_api'
 urlpatterns = [
     re_path(
         r'^studio/upload$',
-        views.upload_video
+        # views.upload_video,
+        views.UploadVideo.as_view(),
+        name='studio_upload'
     ),
     re_path(
         r'^studio/videos$',
-        views.ListUserVideos.as_view()
+        views.ListUserVideos.as_view(),
+        name='studio_videos'
     ),
     re_path(
         r'^(?P<video_id>vid_[a-zA-Z0-9]+)$',
@@ -25,7 +27,8 @@ urlpatterns = [
     ),
     re_path(
         r'^s/(?P<video_id>vid_[a-zA-Z0-9]+)$',
-        views.VideoStreamView.as_view()
+        views.VideoStreamView.as_view(),
+        name='stream'
     ),
     re_path(
         r'^categories/(?P<category>\w+)/sub-categories$',
