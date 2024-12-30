@@ -2,39 +2,45 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h1 class="h4" aria-label="">
+        <h1 :aria-label="currentVideo.title" class="h5 fw-bold">
           {{ currentVideo?.title }}
         </h1>
 
         <div v-if="currentVideo" class="d-flex justify-content-between align-items-center mt-3">
           <div v-if="currentVideo.user_channel" id="left" class="d-flex justify-content-left gap-4">
-            <NuxtLink :to="{ name: 'channel_details', params: { id: currentVideo.user_channel?.reference } }" aria-label="">
+            <!-- <NuxtLink :to="`/channels/${currentVideo.user_channel?.reference}`" aria-label="">
               <img src="/avatar1.png" class="img-fluid rounded-circle" width="50" height="50" alt="">
-            </NuxtLink>
+            </NuxtLink> -->
+            
+            <div class="wrapper">
+              <h3 class="h6 fw-bold mb-1" aria-label="User name">
+                103M views
+              </h3>
 
-            <h3 class="h6" aria-label="User name">
-              {{ currentVideo.user.get_full_name }}
-            </h3>
+              <p class="fw-light text-secondary">
+                20 months ago
+              </p>
+            </div>
           </div>
 
           <div id="right">
             <v-btn size="large" rounded="xl" color="primary" class="me-1" flat @click="handleLike">
-              <font-awesome v-if="requestData.liked" icon="fas fa-thumbs-up" class="mr-2" />
-              <font-awesome v-else icon="far fa-thumbs-up" class="mr-2" />
-              Like
+              <font-awesome v-if="requestData.liked" icon="thumbs-up" class="mr-2" />
+              <font-awesome v-else :icon="['far', 'thumbs-up']" class="mr-2" />
+              Like <span class="fw-bold">145.3k</span>
             </v-btn>
 
             <v-btn size="large" rounded="xl" color="primary" class="me-3" flat @click="handleUnlike">
-              <font-awesome v-if="requestData.unliked" icon="fas fa-thumbs-down" class="mr-2" />
-              <font-awesome v-else icon="far fa-thumbs-down" class="mr-2" />
-              Dislike
+              <font-awesome v-if="requestData.unliked" icon="thumbs-down" class="mr-2" />
+              <font-awesome v-else :icon="['far', 'thumbs-down']" class="mr-2" />
+              Dislike <span class="fw-bold">15</span>
             </v-btn>
             
             <!-- Extra Actions -->
             <v-menu transition="slide-x-transition">
               <template #activator="{ props }">
                 <v-btn size="large" rounded="xl" v-bind="props" color="primary" flat>
-                  <font-awesome icon="fas fa-caret-down" class="mr-2" />
+                  <font-awesome icon="caret-down" class="mr-2" />
                   More
                 </v-btn>
               </template>
@@ -52,35 +58,35 @@
             <v-menu v-if="requestData.subscription.active" transition="slide-x-transition">
               <template #activator="{ props }">
                 <v-btn v-bind="props" size="large" rounded="xl" color="secondary" class="ml-5" flat>
-                  <font-awesome-icon icon="fas fa-bell-slash" />
+                  <font-awesome icon="bell-slash" />
                 </v-btn>
               </template>
 
               <v-list>
                 <v-list-item value="All">
                   <v-list-item-title>
-                    <font-awesome icon="fas fa-bullhorn" class="me-2" @click="handleSubscriptionMode('All')" />
+                    <font-awesome icon="bullhorn" class="me-2" @click="handleSubscriptionMode('All')" />
                     All
                   </v-list-item-title>
                 </v-list-item>
 
                 <v-list-item value="None">
                   <v-list-item-title>
-                    <font-awesome icon="fas fa-bell-slash" class="me-2" @click="handleSubscriptionMode('None')" />
+                    <font-awesome icon="bell-slash" class="me-2" @click="handleSubscriptionMode('None')" />
                     None
                   </v-list-item-title>
                 </v-list-item>
                 
                 <v-list-item value="Unsubsribe" @click="handleSubscription">
                   <v-list-item-title>
-                    <font-awesome icon="fas fa-user-minus" class="me-2" />
+                    <font-awesome icon="user-minus" class="me-2" />
                     Unsubscribe
                   </v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
 
-            <v-btn v-else size="large" rounded="xl" color="secondary" class="ml-5" flat @click="handleSubscription">
+            <v-btn v-else size="large" rounded="xl" color="light" class="ml-5" flat @click="handleSubscription">
               Subscribe
             </v-btn>
           </div>
@@ -90,180 +96,160 @@
   </div>
 </template>
 
-<script lang="ts">
-import { VideoInfo } from '~/types';
-import { inject, ref } from 'vue'
+<script lang="ts" setup>
+import { inject, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import type { Playlist, VideoInfo, VideoMenuAction, VideoMenuItem } from '~/types';
 
-interface MenuItem {
-  name: string
-  icon: string
-}
-
-const menuItems = [
+const menuItems: VideoMenuItem[] = [
   {
     name: 'Store',
-    icon: 'fa-store'
+    icon: 'store'
   },
   {
     name: 'Download',
-    icon: 'fa-download'
+    icon: 'download'
   },
   {
     name: 'Save',
-    icon: 'fa-save'
+    icon: 'save'
   },
   {
     name: 'Gift',
-    icon: 'fa-gift'
+    icon: 'gift'
   },
   {
     name: 'Donate',
-    icon: 'fa-dollar-sign'
+    icon: 'dollar-sign'
   },
   {
     name: 'Share',
-    icon: 'fa-share'
+    icon: 'share'
   },
   {
     name: 'Recommendations',
-    icon: 'fa-star'
+    icon: 'star'
   },
   {
     name: 'Community note',
-    icon: 'fa-note-sticky'
+    icon: 'note-sticky'
   },
   {
     name: 'Fact check',
-    icon: 'fa-police'
+    icon: 'building-shield'
   },
   {
     name: 'Report',
-    icon: 'fa-store'
+    icon: 'store'
   }
 ]
 
-export default defineNuxtComponent({
-  name: 'UserVideoActions',
-  emits: {
-    classify () {
-      return true
-    },
-    report () {
-      return true
-    },
-    gifts () {
-      return true
-    },
-    save () {
-      return true
-    }
-  },
-  setup () {
-    const requestData = ref({
-      liked: false,
-      unliked: false,
-      subscription: {
-        active: false,
-        mode: null
-      }
-    })
+const router = useRouter()
 
-    const currentVideo = inject<VideoInfo>('currentVideo')
-
-    const playlists = ref([])
-
-    return {
-      playlists,
-      requestData,
-      currentVideo,
-      menuItems
-    }
-  },
-  watch: {
-    'requestData.subscription.active' (n) {
-      if (!n) {
-        this.requestData.subscription.mode = null
-      }
-    }
-  },
-  methods: {
-    /**
-     * 
-     */
-    async handleLike () {
-      this.requestData.liked = !this.requestData.liked
-    },
-    /**
-     * 
-     */
-    async handleUnlike () {
-      this.requestData.unliked = !this.requestData.unliked
-    },
-    /**
-     * 
-     */
-    async handleSubscription () {
-      this.requestData.subscription.active = !this.requestData.subscription.active
-    },
-    /**
-     * 
-     */
-    async handleSave () {
-      try {
-        let simplePlaylists
-
-        if (this.$session.keyExists('simple_playlists')) {
-          simplePlaylists = this.$session.retrieve('simple_playlists')
-        } else {
-          const response = await this.$client.get('/playlists/', {
-            params: {
-              simple: 1
-            }
-          })
-          simplePlaylists = response.data
-          this.$session.create('simple_playlists', simplePlaylists)
-        }
-        this.$emit('save', simplePlaylists)
-      } catch (e) {
-        console.log('requestSaveToPlaylist', e)
-      }
-    },
-    /**
-     * 
-     */
-    handleMoreAction (action: MenuItem) {
-      switch (action.name) {
-        case 'Recommendations':
-          this.$emit('classify')
-          break
-
-        case 'Save':
-          this.handleSave()
-          break
-
-        case 'Report':
-          this.$emit('report')
-          break
-
-        case 'Gift':
-          this.$emit('gifts')
-          break
-
-        case 'Fact check':
-          this.$router.push({ name: 'fact_checking_center', params: { v: this.$route.params.id } })
-          break
-      
-        default:
-          break
-      }
-      console.log(action)
-    },
-    /**
-     * 
-     */
-    handleSubscriptionMode (mode) {
-      this.requestData.subscription.mode = mode
-    }
+const emit = defineEmits({
+  // classify () {
+  //   return true
+  // },
+  // report () {
+  //   return true
+  // },
+  // gifts () {
+  //   return true
+  // },
+  // save () {
+  //   return true
+  // }
+  action (_method: VideoMenuAction) {
+    return true
   }
 })
+
+const requestData = ref({
+  liked: false,
+  unliked: false,
+  subscription: {
+    active: false,
+    mode: null
+  }
+})
+
+const currentVideo = inject<VideoInfo>('currentVideo')
+const playlists = ref<Playlist[]>([])
+
+watch(requestData.value, (n) => {
+  if (!n.subscription.active) {
+    requestData.value.subscription.mode = null
+  }
+})
+
+/**
+ * 
+ */
+async function handleLike () {
+  requestData.value.liked = !requestData.value.liked
+}
+
+/**
+ * 
+ */
+async function handleUnlike () {
+  requestData.value.unliked = !requestData.value.unliked
+}
+
+/**
+ * 
+ */
+async function handleSubscription () {
+  requestData.value.subscription.active = !requestData.value.subscription.active
+}
+
+/**
+ * 
+ */
+async function handleSave () {
+  try {
+    let simplePlaylists
+
+    if (this.$session.keyExists('simple_playlists')) {
+      simplePlaylists = this.$session.retrieve('simple_playlists')
+    } else {
+      const response = await this.$client.get('/playlists/', {
+        params: {
+          simple: 1
+        }
+      })
+      simplePlaylists = response.data
+      this.$session.create('simple_playlists', simplePlaylists)
+    }
+    emit('save', simplePlaylists)
+  } catch (e) {
+    console.log('requestSaveToPlaylist', e)
+  }
+}
+
+/**
+ * 
+ */
+function handleMoreAction (action: VideoMenuItem) {
+  switch (action.name) {
+    case 'Save':
+      handleSave()
+      break
+      
+    case 'Fact check':
+      router.push({ name: 'fact_checking_center', params: { v: route.params.id } })
+      break
+  
+    default:
+      emit('action', action.name)
+      break
+  }
+}
+
+/**
+ * 
+ */
+function handleSubscriptionMode (mode: string) {
+  requestData.value.subscription.mode = mode
+}
 </script>

@@ -9,7 +9,7 @@
     <section class="row mt-4">
       <!-- Actions -->
       <BaseSkeleton :loading="isLoading">
-        <VideoUseActions @gifts="showGiftsModal = true" @report="showReportModal = true" @classify="showClassificationDrawer = true" @save="handleSave" />
+        <VideoUserActions @action="handleAction" @save="handleSave" />
       </BaseSkeleton>
 
       <!-- Information -->
@@ -23,7 +23,7 @@
       <div class="col-8">
         <Suspense>
           <template #default>
-            <VideoAsyncCommentSection />
+            <AsyncVideoCommentSection />
           </template>
 
           <template #fallback>
@@ -53,52 +53,50 @@
     </section>
 
     <!-- Modals -->
-    <Teleport to="body">
-      <v-navigation-drawer id="classification-modal" v-model="showClassificationDrawer" location="right" :width="400" temporary>
-        <div class="container">
-          <div class="row">
-            <div class="col-12">
-              <h2 class="h5">
-                Classification
-              </h2>
+    <!-- <v-navigation-drawer id="classification-modal" v-model="showClassificationDrawer" location="right" :width="400" temporary>
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <h2 class="h5">
+              Classification
+            </h2>
 
-              <div class="alert alert-warning">
-                Use this tool to signal that this video was not properly
-                categorized by the creator and therefore does not correspond to
-                the result you were expecting
-              </div>
-
-              <v-list>
-                <v-list-item>
-                  <v-switch label="Mark as wrong category" inset />
-                </v-list-item>
-
-                <v-list-item>
-                  <v-switch label="Block this channel" inset />
-                </v-list-item>
-              </v-list>
-
-              <v-divider />
+            <div class="alert alert-warning">
+              Use this tool to signal that this video was not properly
+              categorized by the creator and therefore does not correspond to
+              the result you were expecting
             </div>
+
+            <v-list>
+              <v-list-item>
+                <v-switch label="Mark as wrong category" inset />
+              </v-list-item>
+
+              <v-list-item>
+                <v-switch label="Block this channel" inset />
+              </v-list-item>
+            </v-list>
+
+            <v-divider />
           </div>
         </div>
+      </div>
 
-        <template #append>
-          <div class="d-flex justify-content-end gap-2 mt-3 p-4">
-            <v-btn variant="outlined" color="primary" rounded="xl" flat @click="showClassificationDrawer = false">
-              Cancel
-            </v-btn>
+      <template #append>
+        <div class="d-flex justify-content-end gap-2 mt-3 p-4">
+          <v-btn variant="outlined" color="primary" rounded="xl" flat @click="showClassificationDrawer = false">
+            Cancel
+          </v-btn>
 
-            <v-btn color="primary" rounded="xl" flat>
-              <font-awesome :icon="['fas', 'fa-save']" class="me-2" />
-              Save
-            </v-btn>
-          </div>
-        </template>
-      </v-navigation-drawer>
-    </Teleport>
-
-    <Teleport to="body">
+          <v-btn color="primary" rounded="xl" flat>
+            <font-awesome :icon="['fas', 'fa-save']" class="me-2" />
+            Save
+          </v-btn>
+        </div>
+      </template>
+    </v-navigation-drawer> -->
+    
+    <ClientOnly>
       <v-dialog id="report-video" v-model="showReportModal" width="400">
         <v-card>
           <v-card-text>
@@ -131,9 +129,9 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </Teleport>
+    </ClientOnly>
 
-    <Teleport to="body">
+    <ClientOnly>
       <v-dialog id="gifts" v-model="showGiftsModal" width="400" persistent>
         <v-card>
           <v-card-text>
@@ -158,9 +156,9 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </Teleport>
+    </ClientOnly>
 
-    <Teleport to="body">
+    <ClientOnly>
       <v-dialog id="notes" width="400" persistent>
         <v-card>
           <v-card-text>
@@ -168,9 +166,9 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-    </Teleport>
+    </ClientOnly>
 
-    <Teleport to="body">
+    <ClientOnly>
       <v-dialog id="save" v-model="showSaveModal" width="400" persistent>
         <v-card>
           <v-card-text>
@@ -190,87 +188,117 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </Teleport>
+    </ClientOnly>
   </section>
 </template>
 
-<script setup>
-// import { storeToRefs } from 'pinia'
-// import { defineAsyncComponent, provide, ref } from 'vue'
+<script lang="ts" setup>
+import { storeToRefs } from 'pinia'
+import { defineAsyncComponent, provide, ref } from 'vue'
 
-// import type { VideoInfo, Playlist } from '~/types'
+import type { VideoInfo, Playlist, VideoMenuAction } from '~/types'
 
-// import reportTypes from '~/data/report_types.json'
+import reportTypes from '~/data/report_types.json'
 
-// const AsyncRecommendationSection = defineAsyncComponent({
-//   loader: () => import('~/components/video/UserRecommendations.vue')
-// })
+const AsyncVideoCommentSection = defineAsyncComponent({
+  loader: () => import('~/components/video/AsyncCommentSection.vue'),
+  timeout: 5000
+})
 
-// const { $client } = useNuxtApp()
-// const { mediaPath } = useDjangoUtilies()
-// const route = useRoute()
-// const isLoading = ref(true)
-// const store = useFeed()
-// const { currentVideo } = storeToRefs(store)
+const AsyncRecommendationSection = defineAsyncComponent({
+  loader: () => import('~/components/video/UserRecommendations.vue'),
+  timeout: 5000
+})
 
-// const showClassificationDrawer = ref(false)
-// const showReportModal = ref(false)
-// const showGiftsModal = ref(false)
-// const showSaveModal = ref(false)
+const { $client } = useNuxtApp()
+const { mediaPath } = useDjangoUtilies()
+const route = useRoute()
+const isLoading = ref(true)
+const store = useFeed()
+const { currentVideo } = storeToRefs(store)
 
-// const availablePlaylists = ref([])
+const showClassificationDrawer = ref(false)
+const showReportModal = ref(false)
+const showGiftsModal = ref(false)
+const showSaveModal = ref(false)
 
-// const selectedPlaylistId = ref(null)
-// provide('currentVideo', currentVideo)
+const availablePlaylists = ref<Playlist[]>([])
 
-// const videoSource = computed(() => {
-//   return `http://127.0.0.1:8000/api/v1/videos/s/${currentVideo.value.video_id}`
-// })
+const selectedPlaylistId = ref(null)
+provide('currentVideo', currentVideo)
 
-// function useVideoDetails () {
-//   const { currentVideo } = useFeed()
+const videoSource = computed(() => {
+  if (currentVideo.value) {
+    return `http://127.0.0.1:8000/api/v1/videos/s/${currentVideo.value.video_id}`
+  } else {
+    return ''
+  }
+})
 
-//   async function requestVideoDetails () {
-//     try {
-//       const videoID = route.params.id
-//       const response = await $client.get<VideoInfo>(`/videos/${videoID}`)
+function useVideoDetails () {
+  async function requestVideoDetails () {
+    try {
+      const videoID = route.params.id
+      const response = await $client.get<VideoInfo>(`/videos/${videoID}`)
       
-//       currentVideo.value = response.data
-//       isLoading.value = false
-//     } catch (e) {
-//       console.log(e)
-//     }
-//   }
+      currentVideo.value = response.data
+      isLoading.value = false
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
-//   return {
-//     requestVideoDetails,
-//   }
-// }
+  return {
+    requestVideoDetails,
+  }
+}
 
-// function usePlaylist () {
-//   async function requestSaveToPlaylist () {
-//     try {
-//       await $client.post(`/playlists/${selectedPlaylistId.value}/add`, {
-//         video: route.params.id
-//       })
-//     } catch (e) {
-//       console.error('requestSaveToPlaylist', e)
-//     }
-//   }
+function usePlaylist () {
+  async function requestSaveToPlaylist () {
+    try {
+      await $client.post(`/playlists/${selectedPlaylistId.value}/add`, {
+        video: route.params.id
+      })
+    } catch (e) {
+      console.error('requestSaveToPlaylist', e)
+    }
+  }
 
-//   function handleSave (playlists) {
-//     showSaveModal.value = true
-//     availablePlaylists .value = playlists
-//   }
+  function handleSave (playlists: Playlist[]) {
+    showSaveModal.value = true
+    availablePlaylists .value = playlists
+  }
   
-//   return {
-//     handleSave,
-//     requestSaveToPlaylist
-//   }
-// }
+  return {
+    handleSave,
+    requestSaveToPlaylist
+  }
+}
 
-// const { requestVideoDetails } = useVideoDetails()
-// const { handleSave, requestSaveToPlaylist } = usePlaylist()
+function handleAction (action: VideoMenuAction) {
+  if (action === 'Gift') {
+    showGiftsModal.value = true
+  }
 
-// onMounted(requestVideoDetails)
+  if (action === 'Save') {
+    showSaveModal.value = true
+  }
+
+  if (action === 'Store') {
+    // Pass
+  }
+
+  if (action === 'Report') {
+    showReportModal.value = true
+  }
+
+  if (action === 'Classify') {
+    showClassificationDrawer.value = true
+  }
+}
+
+const { requestVideoDetails } = useVideoDetails()
+const { handleSave, requestSaveToPlaylist } = usePlaylist()
+
+onMounted(requestVideoDetails)
 </script>

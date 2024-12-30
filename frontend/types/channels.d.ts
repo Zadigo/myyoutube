@@ -17,3 +17,13 @@ export interface UserChannel {
     is_verified: boolean
     created_on: string
 }
+
+export interface NestedChannelInfo {
+    id: number
+    reference: string
+    name: string
+    number_of_subscribers: number
+    number_of_playlists: number
+    channelplaylist_set: string[]
+    tags: string[]
+}

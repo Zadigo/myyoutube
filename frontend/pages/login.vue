@@ -5,8 +5,8 @@
         <div class="card">
           <div class="card-body">
             <v-form>
-              <v-text-field v-model="requestData.email" type="email" variant="solo-filled" flat />
-              <v-text-field v-model="requestData.password" type="password" variant="solo-filled" flat />
+              <v-text-field v-model="requestData.email" type="email" placeholder="Email" variant="solo-filled" flat />
+              <v-text-field v-model="requestData.password" type="password" placeholder="Password" variant="solo-filled" flat />
               <v-btn variant="tonal" color="primary" @click="handleLogin">
                 Login
               </v-btn>
@@ -18,39 +18,33 @@
   </div>
 </template>
 
-<script lang="ts">
-import { useAuthentication } from '~/stores/authentication';
-import { storeToRefs } from 'pinia';
-import { defineComponent, ref } from 'vue';
-import { LoginResponse } from '@/types/authentication'
+<script lang="ts" setup>
+import { ref } from 'vue';
+import type { LoginApiResponse } from '~/types/authentication'
 
-export default defineComponent({
-  name: 'LoginPage',
-  setup() {
-    const store = useAuthentication()
-    const { accessToken, refreshToken } = storeToRefs(store)
-    const requestData = ref({
-      email: null,
-      password: null
-    })
-    return {
-      accessToken,
-      refreshToken,
-      requestData
-    }
-  },
-  methods: {
-    async handleLogin() {
-      try {
-        const response = await this.$authClient.post<LoginResponse>('/token/', this.requestData)
-        this.accessToken = response.data.access
-        this.refreshToken = response.data.refresh
-        this.$session.create('authentication', response.data)
-        this.$router.push({ name: 'feed' })
-      } catch {
-        // Handle error
-      }
-    }
-  }
+const { createClient } = useAxiosClient()
+const client = createClient('/auth/v1/')
+
+const router = useRouter()
+const authStore = useAuthentication()
+const accessToken = useCookie('access')
+const refreshToken = useCookie('refresh')
+
+const requestData = ref({
+  email: null,
+  password: null
 })
+
+async function handleLogin() {
+  try {
+    const response = await client.post<LoginApiResponse>('/token/', requestData.value)
+    accessToken.value = response.data.access
+    refreshToken.value = response.data.refresh
+    authStore.accessToken = response.data.access
+    authStore.refreshToken = response.data.refresh
+    router.push('/')
+  } catch {
+    // Handle error
+  }
+}
 </script>

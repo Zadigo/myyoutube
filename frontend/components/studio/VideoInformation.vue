@@ -1,7 +1,7 @@
 <template>
   <div class="card-body">
     <div class="row">
-      <div class="col-7">
+      <div v-if="requestData" class="col-7">
         <v-text-field v-model="requestData.title" type=" text" placeholder="Title" variant="solo-filled" flat />
 
         <div class="alert alert-info fw-light">
@@ -99,12 +99,10 @@
   </div>
 </template>
 
-<script lang="ts">
-import { client } from '@/plugins/axios';
-import { useVueLocalStorage } from '@/plugins/vue-storages';
-import { Categories, FileUploadRequestData, Subcategories } from '@/types/studio';
-import { whenever } from '@vueuse/core';
-import { computed, defineComponent, inject, ref } from 'vue';
+<script lang="ts" setup>
+import type { Categories, FileUploadRequestData, Subcategories, SessionCache } from '~/types';
+import { useSessionStorage, whenever } from '@vueuse/core';
+import { computed, inject, ref } from 'vue';
 
 // import BaseVideoPlayer from 'src/components/BaseVideoPlayer.vue';
 
@@ -117,99 +115,89 @@ interface ReturnData {
   subcategory: StringOrNull
 }
 
-export default defineComponent({
-  name:'VideoInformationComponent',
-  components: {
-    // BaseVideoPlayer
-  },
-  emits: {
-    'update:data' (_data: ReturnData) {
-      return true
-    }
-  },
-  setup () {
-    const store = {}
-    const frames = ref(null)
+const emit = defineEmits({
+  'update:data' (_data: ReturnData) {
+    return true
+  }
+})
 
-    const returnData = ref<ReturnData>({
-      title: null,
-      description: null,
-      category: null,
-      subcategory: null
-    })
+const { $client } = useNuxtApp()
+const returnData = ref<ReturnData>({
+  title: null,
+  description: null,
+  category: null,
+  subcategory: null
+})
 
-    const categories = ref<Categories[]>([])
-    const subCategories = ref<Subcategories[]>([])
+const frames = ref(null)
+const categories = ref<Categories[]>([])
+const subCategories = ref<Subcategories[]>([])
 
-    const hasCategory = computed(() => {
-      return returnData.value.category !== null
-    })
+const hasCategory = computed(() => {
+  return returnData.value.category !== null
+})
 
-    const { instance } = useVueLocalStorage()
+const requestData = inject<FileUploadRequestData>('requestData')
+const tags = ref<string[]>([])
 
-    /**
-     * 
-     */
-    async function getSubcategories () {
-      try {
-        if (instance.keyExists('subcategories')) {
-          subCategories.value = instance.retrieve('subcategories')
-        } else {
-          const response = await client.get(`/videos/categories/${returnData.value.category}/sub-categories`)
-          subCategories.value = response.data
-          instance.create('subcategories', response.data)
-        }
-      } catch {
-        // Handle error
-      }
-    }
-    whenever(hasCategory, () => {
-      getSubcategories()
-    })
-
-    const requestData = inject<FileUploadRequestData>('requestData')
-    const tags = ref<string[]>([])
-
-    return {
-      tags,
-      requestData,
-      hasCategory,
-      categories,
-      subCategories,
-      store,
-      returnData,
-      frames
-    }
-  },
-  beforeMount () {
-    this.requestCategories()
-  },
-  methods: {
-    async requestCategories () {
-      try {
-        if (this.$localstorage.keyExists('categories')) {
-          this.categories = this.$localstorage.retrieve('categories')
-        } else {
-          const response = await this.$client.get<Categories[]>('/videos/categories')
-          this.categories = response.data
-          this.$localstorage.create('categories', response.data)
-        }
-      } catch {
-        // Handle error
-      }
+const sessionCache = useSessionStorage<SessionCache>('cache', null, {
+  serializer: {
+    read (raw) {
+      return JSON.parse(raw)
     },
-    /**
-     * 
-     */
-    handleFrameInformation () {
-      
-    },
-    /**
-     * 
-     */
-    handleChange () {
-      this.$emit('update:data', this.returnData)
+    write (value) {
+      return JSON.stringify(value)
     }
   }
+})
+
+/**
+ * 
+ */
+async function getSubcategories () {
+  try {
+    if (instance.keyExists('subcategories')) {
+      subCategories.value = instance.retrieve('subcategories')
+    } else {
+      const response = await $client.get(`/videos/categories/${returnData.value.category}/sub-categories`)
+      subCategories.value = response.data
+      instance.create('subcategories', response.data)
+    }
+  } catch {
+    // Handle error
+  }
+}
+
+whenever(hasCategory, () => {
+  getSubcategories()
+})
+
+async function requestCategories () {
+  try {
+    if (!('categories' in sessionCache.value)) {
+      const response = await $client.get<Categories[]>('/videos/categories')
+      sessionCache.value.categories = response.data
+    }
+  } catch {
+    // Handle error
+  }
+}
+
+/**
+ * 
+ */
+function handleFrameInformation () {
+  
+}
+
+/**
+ * 
+ */
+function handleChange () {
+  emit('update:data', returnData.value)
+}
+
+onBeforeMount(async () => {
+  await requestCategories()
 })
 </script>

@@ -24,16 +24,16 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import type { VideoInfo } from '~/types'
 
 import { useFeed } from '~/stores/feed';
 import { storeToRefs } from 'pinia';
 
 const emit = defineEmits({
-  'feed-loaded' (_videos: VideoInfo[]) {
-      return true
-    }
+'feed-loaded' (_videos: VideoInfo[]) {
+    return true
+  }
 })
 
 const { $client } = useNuxtApp()
@@ -42,7 +42,7 @@ const { videos, hasVideos } = storeToRefs(feedStore)
 
 async function requestVideos () {
   try {
-    const response = await $client.get<Video[]>('/videos/')
+    const response = await $client.get<VideoInfo[]>('/videos/')
     feedStore.videos = response.data
   } catch (e) {
     // Handle error

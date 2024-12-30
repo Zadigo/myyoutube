@@ -6,7 +6,7 @@
           <div class="card-header">
             <div class="d-flex justify-content-between gap-4 align-items-center">
               <div class="actions">
-                <v-btn :to="{ name: 'my_studio_upload' }" class="me-2" color="secondary" variant="tonal" rounded="xl">
+                <v-btn to="/studio/upload" class="me-2" color="secondary" variant="tonal" rounded="xl">
                   <font-awesome icon="upload" class="me-2" />
                   Upload
                 </v-btn>
@@ -64,51 +64,42 @@
   </section>
 </template>
 
-<script lang="ts">
-import { Video } from '@/types/feed';
-import { defineComponent, ref } from 'vue';
+<script lang="ts" setup>
+import type { VideoInfo } from '~/types';
+import { onBeforeMount, ref } from 'vue';
 
-export default defineComponent({
-  name: 'StudioPage',
-  setup () {
-    const userVideos = ref<Video[]>([])
-    const search = ref<string | null>(null)
+const { $client } = useNuxtApp()
 
-    return {
-      search,
-      userVideos
-    }
-  },
-  computed: {
-    searchedVideos () {
-      if (this.search) {
-        return this.userVideos.filter((video) => {
-          if (this.search && this.search !== "") {
-            return video.title.toLocaleLowerCase().includes(this.search?.toLowerCase())
-          } else {
-            return this.userVideos
-          }
-        })
+const userVideos = ref<VideoInfo[]>([])
+const search = ref<string | null>(null)
+
+const searchedVideos = computed(() => {
+  if (search.value) {
+    return userVideos.value.filter((video) => {
+      if (search.value && search.value !== "") {
+        return video.title.toLocaleLowerCase().includes(search.value?.toLowerCase())
       } else {
-        return this.userVideos
+        return userVideos.value
       }
-    }
-  },
-  created () {
-    this.requestUserVideos()
-  },
-  methods: {
-    /**
-     * Get all the details for the current video 
-     */
-    async requestUserVideos () {
-      try {
-        const response = await this.$client.get(`videos/studio/videos`)
-        this.userVideos = response.data
-      } catch (e) {
-        console.log(e)
-      }
-    }
+    })
+  } else {
+    return userVideos.value
   }
+})
+
+/**
+ * Get all the details for the current video 
+ */
+async function requestUserVideos () {
+  try {
+    const response = await $client.get(`videos/studio/videos`)
+    userVideos.value = response.data
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+onBeforeMount(async () => {
+  await requestUserVideos()
 })
 </script>

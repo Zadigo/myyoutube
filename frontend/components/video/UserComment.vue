@@ -2,13 +2,13 @@
   <article :aria-label="`Comment n°${comment.id}`" class="card shadow-none">
     <div class="card-body">
       <div class="d-flex align-items-start gap-4">
-        <NuxtLink :to="{ name: 'channel_details', params: { id: comment.user_channel } }" aria-label="">
+        <NuxtLink :to="`/channels/${comment.user_channel}`" aria-label="">
           <v-img src="/avatar2.png" width="80" height="80" class="img-fluid rounded-circle" alt="" />
         </NuxtLink>
 
         <div class="content">
           <div class="mb-3">
-            <v-btn :to="{ name: 'channel_details', params: { id: comment.user_channel } }" color="secondary" variant="plain">
+            <v-btn :to="`/channels/${comment.user_channel}`" color="secondary" variant="plain">
               {{ comment.user.get_full_name }}
             </v-btn>
 
@@ -47,7 +47,7 @@
             </v-btn>
 
             <v-btn color="primary" size="small" rounded="xl" flat>
-              <font-awesome icon="fas fa-comment" class="me-2" />
+              <font-awesome icon="comment" class="me-2" />
               Answer
             </v-btn>
           </div>
@@ -57,24 +57,24 @@
           </v-btn>
 
           <!-- Replies -->
-          <transition id="replies" tag="div" name="pop" mode="in-out">
+          <Transition id="replies" tag="div" name="pop" mode="in-out">
             <div v-if="showReplies" class="replies">
-              <user-reply v-for="i in 3" :key="i" :reply="{}" />
+              <VideoUserReply v-for="i in 3" :key="i" :reply="{}" />
             </div>
-          </transition>
+          </Transition>
         </div>
       </div>
     </div>
   </article>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue';
 
 import type { PropType } from 'vue';
 import type { VideoComment } from '~/types';
 
-defineProps({
+const props = defineProps({
   comment: {
     type: Object as PropType<VideoComment>,
     default: () => {},
@@ -85,6 +85,6 @@ defineProps({
 const showReplies = ref(false)
 
 const hasReplies = computed(() => {
-  return this.comment.number_of_replies >= 1
+  return props.comment.number_of_replies >= 1
 })
 </script>

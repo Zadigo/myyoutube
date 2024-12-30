@@ -39,6 +39,7 @@ export default defineNuxtPlugin((nuxtApp) => {
                     const response = await authClient.post<LoginApiResponse>('/token/refresh/', {
                         refresh: authStore.refreshToken
                     })
+                    authStore.accessToken = response.data.refresh
                     originalRequest.headers.Authorization = `Token ${response.data.access}`
                     return baseClient(originalRequest)
                 } catch (refreshError) {

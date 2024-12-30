@@ -31,11 +31,11 @@ const navLinks = [
   //   to: 'notifications',
   //   icon: 'fas fa-bell'
   // },
-  // {
-  //   name: 'My studio',
-  //   to: '/my-studio',
-  //   icon: 'chart-simple'
-  // }
+  {
+    name: 'My studio',
+    to: '/studio',
+    icon: 'chart-simple'
+  }
 ]
 </script>
 

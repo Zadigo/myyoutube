@@ -1,38 +1,17 @@
 import { defineStore } from "pinia";
-import { LoginResponse } from "../types/authentication";
+import type { LoginApiResponse } from "~/types";
 
-interface RootState {
-    accessToken: string | null
-    refreshToken: string | null
-}
+export const useAuthentication = defineStore('authentication', () => {
+    const accessToken = ref<string | null | undefined>('')
+    const refreshToken = ref<string | null | undefined>('')
 
-const useAuthentication = defineStore('authentication', {
-    state: (): RootState => ({
-        accessToken: null,
-        refreshToken: null
-    }),
-    actions: {
-        /**
-         * 
-         */
-        loadFromCache() {
-            const authentication = this.$session.retrieve<LoginResponse>('authentication')
-            if (authentication) {
-                this.accessToken = authentication.access
-                this.refreshToken = authentication.refresh
-            }
-        }
-    },
-    getters: {
-        /**
-         * 
-         */
-        isAuthenticated (): boolean {
-            return this.accessToken !== null
-        }
+    const isAuthenticated = computed(() => {
+        return accessToken.value !== '' || accessToken.value !== null
+    })
+
+    return {
+        isAuthenticated,
+        accessToken,
+        refreshToken
     }
 })
-
-export {
-    useAuthentication
-}

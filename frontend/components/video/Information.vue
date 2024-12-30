@@ -3,14 +3,14 @@
     <div class="card">
       <div class="card-body">
         <div class="d-flex flex-row justify-content-around align-items-start gap-3">
-          <NuxtLink :to="{ name: 'channel_details', params: { id: currentVideo?.user_channel?.reference } }" aria-label="">
+          <NuxtLink :to="`/channels/${currentVideo?.user_channel?.reference}`" class="mt-2" aria-label="">
             <img src="/avatar1.png" class="img-fluid rounded-circle" width="120" height="120" alt="">
           </NuxtLink>
 
           <div class="information">
-            <v-btn :to="{ name: 'channel_details', params: { id: currentVideo?.user_channel.reference } }" class="px-0" color="primary" variant="plain">
-              <span class="fw-bold">{{ currentVideo?.user_channel.name }}</span>
-              <font-awesome icon="fa fa-circle-check" class="ms-4" />
+            <v-btn :to="`/channels/${currentVideo?.user_channel?.reference}`" class="px-0" color="primary" variant="plain">
+              <span class="fw-bold">{{ currentVideo?.user_channel?.name }}</span>
+              <font-awesome icon="circle-check" class="ms-2" />
             </v-btn>
             
             <p class="text-body-tertiary">
@@ -39,7 +39,7 @@
             </p>
 
             <v-btn color="primary" variant="plain">
-              <font-awesome icon="fa fa-caret-down" class="me-2" />
+              <font-awesome icon="caret-down" class="me-2" />
               More
             </v-btn>
           </div>
@@ -49,7 +49,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { inject } from 'vue'
 import type { VideoInfo } from '~/types'
 

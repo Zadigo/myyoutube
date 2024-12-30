@@ -3,14 +3,14 @@
     <div class="card-body">
       <div class="d-flex justify-content-around">
         <div class="me-3">
-          <NuxtLink :to="{ name: 'channel_details', params: { id: 'ch_noienozinfoz' } }" aria-label="">
+          <NuxtLink :to="`/channels/ch_noienozinfoz`" aria-label="">
             <v-img src="/avatar3.png" class="img-fluid rounded-circle" width="40px" alt="Image 3" />
           </NuxtLink>
         </div>
 
         <div clas="ms-1">
           <div class="d-flex justify-content-left">
-            <NuxtLink :to="{ name: 'channel_details', params: { id: 'ch_noienozinfoz' } }" aria-label="">
+            <NuxtLink :to="`/channels/ch_noienozinfoz`" aria-label="">
               <span class="fw-bold me-2">Cee Dee</span>
               <span class="text-body-tertiary">3 weeks ago</span>
             </NuxtLink>
@@ -50,7 +50,7 @@
   </article>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import type { PropType } from 'vue';
 import type { VideoComment } from '~/types';
 

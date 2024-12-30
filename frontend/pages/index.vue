@@ -20,13 +20,8 @@
   </section>
 </template>
 
-<script setup>
-// import { useFeed } from '~/stores/feed';
-// import { storeToRefs } from 'pinia';
+<script lang="ts" setup>
 import { defineAsyncComponent } from 'vue';
-
-// const store = useFeed()
-// const { videos } = storeToRefs(store)
 
 const AsyncFeedComponent = defineAsyncComponent({
   loader: () => import('~/components/BaseAsyncFeed.vue')

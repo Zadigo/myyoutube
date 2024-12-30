@@ -3,7 +3,7 @@
     <!-- v-slot:activator="{ props }" -->
     <template #activator="{ props }">
       <v-btn v-bind="props" color="secondary" size="small" rounded="xl" flat>
-        <font-awesome-icon icon="fas fa-face-smile" />
+        <font-awesome icon="face-smile" />
       </v-btn>
     </template>
 
@@ -23,30 +23,20 @@
   </v-menu>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
 import emojis from './emojis-data.json'
 
-export default defineComponent({
-  emits: {
-    'emoji-click' (_emoji: string) {
-      return true
-    }
-  },
-  setup () {
-    return {
-      emojis
-    }
-  },
-  computed: {
-    categories () {
-      return Object.keys(this.emojis)
-    }
-  },
-  methods: {
-    handleEmojiClick (emoji: string) {
-      this.$emit('emoji-click', emoji)
-    }
+const emit = defineEmits({
+  'emoji-click' (_emoji: string) {
+    return true
   }
 })
+
+const categories = computed(() => {
+  return Object.keys(emojis)
+})
+
+function handleEmojiClick (emoji: string) {
+  emit('emoji-click', emoji)
+}
 </script>

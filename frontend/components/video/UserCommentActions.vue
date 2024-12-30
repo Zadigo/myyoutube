@@ -11,7 +11,7 @@
               Cancel
             </v-btn>
 
-            <emoji-picker @emoji-click="hanlePickEmoji" />
+            <EmojisPicker @emoji-click="hanlePickEmoji" />
 
             <v-btn color="secondary" size="small" rounded="xl" flat @click="handleCreateComment ">
               <font-awesome icon="fas fa-comment" class="me-2" />
@@ -24,48 +24,40 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue'
-import { VideoComment } from '~/types'
+import type { VideoComment } from '~/types'
 
-import EmojiPicker from '@/components/emojis/EmojiPicker.vue'
-
-export default defineNuxtComponent({
-  name: 'UserCommentActions',
-  components: {
-    EmojiPicker
-  },
-  emits: {
-    'new-comment' (_comment: VideoComment) {
-      return true
-    }
-  },
-  setup () {
-    const requestData = ref({ content: '' })
-    return { requestData }
-  },
-  methods: {
-    /**
-     * Creates a new comment for the video that
-     * the user is currently viewing
-     */
-    async handleCreateComment  () {
-      try {
-        const videoID = this.$route.params.id
-        const response = await this.$client.post<VideoComment>(`/videos/${videoID}/comment`, this.requestData)
-        this.requestData.content = ''
-        this.$emit('new-comment', response.data)
-      } catch {
-        // Handle error
-      }
-    },
-    /**
-     * Adds an emoji selected by the user to the text of the 
-     * text area field
-     */
-    hanlePickEmoji (emoji: string) {
-      this.requestData.content = this.requestData.content + emoji
-    }
+const emit = defineEmits({
+  'new-comment' (_comment: VideoComment) {
+    return true
   }
 })
+
+const { $client } = useNuxtApp()
+const route = useRoute()
+const requestData = ref({ content: '' })
+
+/**
+ * Creates a new comment for the video that
+ * the user is currently viewing
+ */
+async function handleCreateComment () {
+  try {
+    const videoID = route.params.id
+    const response = await $client.post<VideoComment>(`/videos/${videoID}/comment`, requestData.value)
+    requestData.value.content = ''
+    emit('new-comment', response.data)
+  } catch {
+    // Handle error
+  }
+}
+
+/**
+ * Adds an emoji selected by the user to the text of the 
+ * text area field
+ */
+function hanlePickEmoji (emoji: string) {
+  requestData.value.content = requestData.value.content + emoji
+}
 </script>

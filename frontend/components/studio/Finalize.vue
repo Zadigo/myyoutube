@@ -16,12 +16,12 @@
           <v-text-field v-model="participant.url" type="url" placeholder="Social url" variant="solo-filled" flat />
           <v-select v-model="participant.handle" :items="socials" placeholder="User handle" variant="solo-filled" flat />
           <v-btn variant="text" color="danger" @click="handleRemoveParticipant(i)">
-            <font-awesome-icon icon="trash" />
+            <font-awesome icon="trash" />
           </v-btn>
         </div>
 
         <v-btn variant="tonal" color="secondary" rounded @click="handleAddParticipant">
-          <font-awesome-icon icon="plus" class="me-2" />
+          <font-awesome icon="plus" class="me-2" />
           Add participant
         </v-btn>
       </div>
@@ -29,8 +29,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
+<script lang="ts" setup>
+import { ref } from 'vue';
 
 interface Participant {
   url: string | null
@@ -44,31 +44,21 @@ const socials = [
   'YouTube'
 ]
 
-export default defineComponent({
-  name: 'FinalizeComponent',
-  setup() {
-    const participants = ref<Participant[]>([
-      {
-        url: null,
-        handle: 'Instagram'
-      }
-    ])
-
-    return {
-      participants,
-      socials
-    }
-  },
-  methods: {
-    handleAddParticipant () {
-      this.participants.push({
-        url: null,
-        handle: 'Instagram'
-      })
-    },
-    handleRemoveParticipant(index: number) {
-      this.participants.splice(index, 1)
-    }
+const participants = ref<Participant[]>([
+  {
+    url: null,
+    handle: 'Instagram'
   }
-})
+])
+
+function handleAddParticipant () {
+  participants.value.push({
+    url: null,
+    handle: 'Instagram'
+  })
+}
+
+function handleRemoveParticipant(index: number) {
+  participants.value.splice(index, 1)
+}
 </script>

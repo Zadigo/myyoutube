@@ -9,7 +9,7 @@
         <v-menu>
           <template #activator="{ props }">
             <v-btn v-bind="props" rounded="xl" color="primary" flat>
-              <font-awesome-icon :icon="['fas', 'fa-sort']" class="me-3" />
+              <font-awesome icon="sort" class="me-3" />
               Sort
             </v-btn>
           </template>
@@ -28,11 +28,11 @@
     <hr class="text-body-tertiary">
 
     <!-- Actions -->
-    <user-comment-actions @new-comment="handleNewComment" />
+    <VideoUserCommentActions @new-comment="handleNewComment" />
 
     <!-- Comments -->
     <transition-group id="comments" tag="div">
-      <user-comment v-for="comment in comments" :key="comment.id" :comment="comment" />
+      <VideoUserComment v-for="comment in comments" :key="comment.id" :comment="comment" />
     </transition-group>
   </div>
 </template>
@@ -44,6 +44,7 @@ import type { VideoComment } from '~/types'
 
 import UserComment from './UserComment.vue'
 import UserCommentActions from './UserCommentActions.vue'
+import { VideoUserComment, VideoUserCommentActions } from '#build/components'
 
 const sortActions: [ 'Newest', 'Oldest' ] = [
   'Newest',

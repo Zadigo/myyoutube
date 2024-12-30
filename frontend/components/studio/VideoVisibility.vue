@@ -36,26 +36,17 @@
   </div>
 </template>
 
-<script lang="ts">
-import { FileUploadRequestData } from '@/types/studio';
-import { defineComponent, inject } from 'vue';
+<script lang="ts" setup>
+import type { FileUploadRequestData } from '~/types/studio';
+import { inject } from 'vue';
 
-export default defineComponent({
-  name: 'VideoVisiblityComponent',
-  setup() {
-    const requestData = inject<FileUploadRequestData>('requestData')
-    return {
-      requestData
-    }
-  },
-  computed: {
-    ageRestrictedLabel() {
-      if (this.requestData?.age_restricted) {
-        return 'Yes, restrict my video to viewers over 18'
-      } else {
-        return "No, don't restrict my video to viewers over 18 only"
-      }
-    }
+const requestData = inject<FileUploadRequestData>('requestData')
+
+const ageRestrictedLabel = computed(() => {
+  if (requestData?.age_restricted) {
+    return 'Yes, restrict my video to viewers over 18'
+  } else {
+    return "No, don't restrict my video to viewers over 18 only"
   }
 })
 </script>

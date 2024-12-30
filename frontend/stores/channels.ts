@@ -1,16 +1,10 @@
-import { UserChannel } from '../types/channels'
+import type { UserChannel } from '~/types'
 import { defineStore } from 'pinia'
 
-interface RootState {
-  currentChannel: UserChannel | null
-}
+export const useChannels = defineStore('channels', () => {
+  const currentChannel = ref<UserChannel>()
 
-const useChannels = defineStore('channels', {
-  state: (): RootState => ({
-    currentChannel: null
-  })
+  return {
+    currentChannel
+  }
 })
-
-export {
-  useChannels
-}
