@@ -1,0 +1,1 @@
+- [ d] Delete useDjangoUtilities from composables utils

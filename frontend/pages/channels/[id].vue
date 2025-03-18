@@ -27,13 +27,13 @@
   </section>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import type { UserChannel } from '~/types';
 
 const route = useRoute()
-const { $client } = useNuxtApp()
+const { client } = useAxiosClient()
 const store = useChannels()
 const { currentChannel } = storeToRefs(store)
 const hasCarousel = ref(false)
@@ -41,7 +41,7 @@ const hasCarousel = ref(false)
 async function requestUserChannel () {
   try {
     const channelID = route.params.id
-    const response = await $client.post<UserChannel>(`channels/${channelID}`)
+    const response = await client.post<UserChannel>(`channels/${channelID}`)
     currentChannel.value = response.data
   } catch {
     // Handle error
@@ -53,7 +53,7 @@ onBeforeMount(async () => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .wrapper {
   position: relative;
   background-color: black;

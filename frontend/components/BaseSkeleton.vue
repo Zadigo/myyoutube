@@ -1,79 +1,71 @@
 <template>
-  <transition name="opacity">
-    <div v-if="loading" ref="skeleton" class="card-skeleton" />
+  <div id="loader">
+    <div v-if="loading" ref="skeletonEl" :style="{ '--min-height': height }" class="card-skeleton" />
     <slot v-else />
-  </transition>
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
-
-export default defineComponent({
-  name: 'BaseSkeleton',
-  props: {
-    loading: {
-      type: Boolean,
-      default: false
-    },
-    height: {
-      type: String,
-      default: null
-    },
-    width: {
-      type: String,
-      default: null
-    },
-    borderRadius: {
-      type: Boolean
-    }
+<script lang="ts" setup>
+const props = defineProps({
+  loading: {
+    type: Boolean,
+    required: true
   },
-  setup () {
-    const skeletonEl = ref<HTMLElement>()
-    return {
-      skeletonEl
-    }
+  height: {
+    type: String,
+    default: '100px'
   },
-  mounted () {
-    if (this.$refs.skeleton) {
-      if (this.width) {
-        this.$refs.skeleton.style.width = `${this.width}`
-      }
-      
-      if (this.height) {
-        this.$refs.skeleton.style.height = `${this.height}`
-      }
-
-      if (this.borderRadius) {
-        this.$refs.skeleton.style.borderRadius = '0.5rem'
-      }
-    }    
+  width: {
+    type: String,
+    default: null
+  },
+  borderRadius: {
+    type: Boolean
   }
 })
-</script>
 
-<style scoped>
-.card-skeleton {
-  --bs-light-rgb: 248, 249, 250;
+const skeletonEl = ref<HTMLElement>()
 
-  background: rgb(var(--bs-light-rgb));
-  color: rgb(var(--bs-light-rgb));
-  position: relative;
-  overflow: hidden;
-  /* height: 208px; */
-  min-height: 20px;
-  width: 100%;
+function implementStyle() {
+  if (skeletonEl.value) {
+    skeletonEl.value.style.height = props.height
+  
+    if (props.width) {
+      skeletonEl.value.style.width = props.width
+    }
+  
+    if (props.borderRadius) {
+      skeletonEl.value.style.borderRadius = '0.5rem'
+    }
+  }
 }
 
-.card-skeleton::after {
-  content: "";
-  position: absolute;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  width: 50%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  -webkit-animation: loading 1s infinite;
-  animation: loading 1s infinite;
+onMounted(implementStyle)
+onUpdated(implementStyle)
+</script>
+
+<style lang="scss" scoped>
+$background_color: rgba(248, 249, 250, 1);
+
+.card-skeleton {
+  background: $background_color;
+  color: $background_color;
+  position: relative;
+  overflow: hidden;
+  min-height: var(--min-height, 20px);
+  width: 100%;
+
+  &::after {
+    content: "";
+    position: absolute;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    width: 50%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    -webkit-animation: loading 1s infinite;
+    animation: loading 1s infinite;
+  }
 }
 
 @-webkit-keyframes loading {

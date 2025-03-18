@@ -122,10 +122,14 @@
   </section>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 
-import SettingsCard from '@/components/settings/SettingsCard.vue'
+import SettingsCard from '~/components/settings/Card.vue'
+
+definePageMeta({
+  layout: 'settings'
+})
 
 const subscriptions = [
   'Free',
@@ -133,40 +137,22 @@ const subscriptions = [
   'YouTube++'
 ]
 
-interface AxiosResponseData {
+// interface AxiosResponseData {
+//   id: number
+// }
 
-}
+const professionalAccount = ref(false)
+const showSubscriptions = ref(false)
+const currentSubscription = ref<number>(0)
+// const currentPaymentStep= ref<number>(1)
+// const requestData = ref<AxiosResponseData>(null)
 
-export default defineComponent({
-  name: 'SettingsPage',
-  components: {
-    SettingsCard
-  },
-  setup () {
-    const professionalAccount = ref(false)
-    const showSubscriptions = ref(false)
-    const currentSubscription = ref<number>(0)
-    const currentPaymentStep= ref<number>(1)
-    const requestData = ref<AxiosResponseData>(null)
-
-    return {
-      requestData,
-      currentPaymentStep,
-      currentSubscription,
-      subscriptions,
-      professionalAccount,
-      showSubscriptions
-    }
-  },
-  methods: {
-    async handleAccountDetails () {
-      try {
-        const response = await this.$client.get<AxiosResponseData>('/accounts/base')
-        this.requestData = response.data
-      } catch {
-        // Handle error
-      }
-    }
-  }
-})
+// async function handleAccountDetails () {
+//   try {
+//     const response = await this.$client.get<AxiosResponseData>('/accounts/base')
+//     this.requestData = response.data
+//   } catch {
+//     // Handle error
+//   }
+// }
 </script>

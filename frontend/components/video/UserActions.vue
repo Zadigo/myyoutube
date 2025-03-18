@@ -144,6 +144,7 @@ const menuItems: VideoMenuItem[] = [
   }
 ]
 
+const route = useRoute()
 const router = useRouter()
 
 const emit = defineEmits({
@@ -237,7 +238,12 @@ function handleMoreAction (action: VideoMenuItem) {
       break
       
     case 'Fact check':
-      router.push({ name: 'fact_checking_center', params: { v: route.params.id } })
+      router.push({
+        path: '/fact-checking',
+        query: {
+          v: route.params.id
+        }
+      })
       break
   
     default:

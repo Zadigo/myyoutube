@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <div class="row my-5">
+    <div class="row mt-5">
       <div class="col-md-5 col-sm-12 offset-md-4">
         <div class="card">
           <div class="card-body">
-            <v-form>
+            <v-form @submit.prevent>
               <v-text-field v-model="requestData.email" type="email" placeholder="Email" variant="solo-filled" flat />
               <v-text-field v-model="requestData.password" type="password" placeholder="Password" variant="solo-filled" flat />
               <v-btn variant="tonal" color="primary" @click="handleLogin">
@@ -18,11 +18,15 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { ref } from 'vue';
-import type { LoginApiResponse } from '~/types/authentication'
+import createClient from '~/composables/client';
+import type { LoginApiResponse } from '~/types/authentication';
 
-const { createClient } = useAxiosClient()
+definePageMeta({
+  layout: 'site'
+})
+
 const client = createClient('/auth/v1/')
 
 const router = useRouter()

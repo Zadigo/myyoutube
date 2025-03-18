@@ -1,9 +1,5 @@
 import { isRef, ref } from 'vue'
 
-import type { AxiosInstance } from "axios"
-import axios from 'axios'
-
-
 type ArrayAnyValues = (string | number)[]
 type RefArrayAnyValues = ArrayAnyValues | Ref<(string | number)[]>
 // type RefObjectAnyValues = Ref<Record<string, (string | number)[] | string | number>>
@@ -164,104 +160,5 @@ export function useListManager () {
         updateList,
         update,
         save
-    }
-}
-
-export function useDjangoUtilies () {
-    const secure = ref(false)
-    const port = ref(8000)
-    const paginationUrl = ref<URL>()
-
-    function getBaseUrl() {
-        let domain = `127.0.0.1:${port.value}`
-
-        if (process.env.DEV === 'production') {
-            domain = process.env.NUXT_DJANGO_PROD_URL || ''
-        }
-
-        const loc = secure.value ? 'https://' : 'http://'
-        const bits = [loc, domain]
-        const url = bits.join('')
-
-        return new URL(url).toString()
-    }
-
-    function mediaPath (path: string | null | undefined, altImage?: string | undefined): string | undefined {
-        const baseUrl = getBaseUrl()
-
-        if (path) {
-            if (path.startsWith('http')) {
-                return path
-            }
-
-            const fullPath = path.startsWith('/media') ? `${path}` : `/media/${path}`
-            return new URL(fullPath, baseUrl).toString()
-        } else {
-            return altImage
-        }
-    }
-
-    function builLimitOffset (url: string | null | undefined, limit = 100, offset = 100) {
-        let defaultLimit: string | number = 100
-        let defaultOffset: string | number = 0
-
-        if (url) {
-            paginationUrl.value = new URL(url)
-
-            const potentialLimit = paginationUrl.value.searchParams.get('limit')
-            const potentialOffset = paginationUrl.value.searchParams.get('offset')
-
-            defaultLimit = potentialLimit || limit
-            defaultOffset = potentialOffset || offset
-        }
-
-        const query = new URLSearchParams({ limit: defaultLimit.toString(), offset: defaultOffset.toString() }).toString()
-        
-        return {
-            query,
-            limit: defaultLimit,
-            offset: defaultOffset 
-        }
-    }
-
-    return {
-        mediaPath,
-        getBaseUrl,
-        builLimitOffset
-    }
-}
-
-export function useAxiosClient () {
-    /**
-     * Helper function for creating variations of the baseURL
-     */
-    function getBaseUrl(path = '/api/v1/', alternativeDomain?: string | null, port = '8000', secure = false) {
-        let domain = alternativeDomain || `127.0.0.1:${port}`
-
-        if (process.env.DEV === 'production') {
-            domain = alternativeDomain || process.env.NUXT_DJANGO_PROD_URL || ''
-        }
-
-        const loc = secure || process.env.DEV === 'production' ? 'https://' : 'http://'
-        const bits = [loc, domain]
-        const url = bits.join('')
-
-        return new URL(path, url).toString()
-    }
-
-    function createClient(path = '/api/v1/', alternativeDomain?: string | null, port = '8000'): AxiosInstance {
-        const client: AxiosInstance = axios.create({
-            baseURL: getBaseUrl(path, alternativeDomain, port),
-            headers: { 'Content-Type': 'application/json' },
-            withCredentials: true,
-            timeout: 10000
-        })
-
-        return client
-    }
-
-    return {
-        getBaseUrl,
-        createClient
     }
 }

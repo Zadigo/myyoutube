@@ -1,59 +1,60 @@
-import type { AxiosInstance } from 'axios'
-import type { LoginApiResponse } from "~/types"
+import createClient from '~/composables/client'
 
 export default defineNuxtPlugin((nuxtApp) => {
-    const { createClient } = useAxiosClient()
-    const client = createClient()
+    const client = createClient('/api/v1/')
 
-    client.interceptors.request.use(
-        config => {
-            const token = useCookie('access')
+    // const { createClient } = useAxiosClient()
+    // const client = createClient()
 
-            if (token.value) {
-                config.headers.Authorization = `Token ${token.value}`
-            }
-            return config
-        },
-        error => {
-            return Promise.reject(error)
-        }
-    )
+    // client.interceptors.request.use(
+    //     config => {
+    //         const token = useCookie('access')
 
-    client.interceptors.response.use(
-        (response) => {
-            return response;
-        },
-        async (error) => {
-            // Sequence that refreshes the access token when
-            // we get a 401 code trying to access a page
+    //         if (token.value) {
+    //             config.headers.Authorization = `Token ${token.value}`
+    //         }
+    //         return config
+    //     },
+    //     error => {
+    //         return Promise.reject(error)
+    //     }
+    // )
 
-            const originalRequest = error.config
-            const baseClient = nuxtApp.$client as AxiosInstance
+    // client.interceptors.response.use(
+    //     (response) => {
+    //         return response;
+    //     },
+    //     async (error) => {
+    //         // Sequence that refreshes the access token when
+    //         // we get a 401 code trying to access a page
+
+    //         const originalRequest = error.config
+    //         const baseClient = nuxtApp.$client as AxiosInstance
             
-            if (error.response.status === 401 && !originalRequest._retry) {
-                originalRequest._retry = true
+    //         if (error.response.status === 401 && !originalRequest._retry) {
+    //             originalRequest._retry = true
                 
-                try {
-                    const authStore = useAuthentication()
-                    const authClient = createClient('/auth/v1/')
-                    const response = await authClient.post<LoginApiResponse>('/token/refresh/', {
-                        refresh: authStore.refreshToken
-                    })
-                    authStore.accessToken = response.data.refresh
-                    originalRequest.headers.Authorization = `Token ${response.data.access}`
-                    return baseClient(originalRequest)
-                } catch (refreshError) {
-                    // FIXME: If the refresh fails, remove the access
-                    // and refresh from the cookie since these
-                    // would attempt to send authenticated requests
-                    // that would return a 401
-                    return Promise.reject(refreshError)
-                }
-            }
+    //             try {
+    //                 const authStore = useAuthentication()
+    //                 const authClient = createClient('/auth/v1/')
+    //                 const response = await authClient.post<LoginApiResponse>('/token/refresh/', {
+    //                     refresh: authStore.refreshToken
+    //                 })
+    //                 authStore.accessToken = response.data.refresh
+    //                 originalRequest.headers.Authorization = `Token ${response.data.access}`
+    //                 return baseClient(originalRequest)
+    //             } catch (refreshError) {
+    //                 // FIXME: If the refresh fails, remove the access
+    //                 // and refresh from the cookie since these
+    //                 // would attempt to send authenticated requests
+    //                 // that would return a 401
+    //                 return Promise.reject(refreshError)
+    //             }
+    //         }
 
-            return Promise.reject(error);
-        }
-    )
+    //         return Promise.reject(error);
+    //     }
+    // )
 
     nuxtApp.provide('client', client)
 })

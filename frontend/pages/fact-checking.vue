@@ -14,10 +14,13 @@
           </div>
         </div>
       </div>
-
+      
       <div class="col-md-6">
         <div class="card">
-          <source-block v-for="(block, i) in blocks" :key="i" :block="block" :index="i" @update:blocks="handleSave" />
+          <!-- <template v-if="hasSources">
+            <FactCheckingSavedBlock v-for="block in blocks" :key="block.id" :block="block" />
+          </template> -->
+          <FactCheckingEditBlock v-for="(block, i) in blocks" :key="i" :block="block" :index="i" @update:blocks="handleSave" />
 
           <div class="card-body">
             <v-btn variant="tonal" color="secondary" rounded @click="handleAddBlock">
@@ -39,47 +42,38 @@
   </section>
 </template>
 
-<script lang="ts">
-import { SourceDetails } from '@/types/fact_checker';
-import { defineComponent, ref } from 'vue';
+<script lang="ts" setup>
+import type { SourceDetails } from '~/types';
+import { ref } from 'vue';
 
-import SourceBlock from '@/components/fact_checking/SourceBlock.vue';
-
-export default defineComponent({
-  name: 'FactCheckingPage',
-  components: {
-    SourceBlock
-  },
-  setup () {
-    const blocks = ref<SourceDetails[]>([
-      {
-        id: 1,
-        start_time: '',
-        end_time: '',
-        explanation: '',
-        article_sources: []
-      }
-    ])
-    return {
-      blocks
-    }
-  },
-  methods: {
-    handleSave (block: SourceDetails) {
-      const existingBlock = this.blocks.find(x => x.id === block.id)
-      if (!existingBlock) {
-        this.blocks.push(block)
-      }
-    },
-    handleAddBlock () {
-      this.blocks.push({
-        id: this.blocks[this.blocks.length - 1].id,
-        start_time: '',
-        end_time: '',
-        explanation: '',
-        article_sources: []
-      })
-    }
+const blocks = ref<SourceDetails[]>([
+  {
+    id: 1,
+    start_time: '',
+    end_time: '',
+    explanation: '',
+    article_sources: []
   }
+])
+
+const hasSources = computed(() => {
+  return blocks.value.map(x => x.article_sources.length > 0).every(x => x === true)
 })
+
+function handleSave (block: SourceDetails) {
+  const existingBlock = blocks.value.find(x => x.id === block.id)
+  if (!existingBlock) {
+    blocks.value.push(block)
+  }
+}
+
+function handleAddBlock () {
+  blocks.value.push({
+    id: blocks.value[blocks.value.length - 1].id,
+    start_time: '',
+    end_time: '',
+    explanation: '',
+    article_sources: []
+  })
+}
 </script>

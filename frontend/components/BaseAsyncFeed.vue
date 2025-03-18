@@ -20,7 +20,9 @@
   </div>
 
   <div v-else class="row">
-    <h2>No videos</h2>
+    <h2 class="text-center fw-bold">
+      No videos
+    </h2>
   </div>
 </template>
 
@@ -36,13 +38,13 @@ const emit = defineEmits({
   }
 })
 
-const { $client } = useNuxtApp()
+const { client } = useAxiosClient()
 const feedStore = useFeed()
 const { videos, hasVideos } = storeToRefs(feedStore)
 
 async function requestVideos () {
   try {
-    const response = await $client.get<VideoInfo[]>('/videos/')
+    const response = await client.get<VideoInfo[]>('/videos/')
     feedStore.videos = response.data
   } catch (e) {
     // Handle error

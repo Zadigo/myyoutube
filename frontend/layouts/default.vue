@@ -5,8 +5,7 @@
       <Transition tag="div" name="sidebar" mode="out-in">
         <nav v-if="showSidebar" id="sidebar" class="collapse d-lg-block sidebar collapse bg-white">
           <div class="position-sticky">
-            <SidebarsBase v-if="$route.meta.requiresSettingsNav" />
-            <SidebarsBase v-else />
+            <SidebarsBase :links="navLinks" />
           </div>
         </nav>
       </Transition>
@@ -34,9 +33,9 @@
     </header>
 
     <main>
-      <div class="container pt-4">
-        <slot />
-      </div>
+      <slot />
+      <!-- <div class="container pt-4">
+      </div> -->
     </main>
   </section>
 </template>
@@ -45,6 +44,29 @@
 import { ref } from 'vue'
 
 const showSidebar = ref(true)
+
+const navLinks = [
+  {
+    name: 'Home',
+    to: 'feed',
+    icon: 'fas fa-home'
+  },
+  // {
+  //   name: 'Playlists',
+  //   to: 'playlists',
+  //   icon: 'fas fa-list'
+  // },
+  // {
+  //   name: 'Notifications',
+  //   to: 'notifications',
+  //   icon: 'fas fa-bell'
+  // },
+  {
+    name: 'My studio',
+    to: 'my_studio',
+    icon: 'fas fa-chart-simple'
+  }
+]
 </script>
 
 <style lang="scss" scoped>

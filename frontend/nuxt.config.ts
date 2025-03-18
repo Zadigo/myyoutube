@@ -1,11 +1,11 @@
-import path from 'path'
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  // ssr: false,
-  // routeRules: {},
+  ssr: true,
+  routeRules: {
+    '/': { ssr: false }
+  },
   runtimeConfig: {
     public: {
       DJANGO_PROD_URL: process.env.NUXT_DJANGO_PROD_URL,
@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     '@unlok-co/nuxt-stripe',
     '@nuxtjs/sitemap',
     '@nuxt/image',
-    '@nuxtjs/i18n',
+    // '@nuxtjs/i18n',
     'nuxt-gtag',
     // 'nuxt-meta-pixel', // BUG: This raises an error with minimatch
     'nuxt-clarity-analytics',
@@ -34,12 +34,8 @@ export default defineNuxtConfig({
     'vuetify-nuxt-module',
     'vue-sonner/nuxt'
   ],
-  alias: {
-    '@': path.resolve(__dirname, './'),
-    '@types': './types'
-  },
   css: [
-    '@/assets/style.scss',
+    '~/assets/style.scss',
     '~/node_modules/bootstrap/dist/css/bootstrap.min.css',
     '~/node_modules/mdb-ui-kit/css/mdb.min.css',
     '~/node_modules/animate.css/animate.min.css',
@@ -67,39 +63,53 @@ export default defineNuxtConfig({
         'thumbs-down'
       ],
       solid: [
+        'a',
         'arrow-right',
         'arrow-left',
-        'store',
+        'bell',
+        'bell-slash',
+        'building-shield',
+        'bullhorn',
+        'bars',
         'circle-check',
         'caret-down',
         'caret-up',
+        'compress',
         'chart-simple',
         'cog',
-        'download',
-        'ellipsis-vertical',
-        'save',
-        'gift',
         'dollar-sign',
+        'download',
+        'expand',
+        'ellipsis-vertical',
+        'face-smile',
+        'filter',
+        'filter-circle-xmark',
+        'gift',
+        'home',
+        'heart',
+        'list',
+        'lock',
+        'microchip',
+        'note-sticky',
+        'save',
         'share',
         'star',
-        'note-sticky',
-        'building-shield',
         'store',
-        'bullhorn',
-        'bell-slash',
-        'user-minus',
-        'home',
-        'thumbs-up',
-        'thumbs-down',
-        'bars',
-        'face-smile',
+        'store',
+        'sort',
         'pen',
-        'trash',
         'plus',
         'play',
         'pause',
-        'volume-up',
+        'ranking-star',
+        'trash',
+        'tv',
+        'user',
+        'user-minus',
         'upload',
+        'thumbs-up',
+        'thumbs-down',
+        'volume-up',
         'volume-low',
         'volume-high',
       ],
@@ -109,9 +119,6 @@ export default defineNuxtConfig({
   test: true,
   testUtils: {
     vitestConfig: {
-      alias: {
-        '@': path.resolve(__dirname, './')
-      },
       css: true,
       deps: {
         optimizer: {
@@ -128,8 +135,29 @@ export default defineNuxtConfig({
     defaultLocale: 'fr',
     vueI18n: './i18n.config.ts',
     locales: [
-      { code: 'en', language: 'en-US', file: 'en-US.json', dir: 'ltr' },
-      { code: 'fr', language: 'fr-FR', file: 'fr-FR.json', dir: 'ltr' }
+      {
+        code: 'en',
+        language: 'en-US',
+        file: 'en-US.json',
+        dir: 'ltr'
+      },
+      {
+        code: 'fr',
+        language: 'fr-FR',
+        file: 'fr-FR.json',
+        dir: 'ltr'
+      }
     ]
   },
+  nitro: {
+    storage: {
+      redis: {
+        driver: 'redis',
+        host: '127.0.0.1',
+        port: 6379,
+        username: '',
+        password: 'django-local-testing'
+      }
+    }
+  }
 })
