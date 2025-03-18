@@ -9,12 +9,25 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      DJANGO_PROD_URL: process.env.NUXT_DJANGO_PROD_URL,
-      STRIPE_SECRET_KEY: process.env.NUXT_STRIPE_TEST_SECRET_KEY,
-      STRIPE_PUBLISHABLE_KEY: process.env.NUXT_STRIPE_TEST_PUBLISHABLE_KEY,
-      STRIPE_ACCOUNT: process.env.NUXT_STRIPE_TEST_PUBLISHABLE_KEY,
-      STRIPE_API_VERSION: '2024-06-20',
-      STRIPE_LOCALE: 'fr'
+      // Django
+      djangoProdUrl: process.env.NUXT_DJANGO_PROD_URL,
+      
+      // Stripe
+      stripeSecretKey: process.env.NUXT_STRIPE_TEST_SECRET_KEY,
+      stripePublishableKey: process.env.NUXT_STRIPE_TEST_PUBLISHABLE_KEY,
+      stripeAccount: process.env.NUXT_STRIPE_TEST_PUBLISHABLE_KEY,
+      stripeApiVersion: '2024-06-20',
+      stripeLocale: 'fr',
+
+      // Firebase
+      firebaseApiKey: process.env.NUXT_FIREBASE_API_KEY,
+      firebaseAuthDomain: process.env.NUXT_FIREBASE_AUTH_DOMAIN,
+      firebaseDbUrl: process.env.NUXT_FIREBASE_DB_URL,
+      firebaseStorageBucket: process.env.NUXT_FIREBASE_STORAGE_BUCKET,
+      firebaseAppId: process.env.NUXT_FIREBASE_APP_ID,
+      firebaseMeasurementId: process.env.NUXT_FIREBASE_MEASUREMENT_ID,
+      firebaseMessageSenderId: process.env.NUXT_FIREBASE_MESSAGE_SENDER_ID,
+      firebaseProjectId: process.env.NUXT_FIREBASE_PROJECT_ID,
     }
   },
   modules: [

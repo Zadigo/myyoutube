@@ -1,13 +1,11 @@
-/** TODO: Remove this module */
-
-import { inProduction } from '@/utils'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import axios, { AxiosError, type AxiosRequestConfig, type AxiosResponse } from 'axios'
 import { ref } from 'vue'
-import type { LoginApiResponse } from '../types'
+import { inProduction } from '~/utils'
 
-export function isSecure() {
-    return window.location.href.startsWith('https://')
+export interface LoginApiResponse {
+    access: string
+    refresh: string
 }
 
 /**
@@ -22,10 +20,10 @@ export function getDomain(altDomain?: string | null): string {
     if (inProduction()) {
         // Raise an error when both alt-domain and the
         // base domain to use are not set
-        const result = altDomain || import.meta.env.VITE_BASE_DOMAIN
+        const result = altDomain || useRuntimeConfig().public.djangoProdUrl
 
         if (!result) {
-            throw new Error('VITE_BASE_DOMAIN or altDomain needs to be specified')
+            throw createError('VITE_BASE_DOMAIN or altDomain needs to be specified')
         }
 
         return result
@@ -64,7 +62,7 @@ export function getBaseUrl(path: string, altDomain?: string | null, websocket: b
  * 
  * @param [port=8000] Used for local development purposes
  */
-export function createSimpleClient(path?: string | null, altDomain?: string | null, websocket: boolean = false, port = 8000) {
+export function createAxiosSimpleClient(path?: string | null, altDomain?: string | null, websocket: boolean = false, port = 8000) {
     if (path) {
         return axios.create({
             baseURL: getBaseUrl(path, altDomain, websocket, port),
@@ -79,9 +77,10 @@ export function createSimpleClient(path?: string | null, altDomain?: string | nu
 
 /**
  * Creates a client and adds authentication interceptors 
+ * in order to account for authenticated requests on Django
  */
-export default function createClient(path?: string | null, altDomain?: string | null, websocket: boolean = false, port = 8000) {
-    const instance = createSimpleClient(path, altDomain, websocket, port)
+export default function createDjangoClient(path?: string | null, altDomain?: string | null, websocket: boolean = false, port = 8000) {
+    const instance = createAxiosSimpleClient(path, altDomain, websocket, port)
 
     instance.interceptors.request.use(
         config => {
@@ -148,7 +147,7 @@ export default function createClient(path?: string | null, altDomain?: string | 
  */
 export function useAxiosClient(path?: string, altDomain?: string | null, websocket: boolean = false, port: number = 8000) {
     const cleanPath = path || '/api/v1/'
-    const client = createClient(cleanPath, altDomain, websocket, port)
+    const client = createAxiosSimpleClient(cleanPath, altDomain, websocket, port)
 
     const isLoading = ref(false)
     const clientResponse = ref<AxiosResponse>()

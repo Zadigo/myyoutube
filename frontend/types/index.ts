@@ -1,7 +1,7 @@
 export * from './authentication'
-export * from './feed'
 export * from './channels'
 export * from './comments'
+export * from './feed'
 export * from './video'
 export * from './studio'
 

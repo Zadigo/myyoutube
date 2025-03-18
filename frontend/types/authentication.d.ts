@@ -24,20 +24,20 @@ export interface UserProfile {
 }
 
 export interface ViewingProfile {
-    id: number
-    account_type: string
-    subscriptions: string[],
-    night_mode: boolean
-    algorithm_decides: boolean
-    recommend_popular_videos: boolean
-    preferred_categories: string[]
-    performance: string
-    playlists_private: boolean
-    subscriptions_private: boolean
-    personalize_ads: false
+  id: number
+  account_type: string
+  subscriptions: string[],
+  night_mode: boolean
+  algorithm_decides: boolean
+  recommend_popular_videos: boolean
+  preferred_categories: string[]
+  performance: string
+  playlists_private: boolean
+  subscriptions_private: boolean
+  personalize_ads: false
 }
 
 export interface BlockedChannel {
-    channel: UserChannel
-    user: CustomUser
+  channel: UserChannel
+  user: CustomUser
 }
