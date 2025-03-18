@@ -211,7 +211,6 @@ const AsyncRecommendationSection = defineAsyncComponent({
 })
 
 const { $client } = useNuxtApp()
-const { mediaPath } = useDjangoUtilies()
 const route = useRoute()
 const isLoading = ref(true)
 const store = useFeed()
@@ -229,7 +228,8 @@ provide('currentVideo', currentVideo)
 
 const videoSource = computed(() => {
   if (currentVideo.value) {
-    return `http://127.0.0.1:8000/api/v1/videos/s/${currentVideo.value.video_id}`
+    // return `http://127.0.0.1:8000/api/v1/videos/s/${currentVideo.value.video_id}`
+    return getBaseUrl(`/api/v1/videos/s/${currentVideo.value.video_id}`)
   } else {
     return ''
   }

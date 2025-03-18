@@ -105,7 +105,7 @@ importers:
         specifier: ^1.0.3
         version: 1.0.4
       zod:
-        specifier: ^3.23.8
+        specifier: ^3.24.1
         version: 3.24.1
     devDependencies:
       '@fortawesome/free-brands-svg-icons':

@@ -1,10 +1,23 @@
-import { getBaseUrl } from './client'
-
-export function useDjangoUtilies () {
+export function useDjangoUtilities() {
     const paginationUrl = ref<URL>()
 
-    function mediaPath (path: string | null | undefined, altImage?: string | undefined): string | undefined {
-        const baseUrl = getBaseUrl('/media/')
+    function getBaseUrl(port = 8000) {
+        let loc = 'http://'
+        let domain = `127.0.0.1:${port}`
+
+        if (inProduction()) {
+            loc = 'https://'
+            domain = useRuntimeConfig().public.djangoProdUrl || ''
+        }
+
+        const bits = [loc, domain]
+        const url = bits.join('')
+
+        return new URL(url).toString()
+    }
+
+    function mediaPath(path: string | null | undefined, altImage?: string | undefined): string | undefined {
+        const baseUrl = getBaseUrl()
 
         if (path) {
             if (path.startsWith('http')) {
@@ -18,7 +31,7 @@ export function useDjangoUtilies () {
         }
     }
 
-    function builLimitOffset (url: string | null | undefined, limit = 100, offset = 100) {
+    function builLimitOffset(url: string | null | undefined, limit = 100, offset = 100) {
         let defaultLimit: string | number = 100
         let defaultOffset: string | number = 0
 
@@ -33,11 +46,11 @@ export function useDjangoUtilies () {
         }
 
         const query = new URLSearchParams({ limit: defaultLimit.toString(), offset: defaultOffset.toString() }).toString()
-        
+
         return {
             query,
             limit: defaultLimit,
-            offset: defaultOffset 
+            offset: defaultOffset
         }
     }
 
