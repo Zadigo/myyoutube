@@ -26,7 +26,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import type { VideoInfo } from '~/types'
 
 import { useFeed } from '~/stores/feed';

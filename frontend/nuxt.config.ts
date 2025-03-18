@@ -4,7 +4,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
   routeRules: {
-    '/': { ssr: false }
+    '/': { ssr: false },
+    '/videos/**': { ssr: true }
   },
   runtimeConfig: {
     public: {
@@ -26,13 +27,13 @@ export default defineNuxtConfig({
     '@unlok-co/nuxt-stripe',
     '@nuxtjs/sitemap',
     '@nuxt/image',
-    // '@nuxtjs/i18n',
-    'nuxt-gtag',
-    // 'nuxt-meta-pixel', // BUG: This raises an error with minimatch
-    'nuxt-clarity-analytics',
     'nuxt-openapi-docs-module',
     'vuetify-nuxt-module',
     'vue-sonner/nuxt'
+    // '@nuxtjs/i18n',
+    // 'nuxt-gtag',
+    // 'nuxt-meta-pixel', // BUG: This raises an error with minimatch
+    // 'nuxt-clarity-analytics',
   ],
   css: [
     '~/assets/style.scss',
@@ -116,19 +117,19 @@ export default defineNuxtConfig({
       brands: []
     }
   },
-  test: true,
-  testUtils: {
-    vitestConfig: {
-      css: true,
-      deps: {
-        optimizer: {
-          ssr: {
-            include: ['@nuxt/test-utils']
-          }
-        }
-      }
-    }
-  },
+  // test: true,
+  // testUtils: {
+  //   vitestConfig: {
+  //     css: true,
+  //     deps: {
+  //       optimizer: {
+  //         ssr: {
+  //           include: ['@nuxt/test-utils']
+  //         }
+  //       }
+  //     }
+  //   }
+  // },
   i18n: {
     baseUrl: './',
     langDir: './locales',

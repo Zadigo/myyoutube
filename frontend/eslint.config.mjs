@@ -59,7 +59,7 @@ export default withNuxt({
     "vue/html-button-has-type": "warn",
     "vue/match-component-import-name": "error",
     "vue/require-emit-validator": "warn",
-    "vue/v-on-function-call": "error",
+    "vue/v-on-handler-style": "error",
     "vue/no-unused-refs": "warn",
     "vue/no-irregular-whitespace": "error",
     "vue/padding-line-between-blocks": "error",
@@ -69,11 +69,10 @@ export default withNuxt({
     "vue/no-template-target-blank": "error",
     "vue/no-this-in-before-route-enter": "error",
     "vue/no-unused-properties": "error",
-    "vue/component-tags-order": [
+    "vue/block-order": [
       "error",
       {
         "order": [
-          "docs",
           [
             "script",
             "template"
@@ -83,11 +82,12 @@ export default withNuxt({
         ]
       }
     ],
-    "vue/max-attributes-per-line": ["warn", {
-      "singleline": {
-        "max": 15
+    "vue/max-attributes-per-line": ["warn", 
+      {
+        "singleline": {
+          "max": 15
+        },
       },
-    },
     ],
     "vue/v-bind-style": ["error", "shorthand"]
   }

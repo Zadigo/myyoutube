@@ -41,11 +41,11 @@ const AsyncFeedComponent = defineAsyncComponent({
   loader: () => import('~/components/BaseAsyncFeed.vue')
 })
 
-const sortBy = [
-  'Upload date',
-  'View count',
-  'Rating'
-]
+// const sortBy = [
+//   'Upload date',
+//   'View count',
+//   'Rating'
+// ]
 
 const videoLength = [
   'Under 4 minutes',
