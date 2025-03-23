@@ -17,7 +17,7 @@ USER_MODEL = get_user_model()
 
 class MediaView(models.Model):
     """Collects the views for a given video"""
-    
+
     reference = models.CharField(
         max_length=100,
         help_text=_('Unique reference for the view'),
@@ -98,7 +98,16 @@ def create_reference(instance, **kwargs):
         video_id = str(instance.story.id)
     else:
         video_id = str(instance.video.id)
-    reference = urlsafe_base64_encode(video_id)
-    user = urlsafe_base64_encode(str(instance.user.id))
-    salt = get_random_string(length=5)
-    instance.reference = f'vw_{reference}_{user}_{salt}'
+
+    try:
+        # TODO: Raises a bytes like error because
+        # the ID is probably not set pre_save
+        reference = urlsafe_base64_encode(video_id)
+        user = urlsafe_base64_encode(str(instance.user.id))
+    except:
+        reference = f'vw_{get_random_string(length=12)}'
+    else:
+        salt = get_random_string(length=5)
+        reference = f'vw_{reference}_{user}_{salt}'
+
+    instance.reference = reference

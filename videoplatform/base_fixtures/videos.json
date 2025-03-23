@@ -38,10 +38,12 @@
             "email": "user@example.com",
             "instagram": null,
             "facebook": null,
-            "subscribers": [2],
+            "subscribers": [
+                2
+            ],
             "is_verified": false,
             "tags": [],
-            "created_on": "2025-03-18 21:40:26.334580+00:00"
+            "created_on": "2025-03-23 19:30:52.427598+00"
         }
     },
     {
@@ -58,7 +60,7 @@
             "category": "Entertainment",
             "tags": [],
             "visibility": "Public",
-            "recording_date": "2025-1-1",
+            "recording_date": "2025-03-23 19:30:52.427598+00",
             "recording_location": "Lille",
             "recording_language": "English",
             "comment_strategy": "Allow all comments",
@@ -70,8 +72,8 @@
             "height": 0,
             "views": 0,
             "active": true,
-            "modified_on": "2025-03-18 21:40:26.334580+00:00",
-            "created_on": "2025-03-18 21:40:26.334580+00:00"
+            "modified_on": "2025-03-23 19:30:52.427598+00",
+            "created_on": "2025-03-23 19:30:52.427598+00"
         }
     }
 ]

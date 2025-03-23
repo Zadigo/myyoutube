@@ -6,9 +6,8 @@ app_name = 'videos_api'
 urlpatterns = [
     re_path(
         r'^studio/upload$',
-        # views.upload_video,
         views.UploadVideo.as_view(),
-        name='studio_upload'
+        name='upload_video'
     ),
     re_path(
         r'^studio/videos$',
@@ -32,19 +31,23 @@ urlpatterns = [
     ),
     re_path(
         r'^categories/(?P<category>\w+)/sub-categories$',
-        views.ListVideoSubcategories.as_view({'get': 'list'})
+        views.ListVideoSubcategories.as_view({'get': 'list'}),
+        name='sub_categories'
     ),
     re_path(
         r'^categories$',
-        views.ListVideoCategories.as_view({'get': 'list'})
+        views.ListVideoCategories.as_view({'get': 'list'}),
+        name='categories'
     ),
     re_path(
         r'^search$',
-        views.search_videos
+        views.search_videos,
+        name='search'
     ),
     re_path(
         r'^viewing-profile',
-        views.ViewingProfile.as_view()
+        views.ViewingProfile.as_view(),
+        name='viewing_profile'
     ),
     re_path(
         r'^$',

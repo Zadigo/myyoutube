@@ -11,6 +11,7 @@ from videos import choices
 from videos.api import validators
 from videos.models import Video
 from videos.processing import get_video_metadata
+from videos import tasks
 
 
 class VideoSerializer(Serializer):
@@ -196,11 +197,15 @@ class ValidateVideoUpload(Serializer):
                 **validated_data
             )
 
-        details = get_video_metadata(instance.video.path)
-        instance.duration = details.duration
-        instance.width = details.size[0]
-        instance.height = details.size[1]
-        instance.framerate = details.framerate
+        # details = get_video_metadata(instance.video.path)
+        # instance.duration = details.duration
+        # instance.width = details.size[0]
+        # instance.height = details.size[1]
+        # instance.framerate = details.framerate
+        tasks.get_video_metadata.apply_async(
+            (instance.video.id,),
+            countdown=50
+        )
         instance.save()
 
         return instance

@@ -443,3 +443,10 @@ CACHES = {
         'LOCATION': BASE_DIR / 'cache'
     }
 }
+
+
+# Fixtures
+
+FIXTURE_DIRS = [
+    '/base_fixtures'
+]

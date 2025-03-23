@@ -147,21 +147,6 @@ class UploadVideo(CreateModelMixin, GenericAPIView):
     permission_classes = [IsAuthenticated]
 
 
-@api_view(['post'])
-def get_videos(request, **kwargs):
-    """Returns all the videos from the plateform that
-    are active and with visibility set to Public"""
-    queryset = models.Video.objects.filter(
-        active=True,
-        visibility='Public'
-    )
-    serializer = serializers.VideoSerializer(
-        instance=queryset,
-        many=True
-    )
-    return Response(serializer.data)
-
-
 class GetVideo(RetrieveAPIView):
     queryset = models.Video.objects.all()
     serializer_class = serializers.VideoSerializer
@@ -312,6 +297,9 @@ class VideoStreamView(APIView):
 
 
 class CreateCommentAPI(GenericAPIView):
+    """Endpoint used to create a new
+    comment on a given video"""
+    
     serializer_class = CommentSerializer
     queryset = models.Video.objects.all()
     permission_classes = [IsAuthenticated]

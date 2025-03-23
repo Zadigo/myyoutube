@@ -54,7 +54,7 @@ class ListComments(GenericAPIView):
         return Response(remapped_comments)
 
 
-class CreateReplyAPI(CreateAPIView):
+class CreateReply(CreateAPIView):
     serializer_class = serializers.ReplySerializer
     queryset = Comment.objects.all()
     permission_classes = []

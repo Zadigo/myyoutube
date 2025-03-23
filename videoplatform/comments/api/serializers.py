@@ -7,7 +7,7 @@ from accounts.api.serializers import UserSerializer
 from comments.api.algorithm import text_algorithm
 from comments.models import Comment, Reply
 from videos.choices import CommentingStrategy
-
+from comments import tasks
 
 class CommentSerializer(ModelSerializer):
     user = UserSerializer(read_only=True)
@@ -29,6 +29,7 @@ class CommentSerializer(ModelSerializer):
         validated_data = {**self.validated_data, **kwargs}
 
         request = self.context['request']
+
         validated_data['user'] = request.user
         validated_data['video'] = self.context['video']
 
@@ -39,7 +40,8 @@ class CommentSerializer(ModelSerializer):
 
         if self.instance is None:
             raise ValueError('Update or create did not return an object')
-
+        
+        tasks.moderate_comment.apply_async((self.instance.id,), countdown=60)
         return self.instance
 
 

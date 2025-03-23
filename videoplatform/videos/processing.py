@@ -16,7 +16,7 @@ def get_video_metadata(path):
     video = VideoFileClip(path)
     details = VideoDetails(video.duration, video.size)
     details.framerate = video.fps
-    return details
+    return dataclasses.asdict(details)
 
 
 def get_video_frames(path, k=2):
