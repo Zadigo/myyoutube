@@ -1,13 +1,12 @@
 import debug_toolbar
+from accounts.sites import custom_admin_site
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from rest_framework_simplejwt import views as jwt_views
 from django.urls import include, path
 from drf_spectacular.views import (SpectacularAPIView, SpectacularRedocView,
                                    SpectacularSwaggerView)
-
-from accounts.sites import custom_admin_site
+from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
     path('__debug__/', include(debug_toolbar.urls)),

@@ -1,0 +1,77 @@
+[
+    {
+        "model": "accounts.CustomUser",
+        "pk": 1,
+        "fields": {
+            "email": "user@example.com",
+            "username": "brittanyspears",
+            "firstname": "Brittany",
+            "lastname": "Spears",
+            "is_active": true,
+            "is_admin": true,
+            "is_staff": true
+        }
+    },
+    {
+        "model": "accounts.CustomUser",
+        "pk": 2,
+        "fields": {
+            "email": "subscriber+1@example.com",
+            "username": "brittanyspears_subscriber",
+            "firstname": "Brittany",
+            "lastname": "Spears Sub",
+            "is_active": true,
+            "is_admin": true,
+            "is_staff": true
+        }
+    },
+    {
+        "model": "mychannel.UserChannel",
+        "pk": 1,
+        "fields": {
+            "reference": "chan_123",
+            "user": 1,
+            "name": "Simple channel name",
+            "description": "Some simple description",
+            "banner": null,
+            "category": "Beauty",
+            "email": "user@example.com",
+            "instagram": null,
+            "facebook": null,
+            "subscribers": [2],
+            "is_verified": false,
+            "tags": [],
+            "created_on": "2025-03-18 21:40:26.334580+00:00"
+        }
+    },
+    {
+        "model": "videos.Video",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "video_id": "vid_123",
+            "user_channel": 1,
+            "title": "Simple video name",
+            "description": "Some simple description",
+            "video": "/media/uploads/dfe5405b14.mp4",
+            "age_restricted": false,
+            "category": "Entertainment",
+            "tags": [],
+            "visibility": "Public",
+            "recording_date": "2025-1-1",
+            "recording_location": "Lille",
+            "recording_language": "English",
+            "comment_strategy": "Allow all comments",
+            "ratings_are_visible": true,
+            "channel_playlist": null,
+            "framerate": 0,
+            "duration": 0,
+            "width": 0,
+            "height": 0,
+            "views": 0,
+            "active": true,
+            "modified_on": "2025-03-18 21:40:26.334580+00:00",
+            "created_on": "2025-03-18 21:40:26.334580+00:00"
+        }
+    }
+]

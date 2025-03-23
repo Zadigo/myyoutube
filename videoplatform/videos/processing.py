@@ -2,7 +2,7 @@ import dataclasses
 import pathlib
 
 import cv2
-from moviepy.editor import VideoFileClip
+from moviepy import VideoFileClip
 
 
 @dataclasses.dataclass

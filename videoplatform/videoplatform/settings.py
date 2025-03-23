@@ -162,22 +162,66 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+USE_S3 = False
 
-STATIC_ROOT = BASE_DIR / 'static'
+if USE_S3:
+    # S3
+    # https://forum.djangoproject.com/t/static-path-with-s3/28696/9
+    # https://levelup.gitconnected.com/hosting-django-static-files-in-aws-using-s3-and-cloudfront-a-comprehensive-guide-2f8f5d0a845c
 
-MEDIA_URL = '/media/'
+    AWS_S3_FILE_OVERWRITE = False
 
-MEDIA_ROOT = BASE_DIR / 'media'
+    AWS_DEFAULT_ACL = 'public-read'
+
+    AWS_QUERYSTRING_AUTH = False
+
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+
+    AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
+
+    AWS_S3_ACCESS_KEY_ID = os.getenv('AWS_S3_ACCESS_KEY_ID')
+
+    AWS_S3_SECRET_ACCESS_KEY = os.getenv('AWS_S3_SECRET_ACCESS_KEY')
+
+    STORAGES = {
+        'default': {
+            'BACKEND': 'videoplatform.custom_storages.MediaStorage'
+        },
+        'staticfiles': {
+            'BACKEND': 'videoplatform.custom_storages.StaticStorage'
+        }
+    }
+
+    AWS_S3_OBJECT_PARAMETERS = {
+        'ACL': 'public-read',
+        'CacheControl': 'max-age=2592000'
+    }
+
+    AWS_CLOUDFRONT_DISTRIBUTION = os.getenv('AWS_CLOUDFRONT_DISTRIBUTION')
+
+if USE_S3:
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+else:
+    MEDIA_URL = 'media/'
+
+    MEDIA_ROOT = BASE_DIR / 'media'
+
+    STATIC_URL = 'static/'
+
+    STATIC_ROOT = BASE_DIR / 'static'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'staticfiles'
+]
+
 
 # Sites
 
 SITE_ID = 1
-
-
-# Uploads
-
-DEFAULT_FILE_STORAGE = 'uploads.storage.CustomFileSystemStorage'
 
 
 # Debug
@@ -192,37 +236,6 @@ INTERNAL_IPS = [
 NOTIFICATION_MODEL = 'notifications.Notification'
 
 MEDIA_MODEL = 'videos.Video'
-
-
-# CACHE
-
-# https://pypi.org/project/pymemcache/
-# https://pypi.org/project/pylibmc/
-
-if DEBUG:
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-            'LOCATION': BASE_DIR / 'cache'
-        }
-    }
-else:
-    CACHES = {
-        'default': {
-            'BACKEND': 'django_redis.cache.RedisCache',
-            'LOCATION': 'redis://127.0.0.1:6379/1',
-            'OPTIONS': {
-                'CLIENT_CLASS': 'django_redis.client.DefaultClient'
-            },
-            'KEY_PREFIX': 'myyoutube'
-        },
-        'memcache': {
-            'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-            'LOCATION': [
-                '127.0.0.1:11211'
-            ]
-        }
-    }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
@@ -348,31 +361,27 @@ LOCALE_PATHS = [
 LANGUAGE_CODE = 'fr'
 
 
+# Redis
+
+REDIS_HOST = os.getenv('REDIS_HOST', '127.0.0.1')
+
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
+
+REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:6379'
+
+
 # Celery
 # https://docs.celeryq.dev/en/stable/#
 
-if not DEBUG:
-    REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
+RABBITMQ_HOST = os.getenv('RABBITMQ_HOST', 'localhost')
 
-    REDIS_URL = f'redis://:{REDIS_PASSWORD}@redis:6379'
+RABBITMQ_USER = os.getenv('RABBITMQ_DEFAULT_USER', 'guest')
 
-    RABBITMQ_HOST = os.getenv('RABBITMQ_HOST')
+RABBITMQ_PASSWORD = os.getenv('RABBITMQ_DEFAULT_PASS', 'guest')
 
-    RABBITMQ_USER = os.getenv('RABBITMQ_DEFAULT_USER')
+CELERY_BROKER_URL = f'amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}:5672'
 
-    RABBITMQ_PASSWORD = os.getenv('RABBITMQ_DEFAULT_PASS')
-
-    CELERY_BROKER_URL = 'amqp://{user}:{password}@rabbitmq:5672'.format(
-        user=RABBITMQ_USER,
-        password=RABBITMQ_PASSWORD
-    )
-
-    CELERY_RESULT_BACKEND = f'redis://:{REDIS_PASSWORD}@redis:6379'
-else:
-    CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672'
-
-    CELERY_RESULT_BACKEND = 'rpc://'
-
+CELERY_RESULT_BACKEND = REDIS_URL
 
 CELERY_ACCEPT_CONTENT = ['json']
 
@@ -384,6 +393,8 @@ CELERY_TIMEZONE = 'Europe/Oslo'
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
+
+# HTTPS
 
 if os.getenv('USES_HTTP_SCHEME', 'http') == 'https':
     SESSION_COOKIE_SECURE = True
@@ -406,3 +417,29 @@ N8N_AUTHENTICATION_TOKEN = os.getenv('N8N_AUTHENTICATION_TOKEN')
 N8N_REQUEST_USERNAME = os.getenv('N8N_REQUEST_USERNAME')
 
 N8N_REQUEST_PASSWORD = os.getenv('N8N_REQUEST_PASSWORD')
+
+
+# CACHE
+# https://pypi.org/project/pymemcache/
+# https://pypi.org/project/pylibmc/
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': REDIS_URL,
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient'
+        },
+        'KEY_PREFIX': 'myyoutube'
+    },
+    'memcache': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+        'LOCATION': [
+            '127.0.0.1:11211'
+        ]
+    },
+    'file': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': BASE_DIR / 'cache'
+    }
+}
