@@ -111,19 +111,23 @@ class ListVideos(ListAPIView):
     permission_classes = []
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        qs = super().get_queryset()
 
         if self.request.user.is_authenticated:
             # 1. Remove all the videos that contains
             # a channel that was blocked by the
             # current user
-            blocked_channels = BlockedChannel.objects.filter(
-                user=self.request.user
-            )
-            # if blocked_channels.exists():
-            #     queryset = queryset.exclude(
-            #         user_channel__in=list(blocked_channels)
-            #     )
+            cache_key = f'blocked_channels_user_{self.request.user.id}'
+            blocked_channels = cache.get(cache_key, None)
+            if blocked_channels is None:
+                blocked_channels = BlockedChannel.objects.filter(
+                    user=self.request.user
+                )
+                cache.set(cache_key, qs, timeout=1)
+                
+            if blocked_channels.exists():
+                blocked_ids = blocked_channels.values_list('id', flat=True)
+                qs = queryset.exclude(user_channel__in=blocked_ids)
 
             # 2. Get the blocked keywords that the user
             # has specified an if they are present in
@@ -137,7 +141,7 @@ class ListVideos(ListAPIView):
             # qs2 = queryset.annotate(has_blocked_keywords=case)
             # queryset = qs2.filter(has_blocked_keywords=False)
 
-        return queryset
+        return qs
 
 
 class UploadVideo(CreateModelMixin, GenericAPIView):
@@ -148,11 +152,19 @@ class UploadVideo(CreateModelMixin, GenericAPIView):
 
 
 class GetVideo(RetrieveAPIView):
-    queryset = models.Video.objects.all()
+    queryset = models.Video.objects.filter(active=True)
     serializer_class = serializers.VideoSerializer
     permission_classes = []
     lookup_field = 'video_id'
     lookup_url_kwarg = 'video_id'
+
+    def get_queryset(self):
+        qs = cache.get('active_videos_public', None)
+        if qs is None:
+            qs = super().get_queryset()
+            cache.set('active_videos_public', qs, timeout=1)
+            return qs.filter(visibility='Public')
+        return qs
 
     def get_object(self):
         video = super().get_object()

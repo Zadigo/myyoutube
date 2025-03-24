@@ -3,6 +3,14 @@ from rest_framework.serializers import Serializer
 from rest_framework.exceptions import ValidationError
 from ratings import choices
 from ratings.models import Rating
+from videos.api.serializers import VideoSerializer
+
+
+class RatingSeralizer(Serializer):
+    id = fields.IntegerField()
+    rating_type = fields.CharField()
+    rating_for = fields.CharField()
+    video = VideoSerializer()
 
 
 class ValidateSubscription(Serializer):
@@ -11,30 +19,46 @@ class ValidateSubscription(Serializer):
     )
     mode = fields.ChoiceField(
         choices.SubscriptionModes.choices,
+        default='All',
         allow_null=True
     )
 
 
-class ValidateRating(Serializer):
+class BaseValidateRating(Serializer):
     liked = fields.BooleanField(
         default=False
     )
     unliked = fields.BooleanField(
         default=False
     )
-    subscription = ValidateSubscription()
+    rating_for = fields.CharField(default='Video')
+    subscription = ValidateSubscription(write_only=True)
 
-    def save(self, request, video, **kwargs):
-        setattr(self, 'request', request)
-        setattr(self, 'video_instance', video)
-        return super().save(**kwargs)
+    def validate_rating_for(self, value):
+        rating_types = list(map(
+            lambda x: x[0],
+            choices.RatingFor.choices
+        ))
+
+        if value not in rating_types:
+            raise ValidationError('Invalid rating for')
+        return value
 
     def create(self, validated_data):
-        request = getattr(self, 'request')
-        video_instance = getattr(self, 'video_instance')
+        request = self._context['request']
+        video = self._context['video_instance']
+
+        logic = any([
+            not video.active,
+            video.visibility == 'Private'
+        ])
+
+        if logic:
+            raise ValidationError('Video is not available for rating')
+
         params = {
             'user': request.user,
-            'video': video_instance,
+            'video': video,
             'rating_for': 'Video'
         }
 
@@ -43,14 +67,14 @@ class ValidateRating(Serializer):
 
         if validated_data['liked']:
             params['rating_type'] = 'Like'
-        
+
         if validated_data['unliked']:
             params['rating_type'] = 'Dislike'
 
         return Rating.objects.create(**params)
 
     def update(self, instance, validated_data):
-        if not validated_data['liked'] and not validated_data['unliked']:
+        if not validated_data['liked'] and not validated_data['unlinked']:
             return instance
 
         if validated_data['liked']:
@@ -59,4 +83,5 @@ class ValidateRating(Serializer):
         if validated_data['unliked']:
             instance.rating_type = 'Dislike'
 
+        instance.save()
         return instance

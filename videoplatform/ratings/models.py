@@ -9,15 +9,13 @@ from ratings.managers import RatingManager
 from videos.models import Video
 from notifications.models import Notification
 
-USER_MODEL = get_user_model()
-
 
 class Rating(models.Model):
     """Represents a rating for a video,
     a comment or a reply"""
 
     user = models.ForeignKey(
-        USER_MODEL,
+        get_user_model(),
         on_delete=models.CASCADE,
         blank=True,
         null=True
@@ -57,7 +55,7 @@ class Rating(models.Model):
     objects = RatingManager.as_manager()
 
     def __str__(self):
-        return f'Rating: {self.video}'
+        return f'{self.user.id} - {self.video}'
 
 
 @receiver(post_save, sender=Rating)
@@ -67,7 +65,7 @@ def notify_user(instance, created, **kwargs):
             user=instance.user,
             video=instance.video
         )
-        
+
         if instance.video is not None:
             notification.notificiation_type = 'Like'
             notification.save()
