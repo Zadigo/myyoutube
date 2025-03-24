@@ -1,14 +1,15 @@
-from videos import tasks
-from django.test import override_settings
-from django.test import TransactionTestCase
-from rest_framework.test import APITestCase
-from django.core.serializers import serialize
-from django.urls import reverse
+import pathlib
+from unittest import TestCase, IsolatedAsyncioTestCase
+
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
-
+from django.core.serializers import serialize
+from django.test import TransactionTestCase, override_settings
+from django.urls import reverse
+from rest_framework.test import APITestCase
+from videos import tasks
 from videos.models import Video
-import pathlib
+from videoplatform.utils import get_firebase_app
 
 
 class AuthenticationMixin(APITestCase):
@@ -138,3 +139,19 @@ class TestTasks(TransactionTestCase):
     def test_moderate_comment(self):
         video = Video.objects.first()
         t1 = tasks.get_video_frames
+
+
+class TestViewingProfileView(APITestCase):
+    def test_structure(self):
+        path = reverse('viewing_profile_id')
+        response = self.client.post(path)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('token', response.json())
+
+
+class TestUtilities(IsolatedAsyncioTestCase):
+    async def test_get_firebase(self):
+        client = get_firebase_app()
+        result = client.collection('vp_profiles')
+        await result.document('vp_123').set({'name': 'Google'})
+        print(result)

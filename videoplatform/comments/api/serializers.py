@@ -9,6 +9,7 @@ from comments.models import Comment, Reply
 from videos.choices import CommentingStrategy
 from comments import tasks
 
+
 class CommentSerializer(ModelSerializer):
     user = UserSerializer(read_only=True)
     user_channel = fields.CharField(read_only=True)
@@ -40,7 +41,7 @@ class CommentSerializer(ModelSerializer):
 
         if self.instance is None:
             raise ValueError('Update or create did not return an object')
-        
+
         tasks.moderate_comment.apply_async((self.instance.id,), countdown=60)
         return self.instance
 
@@ -79,6 +80,7 @@ class ReplySerializer(ModelSerializer):
                 "return an object instance"
             )
 
+        tasks.moderate_comment.apply_async((self.instance.id,), countdown=60)
         return self.instance
 
 

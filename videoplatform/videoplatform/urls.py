@@ -3,12 +3,18 @@ from accounts.sites import custom_admin_site
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from drf_spectacular.views import (SpectacularAPIView, SpectacularRedocView,
                                    SpectacularSwaggerView)
 from rest_framework_simplejwt import views as jwt_views
+from videoplatform.views import ViewingProfileToken
 
 urlpatterns = [
+    re_path(
+        r'^api/v1/viewing/id$',
+        ViewingProfileToken.as_view(),
+        name='viewing_profile_id'
+    ),
     path('__debug__/', include(debug_toolbar.urls)),
     path('api/v1/playlists/', include('playlists.api.urls')),
     path('api/v1/ratings/', include('ratings.api.urls')),

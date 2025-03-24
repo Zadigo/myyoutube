@@ -6,8 +6,8 @@ from django.dispatch import receiver
 from comments.models import Comment, Reply
 from ratings.choices import RatingFor, RatingTypes
 from ratings.managers import RatingManager
-from ratings.utils import get_notifications_model
 from videos.models import Video
+from notifications.models import Notification
 
 USER_MODEL = get_user_model()
 
@@ -63,8 +63,7 @@ class Rating(models.Model):
 @receiver(post_save, sender=Rating)
 def notify_user(instance, created, **kwargs):
     if created:
-        model = get_notifications_model()
-        notification = model.objects.create(
+        notification = Notification.objects.create(
             user=instance.user,
             video=instance.video
         )

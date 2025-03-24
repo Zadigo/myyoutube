@@ -1,7 +1,6 @@
 import os
 from datetime import timedelta
 from pathlib import Path
-
 import dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -450,3 +449,10 @@ CACHES = {
 FIXTURE_DIRS = [
     '/base_fixtures'
 ]
+
+GOOGLE_CLOUD_PROJECT = 'gency313'
+
+
+# Firebase
+
+FIREBASE_PROJECT_ID = os.getenv('FIREBASE_PROJECT_ID')
