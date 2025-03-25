@@ -5,7 +5,8 @@ export default defineNuxtConfig({
   ssr: true,
   routeRules: {
     '/': { ssr: false },
-    '/videos/**': { ssr: true }
+    '/videos/**': { ssr: true },
+    '/playlists': { ssr: false }
   },
   runtimeConfig: {
     public: {

@@ -1,4 +1,3 @@
-// import { useCookies } from '@vueuse/integrations/useCookies'
 import axios, { AxiosError, type AxiosRequestConfig, type AxiosResponse } from 'axios'
 import { ref } from 'vue'
 import { inProduction } from '~/utils'
@@ -43,8 +42,6 @@ export function getBaseUrl(path: string, altDomain?: string | null, websocket: b
     let url: URL
 
     const domain = getDomain(altDomain)
-
-    console.log(domain)
 
     if (inProduction()) {
         loc += 's'
@@ -107,7 +104,7 @@ export default function createDjangoClient(path?: string | null, altDomain?: str
 
             const originalRequest = error.config
 
-            if (error.response.status === 401 && !originalRequest._retry) {
+            if (error.response?.status === 401 && !originalRequest._retry) {
                 originalRequest._retry = true
 
                 try {
@@ -122,6 +119,59 @@ export default function createDjangoClient(path?: string | null, altDomain?: str
                     })
 
                     access.value = response.data.access
+                    return authClient
+                } catch (refreshError) {
+                    return Promise.reject(refreshError)
+                }
+            }
+
+            return Promise.reject(error)
+        }
+    )
+
+    return instance
+}
+
+export function createServerDjangoClient(path?: string | null, accessToken?: string | null, refreshToken?: string | null, refreshCallback?: (token: string) => void, altDomain?: string | null, port = 8000) {
+    const instance = createAxiosSimpleClient(path, altDomain, false, port)
+
+    instance.interceptors.request.use(
+        config => {
+            if (accessToken) {
+                config.headers.Authorization = `Token ${accessToken}`
+            }
+            return config
+        },
+        error => {
+            return Promise.reject(error)
+        }
+    )
+
+    instance.interceptors.response.use(
+        response => {
+            return response
+        },
+        async (error) => {
+            // Sequence that refreshes the access token when
+            // we get a 401 code trying to access a page
+
+            const originalRequest = error.config
+
+            if (error.response?.status === 401 && !originalRequest._retry) {
+                originalRequest._retry = true
+
+                try {
+                    const authClient = axios.create({
+                        baseURL: getBaseUrl('/auth/v1/')
+                    })
+
+                    const response = await authClient.post<LoginApiResponse>('/token/refresh/', {
+                        refresh: refreshToken
+                    })
+                    
+                    if (refreshCallback) {
+                        refreshCallback(response.data.access)
+                    }
                     return authClient
                 } catch (refreshError) {
                     return Promise.reject(refreshError)
