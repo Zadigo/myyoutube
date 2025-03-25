@@ -19,20 +19,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import createClient from '~/composables/client';
-import type { LoginApiResponse } from '~/types/authentication';
+import { ref } from 'vue'
+import { createAxiosSimpleClient } from '~/composables/django_client'
+import type { LoginApiResponse } from '~/types/authentication'
 
 definePageMeta({
   layout: 'site'
 })
 
-const client = createClient('/auth/v1/')
+const client = createAxiosSimpleClient('/auth/v1/')
 
 const router = useRouter()
 const authStore = useAuthentication()
-const accessToken = useCookie('access')
-const refreshToken = useCookie('refresh')
+// const accessToken = useCookie('access')
+// const refreshToken = useCookie('refresh')
 
 const requestData = ref({
   email: null,
@@ -42,8 +42,8 @@ const requestData = ref({
 async function handleLogin() {
   try {
     const response = await client.post<LoginApiResponse>('/token/', requestData.value)
-    accessToken.value = response.data.access
-    refreshToken.value = response.data.refresh
+    // accessToken.value = response.data.access
+    // refreshToken.value = response.data.refresh
     authStore.accessToken = response.data.access
     authStore.refreshToken = response.data.refresh
     router.push('/')

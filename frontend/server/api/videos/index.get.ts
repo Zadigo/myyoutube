@@ -1,11 +1,11 @@
-import { useAxiosClient } from "~/composables/django_client"
+import createDjangoClient from "~/composables/django_client"
 import type { VideosFeedResponseData } from "~/types"
 
 export default defineEventHandler(async event => {
     const query = getQuery(event)
 
-    const { client } = useAxiosClient()
-    const response = await client.get<VideosFeedResponseData>('/videos', {
+    const client = createDjangoClient('/api/v1/')
+    const response = await client.get<VideosFeedResponseData>('/videos/', {
         params: {
             q: query.search
         }

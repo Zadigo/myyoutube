@@ -18,7 +18,7 @@
           </button>
           
           <v-btn rounded="xl" text flat @click="showSidebar = !showSidebar">
-            <font-awesome icon="bar" />
+            <font-awesome icon="bars" />
           </v-btn>
 
           <NuxtLink to="/" class="navbar-brand">

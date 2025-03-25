@@ -1,4 +1,4 @@
-import createClient from '~/composables/client'
+import createClient from '~/composables/django_client'
 
 export default defineNuxtPlugin(_nuxtApp => {
     const client = createClient('/api/v1/')

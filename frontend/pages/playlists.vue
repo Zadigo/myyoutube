@@ -8,7 +8,7 @@
           <div class="card-body">
             <v-img src="/avatar1.png" />
 
-            <v-btn color="primary" variant="outlined" rounded="xl" class="mt-4" @click="showPlaylistDetails = false">
+            <v-btn color="primary" variant="outlined" rounded="xl" class="mt-4" @click="showPlaylistDetails=false">
               <font-awesome icon="arrow-left" />
             </v-btn>
           </div>
@@ -16,7 +16,7 @@
           <hr>
 
           <div class="card-body">
-            <h3>{{ currentPlaylist.name }}</h3>
+            <h3>{{ currentPlaylist.title }}</h3>
             <p v-if="currentPlaylist.description" class="fw-light">{{ currentPlaylist.description }}</p>
             <p v-else class="">No description</p>
           </div>
@@ -25,7 +25,7 @@
         <!-- Playlists -->
         <div v-else class="card shadow-sm">
           <div class="card-body">
-            <v-btn class="me-2" color="primary" rounded="xl" size="small" flat @click="showCreatePlaylist = true">
+            <v-btn class="me-2" color="primary" rounded="xl" size="small" flat @click="showCreatePlaylist=true">
               <font-awesome icon="plus" class="me-2" />
               Playlist
             </v-btn>
@@ -39,8 +39,8 @@
 
             <div class="list-group">
               <a v-for="playlist in playlists" :key="playlist.id" href="#" class="list-group-item list-group-item-action p-3" @click.prevent="currentPlaylist = playlist, showPlaylistDetails = true">
-                <article :data-id="playlist.playlist_id" :aria-labelledby="playlist.name">
-                  <p class="fw-bold">{{ playlist.name }}</p>
+                <article :data-id="playlist.id" :aria-labelledby="playlist.title">
+                  <p class="fw-bold">{{ playlist.title }}</p>
                   <p v-if="playlist.description" class="fw-light m-0">
                     {{ playlist.description }}
                   </p>
@@ -89,30 +89,32 @@
     </div>
 
     <!-- Modals -->
-    <v-dialog v-model="showCreatePlaylist" max-width="500" @close="showCreatePlaylist = false">
-      <v-card>
-        <v-card-text>
-          <v-form @submit.prevent>
-            <v-text-field v-model="requestData.name" placeholder="Name" variant="outlined" />
-            <v-text-field v-model="requestData.description" placeholder="Description" variant="outlined" />
-            <v-switch v-model="requestData.is_intelligent" label="Private" inset hide-details />
+    <ClientOnly>
+      <v-dialog v-model="showCreatePlaylist" max-width="500" @close="showCreatePlaylist = false">
+        <v-card>
+          <v-card-text>
+            <v-form @submit.prevent>
+              <v-text-field v-model="requestData.name" placeholder="Name" variant="outlined" />
+              <v-text-field v-model="requestData.description" placeholder="Description" variant="outlined" />
+              <v-switch v-model="requestData.is_intelligent" label="Private" inset hide-details />
 
-            <div v-show="isIntelligent" id="intelligent-functionnalities" class="mt-4">
-              <div class="d-flex gap-2">
-                <v-select :items="videoDetails" variant="outlined" />
-                <v-select placeholder="Operator" variant="outlined" />
-                <v-text-field placeholder="Value" variant="outlined" />
+              <div v-show="isIntelligent" id="intelligent-functionnalities" class="mt-4">
+                <div class="d-flex gap-2">
+                  <v-select :items="videoDetails" variant="outlined" />
+                  <v-select placeholder="Operator" variant="outlined" />
+                  <v-text-field placeholder="Value" variant="outlined" />
+                </div>
               </div>
-            </div>
-          </v-form>
-        </v-card-text>
+            </v-form>
+          </v-card-text>
 
-        <v-card-actions>
-          <v-btn @click="showCreatePlaylist = false">Close</v-btn>
-          <v-btn @click="requestCreatePlaylist">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+          <v-card-actions>
+            <v-btn @click="showCreatePlaylist = false">Close</v-btn>
+            <v-btn @click="requestCreatePlaylist">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </ClientOnly>
   </section>
 </template>
 
@@ -158,19 +160,26 @@ watch(showCreatePlaylist, (n) => {
 })
 
 
-async function requestPlaylists () {
-  try {
-    if (this.$session.keyExists('playlists')) {
-      this.playlists = this.$session.retrieve('playlists')
-    } else {
-      const response = await this.$client.get('/playlists/', this.requestData)
-      this.playlists = response.data
-      this.$session.create('playlists', this.playlists)
-    }
-  } catch (e) {
-    console.error('requestPlaylists', e)
+useFetch('/api/playlists', {
+  transform(data: Playlist[]) {
+    playlists.value = data
+    return data
   }
-}
+})
+
+// async function requestPlaylists () {
+//   try {
+//     if (this.$session.keyExists('playlists')) {
+//       this.playlists = this.$session.retrieve('playlists')
+//     } else {
+//       const response = await this.$client.get('/playlists/', this.requestData)
+//       this.playlists = response.data
+//       this.$session.create('playlists', this.playlists)
+//     }
+//   } catch (e) {
+//     console.error('requestPlaylists', e)
+//   }
+// }
 
 async function requestCreatePlaylist () {
   try {
@@ -187,7 +196,7 @@ async function requestCreatePlaylist () {
   }
 }
 
-onBeforeMount(async () => {
-  await requestPlaylists()
-})
+// onBeforeMount(async () => {
+//   await requestPlaylists()
+// })
 </script>

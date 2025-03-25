@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h1 :aria-label="currentVideo.title" class="h5 fw-bold">
+        <h1 :aria-label="currentVideo?.title" class="h5 fw-bold">
           {{ currentVideo?.title }}
         </h1>
 
@@ -46,7 +46,7 @@
               </template>
 
               <v-list>
-                <v-list-item v-for="menuItem in menuItems" :key="menuItem.name" :value="menuItem" @click="handleMoreAction(menuItem)">
+                <v-list-item v-for="menuItem in menuItems" :key="menuItem.name" :value="menuItem" @click="() => handleMoreAction(menuItem)">
                   <v-list-item-title>
                     <font-awesome :icon="[ 'fas', menuItem.icon ]" class="me-2" />
                     {{ menuItem.name }}
@@ -97,8 +97,8 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { inject, ref, watch } from 'vue'
+import { setDoc, updateDoc, doc, getDoc, getFirestore } from 'firebase/firestore'
 import type { Playlist, VideoInfo, VideoMenuAction, VideoMenuItem } from '~/types';
 
 const menuItems: VideoMenuItem[] = [
@@ -144,27 +144,25 @@ const menuItems: VideoMenuItem[] = [
   }
 ]
 
+const db = getFirestore()
+
+const viewingProfileId = useCookie('vp_id')
+const { $client } = useNuxtApp()
 const route = useRoute()
 const router = useRouter()
 
 const emit = defineEmits({
-  // classify () {
-  //   return true
-  // },
-  // report () {
-  //   return true
-  // },
-  // gifts () {
-  //   return true
-  // },
-  // save () {
-  //   return true
-  // }
   action (_method: VideoMenuAction) {
+    return true
+  },
+  'update-playlists'(_data: Playlist[]) {
     return true
   }
 })
 
+const currentVideo = inject<VideoInfo>('currentVideo')
+
+const playlists = ref<Playlist[]>([])
 const requestData = ref({
   liked: false,
   unliked: false,
@@ -174,20 +172,29 @@ const requestData = ref({
   }
 })
 
-const currentVideo = inject<VideoInfo>('currentVideo')
-const playlists = ref<Playlist[]>([])
 
-watch(requestData.value, (n) => {
-  if (!n.subscription.active) {
+watch(requestData.value, (values) => {
+  if (!values.subscription.active) {
     requestData.value.subscription.mode = null
   }
 })
+
+// Sends a request to to indicate that the
+// video was liked or disliked by the user
+async function handleLikeDislike() {
+  try {
+    await $client.post('/fake-endpoint', requestData.value)
+  } catch (e) {
+    console.log(e)
+  }
+}
 
 /**
  * 
  */
 async function handleLike () {
   requestData.value.liked = !requestData.value.liked
+  await handleLikeDislike()
 }
 
 /**
@@ -195,6 +202,7 @@ async function handleLike () {
  */
 async function handleUnlike () {
   requestData.value.unliked = !requestData.value.unliked
+  await handleLikeDislike()
 }
 
 /**
@@ -202,31 +210,33 @@ async function handleUnlike () {
  */
 async function handleSubscription () {
   requestData.value.subscription.active = !requestData.value.subscription.active
+  await handleLikeDislike()
 }
 
-/**
- * 
- */
-async function handleSave () {
-  try {
-    let simplePlaylists
-
-    if (this.$session.keyExists('simple_playlists')) {
-      simplePlaylists = this.$session.retrieve('simple_playlists')
-    } else {
-      const response = await this.$client.get('/playlists/', {
-        params: {
-          simple: 1
+const { execute } = useFetch('/api/playlists', {
+  method: 'get',
+  immediate: false,
+  async transform(data: Playlist[]) {
+    if (viewingProfileId.value) {
+      try {
+        const playlistDocRef = doc(db, 'playlists', viewingProfileId.value)
+        const docSnap = await getDoc(playlistDocRef)
+  
+        if (docSnap.exists()) {
+          await setDoc(playlistDocRef, { playlists: data })
+        } else {
+          await updateDoc(playlistDocRef, { playlists: data })
         }
-      })
-      simplePlaylists = response.data
-      this.$session.create('simple_playlists', simplePlaylists)
+      } catch(e) {
+        console.error(e)
+      }
     }
-    emit('save', simplePlaylists)
-  } catch (e) {
-    console.log('requestSaveToPlaylist', e)
+
+    playlists.value = data
+    emit('update-playlists', data)
+    return data
   }
-}
+})
 
 /**
  * 
@@ -234,7 +244,8 @@ async function handleSave () {
 function handleMoreAction (action: VideoMenuItem) {
   switch (action.name) {
     case 'Save':
-      handleSave()
+      execute()
+      emit('action', action.name)
       break
       
     case 'Fact check':

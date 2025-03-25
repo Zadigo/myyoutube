@@ -88,7 +88,7 @@ export function useErrorHandler() {
         console.error('Unhandled error:', error)
     }
 
-    function handleError(error: unknown) {
+    function customErrorHandler(error: unknown) {
         // Type guard to check if it's an Axios error
         if (axios.isAxiosError(error)) {
             const axiosError = error as AxiosError
@@ -123,7 +123,7 @@ export function useErrorHandler() {
     }
 
     return {
-        handleError,
+        customErrorHandler,
         globalError
     }
 }

@@ -1,4 +1,4 @@
-import { useCookies } from '@vueuse/integrations/useCookies'
+// import { useCookies } from '@vueuse/integrations/useCookies'
 import axios, { AxiosError, type AxiosRequestConfig, type AxiosResponse } from 'axios'
 import { ref } from 'vue'
 import { inProduction } from '~/utils'
@@ -44,6 +44,8 @@ export function getBaseUrl(path: string, altDomain?: string | null, websocket: b
 
     const domain = getDomain(altDomain)
 
+    console.log(domain)
+
     if (inProduction()) {
         loc += 's'
     }
@@ -53,7 +55,6 @@ export function getBaseUrl(path: string, altDomain?: string | null, websocket: b
     } else {
         url = new URL(path, `${loc}://${domain}:${port}`)
     }
-
     return url.toString()
 }
 
@@ -84,12 +85,10 @@ export default function createDjangoClient(path?: string | null, altDomain?: str
 
     instance.interceptors.request.use(
         config => {
-            const { get } = useCookies()
-            const token = get('access')
+            const access = useCookie('access')
 
-
-            if (token) {
-                config.headers.Authorization = `Token ${token}`
+            if (access.value) {
+                config.headers.Authorization = `Token ${access.value}`
             }
             return config
         },
@@ -112,18 +111,17 @@ export default function createDjangoClient(path?: string | null, altDomain?: str
                 originalRequest._retry = true
 
                 try {
-                    const { get, set } = useCookies()
-                    const refresh = get('refresh')
-
-                    // set('access', null)
-
+                    const access = useCookie('access')
+                    const refresh = useCookie('refresh')
                     const authClient = axios.create({
                         baseURL: getBaseUrl('/auth/v1/')
                     })
 
-                    const response = await authClient.post<LoginApiResponse>('/token/refresh/', { refresh })
+                    const response = await authClient.post<LoginApiResponse>('/token/refresh/', { 
+                        refresh: refresh.value 
+                    })
 
-                    set('access', response.data.access)
+                    access.value = response.data.access
                     return authClient
                 } catch (refreshError) {
                     return Promise.reject(refreshError)
@@ -138,8 +136,8 @@ export default function createDjangoClient(path?: string | null, altDomain?: str
 }
 
 /**
- * Composable that creates a client and adds authentication interceptors in
- * order to be able to send requests to a Django backend
+ * Composable that creates a client for any host in
+ * order to be able to send requests a none Django backend
  * 
  * @param path The endpoint path. Defaults to `/api/v1/`
  * @param [port=8000] Used for local development purposes

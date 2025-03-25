@@ -89,6 +89,8 @@ export default defineNuxtConfig({
         'caret-down',
         'caret-up',
         'compress',
+        'comment',
+        'comments',
         'chart-simple',
         'cog',
         'dollar-sign',
