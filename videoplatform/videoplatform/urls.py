@@ -16,13 +16,33 @@ urlpatterns = [
         ViewingProfileToken.as_view(),
         name='viewing_profile_id'
     ),
-    path('__debug__/', include(debug_toolbar.urls)),
-    path('api/v1/playlists/', include('playlists.api.urls')),
-    path('api/v1/ratings/', include('ratings.api.urls')),
-    path('api/v1/comments/', include('comments.api.urls')),
-    path('api/v1/accounts/', include('accounts.api.urls')),
-    path('api/v1/user-channels/', include('mychannel.api.urls')),
-
+    path(
+        '__debug__/', 
+        include(debug_toolbar.urls)
+    ),
+    path(
+        'api/v1/playlists/',
+        include('playlists.api.urls')),
+    path(
+        'api/v1/ratings/',
+        include('ratings.api.urls')
+    ),
+    path(
+        'api/v1/comments/',
+        include('comments.api.urls')
+    ),
+    path(
+        'api/v1/accounts/',
+        include('accounts.api.urls')
+    ),
+    path(
+        'api/v1/user-channels/',
+        include('mychannel.api.urls')
+    ),
+    path(
+        'api/v1/videos/',
+        include('videos.api.urls')
+    ),
     path(
         'auth/v1/token/verify/',
         jwt_views.TokenVerifyView.as_view(),

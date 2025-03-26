@@ -6,7 +6,7 @@ app_name = 'videos_api'
 urlpatterns = [
     re_path(
         r'^feed-builder$',
-        views.FeedBuilderEndpoint.as_view(),
+        views.FeedBuilder.as_view(),
         name='feed_builder_videos'
     ),
     re_path(

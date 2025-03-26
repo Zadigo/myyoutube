@@ -340,7 +340,7 @@ class CreateCommentAPI(GenericAPIView):
         return Response(serializer.data)
 
 
-class FeedBuilderEndpoint(GenericAPIView):
+class FeedBuilder(GenericAPIView):
     queryset = models.Video.objects.all()
     serializer_class = serializers.ValidateFeedBuilderSerializer
     permission_classes = []

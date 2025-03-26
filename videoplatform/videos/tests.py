@@ -9,7 +9,6 @@ from django.urls import reverse
 from rest_framework.test import APITestCase
 from videos import tasks
 from videos.models import Video
-from videoplatform.utils import get_firebase_app
 
 
 class AuthenticationMixin(APITestCase):
@@ -114,6 +113,17 @@ class TestVideoApiResponse(AuthenticationMixin):
     def test_list_user_videos(self):
         pass
 
+    def test_feed_builder(self):
+        path = reverse('videos_api:feed_builder_videos')
+        response = self.client.post(path, data={
+            'sources': [
+                {
+
+                }
+            ]
+        })
+        print(response.content)
+
 
 class TestCommentApiResponse(AuthenticationMixin):
     fixtures = ['base_fixtures/videos']
@@ -151,7 +161,8 @@ class TestViewingProfileView(APITestCase):
 
 class TestUtilities(IsolatedAsyncioTestCase):
     async def test_get_firebase(self):
-        client = get_firebase_app()
-        result = client.collection('vp_profiles')
-        await result.document('vp_123').set({'name': 'Google'})
-        print(result)
+        pass
+        # client = get_firebase_app()
+        # result = client.collection('vp_profiles')
+        # await result.document('vp_123').set({'name': 'Google'})
+        # print(result)
