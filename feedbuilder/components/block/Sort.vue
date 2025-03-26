@@ -12,9 +12,7 @@
   </BlockBase>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue';
-
+<script setup lang="ts">
 type SortBy = 'Creation date' | 'Like count' | 'Reply count' | 'Random'
 interface SortOptions {
   sort_by: SortBy
