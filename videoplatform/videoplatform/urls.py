@@ -21,8 +21,13 @@ urlpatterns = [
         include(debug_toolbar.urls)
     ),
     path(
+        'api/v1/notifications/',
+        include('notifications.api.urls')
+    ),
+    path(
         'api/v1/playlists/',
-        include('playlists.api.urls')),
+        include('playlists.api.urls')
+    ),
     path(
         'api/v1/ratings/',
         include('ratings.api.urls')

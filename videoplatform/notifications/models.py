@@ -45,7 +45,7 @@ class Notification(models.Model):
 class PreferredNotification(models.Model):
     """Represents notification choices for
     a given user"""
-    
+
     user = models.ForeignKey(
         USER_MODEL,
         models.CASCADE
