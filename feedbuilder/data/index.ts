@@ -1,3 +1,5 @@
+import type { BlockNames } from "~/types"
+
 export const duration = [
     '30 minutes',
     '3 hours',
@@ -15,4 +17,13 @@ export const sourceNames = [
     'Feed',
     'Single post',
     'Labels'
+]
+
+export const blocks: BlockNames[] = [
+    'Source',
+    'Remove',
+    'RegExp',
+    'Replace',
+    'Sort',
+    'Limit'
 ]

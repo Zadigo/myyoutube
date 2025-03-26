@@ -14,8 +14,18 @@
           <BaseSpinner v-if="store.isLoading" />
 
           <div ref="infiniteEl">
-            <BaseCard v-for="(item, index) in items" :key="item.id" class="mb-1">
-              {{ item.id }} {{ index }}
+            <BaseCard v-for="(item, i) in items" :key="item.id" :data-index="i" class="mb-1">
+              <h4 class="font-bold text-1xl">
+                {{ item.title }}
+              </h4>
+
+              <p class="tex-light text-gray-500 text-sm mb-3" >
+                {{ item.created_on }}
+              </p>
+
+              <p class="font-light">
+                {{ item.description }}
+              </p>
             </BaseCard>
           </div>
         </div>
@@ -28,25 +38,20 @@
 import { useInfiniteScroll } from '@vueuse/core'
 
 const store = useFeed()
-
-const items = ref(Array.from({ length: 10 }).map((a, b) => {
-  return {
-    id: b
-  }
-}))
+const { items } = storeToRefs(store) 
 
 const infiniteEl = useTemplateRef<HTMLElement>('infiniteEl')
 const { reset } = useInfiniteScroll(
   infiniteEl, 
   () => {
-    items.value.push({
-      id: 598
-    })
+    // items.value.push({
+    //   id: 598
+    // })
   }, 
   {
     distance: 10,
     canLoadMore() {
-      return true
+      return false
     }
   }
 )

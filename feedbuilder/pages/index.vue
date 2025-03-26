@@ -8,6 +8,8 @@
       <div class="mt-5">
         <v-text-field variant="solo-filled" placeholder="Feed name" flat />
 
+        <v-btn @click="handleUpdateData">Run</v-btn>
+
         <div class="flex flex-wrap gap-1 mt-5">
           <BaseChip v-for="block in blocks" :key="block" class="flex gap-1 items-center" @click="handleAddBlock(block)">
             <Icon name="fa-solid:plus" />
@@ -28,23 +30,19 @@
 <script setup lang="ts">
 import Source from '~/components/block/Source.vue'
 // import Remove from '~/components/block/Remove.vue'
+import Limit from '~/components/block/Limit.vue'
 import Regex from '~/components/block/Regex.vue'
 import Sort from '~/components/block/Sort.vue'
-import Limit from '~/components/block/Limit.vue'
-import type { RequestData, CreatedComponent, BlockNames } from '~/types'
+
+import { blocks } from '~/data'
+import type { BlockNames, CreatedComponent, RequestData, VideoItem } from '~/types'
 
 useHead({
   title: 'Feed creator'
 })
 
-const blocks: BlockNames[] = [
-  'Source',
-  'Remove',
-  'RegExp',
-  'Replace',
-  'Sort',
-  'Limit'
-]
+const store = useFeed()
+const { items } = storeToRefs(store)
 
 const componentMapping: Record<string, Component> = {
   source: markRaw(Source),
@@ -54,6 +52,7 @@ const componentMapping: Record<string, Component> = {
   sort: markRaw(Sort),
   limit: markRaw(Limit)
 }
+
 
 const createdComponents = ref<CreatedComponent[]>([
   {
@@ -66,7 +65,6 @@ const createdComponents = ref<CreatedComponent[]>([
   }
 ])
 
-const store = useFeed()
 
 const requestData = ref<RequestData>({
   sources: [],
@@ -74,14 +72,16 @@ const requestData = ref<RequestData>({
   sorting: []
 })
 
-const { execute } = useFetch('/api/videos', {
+const { execute, data } = useFetch('/api/videos', {
+  method: 'post',
   immediate: false,
-  params: requestData,
+  // params: requestData,
   onResponse() {
 
   },
-  transform(data) {
-    
+  transform(data: VideoItem[]) {
+    items.value = data
+    return data
   }
 })
 
@@ -115,14 +115,10 @@ function handleDeleteBlock (index: number) {
 
 function handleUpdateData () {
   execute()
-}
 
-async function handleDefineOption () {
-  store.isLoading = true
-
-  setTimeout(() => {
-    store.isLoading = false
-  }, 2000);
+  // if (data.value) {
+  //   items.value = data.value
+  // }
 }
 </script>
 
