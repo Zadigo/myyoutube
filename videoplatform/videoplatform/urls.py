@@ -7,6 +7,7 @@ from django.urls import include, path, re_path
 from drf_spectacular.views import (SpectacularAPIView, SpectacularRedocView,
                                    SpectacularSwaggerView)
 from rest_framework_simplejwt import views as jwt_views
+
 from videoplatform.views import ViewingProfileToken
 
 urlpatterns = [
@@ -21,7 +22,6 @@ urlpatterns = [
     path('api/v1/comments/', include('comments.api.urls')),
     path('api/v1/accounts/', include('accounts.api.urls')),
     path('api/v1/user-channels/', include('mychannel.api.urls')),
-    path('api/v1/videos/', include('videos.api.urls')),
 
     path(
         'auth/v1/token/verify/',
@@ -58,16 +58,6 @@ urlpatterns = [
         include('rest_framework.urls'),
         name='rest_framework'
     ),
-
-    path('accounts/', include('accounts.urls')),
-    path('reports/', include('reports.urls')),
-    path('donations/', include('donations.urls')),
-    path('academy/', include('school.urls')),
-    path('channels/', include('mychannel.urls')),
-    path('comments/', include('comments.urls')),
-    path('ratings/', include('ratings.urls')),
-    path('history/', include('history.urls')),
-    path('videos/', include('videos.urls')),
     path('admin/secondary/', custom_admin_site.urls),
     path('admin/', admin.site.urls),
     path('', include('hero.urls')),
