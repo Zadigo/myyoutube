@@ -3,7 +3,7 @@ from django.utils.crypto import get_random_string, salted_hmac
 from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import Response
 
-from videoplatform.utils import get_firebase_app
+# from videoplatform.utils import get_firebase_app
 
 
 class ViewingProfileToken(GenericAPIView):
@@ -34,10 +34,9 @@ class ViewingProfileToken(GenericAPIView):
         if request.user.is_authenticated:
             template['token'] = f'vp_{get_random_string(length=20)}'
         template['token'] = f'vp_{get_random_string(length=20)}'
-
-        db = get_firebase_app()
-        task = db.collection(self.default_collection)
-        async_to_sync(task.document(template['token']).set)(
-            self.default_viewing_profile
-        )
+        # db = get_firebase_app()
+        # task = db.collection(self.default_collection)
+        # async_to_sync(task.document(template['token']).set)(
+        #     self.default_viewing_profile
+        # )
         return Response(template)

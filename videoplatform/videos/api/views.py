@@ -1,3 +1,5 @@
+from datetime import timedelta
+from django.utils import timezone
 import json
 import os
 import pathlib
@@ -124,7 +126,7 @@ class ListVideos(ListAPIView):
                     user=self.request.user
                 )
                 cache.set(cache_key, qs, timeout=1)
-                
+
             if blocked_channels.exists():
                 blocked_ids = blocked_channels.values_list('id', flat=True)
                 qs = queryset.exclude(user_channel__in=blocked_ids)
@@ -240,7 +242,7 @@ class UploadVideo(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        
+
         return_serializer = serializers.VideoSerializer(
             instance=serializer.instance
         )
@@ -311,7 +313,7 @@ class VideoStreamView(APIView):
 class CreateCommentAPI(GenericAPIView):
     """Endpoint used to create a new
     comment on a given video"""
-    
+
     serializer_class = CommentSerializer
     queryset = models.Video.objects.all()
     permission_classes = [IsAuthenticated]
@@ -335,4 +337,29 @@ class CreateCommentAPI(GenericAPIView):
             comment.save()
 
         # notification = Notification.objects.create()
+        return Response(serializer.data)
+
+
+class FeedBuilderEndpoint(GenericAPIView):
+    queryset = models.Video.objects.all()
+    serializer_class = serializers.ValidateFeedBuilderSerializer
+    permission_classes = []
+
+    def get_queryset(self, filters):
+        qs = super().get_queryset()
+        last_seven_days = timezone.now() - timedelta(days=7)
+        qs = qs.filter(created_on__gte=last_seven_days)
+        return qs.order_by('-created_on')
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        filters = serializer.data
+        qs = self.get_queryset(filters)
+
+        serializer = serializers.VideoFeedBuilderSerialier(
+            instance=qs,
+            many=True
+        )
         return Response(serializer.data)

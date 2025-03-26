@@ -8,8 +8,6 @@ from videoplatform.utils import create_id
 from playlists.managers import PlaylistManager
 from videos.choices import VisibilityChoices
 
-USER_MODEL = get_user_model()
-
 
 class Playlist(models.Model):
     """Represents a user's playlist containing
@@ -17,7 +15,7 @@ class Playlist(models.Model):
     """
 
     user = models.ForeignKey(
-        USER_MODEL,
+        get_user_model(),
         on_delete=models.CASCADE,
         blank=True
     )
@@ -28,6 +26,10 @@ class Playlist(models.Model):
     )
     name = models.CharField(
         max_length=50
+    )
+    description = models.CharField(
+        blank=True,
+        null=True
     )
     videos = models.ManyToManyField(
         'videos.Video',
@@ -67,5 +69,5 @@ class Playlist(models.Model):
 
 @receiver(pre_save, sender=Playlist)
 def create_playlist_id(instance, **kwargs):
-    if instance.playlist_id is None:
+    if not instance.playlist_id: 
         instance.playlist_id = create_id('ply')

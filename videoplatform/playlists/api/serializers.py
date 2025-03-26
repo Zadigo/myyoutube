@@ -13,6 +13,7 @@ from videos.models import Video
 class PlaylistSerializer(Serializer):
     id = fields.IntegerField()
     name = fields.CharField()
+    description = fields.CharField()
     videos = VideoSerializer(many=True)
     visibility = fields.ChoiceField(
         VisibilityChoices.choices,
@@ -33,22 +34,22 @@ class ValidateCreatePlaylist(Serializer):
         allow_null=True,
         validators=[validate_description]
     )
+    visibility = fields.ChoiceField(
+        VisibilityChoices.choices,
+        default='Private'
+    )
     is_intelligent = fields.BooleanField(default=False)
 
-    def save(self, request, **kwargs):
-        setattr(self, '_request', request)
-        return super().save(**kwargs)
-
     def create(self, validated_data):
-        playlist, state = Playlist.objects.get_or_create(
-            defaults={
-                # 'description': validated_data['description'],
-                'is_intelligent': validated_data['is_intelligent']
-            },
-            name=validated_data['name'],
-            user=self._request.user
-        )
-        return playlist
+        request = self._context['request']
+        params = {
+            'user': request.user,
+            'name': validated_data['name'],
+            'description': validated_data['description'],
+            'visibility': validated_data['visibility'],
+            'is_intelligent': validated_data['is_intelligent']
+        }
+        return Playlist.objects.create(**params)
 
 
 class ValidateAddToPlaylist(Serializer):

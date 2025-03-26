@@ -1,0 +1,16 @@
+[
+    {
+        "model": "playlists.Playlist",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "playlist_id": "ply_123",
+            "name": "Test playlist",
+            "videos": [
+                1
+            ],
+            "is_intelligent": false,
+            "created_on": "2025-03-23 19:30:52.427598+00"
+        }
+    }
+]

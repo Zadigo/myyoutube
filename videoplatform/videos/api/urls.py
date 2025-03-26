@@ -5,6 +5,11 @@ app_name = 'videos_api'
 
 urlpatterns = [
     re_path(
+        r'^feed-builder$',
+        views.FeedBuilderEndpoint.as_view(),
+        name='feed_builder_videos'
+    ),
+    re_path(
         r'^studio/upload$',
         views.UploadVideo.as_view(),
         name='upload_video'

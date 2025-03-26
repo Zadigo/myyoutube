@@ -209,3 +209,29 @@ class ValidateVideoUpload(Serializer):
         instance.save()
 
         return instance
+
+
+
+class SourceOptions(Serializer):
+    duration = fields.CharField()
+    source = fields.CharField()
+
+    def validate_duration(self, value):
+        return value
+    
+    def validate_source(self, value):
+        return value
+
+
+class ValidateFeedBuilderSerializer(Serializer):
+    sources = SourceOptions(many=True)
+
+
+class VideoFeedBuilderSerialier(Serializer):
+    id = fields.IntegerField()
+    title = fields.CharField()
+    description = fields.CharField()
+    video_id = fields.CharField()
+    user_channel = ChannelSerializer()
+    user = UserSerializer()
+    created_on = fields.DateTimeField()

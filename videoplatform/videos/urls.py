@@ -9,18 +9,18 @@ app_name = 'videos'
 
 playlisturls = [
     re_path(
-        r'^add-remove$', 
+        r'^add-remove$',
         views.add_or_remove_video_in_playlist,
         name='add_remove_video'
     ),
     re_path(
-        r'^new-playlist$', 
-        views.new_playlist, 
+        r'^new-playlist$',
+        views.new_playlist,
         name='new'
     ),
     re_path(
-        r'(?P<pk>\d+)', 
-        views.PlaylistView.as_view(), 
+        r'(?P<pk>\d+)',
+        views.PlaylistView.as_view(),
         name='detail'
     )
 ]
