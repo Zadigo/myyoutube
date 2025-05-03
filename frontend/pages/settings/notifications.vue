@@ -8,43 +8,46 @@
           </div>
         </div>
 
-        <settings-card title="General" subtitle="Manage your mobile and desktop notifications">
+        <SettingsCard title="General" subtitle="Manage your mobile and desktop notifications">
           <template #default>
-            <div class="list-group">
+            <div v-if="notificationData" class="list-group">
               <div v-for="notificationOption in notificationOptions" :key="notificationOption.action" class="list-group-item">
-                <v-switch v-model="requestData[notificationOption.action]" :label="notificationOption.label" inset />
+                <v-switch v-model="notificationData[notificationOption.action]" :label="notificationOption.label" inset />
               </div>
             </div>
           </template>
-        </settings-card>
+        </SettingsCard>
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useDebounce } from '@/utils'
+import createDjangoClient from '~/composables/django_client'
+import type { NotificationProfile } from '~/types'
 
-type RequestData = Record<string, boolean>
+useHead({
+  title: 'Notifications'
+})
 
 definePageMeta({
   layout: 'settings'
 })
 
-const { client } = useAxiosClient()
+const store = useViewerProfile()
+const { notificationData } = storeToRefs(store)
 
-const notificationOptions = [
+const notificationOptions: Record<string, string>[] = [
   {
-    "action": "channel_activities",
+    "action": "subscribed_channel_activity",
     "label": "Notify me about activity from the channels I'm subscribed to"
   },
   {
-    "action": "liked_videos",
+    "action": "video_recommendation",
     "label": "Notify me of videos I might like based on what I watch"
   },
   {
-    "action": "comments_activity",
+    "action": "channel_activity",
     "label": "Notify me about comments and other activity on my channel or videos"
   },
   {
@@ -52,45 +55,52 @@ const notificationOptions = [
     "label": "Notify me about replies to my comments"
   },
   {
-    "action": "channel_mentions",
+    "action": "mentions",
     "label": "Notify me when others mention my channel"
   },
   {
-    "action": "share_content",
+    "action": "repost",
     "label": "Notify me when others share my content on their channels"
   }
 ]
 
-const requestData = ref<RequestData>({})
-
-notificationOptions.forEach((option) => {
-  requestData.value[option.action] = false
+const { data } = useFetch('/api/notifications/profile', {
+  lazy: true,
+  server: false,
+  watch: [notificationData],
+  // watchDebounce: 1000,
+  onRequest() {
+    console.log('Request snet')
+  },
+  onRequestError(e) {
+    console.log('error', e)
+  },
+  default() {
+    return {
+      subscribed_channel_activity: true,
+      video_recommendation: true,
+      channel_activity: true,
+      replies_activity: true,
+      mentions: true,
+      repost: true
+      }
+  },
+  transform(data: NotificationProfile) {
+    return data
+  }
 })
 
-// requestData: {
-//   handler () {
-//     this.updateNotifications()
-//   },
-//   deep: true
-// }
+// console.log('this is working', data.value)
 
-async function requestNotifications () {
-  try {
-    const response = await client.get('accounts/notifications')
-    console.log(response.data)
-  } catch (e) {
-    console.log(e)
-  }
+if (data.value) {
+  notificationData.value = data.value
 }
 
+// async function getData() {
+//   const client = createDjangoClient('/api/v1/notifications')
+//   const response = await client.get('/profile')
+//   notificationData.value = response.data
+// }
 
-const { debounce } = useDebounce()
-
-const debounceNotificationsRequests = debounce(async function () {
-  await requestNotifications()
-}, 2000)
-
-onBeforeMount(async () => {
-  await requestNotifications()
-})
+// getData()
 </script>

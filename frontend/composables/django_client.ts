@@ -7,6 +7,8 @@ export interface LoginApiResponse {
     refresh: string
 }
 
+export type RefreshApiResponse = Pick<LoginApiResponse, 'access'>
+
 /**
  * Function that returns the root domain to use for the client. The string
  * will a development domain if DEV is true or an alternative (production) domain
@@ -64,7 +66,7 @@ export function createAxiosSimpleClient(path?: string | null, altDomain?: string
     if (path) {
         return axios.create({
             baseURL: getBaseUrl(path, altDomain, websocket, port),
-            headers: { "Content-Type": 'application/json' },
+            headers: { 'Content-Type': 'application/json' },
             timeout: 10000,
             withCredentials: true
         })
@@ -132,9 +134,17 @@ export default function createDjangoClient(path?: string | null, altDomain?: str
     return instance
 }
 
-export function createServerDjangoClient(path?: string | null, accessToken?: string | null, refreshToken?: string | null, refreshCallback?: (token: string) => void, altDomain?: string | null, port = 8000) {
+export function createServerDjangoClient(
+    path?: string | null, 
+    accessToken?: string | null, 
+    refreshToken?: string | null, 
+    refreshCallback?: (token: string) => void, 
+    errorCallback?: (error: AxiosError) => void, 
+    altDomain?: string | null, port = 8000
+) {
     const instance = createAxiosSimpleClient(path, altDomain, false, port)
 
+    console.log(accessToken)
     instance.interceptors.request.use(
         config => {
             if (accessToken) {
@@ -151,13 +161,17 @@ export function createServerDjangoClient(path?: string | null, accessToken?: str
         response => {
             return response
         },
-        async (error) => {
+        async (error: AxiosError) => {
             // Sequence that refreshes the access token when
             // we get a 401 code trying to access a page
 
             const originalRequest = error.config
 
-            if (error.response?.status === 401 && !originalRequest._retry) {
+            if (errorCallback) {
+                errorCallback(error)
+            }
+
+            if (error.response?.status === 401 && !originalRequest?._retry) {
                 originalRequest._retry = true
 
                 try {
@@ -165,10 +179,12 @@ export function createServerDjangoClient(path?: string | null, accessToken?: str
                         baseURL: getBaseUrl('/auth/v1/')
                     })
 
-                    const response = await authClient.post<LoginApiResponse>('/token/refresh/', {
+                    const response = await authClient.post<RefreshApiResponse>('/token/refresh/', {
                         refresh: refreshToken
                     })
                     
+                    console.log('response', response.data)
+
                     if (refreshCallback) {
                         refreshCallback(response.data.access)
                     }

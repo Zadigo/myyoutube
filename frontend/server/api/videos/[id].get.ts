@@ -1,15 +1,14 @@
-import { useAxiosClient } from "~/composables/django_client"
-import type { VideosFeedResponseData } from "~/types"
+import type { VideosFeedResponseData } from '~/types'
 
 export default defineEventHandler(async event => {
-    const query = getQuery(event)
+  const query = getQuery<{ q: string }>(event)
 
-    const { client } = useAxiosClient()
-    const response = await client.get<VideosFeedResponseData>('/videos', {
-        params: {
-            q: query.search
-        }
-    })
+  const response = await $fetch<VideosFeedResponseData>('/api/v1/videos', {
+    baseURL: useRuntimeConfig().public.djangoProdUrl,
+    params: {
+      q: query.q
+    }
+  })
 
-    return response.data
+  return response
 })

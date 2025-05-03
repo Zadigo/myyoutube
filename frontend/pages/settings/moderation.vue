@@ -13,9 +13,9 @@
     </div>
 
     <div class="row">
-      <!-- Block channels -->
+      <!-- Blocked channels -->
       <div class="col-8 offset-md-2">
-        <settings-card title="Blocked channels" subtitle="Channels that you blocked and do not want to see">
+        <SettingsCard title="Blocked channels" subtitle="Channels that you blocked and do not want to see">
           <template #default>
             <div class="list-group">
               <div v-for="blockedChannel in blockedChannels" :key="blockedChannel.channel.reference" class="list-group-item d-flex justify-content-between align-items-center">
@@ -30,12 +30,12 @@
               </div>
             </div>
           </template>
-        </settings-card>
+        </SettingsCard>
       </div>
 
       <!-- Blocked Keywords -->
       <div class="col-8 offset-md-2">
-        <settings-card title="Blocked keywords" subtitle="Block videos containing certain specific keywords (title, description)">
+        <SettingsCard title="Blocked keywords" subtitle="Block videos containing certain specific keywords (title, description)">
           <template #default>
             <div class="d-flex justify-content-between gap-2">
               <v-text-field v-model="blockedKeyword.word" variant="outlined" placeholder="Enter a keyword to block" @keypress.enter="handleAddBlockedKeyWord" />
@@ -65,12 +65,12 @@
               </div>
             </div>
           </template>
-        </settings-card>
+        </SettingsCard>
       </div>
 
       <!-- Moderation Lists -->
       <div class="col-8 offset-md-2">
-        <settings-card title="Block lists" subtitle="Create shareable block lists">
+        <SettingsCard title="Block lists" subtitle="Create shareable block lists">
           <template #default>
             <p class="fw-light">
               Blocklists are lists of accounts that other users have create of
@@ -83,7 +83,7 @@
               </v-btn>
             </div>
           </template>
-        </settings-card>
+        </SettingsCard>
       </div>
     </div>
 
@@ -159,7 +159,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </Teleport>>
+    </Teleport>
   </section>
 </template>
 
@@ -174,6 +174,10 @@ interface BlockedKeyword {
   word: string
   duration: 'Forever' | 'For 24 hours' | '7 days' | '30 days'
 }
+
+useHead({
+  title: 'Moderation'
+})
 
 definePageMeta({
   layout: 'settings'

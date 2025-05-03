@@ -1,25 +1,31 @@
-export * from './authentication'
+import type { RouteParamsGeneric } from 'vue-router'
+import type { DefaultVideoMenuActions } from '~/data/constants/video'
+
+export * from './accounts'
 export * from './channels'
 export * from './comments'
 export * from './feed'
 export * from './video'
 export * from './studio'
-
-export type VideoMenuAction = 'Store' | 'Download' | 'Save' | 'Gift' | 'Donate' | 'Share' | 'Recommendations' | 'Community note' | 'Classify' | 'Fact check' | 'Report'
+export * from './notifications'
 
 export interface VideoMenuItem {
-    name: VideoMenuAction
-    icon: string
+  name: DefaultVideoMenuActions
+  icon: string
 }
 
 export interface SessionCache {
-    categories: []
+  categories: []
 }
 
 export interface SourceDetails {
-    id: number
-    start_time: string | ''
-    end_time: string | ''
-    explanation: string | ''
-    article_sources: string[]
+  id: number
+  start_time: string | ''
+  end_time: string | ''
+  explanation: string | ''
+  article_sources: string[]
+}
+
+export interface ExtendedRouteParamsGeneric extends RouteParamsGeneric {
+  id: string
 }

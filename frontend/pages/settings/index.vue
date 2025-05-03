@@ -11,7 +11,7 @@
         </div>
 
         <!-- Account Type -->
-        <settings-card title="Account type" subtitle="Manage what you share on YouTube">
+        <SettingsCard title="Account type" subtitle="Manage what you share on YouTube">
           <template #default>
             <div class="alert alert-info">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas quo quibusdam nihil non placeat sed saepe aliquam dolore. Reiciendis soluta sed, voluptatem minima cumque alias obcaecati delectus recusandae similique pariatur.
@@ -28,9 +28,9 @@
               </div>
             </div>
           </template>
-        </settings-card>
+        </SettingsCard>
 
-        <settings-card title="Membership" subtitle="Manage what you share on YouTube" class="card mt-1">
+        <SettingsCard title="Membership" subtitle="Manage what you share on YouTube" class="card mt-1">
           <template #default>
             <v-item-group v-model="currentSubscription" selected-class="bg-primary">
               <v-container>
@@ -54,9 +54,9 @@
               </v-btn>
             </div>
           </template>
-        </settings-card>
+        </SettingsCard>
 
-        <settings-card title="Vos chaînes YouTube" subtitle="Manage what you share on YouTube">
+        <SettingsCard title="Vos chaînes YouTube" subtitle="Manage what you share on YouTube">
           <template #default>
             <div class="list-group my-2">
               <NuxtLink to="/" class="list-group-item list-group-item-action">
@@ -70,7 +70,7 @@
               </NuxtLink>
             </div>
           </template>
-        </settings-card>
+        </SettingsCard>
       </div>
     </div>
 
@@ -124,8 +124,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-
-import SettingsCard from '~/components/settings/Card.vue'
+import type { ViewingProfile } from '~/types'
 
 definePageMeta({
   layout: 'settings'
@@ -137,22 +136,20 @@ const subscriptions = [
   'YouTube++'
 ]
 
-// interface AxiosResponseData {
-//   id: number
-// }
-
 const professionalAccount = ref(false)
 const showSubscriptions = ref(false)
 const currentSubscription = ref<number>(0)
-// const currentPaymentStep= ref<number>(1)
-// const requestData = ref<AxiosResponseData>(null)
 
-// async function handleAccountDetails () {
-//   try {
-//     const response = await this.$client.get<AxiosResponseData>('/accounts/base')
-//     this.requestData = response.data
-//   } catch {
-//     // Handle error
-//   }
-// }
+const { data } = useFetch('/api/account/viewer-profile', {
+  transform(data: ViewingProfile) {
+    return data
+  }
+})
+
+const store = useViewerProfile()
+const { profileData } = storeToRefs(store)
+
+if (data.value) {
+  profileData.value = data.value
+}
 </script>

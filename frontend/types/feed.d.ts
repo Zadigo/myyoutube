@@ -1,5 +1,5 @@
-import type { CustomUser } from "./authentication"
-import type { NestedChannelInfo } from "./channels"
+import type { CustomUser } from './authentication'
+import type { NestedChannelInfo } from './channels'
 
 export interface VideosFeedResponseData {
     id: number
