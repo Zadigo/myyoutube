@@ -4,10 +4,11 @@
       Lorem ipsum dolor sit amet consectetur adipisicing elit. 
       Numquam, aut culpa eos labore rerum praesentium voluptatibus nulla architecto 
       autem dignissimos nihil et reprehenderit laborum. Commodi accusantium fugiat qui ex sit.
-      <a href="#" @click.prevent>Learn more</a>
+
+      <NuxtLink to="/">Learn more</NuxtLink>
     </p>
 
-    <ConditionBlock v-for="(condition, i) in conditions" :key="condition.id" :condition="condition" :index="i" @delete-block="handleDeleteBlock" />
+    <SettingsConditionBlock v-for="(condition, i) in conditions" :key="condition.id" :condition="condition" :index="i" @delete-block="handleDeleteBlock" />
 
     <div class="d-flex justify-content-center mt-3">
       <v-btn variant="tonal" @click="handleCreateBlock">
@@ -18,45 +19,55 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
-import { AlgorithmConditionBlock } from '@/types/user_settings'
+<script setup lang="ts">
+import { z } from 'zod'
+import { watchArray } from '@vueuse/core'
+import { joinOperators, keywordOperators } from '~/data/constants/operators'
 
-import ConditionBlock from './ConditionBlock.vue';
-
-export default defineComponent({
-  name: 'ConditionalBlocks',
-  components: {
-    ConditionBlock
-  },
-  setup() {
-    const conditions = ref<AlgorithmConditionBlock[]>([])
-    return {
-      conditions
-    }
-  },
-  methods: {
-    /**
-     * 
-     */
-    async handleCreateBlock () {
-      this.conditions.push({
-        id: 1,
-        theme: '',
-        keyword_operator: 'Exact match',
-        keywords: [],
-        keywords_subconditions: [],
-        video_sections: [],
-        join_operator: 'And',
-        negation: false
-      })
-    },
-    /**
-     * 
-     */
-    async handleDeleteBlock (index: number) {
-      this.conditions.splice(index, 1)
-    }
-  }
+const AlgorithmConditionBlockSchema = z.object({
+  id: z.number(),
+  theme: z.string(),
+  keyword_operator: z.enum(keywordOperators),
+  keywords: z.string().array(),
+  keywords_subconditions: z.string().array(),
+  video_sections: z.string().array(),
+  join_operator: z.enum(joinOperators),
+  negation: z.boolean().default(false)
 })
+
+type AlgorithmConditionBlock = z.infer<typeof AlgorithmConditionBlockSchema>
+
+const currentIndex = ref<number>(1)
+const conditions = ref<AlgorithmConditionBlock[]>([])
+
+watchArray(conditions, (newList, oldList) => {
+  // Do something
+  console.log(newList,  oldList)
+})
+
+/**
+ * Create a new condition block for
+ * filtering the algorithm
+ */
+async function handleCreateBlock() {
+  currentIndex.value += 1
+  conditions.value.push({
+    id: currentIndex.value,
+    theme: '',
+    keyword_operator: 'Exact match',
+    keywords: [],
+    keywords_subconditions: [],
+    video_sections: [],
+    join_operator: 'And',
+    negation: false
+  })
+}
+
+/**
+ * 
+ */
+async function handleDeleteBlock(index: number) {
+  conditions.value.splice(index, 1)
+  currentIndex.value -= 1
+}
 </script>

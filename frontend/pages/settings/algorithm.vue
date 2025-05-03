@@ -1,7 +1,7 @@
 <template>
   <section id="algorithm">
     <div class="row">
-      <div class="col-8 offset-md-2">
+      <div class="col-sm-12 col-md-8 offset-md-2">
         <div class="card mb-2">
           <div class="card-body">
             <h2>
@@ -12,7 +12,7 @@
 
         <settings-card title="Algorithm constructor" subtitle="Build your own viewing algorithm">
           <template #default>
-            <ConditionalBlocks />
+            <SettingsConditionalBlocks />
           </template>
         </settings-card>
       </div>
@@ -21,42 +21,42 @@
 </template>
 
 <script setup lang="ts">
-import { whenever } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import type { CustomUser } from '@/types'
-
-import ConditionalBlocks from '@/components/settings/ConditionalBlocks.vue'
-import SettingsCard from '~/components/settings/Card.vue'
+import type { CustomUser } from '~/types'
 
 definePageMeta({
   layout: 'settings'
 })
 
-const { client } = useAxiosClient()
-// const { instance } = useVueSession()
 const selectedCategory = ref(null)
-const selectedSubcategory = ref(null)
-
-// const subcategories = computed(() => {
-//   const category = _.find(categories, { title: selectedCategory.value })
-//   return category?.subcategories || []
-// })
-
 const subCategories = ref([])
+const selectedSubcategory = ref(null)
 
 const hasSelectedCategory = computed(() => {
   return selectedCategory.value !== null
 })
 
-async function getCategories () {
-  const response = await client.get(`videos/categories/${selectedCategory.value.toLowerCase()}/sub-categories`)
-  subCategories.value = response.data
-  instance.create(selectedCategory.value, response.data)
-}
-
-whenever(hasSelectedCategory, () => {
-  getCategories()
+const { data } = await useAsyncData(() => {
+  return Promise.all([
+    $fetch(`videos/categories/${selectedCategory.value.toLowerCase()}/sub-categories`, {
+      method: 'GET',
+      baseURL: useRuntimeConfig().public.djangoProdUrl
+    })
+  ])
+}, {
+  immediate: false,
+  watch: [selectedCategory]
 })
+
+console.log(data)
+
+
+// whenever(hasSelectedCategory, () => {
+//   execute()
+//   getCategories()
+//   subCategories.value = response.data
+//   instance.create(selectedCategory.value, response.data)
+// })
 
 const requestData = ref({
   preferred_categories: [

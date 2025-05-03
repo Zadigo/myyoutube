@@ -8,6 +8,7 @@ export * from './feed'
 export * from './video'
 export * from './studio'
 export * from './notifications'
+export * from './settings'
 
 export interface VideoMenuItem {
   name: DefaultVideoMenuActions

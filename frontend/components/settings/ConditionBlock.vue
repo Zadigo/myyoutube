@@ -17,27 +17,27 @@
 
           <v-menu activator="parent">
             <v-list>
-              <v-list-item v-for="item in negationOperators" :key="item" @click="handleNegation(item)">
+              <v-list-item v-for="item in negationOperators" :key="item" @click="() => handleNegation(item)">
                 {{ item }}
               </v-list-item>
             </v-list>
           </v-menu>
         </v-btn>
 
-        <v-btn class="ms-2" variant="outlined" rounded @click="$emit('delete-block', index)">
+        <v-btn class="ms-2" variant="outlined" rounded @click="emit('delete-block', index)">
           <font-awesome-icon icon="trash" />
         </v-btn>
       </div>
       
       <!-- Themes -->
       <label class="fw-bold mb-2">Show me videos when...</label>
-      <v-combobox v-model="conditionProxy.theme" :items="['Sports', 'TV shows']" variant="solo-filled" placeholder="Choose a general theme..." flat />
+      <v-combobox v-model="conditionProxy.theme" :items="defaultMainCategories" variant="solo-filled" placeholder="Choose a general theme..." flat />
 
       <!-- Keywords -->
       <label class="fw-bold mb-2">Matches these keywords...</label>
       <div class="d-flex justify-content-between gap-2">
         <div class="w-25">
-          <v-select v-model="conditionProxy.keyword_operator" :items="conditionOperators" variant="solo-filled" flat />
+          <v-select v-model="conditionProxy.keyword_operator" :items="keywordOperators" variant="solo-filled" flat />
         </div>
         
         <v-autocomplete v-model="conditionProxy.keywords" :items="['NBA', 'WNBA']" placeholder="Select keywords..." variant="solo-filled" hide-selected chips multiple clearable flat>
@@ -66,7 +66,7 @@
 
         <v-menu activator="parent">
           <v-list>
-            <v-list-item v-for="item in booleanOperators" :key="item" @click="handleJoinOperator(item)">
+            <v-list-item v-for="item in joinOperators" :key="item" @click="() => handleJoinOperator(item)">
               {{ item }}
             </v-list-item>
           </v-list>
@@ -83,89 +83,63 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, PropType, provide } from 'vue';
-import { AlgorithmConditionBlock, BooleanOperator, NegationOperators } from '@/types/user_settings';
+<script setup lang="ts">
+import { negationOperators, joinOperators, type JoinOperators, type NegationOperators, defaultMainCategories, keywordOperators } from '~/data'
+import type { AlgorithmConditionBlock } from '~/types'
 
-import KeywordSubCondition from './KeywordSubCondition.vue';
-
-const conditionOperators = [
-  'Exact match',
-  'Include related',
-  'Approximate match',
-  'Expression',
-  'Exclude'
-]
-
-const booleanOperators = ['And', 'Or']
-
-const negationOperators = ['Not negated', 'Not']
-
-export default defineComponent({
-  name: 'ConditionBlock',
-  components: {
-    KeywordSubCondition
+const props = defineProps({
+  condition: {
+    type: Object as PropType<AlgorithmConditionBlock>,
+    required: true
   },
-  props: {
-    condition: {
-      type: Object as PropType<AlgorithmConditionBlock>,
-      required: true
-    },
-    index: {
-      type: Number,
-      required: true
-    }
-  },
-  emits: {
-    'delete-block' (_index: number) {
-      return true
-    }
-  },
-  setup(props) {
-    const conditionProxy = ref(props.condition)
-    const isSaved = ref(false)
-    provide('conditionOperators', conditionOperators)
-    return {
-      isSaved,
-      negationOperators,
-      booleanOperators,
-      conditionOperators,
-      conditionProxy
-    }
-  },
-  methods: {
-    async handleSaveBlock() {
-      this.isSaved = !this.isSaved
-    },
-    /**
-     * 
-     */
-    handleJoinOperator(operator: BooleanOperator) {
-      if (operator === 'And') {
-        this.conditionProxy.join_operator = 'And'
-      } else if (operator === 'Or') {
-        this.conditionProxy.join_operator = 'Or'
-      }
-    },
-    /**
-     * 
-     */
-    handleNegation(operator: NegationOperators) {
-      if (operator === 'Not') {
-        this.conditionProxy.negation = true
-      } else if (operator === 'Not negated') {
-        this.conditionProxy.negation = false
-      }
-    },
-    /**
-     * 
-     */
-    handleAddSubcondition () {
-      this.conditionProxy.keywords_subconditions.push({
-        operator: 'Exact match',
-        keywords: []
-      })
-    }
+  index: {
+    type: Number,
+    required: true
   }
 })
+
+const emit = defineEmits({
+  'delete-block' (_index: number) {
+    return true
+  }
+})
+
+const conditionProxy = ref<AlgorithmConditionBlock>(props.condition)
+const isSaved = ref<boolean>(false)
+
+async function handleSaveBlock() {
+  isSaved.value = !isSaved.value
+}
+
+/**
+ * 
+ */
+function handleJoinOperator(operator: JoinOperators) {
+  if (operator === 'And') {
+    conditionProxy.value.join_operator = 'And'
+  } else if (operator === 'Or') {
+    conditionProxy.value.join_operator = 'Or'
+  }
+}
+
+/**
+ * 
+ */
+function handleNegation(operator: NegationOperators) {
+  if (operator === 'Not') {
+    conditionProxy.value.negation = true
+  } else if (operator === 'Not negated') {
+    conditionProxy.value.negation = false
+  }
+}
+
+/**
+ * 
+ */
+function handleAddSubcondition() {
+  conditionProxy.value.keywords_subconditions.push({
+    operator: 'Exact match',
+    keywords: []
+  })
+}
 </script>

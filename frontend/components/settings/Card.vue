@@ -13,20 +13,15 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'SettingsCard',
-  props: {
-    title: {
-      type: String,
-      required: true
-    },
-    subtitle: {
-      type: String,
-      required: true
-    }
+<script setup lang="ts">
+defineProps({
+  title: {
+    type: String,
+    required: true
+  },
+  subtitle: {
+    type: String,
+    required: true
   }
 })
 </script>

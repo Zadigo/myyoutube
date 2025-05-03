@@ -1,3 +1,6 @@
 export * from './reportTypes'
 export * from './categories'
 export * from './filtering'
+export * from './categories'
+export * from './video'
+export * from './operators'
