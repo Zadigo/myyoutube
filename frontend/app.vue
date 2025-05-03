@@ -5,42 +5,40 @@
 </template>
 
 <script setup lang="ts">
-import { doc, getFirestore, setDoc } from 'firebase/firestore'
-// import { getAnalytics } from "firebase/analytics";
+import { doc, setDoc } from 'firebase/firestore'
 
 interface ViewingProfileApiResponse {
   token: string
 }
 
-// const { $app } = useNuxtApp()
+const { $fireStore } = useNuxtApp()
 const authStore = useAuthentication()
 const { accessToken, refreshToken } = storeToRefs(authStore)
-
-const db = getFirestore()
-// const analytics = getAnalytics($app)
 
 const viewingProfileId = useCookie('vp_id')
 const access = useCookie('access')
 const refresh = useCookie('refresh')
 
-authStore.$subscribe((_, state) => {
-  // accessToken.value = access.value
-  // refreshToken.value = refresh.value
-  access.value = state.accessToken
-  refresh.value = state.refreshToken
+watch([access, refresh], ([access, refresh]) => {
+  authStore.accessToken = access
+  authStore.refreshToken = refresh
 })
 
-async function requestViewingProfileId() {
-  const client = createAxiosSimpleClient('/api/v1/viewing/')
+const { execute } = useAsyncData(async () => {
+  const response =  await $fetch<ViewingProfileApiResponse>('/api/v1/viewing/id', {
+    method: 'GET',
+    baseURL: useRuntimeConfig().public.djangoProdUrl,
+  })
 
-  if (!viewingProfileId.value) {
-    const response = await client.post<ViewingProfileApiResponse>('/id')
-    viewingProfileId.value = response.data.token
+  const vpProfilesDoc = doc($fireStore, 'vp_profiles', viewingProfileId.value)
 
-    const vpProfilesDoc = doc(db, 'vp_profiles', viewingProfileId.value)
-    setDoc(vpProfilesDoc, { id: null, email: null })
-  }
-}
+  setDoc(vpProfilesDoc, { id: null, email: null })
+  viewingProfileId.value = response.token
+
+  return response
+}, {
+  immediate: false
+})
 
 onBeforeMount(async () => {
   if (access.value && refresh.value) {
@@ -48,6 +46,8 @@ onBeforeMount(async () => {
     refreshToken.value = refresh.value
   }
 
-  await requestViewingProfileId()
+  if (!viewingProfileId.value) {
+    await execute()
+  }
 })
 </script>
