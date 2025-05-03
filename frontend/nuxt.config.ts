@@ -73,7 +73,8 @@ export default defineNuxtConfig({
     // 'nuxt-clarity-analytics',
     'vue-sonner/nuxt',
     '@vueuse/nuxt',
-    'shadcn-nuxt'
+    'shadcn-nuxt',
+    '@nuxtjs/i18n'
   ],
 
   css: [

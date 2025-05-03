@@ -17,9 +17,6 @@ importers:
       '@nuxtjs/google-fonts':
         specifier: ^3.2.0
         version: 3.2.0(magicast@0.3.5)
-      '@nuxtjs/i18n':
-        specifier: ^9.5.4
-        version: 9.5.4(@vue/compiler-dom@3.5.13)(eslint@9.17.0(jiti@2.4.2))(magicast@0.3.5)(rollup@4.40.1)(vue@3.5.13(typescript@5.8.3))
       '@nuxtjs/robots':
         specifier: ^5.2.10
         version: 5.2.10(magicast@0.3.5)(vue@3.5.13(typescript@5.8.3))
@@ -141,6 +138,9 @@ importers:
       '@nuxt/test-utils':
         specifier: ^3.17.2
         version: 3.17.2(@jest/globals@29.7.0)(@testing-library/vue@8.1.0(@vue/compiler-sfc@3.5.13)(vue@3.5.13(typescript@5.8.3)))(@types/node@22.15.3)(@vue/test-utils@2.4.6)(happy-dom@17.4.6)(jiti@2.4.2)(jsdom@26.1.0)(lightningcss@1.29.2)(magicast@0.3.5)(playwright-core@1.52.0)(sass-embedded@1.87.0)(terser@5.39.0)(tsx@4.19.4)(typescript@5.8.3)(vitest@3.1.2(@types/node@22.15.3)(happy-dom@17.4.6)(jiti@2.4.2)(jsdom@26.1.0)(lightningcss@1.29.2)(sass-embedded@1.87.0)(terser@5.39.0)(tsx@4.19.4)(yaml@2.7.1))(yaml@2.7.1)
+      '@nuxtjs/i18n':
+        specifier: ^9.5.4
+        version: 9.5.4(@vue/compiler-dom@3.5.13)(eslint@9.17.0(jiti@2.4.2))(magicast@0.3.5)(rollup@4.40.1)(vue@3.5.13(typescript@5.8.3))
       '@stripe/stripe-js':
         specifier: ^7.3.0
         version: 7.3.0
