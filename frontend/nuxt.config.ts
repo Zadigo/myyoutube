@@ -3,15 +3,25 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   ssr: true,
+
   routeRules: {
     '/': { ssr: false },
     '/videos/**': { ssr: true },
-    '/playlists': { ssr: false }
+    '/playlists': { ssr: false },
+    '/settings/**': { ssr: false },
+    '/studio/**': { ssr: false },
+    '/school': { ssr: false },
+    '/channels': { ssr: false },
+    '/fact-checking': { swr: true, cache: { maxAge: 15 * 60 } },
+    '/login': { ssr: false },
+    '/notification': { swr: true, cache: { maxAge: 30 * 60 }},
+    '/search': { ssr: false }
   },
+  
   runtimeConfig: {
     public: {
       // Django
-      djangoProdUrl: process.env.NUXT_DJANGO_PROD_URL,
+      djangoProdUrl: process.env.NUXT_DJANGO_PROD_URL || 'http://127.0.0.1:8000',
       
       // Stripe
       stripeSecretKey: process.env.NUXT_STRIPE_TEST_SECRET_KEY,
@@ -31,6 +41,7 @@ export default defineNuxtConfig({
       firebaseProjectId: process.env.NUXT_FIREBASE_PROJECT_ID,
     }
   },
+  
   modules: [
     '@nuxt/eslint',
     '@pinia/nuxt',
@@ -43,18 +54,21 @@ export default defineNuxtConfig({
     '@nuxt/image',
     'nuxt-openapi-docs-module',
     'vuetify-nuxt-module',
-    'vue-sonner/nuxt'
     // '@nuxtjs/i18n',
     // 'nuxt-gtag',
     // 'nuxt-meta-pixel', // BUG: This raises an error with minimatch
     // 'nuxt-clarity-analytics',
+    'vue-sonner/nuxt',
+    '@vueuse/nuxt'
   ],
+
   css: [
     '~/assets/style.scss',
     '~/node_modules/bootstrap/dist/css/bootstrap.min.css',
     '~/node_modules/mdb-ui-kit/css/mdb.min.css',
     '~/node_modules/animate.css/animate.min.css',
   ],
+  
   googleFonts: {
     families: {
       Ubuntu: {
@@ -71,6 +85,7 @@ export default defineNuxtConfig({
       }
     }
   },
+
   fontawesome: {
     icons: {
       regular: [
@@ -133,6 +148,7 @@ export default defineNuxtConfig({
       brands: []
     }
   },
+
   // test: true,
   // testUtils: {
   //   vitestConfig: {
@@ -146,6 +162,7 @@ export default defineNuxtConfig({
   //     }
   //   }
   // },
+
   i18n: {
     baseUrl: './',
     langDir: './locales',
@@ -166,6 +183,7 @@ export default defineNuxtConfig({
       }
     ]
   },
+
   nitro: {
     storage: {
       redis: {

@@ -1,15 +1,19 @@
-import { useAxiosClient } from "~/composables/django_client"
-import type { VideosFeedResponseData } from "~/types"
+import { refreshAccessToken } from '~/utils'
 
-export default defineEventHandler(async event => {
-    const query = getQuery(event)
+import type { VideosFeedResponseData } from '~/types'
 
-    const { client } = useAxiosClient()
-    const response = await client.get<VideosFeedResponseData>('/channels', {
-        params: {
-            q: query.search
+export default defineCachedEventHandler(async (event) => {
+  const refresh = getCookie(event, 'refresh')
+
+  return await $fetch<VideosFeedResponseData>('/api/v1/notifications/profile', {
+    baseURL: useRuntimeConfig().public.djangoProdUrl,
+    onRequestError({ response, error }) {
+      if (response) {
+        if (response.status === 401) {
+          refreshAccessToken(refresh)
+          console.log(error)
         }
-    })
-
-    return response.data
+      }
+    }
+  })
 })

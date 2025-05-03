@@ -1,11 +1,11 @@
 import { refreshAccessToken } from '~/utils'
 
-import type { Playlist } from '~/types'
+import type { NotificationProfile } from '~/types'
 
-export default defineEventHandler(async (event) => {
+export default defineCachedEventHandler(async (event) => {
   const refresh = getCookie(event, 'refresh')
 
-  return await $fetch<Playlist[]>('/api/v1/playlists', {
+  return await $fetch<NotificationProfile>('/api/v1/notifications/profile', {
     baseURL: useRuntimeConfig().public.djangoProdUrl,
     params: {},
     onRequestError({ response, error }) {

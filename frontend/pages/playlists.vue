@@ -104,7 +104,7 @@
 
     <!-- Modals -->
     <ClientOnly>
-      <v-dialog v-model="showCreatePlaylist" max-width="500" @close="showCreatePlaylist = false">
+      <v-dialog v-model="showCreatePlaylist" max-width="500" @close="showCreatePlaylist=false">
         <v-card>
           <v-card-text>
             <v-form @submit.prevent>
@@ -123,7 +123,7 @@
           </v-card-text>
 
           <v-card-actions>
-            <v-btn @click="showCreatePlaylist = false">Close</v-btn>
+            <v-btn @click="showCreatePlaylist=false">Close</v-btn>
             <v-btn @click="requestCreatePlaylist">Save</v-btn>
           </v-card-actions>
         </v-card>
@@ -135,23 +135,37 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { whenever } from '@vueuse/core'
+import { z } from 'zod'
+
 import type { Playlist, PlaylistVideo } from '~/types'
+
+const { $client } = useNuxtApp()
 
 const videoDetails = [
   'Name',
   'Author',
   'Release Date'
-]
+] as const
 
-const showCreatePlaylist = ref(false)
-const isIntelligent = ref(false)
-const showPlaylistDetails = ref(false)
+type VideoDetails = (typeof videoDetails)[number]
+
+const requestDataSchema = z.object({
+  name: z.string().nullable(),
+  description: z.string().nullable(),
+  is_intelligent: z.boolean()
+})
+
+type RequestData = z.infer<typeof requestDataSchema>
+
+const showCreatePlaylist = ref<boolean>(false)
+const isIntelligent = ref<boolean>(false)
+const showPlaylistDetails = ref<boolean>(false)
 
 const currentPlaylist = ref<Playlist>()
 const playlists = ref<Playlist[]>([])
 const playlistVideos = ref<PlaylistVideo[]>([])
 
-const requestData = ref({
+const requestData = ref<RequestData>({
   name: null,
   description: null,
   is_intelligent: false
@@ -173,21 +187,27 @@ watch(showCreatePlaylist, (n) => {
   }
 })
 
-const { data } = useFetch('/api/playlists', {
-  transform(data: Playlist[]) {
-    playlists.value = data
-    return data
-  }
+const { execute } = useFetch<Playlist[]>('/api/playlists', {
+  baseURL: useRuntimeConfig().public.djangoProdUrl,
+  query: {}
 })
 
-const { $client } = useNuxtApp()
-
-async function requestCreatePlaylist (intelligent: boolean = false) {
+/**
+ * Create a new playlist
+ * 
+ * @param [intelligent=false] Whether the playlist is intelligent or not 
+ */
+async function requestCreatePlaylist(intelligent: boolean = false) {
   try {
-    const response = await $client.post('/playlists/create', requestData.value)
-    playlists.value.push(response.data)
+    const response = await $client<Playlist>('/playlists/create', {
+      method: 'POST',
+      body: requestData.value,
+    })
+
+    playlists.value.push(response)
     
     showCreatePlaylist.value = false
+
     requestData.value = {
       name: null,
       description: null,
@@ -197,4 +217,8 @@ async function requestCreatePlaylist (intelligent: boolean = false) {
     console.error(e)
   }
 }
+
+onMounted(async () => {
+  await execute()
+})
 </script>

@@ -5,8 +5,8 @@
         <div class="card">
           <div class="card-body">
             <v-form @submit.prevent>
-              <v-text-field v-model="requestData.email" type="email" placeholder="Email" variant="solo-filled" flat />
-              <v-text-field v-model="requestData.password" type="password" placeholder="Password" variant="solo-filled" flat />
+              <v-text-field v-model="email" type="email" placeholder="Email" variant="solo-filled" flat />
+              <v-text-field v-model="password" type="password" placeholder="Password" variant="solo-filled" flat />
               <v-btn variant="tonal" color="primary" @click="handleLogin">
                 Login
               </v-btn>
@@ -20,32 +20,32 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { createAxiosSimpleClient } from '~/composables/django_client'
-import type { LoginApiResponse } from '~/types/authentication'
 
 definePageMeta({
   layout: 'site'
 })
 
-const client = createAxiosSimpleClient('/auth/v1/')
-
+const authenticated = useState('authenticated')
 const router = useRouter()
 const authStore = useAuthentication()
-// const accessToken = useCookie('access')
-// const refreshToken = useCookie('refresh')
+const access = useCookie('access')
+const refresh = useCookie('refresh')
 
-const requestData = ref({
-  email: null,
-  password: null
-})
+const email = ref<string>('')
+const password = ref<string>('')
 
 async function handleLogin() {
   try {
-    const response = await client.post<LoginApiResponse>('/token/', requestData.value)
-    // accessToken.value = response.data.access
-    // refreshToken.value = response.data.refresh
-    authStore.accessToken = response.data.access
-    authStore.refreshToken = response.data.refresh
+    const response =  await login(email.value, password.value)
+
+    access.value = response.access
+    refresh.value = response.refresh
+    
+    authStore.accessToken = response.access
+    authStore.refreshToken = response.refresh
+
+    authenticated.value = true
+
     router.push('/')
   } catch {
     // Handle error

@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-body">
       <div class="d-flex align-items-center justify-content-between">
-        <h2 class="h4 m-0">
+        <h2 v-if="comments" class="h4 m-0">
           {{ comments.length }} comments
         </h2>
 
@@ -15,7 +15,7 @@
           </template>
 
           <v-list>
-            <v-list-item v-for="sortAction in sortActions" :key="sortAction" @click="handleSortComments(sortAction)">
+            <v-list-item v-for="sortAction in sortActions" :key="sortAction" @click="() => handleSortComments(sortAction)">
               <v-list-item-title>
                 {{ sortAction }}
               </v-list-item-title>
@@ -37,88 +37,72 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import type { ExtendedRouteParamsGeneric, VideoComment } from '~/types'
 
-import type { VideoComment } from '~/types'
-
-import UserComment from './UserComment.vue'
-import UserCommentActions from './UserCommentActions.vue'
-import { VideoUserComment, VideoUserCommentActions } from '#build/components'
-
-const sortActions: [ 'Newest', 'Oldest' ] = [
+const sortActions = [
   'Newest',
   'Oldest'
-]
+] as const
 
-export default defineComponent({
-  name: 'AsyncCommentSection',
-  components: {
-    UserComment,
-    UserCommentActions
-  },
-  async setup () {
-    const { $client } = useNuxtApp()
-    const route = useRoute()
-    const comments = ref<VideoComment[]>([])
-    const queryParams = ref({ desc: true })
-    
-    // Get all the comments for the current video
-    // in a delayed manner for performance optimization
-    async function requestVideoComments () {
-      try {
-        const videoID = route.params.id
-        const response = await $client.get<VideoComment[]>(`/comments/${videoID}`, {
-          params: queryParams.value
-        })
-        comments.value = response.data
-      } catch (e) {
-        console.log(e)
-      }
+type SortActions = (typeof sortActions)[number]
+
+const { id: videoId } = useRoute().params as ExtendedRouteParamsGeneric
+
+const queryParams = ref<{ desc: boolean }>({ desc: true })
+
+/**
+ * Get all the comments for the current video
+ * in a delayed manner for performance optimization
+ */
+const { data: comments, refresh } = useAsyncData(async () => {
+  return await $fetch<VideoComment[]>(`/api/v1/comments/${videoId}`, {
+    baseURL: useRuntimeConfig().public.djangoProdUrl,
+    params: queryParams.value,
+    onRequestError() {
+
     }
-    await requestVideoComments()
+  })
+})
 
-    const pinnedComments = computed(() => {
-      // return _.filter(comments.value, { pinned: true })
-      return comments.value.filter(x => x.pinned === true)
-    })
-
-    const unpinnedComments = computed(() => {
-      // return _.filter(comments.value, { pinned: false })
-      return comments.value.filter(x => x.pinned === false)
-    })
-
-    return {
-      comments,
-      pinnedComments,
-      unpinnedComments,
-      queryParams,
-      sortActions,
-      requestVideoComments
-    }
-  },
-  methods: {
-    /**
-     * Append the newly created comment by implementing it
-     * at the start of the current comment list
-     */
-    async handleNewComment (comment: VideoComment) {
-      this.comments.unshift(comment)
-    },
-    /**
-     * 
-     */
-    async handleSortComments (method: 'Newest' | 'Oldest') {
-      if (method === 'Newest') {
-        this.queryParams.desc = true
-      }
-        
-      if (method === 'Oldest') {
-        this.queryParams.desc = false
-      }
-
-      await this.requestVideoComments()
-    }
+const pinnedComments = computed(() => {
+  if (comments.value) {
+    return comments.value.filter(x => x.pinned === true)
+  } else {
+    return []
   }
 })
+
+const unpinnedComments = computed(() => {
+  if (comments.value) {
+    return comments.value.filter(x => x.pinned === false)
+  } else {
+    return []
+  }
+})
+
+/**
+ * Append the newly created comment by implementing it
+ * at the start of the current comment list
+ */
+async function handleNewComment (comment: VideoComment) {
+  if (comments.value) {
+    comments.value.unshift(comment)
+  }
+}
+
+/**
+ * 
+ */
+async function handleSortComments (method: SortActions) {
+  if (method === 'Newest') {
+    queryParams.value.desc = true
+  }
+    
+  if (method === 'Oldest') {
+    queryParams.value.desc = false
+  }
+
+  refresh()
+}
 </script>
