@@ -59,7 +59,7 @@
                   </span>
                 </div>
 
-                <v-btn variant="text" rounded @click="handleRemoveBlockedKeyword(i)">
+                <v-btn variant="text" rounded @click="() => handleRemoveBlockedKeyword(i)">
                   <font-awesome icon="trash" />
                 </v-btn>
               </div>
@@ -164,15 +164,26 @@
 </template>
 
 <script setup lang="ts">
-import type { BlockedChannel } from '@/types';
-import { useRefHistory } from '@vueuse/core';
-import { ref } from 'vue';
+import { useRefHistory } from '@vueuse/core'
+import { ref } from 'vue'
 
-import SettingsCard from '~/components/settings/Card.vue';
+import type { BlockedChannel } from '~/types'
+
+import SettingsCard from '~/components/settings/Card.vue'
+
+
+const blockingDurations = [
+  'Forever',
+  'For 24 hours',
+  '7 days',
+  '30 days'
+] as const
+
+type BlockingDurations = (typeof blockingDurations)[number]
 
 interface BlockedKeyword {
   word: string
-  duration: 'Forever' | 'For 24 hours' | '7 days' | '30 days'
+  duration: BlockingDurations
 }
 
 useHead({
@@ -183,18 +194,10 @@ definePageMeta({
   layout: 'settings'
 })
 
-const { client } = useAxiosClient()
-
-const blockingDurations = [
-  'Forever',
-  'For 24 hours',
-  '7 days',
-  '30 days'
-]
-const showBlockedItems = ref(false)
-const showCreateList = ref(false)
-const showBlockLists = ref(false)
-const excludeFollowedAccounts = ref(false)
+const showBlockedItems = ref<boolean>(false)
+const showCreateList = ref<boolean>(false)
+const showBlockLists = ref<boolean>(false)
+const excludeFollowedAccounts = ref<boolean>(false)
 const blockedChannels = ref<BlockedChannel[]>([])
 const blockedKeyword = ref<BlockedKeyword>({
   word: '',
@@ -206,14 +209,14 @@ const { history, undo, redo } = useRefHistory(blockedKeywords)
 /**
  * 
  */
-async function requestBlockedChannels () {
-  try {
-    const response = await client.get<BlockedChannel[]>('/user-channels/blocked')
-    blockedChannels.value = response.data
-  } catch {
-    // Handle error
-  }
-}
+const { execute } = useAsyncData(() => {
+  return $fetch<BlockedChannel[]>('/user-channels/blocked', {
+    method: 'GET',
+    baseURL: useRuntimeConfig().public.djangoProdUrl
+  })
+}, {
+  immediate: false
+})
 
 /**
  * 
@@ -231,6 +234,6 @@ async function handleRemoveBlockedKeyword (index: number) {
 }
 
 onBeforeMount(async () => {
-  await requestBlockedChannels()
+  await execute()
 })
 </script>>

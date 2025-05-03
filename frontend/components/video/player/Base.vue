@@ -4,45 +4,12 @@
       <source :src="videoSource" type="video/mp4">
     </video>
 
-    <div class="video-controls">
-      <div class="video-control-actions">
-        <div class="d-flex justify-content-left align-items-center gap-3">
-          <button type="button" class="btn btn-primary shadow-none" @click.stop="handlePlayPause">
-            <font-awesome v-if="!isPlaying" icon="play" />
-            <font-awesome v-else icon="pause" />
-          </button>
-
-          <div class="video-control-duration mx-3">
-            <span>{{ currentTimeFormatted }}</span> /
-            <span>{{ durationFormatted }}</span>
-          </div>
-        </div>
-
-        <!-- Control configuration center -->
-        <div class="video-control-configuration-center d-flex justify-content-end">
-          <div class="video-control-settings">
-            <button type="button" class="btn btn-primary" @click="showVideoSettings=!showVideoSettings">
-              <font-awesome icon="cog" />
-            </button>
-          </div>
-
-          <div class="video-control-volume ms-2">
-            <button type="button" class="btn btn-primary" @click="showVolume=!showVolume">
-              <font-awesome v-if="volume < 0.1" icon="volume-low" />
-              <font-awesome v-else-if="volume >= 0.1 && volume <= 0.8" icon="volume-up" />
-              <font-awesome v-else-if="volume > 0.8" icon="volume-high" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Controls -->
+    <VideoPlayerControls />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useCounter, watchOnce } from '@vueuse/core'
-
 interface PlayingDetails {
   currentTime: number
   formattedCurrentTime: string
@@ -70,51 +37,41 @@ const emit = defineEmits({
   }
 })
 
+const speeds = [2, 1.75, 1.5, 1, 0.75, 0.5] as const
+
+type Speeds  = (typeof speeds)[number]
+
 // Tracks the amount of the times the
 // button play was pressed during a
 // viewing session
 const { count, inc } = useCounter()
 
-const isLoading = ref(true)
-const isPlaying = ref(false)
-const wasPlayed = ref(false)
-
-// Indicates that the video was
-// played once by the user
-watchOnce(isPlaying, () => {
-  wasPlayed.value= true
-})
+const isLoading = ref<boolean>(true)
+const isPlaying = ref<boolean>(false)
+const wasPlayed = ref<boolean>(false)
 
 const duration = ref<number>(0)
 const currentTime = ref<number>(0)
 const volume = ref<number>(0.5)
 
-const speeds = [2, 1.75, 1.5, 1, 0.75, 0.5]
+const speed = ref<string>('1x')
+const quality = ref<string>('1080p')
 
-const speed = ref('1x')
-const quality = ref('1080p')
+const videoContainerEl = useTemplateRef('videoContainerEl')
+const videoPlayerEl = useTemplateRef('videoPlayerEl')
 
-const showVolume = ref(false)
-const showSpeedSettings = ref(false)
-const showInteractiveMenu = ref(false)
-const showVideoSettings = ref(true)
-const showQualitySettings = ref(true)
-
-const videoContainerEl = ref<HTMLElement>()
-const videoPlayerEl = ref<HTMLVideoElement>()
-
-// Calculates the current completion of the
-// video in percentage on the total duration
+/**
+ * Calculates the current completion of the
+ * video in percentage on the total duration
+ */
 const completionPercentage = computed(() => {
   return Math.floor((currentTime.value / duration.value) * 100)
 })
 
-// Loads some frames from the current
-// loaded video - especially for previews
-function getFrames () {}
-
-// Loads the metadata for the current
-// loaded video: duration, size etc.
+/**
+ * Loads the metadata for the current
+ * loaded video: duration, size etc.
+ */
 function getVideoDetails () {
   if (videoPlayerEl.value) {
     if (!Number.isNaN(videoPlayerEl.value.duration)) {
@@ -122,8 +79,6 @@ function getVideoDetails () {
     }
 
     currentTime.value = videoPlayerEl.value.currentTime
-
-    getFrames()
   }
 }
 
@@ -168,27 +123,13 @@ const durationFormatted = computed(() => {
   return formatTime(duration.value)
 })
 
-// Indicates that the viddeo has ended, in other
-// words that the current time is equals the total
-// video duration time
+/**
+ * Indicates that the viddeo has ended, in other
+ * words that the current time is equals the total
+ * video duration time
+ */
 const isEnded = computed(() => {
   return currentTimeFormatted.value === durationFormatted.value
-})
-
-
-
-onMounted(() => {
-  emit('loaded-meta-data')
-})
-
-onBeforeUnmount(() => {
-  if (videoPlayerEl.value) {
-    const source = videoPlayerEl.value.querySelector('source')
-    
-    if (source) {
-      URL.revokeObjectURL(source.src)
-    }
-  }
 })
 
 /**
@@ -211,6 +152,20 @@ function handlePlayPause () {
     }
   }
 }
+
+onMounted(() => {
+  emit('loaded-meta-data')
+})
+
+onBeforeUnmount(() => {
+  if (videoPlayerEl.value) {
+    const source = videoPlayerEl.value.querySelector('source')
+    
+    if (source) {
+      URL.revokeObjectURL(source.src)
+    }
+  }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -233,24 +188,5 @@ function handlePlayPause () {
 
 .video-player source {
   height: 100%;
-}
-
-.video-controls {
-  position: absolute;
-  bottom: 5%;
-  background: rgba(38, 38, 38, .8);
-  padding: 1rem;
-  width: 80%;
-  align-items: center;
-  color: #fff;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 10px 0 rgb(0 0 0 / 20%), 0 4px 20px 0 rgb(0 0 0 / 10%);
-  z-index: 50;
-}
-
-.video-control-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 100%;
 }
 </style>
