@@ -1,7 +1,6 @@
-import type { AxiosError } from 'axios'
 import { ref } from 'vue'
 
-import axios from 'axios'
+import { FetchError } from 'ofetch'
 
 export interface ErrorContext {
     message: string
@@ -15,27 +14,25 @@ export function useErrorHandler() {
     const { $toast } = useNuxtApp()
 
     // Utility for logging errors to a service
-    function logErrorToService(_error: AxiosError) {
+    function logErrorToService(_error: FetchError) {
         // Implementation depends on your error logging service
         // Could be Sentry, LogRocket, custom backend endpoint, etc.
     }
 
     // Specific error type handlers
-    function handleBadRequest(error: AxiosError) {
-        const errorMessage = error.response?.data?.message || 'Invalid request'
-
+    function handleBadRequest(error: FetchError) {
         $toast.error('Bad Request', {
-            description: errorMessage,
+            description: error.message,
             position: 'top-center'
         })
 
         globalError.value = {
-            message: errorMessage,
+            message: error.message,
             type: 'warning'
         }
     }
 
-    function handleUnauthorized(_error: AxiosError) {
+    function handleUnauthorized(_error: FetchError) {
         // Potential redirect to login or token refresh
         $toast.error('Unauthorized', {
             description: 'Please log in again',
@@ -47,21 +44,21 @@ export function useErrorHandler() {
         authStore.logout()
     }
 
-    function handleForbidden(_error: AxiosError) {
+    function handleForbidden(_error: FetchError) {
         $toast.error('Access Denied', {
             description: 'You do not have permission to perform this action',
             position: 'top-center'
         })
     }
 
-    function handleNotFound(_error: AxiosError) {
+    function handleNotFound(_error: FetchError) {
         $toast.error('Not Found', {
             description: 'The requested resource could not be found',
             position: 'top-center'
         })
     }
 
-    function handleServerError(error: AxiosError) {
+    function handleServerError(error: FetchError) {
         // Log to error tracking service
         logErrorToService(error)
 
@@ -90,8 +87,8 @@ export function useErrorHandler() {
 
     function customErrorHandler(error: unknown) {
         // Type guard to check if it's an Axios error
-        if (axios.isAxiosError(error)) {
-            const axiosError = error as AxiosError
+        if (error instanceof FetchError) {
+            const axiosError = error as FetchError
 
             // Different handling based on error status
             switch (axiosError.response?.status) {

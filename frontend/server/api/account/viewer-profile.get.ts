@@ -1,15 +1,20 @@
-import { createServerDjangoClient } from "~/composables/django_client"
-import type { ViewingProfile } from "~/types"
+import type { ViewingProfile } from '~/types'
+import { refreshAccessToken } from '~/utils'
 
 export default defineCachedEventHandler(async event => {
-    const access = getCookie(event, 'access')
-    const refresh = getCookie(event, 'refresh')
-    const client = createServerDjangoClient('/api/v1/accounts', access, refresh, (token) => {
-        setCookie(event, 'access', token)
-    })
-    const response = await client.get<ViewingProfile>('viewing-profile')
-    return response.data
+  const refresh = getCookie(event, 'refresh')
+
+  const response = await $fetch<ViewingProfile>('/api/v1/accounts/viewing-profile', {
+    method: 'GET',
+    baseURL: useRuntimeConfig().public.djangoProdUrl,
+    onRequestError({ response }) {
+      if (response?.status === 401) {
+        refreshAccessToken(refresh)
+      }
+    }
+  })
+  return response
 }, {
-    base: 'redis',
-    maxAge: 1
+  base: 'redis',
+  maxAge: 30 * 60
 })

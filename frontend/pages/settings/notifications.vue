@@ -23,7 +23,6 @@
 </template>
 
 <script setup lang="ts">
-import createDjangoClient from '~/composables/django_client'
 import type { NotificationProfile } from '~/types'
 
 useHead({
@@ -68,13 +67,6 @@ const { data } = useFetch('/api/notifications/profile', {
   lazy: true,
   server: false,
   watch: [notificationData],
-  // watchDebounce: 1000,
-  onRequest() {
-    console.log('Request snet')
-  },
-  onRequestError(e) {
-    console.log('error', e)
-  },
   default() {
     return {
       subscribed_channel_activity: true,
