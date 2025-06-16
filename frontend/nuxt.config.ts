@@ -66,11 +66,8 @@ export default defineNuxtConfig({
     '@nuxtjs/sitemap',
     '@nuxt/image',
     'nuxt-openapi-docs-module',
-    'vuetify-nuxt-module',
+    // 'vuetify-nuxt-module',
     // '@nuxtjs/i18n',
-    // 'nuxt-gtag',
-    // 'nuxt-meta-pixel', // BUG: This raises an error with minimatch
-    // 'nuxt-clarity-analytics',
     'vue-sonner/nuxt',
     '@vueuse/nuxt',
     'shadcn-nuxt',
@@ -78,27 +75,50 @@ export default defineNuxtConfig({
   ],
 
   css: [
-    '~/assets/style.scss',
-    '~/node_modules/bootstrap/dist/css/bootstrap.min.css',
-    '~/node_modules/mdb-ui-kit/css/mdb.min.css',
-    '~/node_modules/animate.css/animate.min.css',
+    '~/assets/css/tailwind.css'
+    // '~/assets/style.scss',
+    // '~/node_modules/bootstrap/dist/css/bootstrap.min.css',
+    // '~/node_modules/mdb-ui-kit/css/mdb.min.css'
   ],
   
   googleFonts: {
+    display: 'swap',
     families: {
-      Ubuntu: {
-        wght: '100..700'
+      Raleway: {
+        wght: '100..900'
       },
-      Roboto: {
-        wght: '100..700'
+      Poppins: {
+        wght: '100..900'
       },
-      Lato: {
-        wght: '100..700'
-      },
-      "Noto Sans": {
-        wght: '100..700'
+      'Be Vietnam Pro': {
+        wght: '100..900'
       }
     }
+  },
+
+  // https://www.fontpair.co/all
+  fonts: {
+    provider: 'google',
+    defaults: {
+      fallbacks: {
+        "sans-serif": ['Arial', 'Helvetica', 'sans-serif']
+      }
+    },
+    families: [
+      {
+        name: 'Raleway',
+        display: 'swap'
+      },
+      // Titles
+      {
+        name: 'Poppins',
+        display: 'swap'
+      },
+      {
+        name: 'Be Vietnam Pro',
+        display: 'swap'
+      }
+    ]
   },
 
   fontawesome: {

@@ -8,8 +8,8 @@
       </v-card-item>
 
       <v-card-text>
-        <v-text-field variant="solo-filled" placeholder="Name of your list" flat />
-        <v-text-field variant="solo-filled" placeholder="Search for users..." flat />
+        <VoltInputText  placeholder="Name of your list" flat />
+        <VoltInputText  placeholder="Search for users..." flat />
       </v-card-text>
       
       <v-card-actions>

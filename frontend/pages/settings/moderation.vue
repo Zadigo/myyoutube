@@ -38,7 +38,7 @@
         <SettingsCard title="Blocked keywords" subtitle="Block videos containing certain specific keywords (title, description)">
           <template #default>
             <div class="d-flex justify-content-between gap-2">
-              <v-text-field v-model="blockedKeyword.word" variant="outlined" placeholder="Enter a keyword to block" @keypress.enter="handleAddBlockedKeyWord" />
+              <VoltInputText v-model="blockedKeyword.word" variant="outlined" placeholder="Enter a keyword to block" @keypress.enter="handleAddBlockedKeyWord" />
               
               <div class="w-50">
                 <v-select v-model="blockedKeyword.duration" :items="blockingDurations" variant="outlined" :auto-select-first="true" />
@@ -98,7 +98,7 @@
           </v-card-item>
           
           <v-card-text>
-            <v-text-field variant="solo-filled" placeholder="Search by list names..." flat />
+            <VoltInputText  placeholder="Search by list names..." flat />
             
             <div class="d-flex gap-2 mb-3">
               <v-btn :disabled="!showBlockedItems" color="dark" variant="tonal" rounded @click="showBlockedItems=false">
@@ -144,8 +144,8 @@
           </v-card-item>
 
           <v-card-text>
-            <v-text-field variant="solo-filled" placeholder="Name of your list" flat />
-            <v-text-field variant="solo-filled" placeholder="Search for users..." flat />
+            <VoltInputText  placeholder="Name of your list" flat />
+            <VoltInputText  placeholder="Search for users..." flat />
           </v-card-text>
           
           <v-card-actions>

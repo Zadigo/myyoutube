@@ -1,20 +1,24 @@
 <template>
   <section id="videos" class="container px-5">
-    <header class="card shadow-sm">
-      <v-form class="card-body" @submit.prevent>
-        <v-text-field variant="solo-filled" type="search" placeholder="Search" flat />
-        
-        <div class="d-flex gap-2">
-          <v-select :items="defaultMainCategories" placeholder="Categories" variant="solo-filled" flat />
-          <v-select :items="defaultVideoLength" placeholder="Video length" variant="solo-filled" flat />
-          <v-select :items="defaultUploadDate" placeholder="Upload date" variant="solo-filled" flat />
-        </div>
+    <VoltCard>
+      <template #content>
+        <form class="space-y-2" @submit.prevent>
+          <VoltInputText type="search" placeholder="Search" class="w-2/5" />
+          
+          <div class="flex justify-around gap-2">
+            <VoltSelect :options="defaultMainCategories.map(x => ({ name: x }))" class="w-full" option-label="name" placeholder="Categories" />
+            <VoltSelect :options="defaultVideoLength.map(x => ({ name: x }))" class="w-full" option-label="name" placeholder="Video length" />
+            <VoltSelect :options="defaultUploadDate.map(x => ({ name: x }))" class="w-full" option-label="name" placeholder="Upload date" />
+          </div>
+        </form>
+      </template>
 
-        <v-btn variant="tonal" color="light">
+      <template #footer>
+        <VoltButton>
           <font-awesome icon="sort" /> Sort by: 
-        </v-btn>
-      </v-form>
-    </header>
+        </VoltButton>
+      </template>
+    </VoltCard>
 
     <section id="content" class="mt-5">
       <Suspense>
@@ -23,9 +27,9 @@
         </template>
 
         <template #fallback>
-          <div class="row">
-            <div v-for="i in 30" :key="i" class="col-3">
-              <BaseSkeleton :loading="true" height="30px" />
+          <div class="grid grid-cols-4 auto-rows-min gap-2">
+            <div v-for="i in 28" :key="i">
+              <VoltSkeleton class="h-[200px]" />
             </div>
           </div>
         </template>

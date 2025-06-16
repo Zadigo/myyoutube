@@ -31,17 +31,17 @@
       
       <!-- Themes -->
       <label class="fw-bold mb-2">Show me videos when...</label>
-      <v-combobox v-model="conditionProxy.theme" :items="defaultMainCategories" variant="solo-filled" placeholder="Choose a general theme..." flat />
+      <v-combobox v-model="conditionProxy.theme" :items="defaultMainCategories"  placeholder="Choose a general theme..." flat />
 
       <!-- Keywords -->
       <label class="fw-bold mb-2">Matches these keywords...</label>
       <div class="d-flex justify-content-between gap-2">
         <div class="w-25">
-          <v-select v-model="conditionProxy.keyword_operator" :items="keywordOperators" variant="solo-filled" flat />
+          <v-select v-model="conditionProxy.keyword_operator" :items="keywordOperators"  flat />
         </div>
         
-        <v-autocomplete v-model="conditionProxy.keywords" :items="['NBA', 'WNBA']" placeholder="Select keywords..." variant="solo-filled" hide-selected chips multiple clearable flat>
-          <v-text-field placeholder="Select keywords" />
+        <v-autocomplete v-model="conditionProxy.keywords" :items="['NBA', 'WNBA']" placeholder="Select keywords..."  hide-selected chips multiple clearable flat>
+          <VoltInputText placeholder="Select keywords" />
         </v-autocomplete>
       </div>
 
@@ -59,7 +59,7 @@
 
       <!-- Sections -->
       <label class="fw-bold mb-2">Which appear in these sections of the video...</label>
-      <v-combobox v-model="conditionProxy.video_sections" :items="['Title', 'Description', 'Theme', 'Classfication']" variant="solo-filled" placeholder="Choose a general theme..." multiple hide-selected clearable flat chips />
+      <v-combobox v-model="conditionProxy.video_sections" :items="['Title', 'Description', 'Theme', 'Classfication']"  placeholder="Choose a general theme..." multiple hide-selected clearable flat chips />
       
       <v-btn variant="tonal" rounded>
         {{ conditionProxy.join_operator }}

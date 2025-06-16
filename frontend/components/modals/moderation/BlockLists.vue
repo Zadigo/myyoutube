@@ -8,7 +8,7 @@
       </v-card-item>
       
       <v-card-text>
-        <v-text-field variant="solo-filled" placeholder="Search by list names..." flat />
+        <VoltInputText  placeholder="Search by list names..." flat />
         
         <div class="d-flex gap-2 mb-3">
           <v-btn :disabled="!showBlockedItems" color="dark" variant="tonal" rounded @click="showBlockedItems=false">

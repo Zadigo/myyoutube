@@ -1,11 +1,11 @@
 <template>
   <div class="row gx-1 mb-1 d-flex justify-content-end align-items-center">
     <div class="col-3">
-      <v-select v-model="conditionBlockProxy.operator" :items="conditionOperators" variant="solo-filled" hide-details flat />
+      <v-select v-model="conditionBlockProxy.operator" :items="conditionOperators"  hide-details flat />
     </div>
 
     <div class="col-5">
-      <v-combobox v-model="conditionBlockProxy.keywords" :items="['NBA', 'WNBA']" variant="solo-filled" hide-details hide-selected flat chips multiple />
+      <v-combobox v-model="conditionBlockProxy.keywords" :items="['NBA', 'WNBA']"  hide-details hide-selected flat chips multiple />
     </div>
 
     <div class="col-auto">

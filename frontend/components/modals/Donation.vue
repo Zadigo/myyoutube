@@ -3,7 +3,7 @@
     <v-card>
       <v-card-text>
         <v-form>
-          <v-text-field type="number" :min="10" :max="500" :step="10" variant="outlined" />
+          <VoltInputText type="number" :min="10" :max="500" :step="10" variant="outlined" />
         </v-form>
       </v-card-text>
     </v-card>

@@ -5,8 +5,8 @@
         <div class="card">
           <div class="card-body">
             <v-form @submit.prevent>
-              <v-text-field v-model="email" type="email" placeholder="Email" variant="solo-filled" flat />
-              <v-text-field v-model="password" type="password" placeholder="Password" variant="solo-filled" flat />
+              <VoltInputText v-model="email" type="email" placeholder="Email"  flat />
+              <VoltInputText v-model="password" type="password" placeholder="Password"  flat />
               <v-btn variant="tonal" color="primary" @click="handleLogin">
                 Login
               </v-btn>

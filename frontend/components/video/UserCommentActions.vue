@@ -4,7 +4,7 @@
       <div class="d-flex justify-content-start align-items-start gap-4">
         <img src="/avatar3.png" width="60" height="60" class="img-fluid rounded-circle" alt="">
         <div class="actions" style="width: 100%;">
-          <v-textarea v-model="requestData.content" label="" variant="solo-filled" clearable flat />
+          <v-textarea v-model="requestData.content" label=""  clearable flat />
           
           <div class="d-flex gap-2">
             <v-btn color="secondary" size="small" rounded="xl" flat>

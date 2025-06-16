@@ -11,8 +11,8 @@
         </p>
 
         <div class="d-flex justify-content-between gap-2">
-          <v-text-field type="time" variant="outlined" />
-          <v-text-field type="time" variant="outlined" />
+          <VoltInputText type="time" variant="outlined" />
+          <VoltInputText type="time" variant="outlined" />
         </div>
 
         <div class="alert alert-info">

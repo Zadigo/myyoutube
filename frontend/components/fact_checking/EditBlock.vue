@@ -18,11 +18,11 @@
 
   <div v-else class="source card-body">
     <div class="d-flex justify-content-between gap-2">
-      <v-text-field v-model="sourceDetails.start_time" type="text" placeholder="Start time" variant="solo-filled" flat />
-      <v-text-field v-model="sourceDetails.end_time" type="text" placeholder="End time" variant="solo-filled" flat />
+      <VoltInputText v-model="sourceDetails.start_time" type="text" placeholder="Start time"  flat />
+      <VoltInputText v-model="sourceDetails.end_time" type="text" placeholder="End time"  flat />
     </div>
 
-    <v-textarea v-model="sourceDetails.explanation" placeholder="Explanation" variant="solo-filled" flat no-resize />
+    <v-textarea v-model="sourceDetails.explanation" placeholder="Explanation"  flat no-resize />
 
     <div class="mt-3">
       <v-btn variant="tonal" color="dark" @click="handleAddSource">
@@ -30,7 +30,7 @@
       </v-btn>
 
       <div class="d-flex justify-content-between align-items-center gap-3">
-        <v-text-field v-for="(articleSource, i) in sourceDetails.article_sources" :key="i" v-model="sourceDetails.article_sources[i]" :rules="[rules.validateUrl]" type="url" placeholder="Source" variant="solo-filled" class="mt-1" flat />
+        <VoltInputText v-for="(articleSource, i) in sourceDetails.article_sources" :key="i" v-model="sourceDetails.article_sources[i]" :rules="[rules.validateUrl]" type="url" placeholder="Source"  class="mt-1" flat />
         <v-btn variant="tonal" color="danger" rounded>
           <font-awesome icon="trash" />
         </v-btn>

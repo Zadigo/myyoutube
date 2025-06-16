@@ -83,7 +83,7 @@
               <v-card title="Address" flat>
                 <v-form id="address" @submit.prevent>
                   <input type="text" autocomplete="address-level1">
-                  <v-text-field autocomplete="address-level1"></v-text-field>
+                  <VoltInputText autocomplete="address-level1"></VoltInputText>
                 </v-form>
               </v-card>
             </template>
@@ -92,12 +92,12 @@
               <v-card title="Payment" flat>
                 <v-form id="paymment" @submit.prevent>
                   <div id="payment">
-                    <v-text-field placeholder="Card number" aria-placeholder="Card number" autocomplete="cc-number" variant="outlined"></v-text-field>
+                    <VoltInputText placeholder="Card number" aria-placeholder="Card number" autocomplete="cc-number" variant="outlined"></VoltInputText>
 
                     <div class="d-flex justify-content-between gap-2">
-                      <v-text-field autocomplete="cc-exp-month" placeholder="Expiry month" variant="outlined"></v-text-field>
-                      <v-text-field autocomplete="cc-exp-year" placeholder="Expiry year" variant="outlined"></v-text-field>
-                      <v-text-field autocomplete="cc-csc" placeholder="CVV" variant="outlined"></v-text-field>
+                      <VoltInputText autocomplete="cc-exp-month" placeholder="Expiry month" variant="outlined"></VoltInputText>
+                      <VoltInputText autocomplete="cc-exp-year" placeholder="Expiry year" variant="outlined"></VoltInputText>
+                      <VoltInputText autocomplete="cc-csc" placeholder="CVV" variant="outlined"></VoltInputText>
                     </div>
                   </div>
                 </v-form>

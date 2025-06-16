@@ -2,7 +2,7 @@
   <div class="card-body">
     <div class="row">
       <div v-if="requestData" class="col-7">
-        <v-text-field v-model="requestData.title" type=" text" placeholder="Title" variant="solo-filled" flat />
+        <VoltInputText v-model="requestData.title" type=" text" placeholder="Title"  flat />
 
         <div class="alert alert-info fw-light">
           <p class="fw-bold">
@@ -15,14 +15,14 @@
           be unfit if the category/sub-category don't match what they were expecting.
         </div>
 
-        <v-textarea v-model="requestData.description" cols="30" rows="7" class="my-1" placeholder="Description" variant="solo-filled" flat no-resize />
+        <v-textarea v-model="requestData.description" cols="30" rows="7" class="my-1" placeholder="Description"  flat no-resize />
 
-        <v-autocomplete v-model="requestData.category" :items="categories" item-title="title" item-value="title" variant="solo-filled" placeholder="Select a category" flat auto-select-first>
-          <v-text-field />
+        <v-autocomplete v-model="requestData.category" :items="categories" item-title="title" item-value="title"  placeholder="Select a category" flat auto-select-first>
+          <VoltInputText />
         </v-autocomplete>
 
-        <v-autocomplete v-model="requestData.subcategory" :items="subCategories" item-title="title" item-value="title" variant="solo-filled" placeholder="Select a sub-category" flat auto-select-first>
-          <v-text-field />
+        <v-autocomplete v-model="requestData.subcategory" :items="subCategories" item-title="title" item-value="title"  placeholder="Select a sub-category" flat auto-select-first>
+          <VoltInputText />
         </v-autocomplete>
       </div>
 
@@ -81,7 +81,7 @@
           viewers find your video. Learn more
         </p>
 
-        <v-combobox variant="solo-filled" placeholder="Add tag" :items="tags" flat chips multiple />
+        <v-combobox  placeholder="Add tag" :items="tags" flat chips multiple />
       </div>
 
       <div class="col-12">
@@ -93,7 +93,7 @@
           Select your video's language
         </p>
 
-        <v-select variant="solo-filled" flat />
+        <v-select  flat />
       </div>
     </div>
   </div>

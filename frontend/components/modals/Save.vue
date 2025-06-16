@@ -2,8 +2,8 @@
   <v-dialog id="save" v-model="show" width="400" persistent>
     <v-card>
       <v-card-text>
-        <v-autocomplete v-model="selectedPlaylistId" :items="playlists" variant="solo-filled" item-title="title" item-value="playlist_id" clearable auto-select-first>
-          <v-text-field placeholder="Select a playlist" />
+        <v-autocomplete v-model="selectedPlaylistId" :items="playlists"  item-title="title" item-value="playlist_id" clearable auto-select-first>
+          <VoltInputText placeholder="Select a playlist" />
         </v-autocomplete>
       </v-card-text>
 

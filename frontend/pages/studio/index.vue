@@ -18,7 +18,7 @@
               </div>
 
               <v-form id="search" style="width:30%;" @submit.prevent>
-                <v-text-field v-model="search" placeholder="Search" aria-placeholder="Search" variant="outlined" hide-details />
+                <VoltInputText v-model="search" placeholder="Search" aria-placeholder="Search" variant="outlined" hide-details />
               </v-form>
             </div>
           </div>

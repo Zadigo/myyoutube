@@ -108,15 +108,15 @@
         <v-card>
           <v-card-text>
             <v-form @submit.prevent>
-              <v-text-field v-model="requestData.name" placeholder="Name" variant="outlined" />
-              <v-text-field v-model="requestData.description" placeholder="Description" variant="outlined" />
+              <VoltInputText v-model="requestData.name" placeholder="Name" variant="outlined" />
+              <VoltInputText v-model="requestData.description" placeholder="Description" variant="outlined" />
               <v-switch v-model="requestData.is_intelligent" label="Private" inset hide-details />
 
               <div v-show="isIntelligent" id="intelligent-functionnalities" class="mt-4">
                 <div class="d-flex gap-2">
                   <v-select :items="videoDetails" variant="outlined" />
                   <v-select placeholder="Operator" variant="outlined" />
-                  <v-text-field placeholder="Value" variant="outlined" />
+                  <VoltInputText placeholder="Value" variant="outlined" />
                 </div>
               </div>
             </v-form>

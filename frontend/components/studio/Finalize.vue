@@ -13,8 +13,8 @@
         </p>
 
         <div v-for="(participant, i) in participants" :key="i" class="d-flex justify-content-between gap-1">
-          <v-text-field v-model="participant.url" type="url" placeholder="Social url" variant="solo-filled" flat />
-          <v-select v-model="participant.handle" :items="socials" placeholder="User handle" variant="solo-filled" flat />
+          <VoltInputText v-model="participant.url" type="url" placeholder="Social url"  flat />
+          <v-select v-model="participant.handle" :items="socials" placeholder="User handle"  flat />
           <v-btn variant="text" color="danger" @click="handleRemoveParticipant(i)">
             <font-awesome icon="trash" />
           </v-btn>
