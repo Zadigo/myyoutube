@@ -3,7 +3,7 @@
     <template #removeicon="{ removeCallback, keydownCallback }">
       <TimesCircleIcon class="cursor-pointer text-base w-4 h-4 rounded-full text-surface-800 dark:text-surface-0 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-primary" @click="removeCallback" @keydown="keydownCallback" />
     </template>
-    <template v-for="(_, slotName) in $slots" v-slot:[slotName]="slotProps">
+    <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
       <slot :name="slotName" v-bind="slotProps ?? {}" />
     </template>
   </Chip>

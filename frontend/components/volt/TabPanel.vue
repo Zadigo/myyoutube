@@ -1,14 +1,7 @@
 <template>
-    <TabPanel
-        :value="props.value"
-        unstyled
-        :pt="theme"
-        :pt-options="{
-            mergeProps: ptViewMerge
-        }"
-    >
-        <slot />
-    </TabPanel>
+  <TabPanel :value="props.value" unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+    <slot />
+  </TabPanel>
 </template>
 
 <script setup lang="ts">
@@ -20,6 +13,6 @@ interface Props extends /* @vue-ignore */ TabPanelProps {}
 const props = defineProps<Props>()
 
 const theme = ref<TabPanelPassThroughOptions>({
-    root: ``
+  root: ``
 })
 </script>

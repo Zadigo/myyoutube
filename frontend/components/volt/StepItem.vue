@@ -1,13 +1,7 @@
 <template>
-    <StepItem
-        unstyled
-        :pt="theme"
-        :pt-options="{
-            mergeProps: ptViewMerge
-        }"
-    >
-        <slot />
-    </StepItem>
+  <StepItem unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+    <slot />
+  </StepItem>
 </template>
 
 <script setup lang="ts">

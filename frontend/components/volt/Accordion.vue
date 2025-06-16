@@ -1,7 +1,7 @@
 <template>
-    <Accordion unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
-        <slot />
-    </Accordion>
+  <Accordion unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+    <slot />
+  </Accordion>
 </template>
 
 <script setup lang="ts">

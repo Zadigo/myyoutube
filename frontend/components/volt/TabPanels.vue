@@ -1,13 +1,7 @@
 <template>
-    <TabPanels
-        unstyled
-        :pt="theme"
-        :pt-options="{
-            mergeProps: ptViewMerge
-        }"
-    >
-        <slot />
-    </TabPanels>
+  <TabPanels unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+    <slot />
+  </TabPanels>
 </template>
 
 <script setup lang="ts">

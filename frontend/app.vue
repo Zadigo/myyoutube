@@ -26,7 +26,7 @@ watch([access, refresh], ([access, refresh]) => {
 
 const { execute } = useAsyncData(async () => {
   const response =  await $fetch<ViewingProfileApiResponse>('/api/v1/viewing/id', {
-    method: 'GET',
+    method: 'POST',
     baseURL: useRuntimeConfig().public.djangoProdUrl,
   })
 

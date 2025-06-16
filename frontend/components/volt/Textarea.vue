@@ -1,11 +1,5 @@
 <template>
-    <Textarea
-        unstyled
-        :pt="theme"
-        :pt-options="{
-            mergeProps: ptViewMerge
-        }"
-    />
+  <Textarea unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" />
 </template>
 
 <script setup lang="ts">

@@ -1,11 +1,5 @@
 <template>
-    <Slider
-        unstyled
-        :pt="theme"
-        :pt-options="{
-            mergeProps: ptViewMerge
-        }"
-    />
+  <Slider unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" />
 </template>
 
 <script setup lang="ts">

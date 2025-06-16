@@ -1,15 +1,9 @@
 <template>
-    <Timeline
-        unstyled
-        :pt="theme"
-        :pt-options="{
-            mergeProps: ptViewMerge
-        }"
-    >
-        <template v-for="(_, slotName) in $slots" v-slot:[slotName]="slotProps">
-            <slot :name="slotName" v-bind="slotProps ?? {}" />
-        </template>
-    </Timeline>
+  <Timeline unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+    <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
+      <slot :name="slotName" v-bind="slotProps ?? {}" />
+    </template>
+  </Timeline>
 </template>
 
 <script setup lang="ts">

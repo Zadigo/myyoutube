@@ -1,14 +1,7 @@
 <template>
-    <Tabs
-        :value="props.value"
-        unstyled
-        :pt="theme"
-        :pt-options="{
-            mergeProps: ptViewMerge
-        }"
-    >
-        <slot />
-    </Tabs>
+  <Tabs :value="props.value" unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+    <slot />
+  </Tabs>
 </template>
 
 <script setup lang="ts">
@@ -20,6 +13,6 @@ interface Props extends /* @vue-ignore */ TabsProps {}
 const props = defineProps<Props>()
 
 const theme = ref<TabsPassThroughOptions>({
-    root: `flex flex-col`
+  root: `flex flex-col`
 })
 </script>
