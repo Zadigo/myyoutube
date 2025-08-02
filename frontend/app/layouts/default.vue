@@ -1,55 +1,49 @@
 <template>
-  <section :class="{ full: !showSidebar }" class="dashboard">
+  <section :class="{ full: !showSidebar }" class="relative">
     <header>
       <!-- Sidebar -->
       <Transition tag="div" name="sidebar" mode="out-in">
-        <nav v-if="showSidebar" id="sidebar" class="collapse d-lg-block sidebar collapse bg-white">
-          <div class="position-sticky">
-            <SidebarsBase :links="navLinks" />
-          </div>
+        <nav v-if="showSidebar" id="sidebar" class="bg-white fixed top-0 left-0 bottom-0 p-3 shadow-md w-[240px] z-30">
+          <SidebarsBase :links="navLinks" />
         </nav>
       </Transition>
 
       <!-- Navbar -->
-      <nav v-show="$route.meta.requiresNav" id="main-navbar" class="navbar navbar-expand-lg fixed-top navbar-light bg-white">
+      <nav v-show="$route.meta.requiresNav" class="bg-white fixed top-0 left-0 right-0 p-2 shadow-md z-40">
         <div class="container-fluid">
-          <button class="navbar-toggler" type="button" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-            <font-awesome icon="bars" />
-          </button>
+          <VoltButton class="navbar-toggler" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <Icon name="i-fa7-soli:bars" />
+          </VoltButton>
           
-          <v-btn rounded="xl" text flat @click="showSidebar = !showSidebar">
-            <font-awesome icon="bars" />
-          </v-btn>
+          <VoltButton @click="showSidebar=!showSidebar">
+            <Icon name="i-fa7-soli:bars" />
+          </VoltButton>
 
           <NuxtLink to="/" class="navbar-brand">
             My Youtube
           </NuxtLink>
 
-          <ul class="navbar-nav ms-auto d-flex flex-row">
-            <v-avatar image="/avatar1.png" size="35" />
+          <ul class="ms-auto flex">
+            <VoltAvatar image="/avatar1.png" size="35" />
           </ul>
         </div>
       </nav>
     </header>
 
-    <main>
+    <main class="my-10 ps-[calc(240px+1rem)] pe-2">
       <slot />
-      <!-- <div class="container pt-4">
-      </div> -->
     </main>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
-const showSidebar = ref(true)
+const showSidebar = ref<boolean>(true)
 
 const navLinks = [
   {
     name: 'Home',
     to: 'feed',
-    icon: 'fas fa-home'
+    icon: 'i-fa7-solid:home'
   },
   // {
   //   name: 'Playlists',
@@ -64,43 +58,12 @@ const navLinks = [
   {
     name: 'My studio',
     to: 'my_studio',
-    icon: 'fas fa-chart-simple'
+    icon: 'i-fa7-solid:chart-simple'
   }
 ]
 </script>
 
 <style lang="scss" scoped>
-body {
-  background-color: #fbfbfb;
-}
-
-main {
-  margin-top: 58px;
-  margin-bottom: 58px;
-}
-
-@media (min-width: 991.98px) {
-  main {
-    padding-left: 240px;
-  }
-
-  footer {
-    padding-left: 240px;
-  }
-}
-
-/* Sidebar */
-.sidebar {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  padding: 58px 0 0;
-  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
-  width: 240px;
-  z-index: 600;
-}
-
 @media (max-width: 991.98px) {
   .sidebar {
     width: 100%;
@@ -114,13 +77,6 @@ main {
   padding-top: 0.5rem;
   overflow-x: hidden;
   overflow-y: auto;
-}
-
-#back-to-top {
-  position: fixed;
-  z-index: 1000;
-  top: 90%;
-  right: 2%;
 }
 
 .sidebar-enter-active,

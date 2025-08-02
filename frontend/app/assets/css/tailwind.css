@@ -3,38 +3,23 @@
 @import "tw-animate-css";
 
 @theme {
-  --brand-50: oklch(0.9699 0.012 247.95);
-  --brand-100: oklch(0.9115 0.035 244.21);
-  --brand-200: oklch(0.8539 0.0595 244.67);
-  --brand-300: oklch(0.7393 0.1082 246.42);
-  --brand-400: oklch(0.686 0.1318 247.55);
-  --brand-500: oklch(0.5737 0.1524 250.57);
-  --brand-600: oklch(0.445 0.1142 250.18);
-  --brand-700: oklch(0.375 0.0934 249.57);
-  --brand-800: oklch(0.3019 0.071 248.9);
-  --brand-900: oklch(0.2242 0.0465 247.48);
-  --brand-secondary-500: oklch(0.481 0.0605 187.75);
-  --brand-secondary-foreground-500: oklch(0.2472 0.0261 191.45);
-  --brand-destructive-500: oklch(0.421 0.1539 3.73);
-  --brand-destructive-foreground-500: oklch(0.2103 0.0671 0.1);
-
   --font-sans: 'Raleway', sans-serif;
   --font-title: 'Poppins', sans-serif;
 }
 
 /* Primary and Surface Palettes */
 :root {
-  --p-primary-50: #ecfdf5;
-  --p-primary-100: #d1fae5;
-  --p-primary-200: #a7f3d0;
-  --p-primary-300: #6ee7b7;
-  --p-primary-400: #34d399;
-  --p-primary-500: #10b981;
-  --p-primary-600: #059669;
-  --p-primary-700: #047857;
-  --p-primary-800: #065f46;
-  --p-primary-900: #064e3b;
-  --p-primary-950: #022c22;
+  --p-primary-50: #ecfafb;
+  --p-primary-100: #c5eff3;
+  --p-primary-200: #9fe4eb;
+  --p-primary-300: #79d9e3;
+  --p-primary-400: #53cedb;
+  --p-primary-500: #2cc4d3;
+  --p-primary-600: #24a0ac;
+  --p-primary-700: #1c7c86;
+  --p-primary-800: #145960;
+  --p-primary-900: #0c3539;
+  --p-primary-950: #041213;
   --p-surface-0: #ffffff;
   --p-surface-50: #fafafa;
   --p-surface-100: #f4f4f5;

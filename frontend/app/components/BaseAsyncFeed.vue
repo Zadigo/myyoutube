@@ -42,9 +42,9 @@ const { data } = await useFetch<VideosFeedResponseData[]>('/api/feed', {
   immediate: true
 })
 
-if (data) {
-  videos.value = data.value || []
-}
+videos.value = data.value || []
+
+// if (data) {}
 
 onMounted(() => {
   emit('feed-loaded', videos.value)
