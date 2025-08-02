@@ -1,3 +1,14 @@
 {
-    "vue3snippets.enable-compile-vue-file-on-did-save-code": false
+    "vue3snippets.enable-compile-vue-file-on-did-save-code": false,
+    "eslint.useFlatConfig": true,
+    "tailwindCSS.experimental.classRegex": [
+        [
+            "cva\\(((?:[^()]|\\([^()]*\\))*)\\)",
+            "[\"'`]([^\"'`]*).*?[\"'`]"
+        ],
+        [
+            "cx\\(((?:[^()]|\\([^()]*\\))*)\\)",
+            "(?:'|\"|`)([^']*)(?:'|\"|`)"
+        ]
+    ]
 }
