@@ -86,8 +86,8 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/tailwind.css',
 
-    '~/node_modules/bootstrap/dist/css/bootstrap.min.css',
-    '~/node_modules/mdb-ui-kit/css/mdb.min.css'
+    './node_modules/bootstrap/dist/css/bootstrap.min.css',
+    './node_modules/mdb-ui-kit/css/mdb.min.css'
   ],
 
   // https://www.fontpair.co/all

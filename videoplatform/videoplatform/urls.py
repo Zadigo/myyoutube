@@ -11,41 +11,41 @@ from rest_framework_simplejwt import views as jwt_views
 from videoplatform.views import ViewingProfileToken
 
 urlpatterns = [
-    re_path(
-        r'^api/v1/viewing/id$',
-        ViewingProfileToken.as_view(),
-        name='viewing_profile_id'
-    ),
     path(
         '__debug__/', 
         include(debug_toolbar.urls)
     ),
+    re_path(
+        r'^v1/viewing/id$',
+        ViewingProfileToken.as_view(),
+        name='viewing_profile_id'
+    ),
     path(
-        'api/v1/notifications/',
+        'v1/notifications/',
         include('notifications.api.urls')
     ),
     path(
-        'api/v1/playlists/',
+        'v1/playlists/',
         include('playlists.api.urls')
     ),
     path(
-        'api/v1/ratings/',
+        'v1/ratings/',
         include('ratings.api.urls')
     ),
     path(
-        'api/v1/comments/',
+        'v1/comments/',
         include('comments.api.urls')
     ),
     path(
-        'api/v1/accounts/',
+        'v1/accounts/',
         include('accounts.api.urls')
     ),
     path(
-        'api/v1/user-channels/',
+        'v1/user-channels/',
         include('mychannel.api.urls')
     ),
     path(
-        'api/v1/videos/',
+        'v1/videos/',
         include('videos.api.urls')
     ),
     path(

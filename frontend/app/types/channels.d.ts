@@ -1,4 +1,4 @@
-import type { CustomUser } from "./authentication"
+import type { CustomUser } from './authentication'
 
 export interface UserChannel {
     reference: string
@@ -16,14 +16,4 @@ export interface UserChannel {
     subscribers: []
     is_verified: boolean
     created_on: string
-}
-
-export interface NestedChannelInfo {
-    id: number
-    reference: string
-    name: string
-    number_of_subscribers: number
-    number_of_playlists: number
-    channelplaylist_set: string[]
-    tags: string[]
 }

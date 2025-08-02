@@ -1,18 +1,16 @@
-import type { VideoInfo } from '~/app/types'
-import { refreshAccessToken } from '~/app/utils'
+import type { VideosFeedResponseData } from '~/types'
+import { fixtureVideos } from '~/data/fixtures'
 
 export default defineEventHandler(async event => {
-  const refreshToken = getCookie(event, 'refresh')
-  const id = getRouterParam(event, 'id') as string
+  // const query = getQuery<{ q: string }>(event)
 
-  const response = await $fetch<VideoInfo>(`/api/v1/videos/${id}`, {
-    baseURL: useRuntimeConfig().public.djangoProdUrl,
-    onRequestError({ error, response }) {
-      if (response?.status === 401) {
-        refreshAccessToken(refreshToken)
-      }
-    }
-  })
+  // const response = await $fetch<VideosFeedResponseData>('/v1/videos', {
+  //   baseURL: useRuntimeConfig().public.djangoProdUrl,
+  //   params: {
+  //     q: query.q
+  //   }
+  // })
 
-  return response
+  // return response
+  return fixtureVideos
 })

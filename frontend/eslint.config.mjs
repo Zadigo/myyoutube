@@ -2,6 +2,12 @@
 import withNuxt from './.nuxt/eslint.config.mjs'
 
 export default withNuxt({
+  ignores: [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/volt/**"
+  ],
   rules: {
     "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "brace-style": "error",

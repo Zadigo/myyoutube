@@ -1,17 +1,18 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { VideoInfo } from '~/types'
+import type { VideoInfo, VideosFeedResponseData } from '~/types'
 
 export const useFeed = defineStore('feed', () => {
-  const videos = ref<VideoInfo[]>([])
+  const videos = ref<VideosFeedResponseData[]>([])
   const currentVideo = ref<VideoInfo>()
 
-  const hasVideos = computed(() => {
-    return videos.value.length > 0
-  })
+  const hasVideos = computed(() => videos.value.length > 0)
 
   return {
     videos,
+    /**
+     * @deprecated
+     */
     currentVideo,
     hasVideos
   }

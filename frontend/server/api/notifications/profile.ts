@@ -1,6 +1,6 @@
-import { refreshAccessToken } from '~/app/utils'
+import { refreshAccessToken } from '~/utils'
 
-import type { NotificationProfile } from '~/app/types'
+import type { NotificationProfile } from '~/types'
 
 export default defineCachedEventHandler(async (event) => {
   const refresh = getCookie(event, 'refresh')

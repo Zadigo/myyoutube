@@ -1,5 +1,16 @@
 import type { CustomUser } from './authentication'
-import type { NestedChannelInfo } from './channels'
+
+export interface VideoTag {
+    id: number
+    name: string
+}
+
+export type NestedChannelInfo = Pick<UserChannel, 'reference', 'name'> & {
+    number_of_subscribers: number
+    number_of_playlists: number
+    channelplaylist_set: string[]
+    tags: VideoTag[]
+}
 
 export interface VideosFeedResponseData {
     id: number

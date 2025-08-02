@@ -1,58 +1,50 @@
 <template>
-  <div v-if="hasVideos" class="row">
-    <div v-for="video in videos" :key="video.id" class="col-3 my-1">
-      <NuxtLink :to="`/videos/${video.video_id}`" :data-id="video.video_id">
-        <article class="card shadow-sm" :aria-label="video.title">
-          <BaseSkeleton :loading="true" height="100px" />
+  <div v-if="hasVideos" class="grid grid-cols-3 auto-rows-min gap-2">
+    <article v-for="video in videos" :key="video.id" class="my-1">
+      <NuxtLinkLocale :to="`/videos/${video.video_id}`">
+        <VoltCard>
+          <NuxtSkeleton class="h-[200px]" />
 
-          <div class="card-body">
-            <h1 class="h5 fw-bold card-title mb-1">
-              {{ video.title }}
-            </h1>
+          <h1 class="font-bold mb-1">
+            {{ video.title }}
+          </h1>
 
-            <p class="fw-light">
-              {{ video.user.get_full_name }}
-            </p>
-          </div>
-        </article>
-      </NuxtLink>
-    </div>
+          <p class="font-light">
+            {{ video.user.get_full_name }}
+          </p>
+        </VoltCard>
+      </NuxtLinkLocale>
+    </article>
   </div>
 
   <div v-else class="row">
-    <h2 class="text-center fw-bold">
-      No videos
-    </h2>
+    <VoltCard>
+      <template #content>
+        <h2 class="text-center font-bold text-3xl">
+          No videos
+        </h2>
+      </template>
+    </VoltCard>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { VideoInfo } from '~/types'
+import type { VideosFeedResponseData } from '~/types'
 
-import { useFeed } from '~/stores/feed';
-import { storeToRefs } from 'pinia';
+const emit = defineEmits<{ 'feed-loaded': [videos: VideosFeedResponseData[]] }>()
 
-const emit = defineEmits({
-'feed-loaded' (_videos: VideoInfo[]) {
-    return true
-  }
-})
-
-const { client } = useAxiosClient()
 const feedStore = useFeed()
 const { videos, hasVideos } = storeToRefs(feedStore)
 
-async function requestVideos () {
-  try {
-    const response = await client.get<VideoInfo[]>('/videos/')
-    feedStore.videos = response.data
-  } catch (e) {
-    // Handle error
-    console.log(e)
-  }
-}
+const { data } = await useFetch<VideosFeedResponseData[]>('/api/feed', {
+  method: 'GET',
+  baseURL: useRuntimeConfig().public.djangoProdUrl,
+  immediate: true
+})
 
-await requestVideos()
+if (data) {
+  videos.value = data.value || []
+}
 
 onMounted(() => {
   emit('feed-loaded', videos.value)

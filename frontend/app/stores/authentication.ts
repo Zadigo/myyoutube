@@ -1,26 +1,26 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia'
 
-export const useAuthentication = defineStore('authentication', () => {
-    const accessToken = ref<string>()
-    const refreshToken = ref<string>()
+export const useAuthenticationStore = defineStore('authentication', () => {
+  const accessToken = ref<string | null | undefined>()
+  const refreshToken = ref<string | null | undefined>()
 
-    const isAuthenticated = computed(() => {
-        return (
-            accessToken.value !== '' || 
-            accessToken.value !== null ||
-            typeof accessToken.value !== 'undefined'
-        )
-    })
+  const isAuthenticated = computed(() => {
+    return (
+      accessToken.value !== '' ||
+      accessToken.value !== null ||
+      typeof accessToken.value !== 'undefined'
+    )
+  })
 
-    function logout() {
-        accessToken.value = ''
-        refreshToken.value = ''
-    }
+  function logout() {
+    accessToken.value = ''
+    refreshToken.value = ''
+  }
 
-    return {
-        logout,
-        isAuthenticated,
-        accessToken,
-        refreshToken
-    }
+  return {
+    logout,
+    isAuthenticated,
+    accessToken,
+    refreshToken
+  }
 })

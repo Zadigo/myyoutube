@@ -1,5 +1,5 @@
 <template>
-  <section id="videos" class="container px-5">
+  <section id="videos">
     <VoltCard>
       <template #content>
         <form class="space-y-2" @submit.prevent>
@@ -15,7 +15,7 @@
 
       <template #footer>
         <VoltButton>
-          <font-awesome icon="sort" /> Sort by: 
+          <Ion name="i-fa7-solid:sort" /> Sort by: 
         </VoltButton>
       </template>
     </VoltCard>
@@ -43,6 +43,6 @@ import { defineAsyncComponent } from 'vue'
 import { defaultVideoLength, defaultMainCategories, defaultUploadDate } from '~/data'
 
 const AsyncFeedComponent = defineAsyncComponent({
-  loader: () => import('~s/components/BaseAsyncFeed.vue')
+  loader: () => import('~/components/BaseAsyncFeed.vue')
 })
 </script>
