@@ -26,11 +26,6 @@ export default defineNuxtConfig({
     ]
   },
 
-  shadcn: {
-    prefix: '',
-    componentDir: './components/ui'
-  },
-
   vuefire: {
     config: {
       apiKey: process.env.NUXT_FIREBASE_API_KEY,
@@ -83,9 +78,9 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
     '@nuxt/fonts',
+    '@nuxt/icon',
     'vue-sonner/nuxt',
-    'shadcn-nuxt',
-    '@nuxt/icon'
+    'nuxt-vuefire'
   ],
 
   css: [
