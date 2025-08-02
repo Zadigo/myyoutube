@@ -1,6 +1,6 @@
-import { refreshAccessToken } from '~/utils'
+import { refreshAccessToken } from '~/apps/utils'
 
-import type { VideosFeedResponseData } from '~/types'
+import type { VideosFeedResponseData } from '~/apps/types'
 
 export default defineCachedEventHandler(async (event) => {
   const refresh = getCookie(event, 'refresh')

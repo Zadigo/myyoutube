@@ -55,55 +55,37 @@ export default defineNuxtConfig({
     }
   },
   
+  // '@artmizu/nuxt-prometheus',
+  // 'vuetify-nuxt-module',
+  // '@nuxtjs/i18n',
+
   modules: [
     '@nuxt/eslint',
-    '@pinia/nuxt',
-    '@artmizu/nuxt-prometheus',
     '@vesp/nuxt-fontawesome',
-    '@nuxtjs/google-fonts',
     '@nuxt/test-utils/module',
     '@unlok-co/nuxt-stripe',
     '@nuxtjs/sitemap',
     '@nuxt/image',
-    'nuxt-openapi-docs-module',
-    // 'vuetify-nuxt-module',
-    // '@nuxtjs/i18n',
-    'vue-sonner/nuxt',
+    '@pinia/nuxt',
     '@vueuse/nuxt',
+    '@nuxtjs/i18n',
+    '@nuxt/fonts',
+    'vue-sonner/nuxt',
     'shadcn-nuxt',
-    '@nuxtjs/i18n'
+    '@nuxt/icon'
   ],
 
   css: [
-    '~/assets/css/tailwind.css'
-    // '~/assets/style.scss',
-    // '~/node_modules/bootstrap/dist/css/bootstrap.min.css',
-    // '~/node_modules/mdb-ui-kit/css/mdb.min.css'
+    '~/assets/css/tailwind.css',
+
+    '~/assets/style.scss',
+    '~/node_modules/bootstrap/dist/css/bootstrap.min.css',
+    '~/node_modules/mdb-ui-kit/css/mdb.min.css'
   ],
-  
-  googleFonts: {
-    display: 'swap',
-    families: {
-      Raleway: {
-        wght: '100..900'
-      },
-      Poppins: {
-        wght: '100..900'
-      },
-      'Be Vietnam Pro': {
-        wght: '100..900'
-      }
-    }
-  },
 
   // https://www.fontpair.co/all
   fonts: {
     provider: 'google',
-    defaults: {
-      fallbacks: {
-        "sans-serif": ['Arial', 'Helvetica', 'sans-serif']
-      }
-    },
     families: [
       {
         name: 'Raleway',

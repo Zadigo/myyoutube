@@ -1,6 +1,6 @@
-import { refreshAccessToken } from '~/utils'
+import { refreshAccessToken } from '~/apps/utils'
 
-import type { Playlist } from '~/types'
+import type { Playlist } from '~/apps/types'
 
 export default defineEventHandler(async (event) => {
   const refresh = getCookie(event, 'refresh')

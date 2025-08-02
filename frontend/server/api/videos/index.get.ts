@@ -1,5 +1,5 @@
-import type { VideoInfo } from '~/types'
-import { refreshAccessToken } from '~/utils'
+import type { VideoInfo } from '~/apps/types'
+import { refreshAccessToken } from '~/apps/utils'
 
 export default defineEventHandler(async event => {
   const refreshToken = getCookie(event, 'refresh')
