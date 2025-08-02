@@ -30,6 +30,19 @@ export default defineNuxtConfig({
     prefix: '',
     componentDir: './components/ui'
   },
+
+  vuefire: {
+    config: {
+      apiKey: process.env.NUXT_FIREBASE_API_KEY,
+      authDomain: process.env.NUXT_FIREBASE_AUTH_DOMAIN,
+      dbUrl: process.env.NUXT_FIREBASE_DB_URL,
+      storageBucket: process.env.NUXT_FIREBASE_STORAGE_BUCKET,
+      appId: process.env.NUXT_FIREBASE_APP_ID,
+      measurementId: process.env.NUXT_FIREBASE_MEASUREMENT_ID,
+      messageSenderId: process.env.NUXT_FIREBASE_MESSAGE_SENDER_ID,
+      projectId: process.env.NUXT_FIREBASE_PROJECT_ID
+    }
+  },
   
   runtimeConfig: {
     public: {
