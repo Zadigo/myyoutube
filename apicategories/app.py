@@ -6,7 +6,7 @@ from functools import lru_cache
 from quart import Quart, jsonify
 from quart_cors import cors
 
-from video_api import BASE_PROJECT, MEDIA_PATH, get_debug
+from apicategories import BASE_PROJECT, MEDIA_PATH, get_debug
 
 app = Quart(__name__, root_path=BASE_PROJECT)
 app = cors(app, allow_credentials=True, allow_origin=[
