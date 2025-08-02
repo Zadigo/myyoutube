@@ -161,4 +161,4 @@ logs
 .env.*
 !.env.example
 
-external_fixtures/*.mp4
+external_fixtures/
