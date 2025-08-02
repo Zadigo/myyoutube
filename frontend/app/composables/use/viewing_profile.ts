@@ -1,4 +1,4 @@
-import { doc, setDoc } from 'firebase/firestore'
+import { addDoc, collection } from 'firebase/firestore'
 import { useFirestore } from 'vuefire'
 
 export interface ViewingProfileApiResponse {
@@ -6,7 +6,7 @@ export interface ViewingProfileApiResponse {
 }
 
 export function useViewingProfile() { 
-  const viewingProfileId = useCookie('vp_id')
+  const viewingProfileId = useCookie<string>('vpprofile', { sameSite: true, secure: true })
 
   return {
     viewingProfileId
@@ -31,10 +31,21 @@ export function useCreateViewingProfile() {
 
     // return response
 
-    const docRef = doc(db, 'youtube', '11Ugo5hYONkww3FS877T')
-    await setDoc(docRef, { vpprofile: '1234-youtube' })
+    // const docRef = doc(db, 'youtube', '11Ugo5hYONkww3FS877T')
+    // await setDoc(docRef, { vpprofile: '1234-youtube' })
 
-    return '1234-youtube'
+    try {
+      if (!viewingProfileId.value) {
+        const collectionRef = collection(db, 'youtube')
+        const profile = await addDoc(collectionRef, { vpprofile: '2345-youtube' })
+    
+        viewingProfileId.value = profile.id
+      }
+    } catch (e) {
+      console.error(e)
+    }
+    
+    return viewingProfileId.value
   }, {
     immediate: false
   })

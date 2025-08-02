@@ -2,11 +2,12 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { VideoInfo, VideosFeedResponseData } from '~/types'
 
-export const useFeed = defineStore('feed', () => {
-  const videos = ref<VideosFeedResponseData[]>([])
+export const useFeedStore = defineStore('feed', () => {
+  const videos = reactive<VideosFeedResponseData[]>([])
+
   const currentVideo = ref<VideoInfo>()
 
-  const hasVideos = computed(() => videos.value.length > 0)
+  const hasVideos = computed(() => videos.length > 0)
 
   return {
     videos,
@@ -14,6 +15,9 @@ export const useFeed = defineStore('feed', () => {
      * @deprecated
      */
     currentVideo,
+    /**
+     * Indicates if the feed has any videos
+     */
     hasVideos
   }
 })

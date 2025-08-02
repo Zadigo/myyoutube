@@ -1,4 +1,4 @@
-import type { VideosFeedResponseData } from '~/types'
+// import type { VideosFeedResponseData } from '~/types'
 import { fixtureVideos } from '~/data/fixtures'
 
 export default defineEventHandler(async event => {
@@ -11,6 +11,5 @@ export default defineEventHandler(async event => {
   //   }
   // })
 
-  // return response
   return fixtureVideos
 })
