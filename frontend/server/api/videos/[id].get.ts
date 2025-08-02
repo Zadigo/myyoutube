@@ -1,4 +1,4 @@
-import type { VideosFeedResponseData } from '~/apps/types'
+import type { VideosFeedResponseData } from '~/app/types'
 
 export default defineEventHandler(async event => {
   const query = getQuery<{ q: string }>(event)

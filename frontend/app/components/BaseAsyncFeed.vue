@@ -27,9 +27,9 @@
 </template>
 
 <script setup lang="ts">
-import type { VideoInfo } from '~/apps/types'
+import type { VideoInfo } from '~/types'
 
-import { useFeed } from '~/apps/stores/feed';
+import { useFeed } from '~/stores/feed';
 import { storeToRefs } from 'pinia';
 
 const emit = defineEmits({

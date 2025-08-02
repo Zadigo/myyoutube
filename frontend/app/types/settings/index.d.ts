@@ -1,5 +1,5 @@
-import type { DefaultMainCategories } from '~/apps/data'
-import type { KeywordOperators, JoinOperators } from '~/apps/data/constants/operators'
+import type { DefaultMainCategories } from '~/data'
+import type { KeywordOperators, JoinOperators } from '~/data/constants/operators'
 
 export interface AlgorithmConditionBlock {
   id: number

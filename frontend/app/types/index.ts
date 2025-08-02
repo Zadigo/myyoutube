@@ -1,5 +1,5 @@
 import type { RouteParamsGeneric } from 'vue-router'
-import type { DefaultVideoMenuActions } from '~/apps/data/constants/video'
+import type { DefaultVideoMenuActions } from '~/data/constants/video'
 
 export * from './accounts'
 export * from './channels'

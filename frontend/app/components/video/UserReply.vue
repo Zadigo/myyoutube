@@ -52,7 +52,7 @@
 
 <script lang="ts" setup>
 import type { PropType } from 'vue';
-import type { VideoComment } from '~/apps/types';
+import type { VideoComment } from '~/types';
 
 defineProps({
   reply: {

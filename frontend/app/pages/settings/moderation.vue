@@ -167,9 +167,9 @@
 import { useRefHistory } from '@vueuse/core'
 import { ref } from 'vue'
 
-import type { BlockedChannel } from '~/apps/types'
+import type { BlockedChannel } from '~/types'
 
-import SettingsCard from '~/apps/components/settings/Card.vue'
+import SettingsCard from '~s/components/settings/Card.vue'
 
 
 const blockingDurations = [

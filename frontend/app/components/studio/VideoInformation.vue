@@ -100,7 +100,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { Categories, FileUploadRequestData, Subcategories, SessionCache } from '~/apps/types';
+import type { Categories, FileUploadRequestData, Subcategories, SessionCache } from '~/types';
 import { useSessionStorage, whenever } from '@vueuse/core';
 import { computed, inject, ref } from 'vue';
 

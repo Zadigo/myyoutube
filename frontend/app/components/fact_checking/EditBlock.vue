@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { SourceDetails } from '~/apps/types';
+import type { SourceDetails } from '~/types';
 import type { PropType } from 'vue';
 import { ref } from 'vue';
 

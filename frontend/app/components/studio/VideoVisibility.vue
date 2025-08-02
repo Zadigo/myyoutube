@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { FileUploadRequestData } from '~/apps/types/studio';
+import type { FileUploadRequestData } from '~/types/studio';
 import { inject } from 'vue';
 
 const requestData = inject<FileUploadRequestData>('requestData')

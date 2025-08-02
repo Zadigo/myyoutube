@@ -51,7 +51,7 @@
 
 <script setup lang="ts">
 import { inject } from 'vue'
-import type { VideoInfo } from '~/apps/types'
+import type { VideoInfo } from '~/types'
 
 const currentVideo = inject<VideoInfo>('currentVideo')
 </script>

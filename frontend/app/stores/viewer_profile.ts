@@ -1,4 +1,4 @@
-import type { NotificationProfile, ViewingProfile } from "~/apps/types"
+import type { NotificationProfile, ViewingProfile } from "~/types"
 
 export const useViewerProfile = defineStore('viewer_profile', () => {
     const profileData = ref<ViewingProfile>()

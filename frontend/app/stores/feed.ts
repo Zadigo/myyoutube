@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { VideoInfo } from '~/apps/types'
+import type { VideoInfo } from '~/types'
 
 export const useFeed = defineStore('feed', () => {
   const videos = ref<VideoInfo[]>([])

@@ -29,7 +29,7 @@
 
 <script lang="ts" setup>
 import { computed, provide, ref } from 'vue';
-import type { FileUploadRequestData } from '~/apps/types';
+import type { FileUploadRequestData } from '~/types';
 
 const steps = [
   {

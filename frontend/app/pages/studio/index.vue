@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { VideoInfo } from '~/apps/types';
+import type { VideoInfo } from '~/types';
 import { onBeforeMount, ref } from 'vue';
 
 const { $client } = useNuxtApp()

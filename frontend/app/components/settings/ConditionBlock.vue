@@ -84,8 +84,8 @@
 </template>
 
 <script setup lang="ts">
-import { negationOperators, joinOperators, type JoinOperators, type NegationOperators, defaultMainCategories, keywordOperators } from '~/apps/data'
-import type { AlgorithmConditionBlock } from '~/apps/types'
+import { negationOperators, joinOperators, type JoinOperators, type NegationOperators, defaultMainCategories, keywordOperators } from '~/data'
+import type { AlgorithmConditionBlock } from '~/types'
 
 const props = defineProps({
   condition: {

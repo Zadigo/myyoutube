@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ExtendedRouteParamsGeneric, VideoComment } from '~/apps/types'
+import type { ExtendedRouteParamsGeneric, VideoComment } from '~/types'
 
 const sortActions = [
   'Newest',

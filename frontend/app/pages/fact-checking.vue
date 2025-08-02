@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { SourceDetails } from '~/apps/types';
+import type { SourceDetails } from '~/types';
 import { ref } from 'vue';
 
 const blocks = ref<SourceDetails[]>([

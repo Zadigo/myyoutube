@@ -137,7 +137,7 @@ import { computed, ref } from 'vue'
 import { whenever } from '@vueuse/core'
 import { z } from 'zod'
 
-import type { Playlist, PlaylistVideo } from '~/apps/types'
+import type { Playlist, PlaylistVideo } from '~/types'
 
 const { $client } = useNuxtApp()
 

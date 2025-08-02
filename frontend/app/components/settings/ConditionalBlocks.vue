@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { z } from 'zod'
 import { watchArray } from '@vueuse/core'
-import { joinOperators, keywordOperators } from '~/apps/data/constants/operators'
+import { joinOperators, keywordOperators } from '~/data/constants/operators'
 
 const AlgorithmConditionBlockSchema = z.object({
   id: z.number(),

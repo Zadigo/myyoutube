@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { reportTypes } from '~/apps/data'
+import { reportTypes } from '~/data'
 
 const emit = defineEmits({
   'update:modelValue' (_value: boolean) {

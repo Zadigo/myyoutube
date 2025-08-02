@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
-import type { UserChannel } from '~/apps/types';
+import type { UserChannel } from '~/types';
 
 const route = useRoute()
 const { client } = useAxiosClient()

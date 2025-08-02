@@ -99,7 +99,7 @@
 <script lang="ts" setup>
 import { inject, ref, watch } from 'vue'
 import { setDoc, updateDoc, doc, getDoc, getFirestore } from 'firebase/firestore'
-import type { Playlist, VideoInfo, VideoMenuAction, VideoMenuItem } from '~/apps/types';
+import type { Playlist, VideoInfo, VideoMenuAction, VideoMenuItem } from '~/types';
 
 const menuItems: VideoMenuItem[] = [
   {

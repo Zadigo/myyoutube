@@ -69,15 +69,15 @@
 </template>
 
 <script setup lang="ts">
-import type { Playlist, VideoInfo, VideoMenuAction } from '~/apps/types'
+import type { Playlist, VideoInfo, VideoMenuAction } from '~/types'
 
 const AsyncVideoCommentSection = defineAsyncComponent({
-  loader: () => import('~/apps/components/video/AsyncCommentSection.vue'),
+  loader: () => import('~s/components/video/AsyncCommentSection.vue'),
   timeout: 5000
 })
 
 const AsyncRecommendationSection = defineAsyncComponent({
-  loader: () => import('~/apps/components/video/UserRecommendations.vue'),
+  loader: () => import('~s/components/video/UserRecommendations.vue'),
   timeout: 5000
 })
 

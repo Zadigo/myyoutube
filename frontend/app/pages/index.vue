@@ -40,9 +40,9 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
-import { defaultVideoLength, defaultMainCategories, defaultUploadDate } from '~/apps/data'
+import { defaultVideoLength, defaultMainCategories, defaultUploadDate } from '~/data'
 
 const AsyncFeedComponent = defineAsyncComponent({
-  loader: () => import('~/apps/components/BaseAsyncFeed.vue')
+  loader: () => import('~s/components/BaseAsyncFeed.vue')
 })
 </script>

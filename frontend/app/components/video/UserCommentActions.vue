@@ -26,7 +26,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import type { VideoComment } from '~/apps/types'
+import type { VideoComment } from '~/types'
 
 const emit = defineEmits({
   'new-comment' (_comment: VideoComment) {

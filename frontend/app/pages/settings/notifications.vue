@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import type { NotificationProfile } from '~/apps/types'
+import type { NotificationProfile } from '~/types'
 
 useHead({
   title: 'Notifications'

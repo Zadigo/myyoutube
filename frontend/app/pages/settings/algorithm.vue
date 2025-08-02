@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { CustomUser } from '~/apps/types'
+import type { CustomUser } from '~/types'
 
 definePageMeta({
   layout: 'settings'

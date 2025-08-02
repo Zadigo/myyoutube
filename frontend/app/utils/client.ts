@@ -1,4 +1,4 @@
-import type { CustomLoginApiResponse, LoginApiResponse, RefreshApiResponse } from "~/apps/types"
+import type { CustomLoginApiResponse, LoginApiResponse, RefreshApiResponse } from "~/types"
 
 /**
  * Helper function used to ask for a new access

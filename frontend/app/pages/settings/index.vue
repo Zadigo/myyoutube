@@ -124,7 +124,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { ViewingProfile } from '~/apps/types'
+import type { ViewingProfile } from '~/types'
 
 definePageMeta({
   layout: 'settings'

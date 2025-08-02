@@ -1,4 +1,4 @@
-import type { UserChannel } from '~/apps/types'
+import type { UserChannel } from '~/types'
 import { defineStore } from 'pinia'
 
 export const useChannels = defineStore('channels', () => {

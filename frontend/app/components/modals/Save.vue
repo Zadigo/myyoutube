@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Playlist } from '~/apps/types'
+import type { Playlist } from '~/types'
 
 const emit = defineEmits({
   'update:modelValue' (_value: boolean) {
