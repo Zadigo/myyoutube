@@ -1,9 +1,10 @@
 <template>
   <section id="video-details">
-    <section v-if="currentVideo" id="video-player">
-      <VideoPlayerBase :video-source="videoSource" />
-      <!-- <BaseVideoPlayer :video-source="videoSource" /> -->
-    </section>
+    <ClientOnly>
+      <section v-if="currentVideo" id="video-player">
+        <VideoPlayerBase :video-source="videoSource" />
+      </section>
+    </ClientOnly>
 
     <section id="information" class="mt-4">
       <!-- Actions -->
@@ -84,8 +85,6 @@ const { currentVideo, isLoading } = storeToRefs(videoDetailStore)
 
 provide('currentVideo', currentVideo)
 provide('isLoading', isLoading)
-
-console.log('[id]', currentVideo)
 
 videoDetailStore.testRun()
 
