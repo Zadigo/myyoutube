@@ -24,7 +24,7 @@
           </NuxtLink>
 
           <ul class="ms-auto flex">
-            <VoltAvatar image="/avatar1.png" size="35" />
+            <VoltAvatar image="/avatars/avatar1.png" size="35" />
           </ul>
         </div>
       </nav>

@@ -73,7 +73,7 @@
                 <div class="d-flex justify-content-around align-items-center">
                   <NuxtLink :to="`/videos/${video.video_id}`">
                     <div class="video">
-                      <v-img src="/avatar3.png" width="140" />
+                      <VoltAvatar src="/avatars/avatar3.png" width="140" />
                     </div>
                   </NuxtLink>
 

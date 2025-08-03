@@ -4,7 +4,7 @@
       <div class="d-flex justify-content-around">
         <div class="me-3">
           <NuxtLink :to="`/channels/ch_noienozinfoz`" aria-label="">
-            <v-img src="/avatar3.png" class="img-fluid rounded-circle" width="40px" alt="Image 3" />
+            <VoltAvatar src="/avatars/avatar3.png" class="img-fluid rounded-circle" width="40px" alt="Image 3" />
           </NuxtLink>
         </div>
 

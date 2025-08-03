@@ -2,8 +2,9 @@ export interface VideoComment {
     id: number
     user: {
         id: number
-        firstname: string
-        lastname: string
+        firstname: string | null
+        lastname: string | null
+        username: string
         get_full_name: string
     },
     content: string

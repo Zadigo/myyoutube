@@ -1,31 +1,31 @@
 <template>
-  <div class="card shadow-none">
-    <div class="card-body">
-      <div class="d-flex justify-content-start align-items-start gap-4">
-        <img src="/avatar3.png" width="60" height="60" class="img-fluid rounded-circle" alt="">
+  <VoltCard class="shadow-none">
+    <template #content>
+      <div class="flex justify-start items-start gap-4">
+        <VoltAvatar image="/avatars/avatar3.png" shape="circle" size="large" alt="" />
+
         <div class="actions" style="width: 100%;">
-          <v-textarea v-model="requestData.content" label=""  clearable flat />
+          <textarea v-model="requestData.content" label="" />
           
-          <div class="d-flex gap-2">
-            <v-btn color="secondary" size="small" rounded="xl" flat>
+          <div class="flex gap-2">
+            <VoltButton variant="info" size="small" rounded>
               Cancel
-            </v-btn>
+            </VoltButton>
 
-            <EmojisPicker @emoji-click="hanlePickEmoji" />
+            <!-- <EmojisPicker @emoji-click="hanlePickEmoji" /> -->
 
-            <v-btn color="secondary" size="small" rounded="xl" flat @click="handleCreateComment ">
-              <font-awesome icon="fas fa-comment" class="me-2" />
+            <VoltButton variant="info" size="small" rounded @click="handleCreateComment ">
+              <Icon name="i-fa7-solid:comment" />
               Comment
-            </v-btn>
+            </VoltButton>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </template>
+  </VoltCard>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
 import type { VideoComment } from '~/types'
 
 const emit = defineEmits({

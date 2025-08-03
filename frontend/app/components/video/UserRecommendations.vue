@@ -1,11 +1,11 @@
 <template>
-  <aside class="mt-3">
+  <aside class="mt-3 bg-slate-100 rounded-lg h-[800px] overflow-y-scroll p-3">
     <NuxtLink :to="`/channels/ch_noienozinfoz`">
-      <div v-for="i in 10" :key="i" class="card mt-1">
-        <div class="card-body">
+      <VoltCard v-for="i in 120" :key="i" class="mt-1">
+        <template #content>
           Something
-        </div>
-      </div>
+        </template>
+      </VoltCard>
     </NuxtLink>
   </aside>
 </template>

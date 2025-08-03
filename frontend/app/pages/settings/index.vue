@@ -61,8 +61,8 @@
             <div class="list-group my-2">
               <NuxtLink to="/" class="list-group-item list-group-item-action">
                 <div class="d-flex align-items-center gap-3">
-                  <v-avatar image="/avatar1.png" size="30" alt="" />
-                  
+                  <VoltAvatar image="/avatars/avatar1.png" size="30" alt="" />
+
                   <p class="m-0">
                     Channel name 1
                   </p>

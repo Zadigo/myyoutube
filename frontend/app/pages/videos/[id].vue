@@ -1,7 +1,7 @@
 <template>
   <section id="video-details">
     <section v-if="currentVideo" id="video-player">
-      <!-- <VideoPlayerBase :video-source="videoSource" /> -->
+      <VideoPlayerBase :video-source="videoSource" />
       <!-- <BaseVideoPlayer :video-source="videoSource" /> -->
     </section>
 
@@ -14,37 +14,41 @@
       <VideoInformation />
     </section>
 
-    <section class="grid grid-cols-12 mt-4">
+    <section class="grid grid-cols-12 gap-2 mt-4">
       <!-- Comments -->
       <div class="col-span-8">
-        <!-- <Suspense>
+        <Suspense>
           <template #default>
-            <AsyncVideoCommentSection />
+            <ClientOnly>
+              <AsyncVideoCommentSection />
+            </ClientOnly>
           </template>
 
           <template #fallback>
-            <BaseSkeleton :loading="true" />
+            <VoltSkeleton height="100px" />
           </template>
-        </Suspense> -->
+        </Suspense>
       </div>
 
       <!-- Recommendations -->
       <div class="col-span-4">
-        <VoltCard class="card">
+        <VoltCard>
           <template #content>
             Filters
           </template>
         </VoltCard>
 
-        <!-- <suspense>
+        <Suspense>
           <template #default>
-            <AsyncRecommendationSection />
+            <ClientOnly>
+              <AsyncRecommendationSection />
+            </ClientOnly>
           </template>
 
           <template #fallback>
-            <BaseSkeleton :loading="true" />
+            <VoltSkeleton height="100px" />
           </template>
-        </suspense> -->
+        </Suspense>
       </div>
     </section>
 
@@ -65,15 +69,15 @@
 <script setup lang="ts">
 import { useVideoDetailModals } from '~/composables/use'
 
-// const AsyncVideoCommentSection = defineAsyncComponent({
-//   loader: () => import('~/components/video/AsyncCommentSection.vue'),
-//   timeout: 5000
-// })
+const AsyncVideoCommentSection = defineAsyncComponent({
+  loader: () => import('~/components/video/comment/Section.vue'),
+  timeout: 5000
+})
 
-// const AsyncRecommendationSection = defineAsyncComponent({
-//   loader: () => import('~/components/video/UserRecommendations.vue'),
-//   timeout: 5000
-// })
+const AsyncRecommendationSection = defineAsyncComponent({
+  loader: () => import('~/components/video/UserRecommendations.vue'),
+  timeout: 5000
+})
 
 const videoDetailStore = useVideoDetailStore()
 const { currentVideo, isLoading } = storeToRefs(videoDetailStore)

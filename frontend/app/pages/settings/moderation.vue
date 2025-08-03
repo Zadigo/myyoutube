@@ -20,7 +20,7 @@
             <div class="list-group">
               <div v-for="blockedChannel in blockedChannels" :key="blockedChannel.channel.reference" class="list-group-item d-flex justify-content-between align-items-center">
                 <div class="d-flex justify-content-start align-items-center gap-3">
-                  <v-avatar image="/avatar1.png" size="20" />
+                  <VoltAvatar image="/avatars/avatar1.png" size="20" />
                   <span>{{ blockedChannel.channel.name }}</span>
                 </div>
 
