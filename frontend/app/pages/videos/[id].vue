@@ -1,165 +1,91 @@
 <template>
-  <section id="video">
-    <section class="row">
-      <div v-if="currentVideo" class="col-12">
-        <!-- <BaseVideoPlayer :video-source="videoSource" /> -->
+  <section id="video-details">
+    <section v-if="currentVideo" id="video-player">
+      <!-- <VideoPlayerBase :video-source="videoSource" /> -->
+      <!-- <BaseVideoPlayer :video-source="videoSource" /> -->
+    </section>
+
+    <section id="information" class="mt-4">
+      <!-- Actions -->
+      <!-- @action="openModal" -->
+      <VideoActionsCard />
+
+      <!-- Information -->
+      <VideoInformation />
+    </section>
+
+    <section class="grid grid-cols-12 mt-4">
+      <!-- Comments -->
+      <div class="col-span-8">
+        <!-- <Suspense>
+          <template #default>
+            <AsyncVideoCommentSection />
+          </template>
+
+          <template #fallback>
+            <BaseSkeleton :loading="true" />
+          </template>
+        </Suspense> -->
+      </div>
+
+      <!-- Recommendations -->
+      <div class="col-span-4">
+        <VoltCard class="card">
+          <template #content>
+            Filters
+          </template>
+        </VoltCard>
+
+        <!-- <suspense>
+          <template #default>
+            <AsyncRecommendationSection />
+          </template>
+
+          <template #fallback>
+            <BaseSkeleton :loading="true" />
+          </template>
+        </suspense> -->
       </div>
     </section>
 
-    <div class="container">
-      <section class="row mt-4">
-        <!-- Actions -->
-        <BaseSkeleton :loading="isLoading">
-          <VideoUserActions @action="handleAction" @update-playlists="handleSaveToPlaylist" />
-        </BaseSkeleton>
-
-        <!-- Information -->
-        <BaseSkeleton :loading="isLoading">
-          <VideoInformation />
-        </BaseSkeleton>
-      </section>
-
-      <section class="row mt-4">
-        <!-- Comments -->
-        <div class="col-8">
-          <Suspense>
-            <template #default>
-              <AsyncVideoCommentSection />
-            </template>
-
-            <template #fallback>
-              <BaseSkeleton :loading="true" />
-            </template>
-          </Suspense>
-        </div>
-
-        <!-- Recommendations -->
-        <div class="col-4">
-          <div class="card">
-            <div class="card-body">
-              Filters
-            </div>
-          </div>
-
-          <suspense>
-            <template #default>
-              <AsyncRecommendationSection />
-            </template>
-
-            <template #fallback>
-              <BaseSkeleton :loading="true" />
-            </template>
-          </suspense>
-        </div>
-      </section>
-    </div>
-
     <!-- Modals -->
     <ClientOnly>
-      <ModalsClassification v-model="showClassificationDrawer" />
+      <!-- <ModalsClassification v-model="showClassificationDrawer" />
       <ModalsReport v-model="showReportModal" />
-      <ModalsGift v-model="showGiftsModal" />
+      <ModalsGift v-model="showGiftsModal" /> -->
       <!-- TODO: Remove in favor the fact checking center -->
-      <ModalsCommunityNotes v-model="showCommunityNotes" />
-      <ModalsSave v-model="showSaveModal" :playlists="availablePlaylists" />
+      <!-- <ModalsCommunityNotes v-model="showCommunityNotes" />
+      <ModalsSave v-model="showSaveModal" />
       <ModalsDonation v-model="showDonationModal" />
-      <ModalsShare v-model="showShareModal" />
+      <ModalsShare v-model="showShareModal" /> -->
     </ClientOnly>
   </section>
 </template>
 
 <script setup lang="ts">
-import type { Playlist, VideoInfo, VideoMenuAction } from '~/types'
+import { useVideoDetailModals } from '~/composables/use'
 
-const AsyncVideoCommentSection = defineAsyncComponent({
-  loader: () => import('~s/components/video/AsyncCommentSection.vue'),
-  timeout: 5000
-})
+// const AsyncVideoCommentSection = defineAsyncComponent({
+//   loader: () => import('~/components/video/AsyncCommentSection.vue'),
+//   timeout: 5000
+// })
 
-const AsyncRecommendationSection = defineAsyncComponent({
-  loader: () => import('~s/components/video/UserRecommendations.vue'),
-  timeout: 5000
-})
+// const AsyncRecommendationSection = defineAsyncComponent({
+//   loader: () => import('~/components/video/UserRecommendations.vue'),
+//   timeout: 5000
+// })
 
-const store = useFeed()
-const { $client } = useNuxtApp()
-const route = useRoute()
-const { currentVideo } = storeToRefs(store)
-
-const availablePlaylists = ref<Playlist[]>([])
-const isLoading = ref(true)
-const showClassificationDrawer = ref(false)
-const showReportModal = ref(false)
-const showGiftsModal = ref(false)
-const showSaveModal = ref(false)
-const showShareModal = ref(false) 
-const showDonationModal = ref(false)
-const showCommunityNotes = ref(false)
+const videoDetailStore = useVideoDetailStore()
+const { currentVideo, isLoading } = storeToRefs(videoDetailStore)
 
 provide('currentVideo', currentVideo)
+provide('isLoading', isLoading)
 
-const videoSource = computed(() => {
-  if (currentVideo.value) {
-    // return `http://127.0.0.1:8000/api/v1/videos/s/${currentVideo.value.video_id}`
-    return getBaseUrl(`/api/v1/videos/s/${currentVideo.value.video_id}`)
-  } else {
-    return ''
-  }
-})
+console.log('[id]', currentVideo)
 
-async function requestVideoDetails () {
-  try {
-    const videoID = route.params.id
-    const response = await $client.get<VideoInfo>(`/videos/${videoID}`)
-    
-    currentVideo.value = response.data
-    isLoading.value = false
-  } catch (e) {
-    console.log(e)
-  }
-}
+videoDetailStore.testRun()
 
-function handleAction (action: VideoMenuAction) {
-  if (action === 'Gift') {
-    showGiftsModal.value = true
-  }
+const { showClassificationDrawer, showReportModal, showGiftsModal, showSaveModal, showShareModal, showDonationModal, showCommunityNotes, openModal  } = useVideoDetailModals()
 
-  if (action === 'Save') {
-    showSaveModal.value = true
-  }
-
-  if (action === 'Store') {
-    // Pass
-  }
-
-  if (action === 'Recommendations') {
-    showClassificationDrawer.value = true
-  }
-
-  if (action === 'Donate') {
-    showDonationModal.value = true
-  }
-
-  if (action === 'Report') {
-    showReportModal.value = true
-  }
-
-  if (action === 'Share') {
-    showShareModal.value = true
-  }
-
-  if (action === 'Classify') {
-    showClassificationDrawer.value = true
-  }
-}
-
-function handleSaveToPlaylist (playlists: Playlist[]) {
-  showSaveModal.value = true
-  availablePlaylists.value = playlists
-}
-
-onMounted(async () => {
-  await requestVideoDetails()
-  // await requestPlaylists()
-})
+const videoSource = computed(() => '/video_fixture_1.mp4')
 </script>

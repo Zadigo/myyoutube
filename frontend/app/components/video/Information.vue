@@ -1,33 +1,33 @@
 <template>
-  <div class="col-12 mt-4">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex flex-row justify-content-around align-items-start gap-3">
-          <NuxtLink :to="`/channels/${currentVideo?.user_channel?.reference}`" class="mt-2" aria-label="">
-            <img src="/avatar1.png" class="img-fluid rounded-circle" width="120" height="120" alt="">
-          </NuxtLink>
+  <VoltCard class="mt-4">
+    <template #content>
+      <div v-if="currentVideo" class="flex justify-around items-start gap-3">
+        <NuxtLink :to="`/channels/${currentVideo.user_channel?.reference}`" class="mt-2" aria-label="">
+          <VoltAvatar image="/avatars/avatar1.png" shape="circle" size="large" alt="" />
+        </NuxtLink>
 
-          <div class="information">
-            <v-btn :to="`/channels/${currentVideo?.user_channel?.reference}`" class="px-0" color="primary" variant="plain">
-              <span class="fw-bold">{{ currentVideo?.user_channel?.name }}</span>
-              <font-awesome icon="circle-check" class="ms-2" />
-            </v-btn>
-            
-            <p class="text-body-tertiary">
-              345.6K subscribers
-            </p>
+        <div class="information">
+          <VoltButton :to="`/channels/${currentVideo.user_channel?.reference}`" variant="outlined" class="px-0">
+            <span class="font-bold">{{ currentVideo.user_channel?.name }}</span>
+            <Icon name="i-fa7-solid:circle-check" class="ms-2" />
+          </VoltButton>
+          
+          <p class="text-muted my-2">
+            345.6K subscribers
+          </p>
 
-            <v-sheet class="mx-auto" max-width="800px">
-              <v-slide-group show-arrows>
-                <v-slide-group-item v-for="n in 10" :key="n" v-slot="{ isSelected, toggle }">
-                  <v-btn :color="isSelected ? 'success' : undefined" class="ma-2" rounded @click="toggle">
-                    Options {{ n }}
-                  </v-btn>
-                </v-slide-group-item>
-              </v-slide-group>
-            </v-sheet>
-
-            <p class="fw-light">
+          <!-- <v-sheet class="mx-auto" max-width="800px">
+            <v-slide-group show-arrows>
+              <v-slide-group-item v-for="n in 10" :key="n" v-slot="{ isSelected, toggle }">
+                <VoltButton :color="isSelected ? 'success' : undefined" class="ma-2" rounded @click="toggle">
+                  Options {{ n }}
+                </VoltButton>
+              </v-slide-group-item>
+            </v-slide-group>
+          </v-sheet> -->
+          
+          <div class="bg-slate-50 rounded-lg font-light my-4 p-4">
+            <p class="font-light">
               Lorem, ipsum dolor sit amet consectetur adipisicing elit.
               Sequi porro iure repellat optio, ipsum ducimus veniam natus
               ipsam dolor, suscipit distinctio vero? Labore repellendus
@@ -37,21 +37,20 @@
               ducimus saepe fugiat minima quisquam. Deleniti, ratione?
               Quis et harum ullam ab nam.
             </p>
-
-            <v-btn color="primary" variant="plain">
-              <font-awesome icon="caret-down" class="me-2" />
-              More
-            </v-btn>
           </div>
+
+          <VoltButton color="primary" variant="outlined">
+            <Icon name="i-fa7-solid:caret-down" class="me-2" />
+            More
+          </VoltButton>
         </div>
       </div>
-    </div>
-  </div>
+    </template>
+  </VoltCard>
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue'
 import type { VideoInfo } from '~/types'
 
-const currentVideo = inject<VideoInfo>('currentVideo')
+const currentVideo = inject<Ref<VideoInfo>>('currentVideo')
 </script>

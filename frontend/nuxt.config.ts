@@ -49,17 +49,7 @@ export default defineNuxtConfig({
       stripePublishableKey: process.env.NUXT_STRIPE_TEST_PUBLISHABLE_KEY,
       stripeAccount: process.env.NUXT_STRIPE_TEST_PUBLISHABLE_KEY,
       stripeApiVersion: '2024-06-20',
-      stripeLocale: 'fr',
-
-      // Firebase
-      firebaseApiKey: process.env.NUXT_FIREBASE_API_KEY,
-      firebaseAuthDomain: process.env.NUXT_FIREBASE_AUTH_DOMAIN,
-      firebaseDbUrl: process.env.NUXT_FIREBASE_DB_URL,
-      firebaseStorageBucket: process.env.NUXT_FIREBASE_STORAGE_BUCKET,
-      firebaseAppId: process.env.NUXT_FIREBASE_APP_ID,
-      firebaseMeasurementId: process.env.NUXT_FIREBASE_MEASUREMENT_ID,
-      firebaseMessageSenderId: process.env.NUXT_FIREBASE_MESSAGE_SENDER_ID,
-      firebaseProjectId: process.env.NUXT_FIREBASE_PROJECT_ID,
+      stripeLocale: 'fr'
     }
   },
   
@@ -86,8 +76,8 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/tailwind.css',
 
-    './node_modules/bootstrap/dist/css/bootstrap.min.css',
-    './node_modules/mdb-ui-kit/css/mdb.min.css'
+    // './node_modules/bootstrap/dist/css/bootstrap.min.css',
+    // './node_modules/mdb-ui-kit/css/mdb.min.css'
   ],
 
   // https://www.fontpair.co/all

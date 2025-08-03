@@ -18,24 +18,8 @@ interface PlayingDetails {
   playPauseCount: number
 }
 
-defineProps({
-  videoSource: {
-    type: String,
-    required: true
-  }
-})
-
-const emit = defineEmits({
-  'loaded-meta-data' () {
-    return true
-  },
-  play () {
-    return true
-  },
-  pause (_data:  PlayingDetails) {
-    return true
-  }
-})
+defineProps<{ videoSource: string }>()
+const emit = defineEmits<{ 'loaded-meta-data': [], play: [], pause: [PlayingDetails] }>()
 
 const speeds = [2, 1.75, 1.5, 1, 0.75, 0.5] as const
 
@@ -87,7 +71,7 @@ function getVideoDetails () {
  * format for the user to track the
  * time at which the video is currently at
  * 
- * @param value The time value to format
+ * @param value - The time in seconds to format
  */
 function formatTime (value: number) {
   const hours = Math.floor(value / 3600)

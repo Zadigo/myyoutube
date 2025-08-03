@@ -162,3 +162,4 @@ logs
 !.env.example
 
 external_fixtures/
+video_fixture_*.mp4

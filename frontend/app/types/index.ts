@@ -1,3 +1,4 @@
+import type { MenuItem } from 'primevue/menuitem'
 import type { RouteParamsGeneric } from 'vue-router'
 import type { DefaultVideoMenuActions } from '~/data/constants/video'
 
@@ -10,9 +11,8 @@ export * from './studio'
 export * from './notifications'
 export * from './settings'
 
-export interface VideoMenuItem {
-  name: DefaultVideoMenuActions
-  icon: string
+export interface VideoMenuItem extends MenuItem {
+  label?: DefaultVideoMenuActions
 }
 
 export interface SessionCache {

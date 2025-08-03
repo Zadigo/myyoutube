@@ -1,16 +1,16 @@
 <template>
-  <div ref="videoContainerEl" class="video-container">
-    <video ref="videoPlayerEl" class="video-player" preload="metadata" controlist="nodownload" oncontextmenu="return false;" @loadedmetadata="getVideoDetails" @timeupdate="getVideoDetails" @canplay="isLoading=false" @click.stop="handlePlayPause">
+  <div ref="videoContainerEl" class="relative flex items-center justify-center cursor-pointer bg-primary-900 m-0">
+    <video ref="videoPlayerEl" class="video-player" preload="metadata" controlist="nodownload" oncontextmenu="return<boolean> false;" @loadedmetadata="getVideoDetails" @timeupdate="getVideoDetails" @canplay="isLoading<boolean>=false" @click.stop="handlePlayPause">
       <source :src="videoSource" type="video/mp4">
     </video>
 
     <div class="video-controls">
       <div class="video-control-actions">
         <div class="d-flex justify-content-left align-items-center gap-3">
-          <button type="button" class="btn btn-primary shadow-none" @click.stop="handlePlayPause">
-            <font-awesome v-if="!isPlaying" icon="play" />
-            <font-awesome v-else icon="pause" />
-          </button>
+          <NuxtButton @click.stop="handlePlayPause">
+            <Icon v-if="!isPlaying" name="i-fa7-solid:play" />
+            <Icon v-else name="i-fa7-solid:pause" />
+          </NuxtButton>
 
           <div class="video-control-duration mx-3">
             <span>{{ currentTimeFormatted }}</span> /
@@ -21,17 +21,17 @@
         <!-- Control configuration center -->
         <div class="video-control-configuration-center d-flex justify-content-end">
           <div class="video-control-settings">
-            <button type="button" class="btn btn-primary" @click="showVideoSettings=!showVideoSettings">
-              <font-awesome icon="cog" />
-            </button>
+            <NuxtButton @click="showVideoSettings=!showVideoSettings">
+              <Icon name="i-fa7-solid:cog" />
+            </NuxtButton>
           </div>
 
           <div class="video-control-volume ms-2">
-            <button type="button" class="btn btn-primary" @click="showVolume=!showVolume">
-              <font-awesome v-if="volume < 0.1" icon="volume-low" />
-              <font-awesome v-else-if="volume >= 0.1 && volume <= 0.8" icon="volume-up" />
-              <font-awesome v-else-if="volume > 0.8" icon="volume-high" />
-            </button>
+            <NuxtButton @click="showVolume=!showVolume">
+              <Icon v-if="volume < 0.1" name="i-fa7-solid:volume-low" />
+              <Icon v-else-if="volume >= 0.1 && volume <= 0.8" name="i-fa7-solid:volume-up" />
+              <Icon v-else-if="volume > 0.8" name="i-fa7-solid:volume-high" />
+            </NuxtButton>
           </div>
         </div>
       </div>
@@ -40,9 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useCounter, watchOnce } from '@vueuse/core'
-
 interface PlayingDetails {
   currentTime: number
   formattedCurrentTime: string
@@ -71,13 +68,13 @@ const emit = defineEmits({
 })
 
 // Tracks the amount of the times the
-// button play was pressed during a
+// NuxtButton play was pressed during a
 // viewing session
 const { count, inc } = useCounter()
 
 const isLoading = ref(true)
-const isPlaying = ref(false)
-const wasPlayed = ref(false)
+const isPlaying = ref<boolean>(false)
+const wasPlayed = ref<boolean>(false)
 
 // Indicates that the video was
 // played once by the user
@@ -91,14 +88,14 @@ const volume = ref<number>(0.5)
 
 const speeds = [2, 1.75, 1.5, 1, 0.75, 0.5]
 
-const speed = ref('1x')
-const quality = ref('1080p')
+const speed = ref<string>('1x')
+const quality = ref<string>('1080p')
 
-const showVolume = ref(false)
-const showSpeedSettings = ref(false)
-const showInteractiveMenu = ref(false)
-const showVideoSettings = ref(true)
-const showQualitySettings = ref(true)
+const showVolume = ref<boolean>(false)
+const showSpeedSettings = ref<boolean>(false)
+const showInteractiveMenu = ref<boolean>(false)
+const showVideoSettings = ref<boolean>(true)
+const showQualitySettings = ref<boolean>(true)
 
 const videoContainerEl = ref<HTMLElement>()
 const videoPlayerEl = ref<HTMLVideoElement>()

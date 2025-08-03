@@ -1,65 +1,42 @@
 <template>
-  <v-dialog id="save" v-model="show" width="400" persistent>
-    <v-card>
-      <v-card-text>
-        <v-autocomplete v-model="selectedPlaylistId" :items="playlists"  item-title="title" item-value="playlist_id" clearable auto-select-first>
-          <VoltInputText placeholder="Select a playlist" />
-        </v-autocomplete>
-      </v-card-text>
+  <VoltDialog id="save" v-model:open="show">
+    <template #content>
+      <VoltAutocomplete v-model="selectedPlaylistId" :suggestions="playlists" item-label="name" @search="search">
+        <VoltInputText placeholder="Select a playlist" />
+      </VoltAutocomplete>
+    </template>
 
-      <v-card-actions>
-        <v-btn @click="show=false">
-          Close
-        </v-btn>
+    <template #footer>
+      <NuxtButton @click="() => show=false">
+        Close
+      </NuxtButton>
 
-        <v-btn @click="requestSaveToPlaylist">
-          Save
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      <NuxtButton @click="() => add(selectedPlaylistId, $route.params.id)">
+        Save
+      </NuxtButton>
+    </template>
+  </VoltDialog>
 </template>
 
 <script setup lang="ts">
-import type { Playlist } from '~/types'
+import { useEditPlaylists } from '~/composables/use'
+import type { Playlist } from '~/types';
 
-const emit = defineEmits({
-  'update:modelValue' (_value: boolean) {
-    return true
-  }
-})
-
-const props = defineProps({
-  modelValue: {
-    type: Boolean,
-    required: true
-  },
-  playlists: {
-    type: Object as PropType<Playlist[]>,
-    required: true
-  }
-})
-
-const { $client } = useNuxtApp()
+const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
+const props = defineProps<{ modelValue: boolean }>()
 
 const selectedPlaylistId = ref(null)
+const show = useVModel(props, 'modelValue', emit)
 
-const show = computed({
-  get: () => props.modelValue,
-  set: (value) => {
-    emit('update:modelValue', value)
-  }
-})
+const playlistStore = usePlaylistStore()
+const { playlists } = storeToRefs(playlistStore)
 
-// Function that saves the current video
-// to the given playlist
-async function requestSaveToPlaylist () {
-  try {
-    await $client.post(`/playlists/${selectedPlaylistId.value}/add`, {
-      video: route.params.id
-    })
-  } catch (e) {
-    console.error('requestSaveToPlaylist', e)
-  }
+const { add } = useEditPlaylists(playlists)
+
+const filteredPlaylists = ref<Playlist[]>([])
+function search(event: CustomEvent<Event> & { query: string }) {
+  filteredPlaylists.value = playlists.value.filter(item => {
+    return item.name.toLowerCase().includes(event.query.toLowerCase())
+  })
 }
 </script>
