@@ -1,32 +1,31 @@
 <template>
-  <VoltDialog id="save" v-model:open="show">
-    <template #content>
-      <VoltAutocomplete v-model="selectedPlaylistId" :suggestions="playlists" item-label="name" @search="search">
-        <VoltInputText placeholder="Select a playlist" />
-      </VoltAutocomplete>
-    </template>
+  <VoltDialog id="save" v-model:visible="show" modal>
+    <form @submit.prevent>
+      <VoltAutoComplete v-model="selectedPlaylistId" :suggestions="playlists" option-label="name" dropdown @complete="handleSearch" />
+    </form>
 
     <template #footer>
-      <NuxtButton @click="() => show=false">
+      <VoltButton @click="() => show=false">
         Close
-      </NuxtButton>
+      </VoltButton>
 
-      <NuxtButton @click="() => add(selectedPlaylistId, $route.params.id)">
+      <VoltButton @click="() => add(selectedPlaylistId, $route.params.id)">
         Save
-      </NuxtButton>
+      </VoltButton>
     </template>
   </VoltDialog>
 </template>
 
 <script setup lang="ts">
 import { useEditPlaylists } from '~/composables/use'
+
 import type { Playlist } from '~/types';
 
 const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
 const props = defineProps<{ modelValue: boolean }>()
+const show = useVModel(props, 'modelValue', emit, { defaultValue: false })
 
-const selectedPlaylistId = ref(null)
-const show = useVModel(props, 'modelValue', emit)
+const selectedPlaylistId = ref<string | null>(null)
 
 const playlistStore = usePlaylistStore()
 const { playlists } = storeToRefs(playlistStore)
@@ -34,7 +33,8 @@ const { playlists } = storeToRefs(playlistStore)
 const { add } = useEditPlaylists(playlists)
 
 const filteredPlaylists = ref<Playlist[]>([])
-function search(event: CustomEvent<Event> & { query: string }) {
+
+function handleSearch(event: CustomEvent<Event> & { query: string }) {
   filteredPlaylists.value = playlists.value.filter(item => {
     return item.name.toLowerCase().includes(event.query.toLowerCase())
   })

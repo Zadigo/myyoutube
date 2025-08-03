@@ -1,58 +1,49 @@
 <template>
-  <v-dialog id="report-video" v-model="show" width="400">
-    <v-card>
-      <v-card-text>
-        <v-expansion-panels>
-          <v-expansion-panel v-for="reportType in reportTypes" :key="reportType.title" :title="reportType.title" text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore voluptatibus! Eaque cupiditate minima" />
-        </v-expansion-panels>
+  <VoltDialog id="report-video" v-model:visible="show" modal class="max-w-3xl">
+    <VoltAccordion v-for="reportType in reportTypes" :key="reportType.title">
+      <VoltAccordionPanel :value="reportType.title">
+        <VoltAccordionHeader>{{ reportType.title }}</VoltAccordionHeader>
+        <VoltAccordionContent>
+          <p>
+            {{ reportType.reports }}
+          </p>
+        </VoltAccordionContent>
+      </VoltAccordionPanel>
+    </VoltAccordion>
 
-        <p class="fw-bold mt-5">
-          Flag the section you believe to be problematic
-        </p>
+    <p class="font-bold mt-5">
+      Flag the section you believe to be problematic
+    </p>
 
-        <div class="d-flex justify-content-between gap-2">
-          <VoltInputText type="time" variant="outlined" />
-          <VoltInputText type="time" variant="outlined" />
-        </div>
+    <div class="flex justify-between gap-2">
+      <VoltInputText type="time" />
+      <VoltInputText type="time" />
+    </div>
 
-        <div class="alert alert-info">
-          Flagged videos and users are reviewed by YouTube staff 24 hours a day,
-          7 days a week to determine whether they violate Community Guidelines.
-          Accounts are penalized for Community Guidelines violations, and
-          serious or repeated violations can lead to account termination.
-          Report channel
-        </div>
-      </v-card-text>
+    <div class="p-5 bg-primary-100 rounded-lg mt-5">
+      Flagged videos and users are reviewed by YouTube staff 24 hours a day,
+      7 days a week to determine whether they violate Community Guidelines.
+      Accounts are penalized for Community Guidelines violations, and
+      serious or repeated violations can lead to account termination.
+      Report channel
+    </div>
 
-      <v-card-actions>
-        <v-btn @click="show=false">
-          Cancel
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+    <template #footer>
+      <VoltButton @click="() => show=false">
+        Close
+      </VoltButton>
+
+      <VoltButton @click="() => add(selectedPlaylistId, $route.params.id)">
+        Save
+      </VoltButton>
+    </template>
+  </VoltDialog>
 </template>
 
 <script setup lang="ts">
 import { reportTypes } from '~/data'
 
-const emit = defineEmits({
-  'update:modelValue' (_value: boolean) {
-    return true
-  }
-})
-
-const props = defineProps({
-  modelValue: {
-    type: Boolean,
-    required: true
-  }
-})
-
-const show = computed({
-  get: () => props.modelValue,
-  set: (value) => {
-    emit('update:modelValue', value)
-  }
-})
+const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
+const props = defineProps<{ modelValue: boolean }>()
+const show = useVModel(props, 'modelValue', emit, { defaultValue: false })
 </script>

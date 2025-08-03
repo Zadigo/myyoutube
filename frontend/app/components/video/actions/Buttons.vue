@@ -1,37 +1,42 @@
 <template>
   <div class="flex items-center justify-left">
-    <VoltButton size="large" color="primary" class="me-1" rounded @click="handleLike">
-      <Icon v-if="requestData.liked" name="i-fa7-solid:thumbs-up" class="mr-2" />
+    <VoltButton size="large" color="primary" class="me-1" rounded @click="like">
+      <Icon v-if="liked" name="i-fa7-solid:thumbs-up" class="mr-2" />
       <Icon v-else name="i-fa7-regular:thumbs-up" class="mr-2" />
       Like <span class="font-bold">145.3k</span>
     </VoltButton>
 
-    <VoltButton size="large" color="primary" class="me-3" rounded @click="handleUnlike">
-      <Icon v-if="requestData.unliked" name="i-fa7-solid:thumbs-down" class="mr-2" />
+    <VoltButton size="large" color="primary" class="me-3" rounded @click="dislike">
+      <Icon v-if="unliked" name="i-fa7-solid:thumbs-down" class="mr-2" />
       <Icon v-else name="i-fa7-regular:thumbs-down" class="mr-2" />
       Dislike <span class="font-bold">15</span>
     </VoltButton>
     
     <!-- Extra Actions -->
     <VoltDropdownButton id="more-actions" :items="menuItems">
-      More
+      <Icon name="i-fa7-solid:ellipsis-h" />
     </VoltDropdownButton>
 
-    <VoltDropdownButton v-if="requestData.subscription.active" id="more-actions" :items="subscribeMenuItems" rounded>
+    <VoltDropdownButton v-if="active" id="more-actions" :items="subscribeMenuItems" rounded>
       <Icon name="i-fa7-solid:bell-slash" />
     </VoltDropdownButton>
 
-    <VoltButton v-else size="large" color="light" class="ml-5" @click="handleSubscription">
+    <VoltButton v-else size="large" color="light" class="ml-5" @click="subscribe">
       Subscribe
     </VoltButton>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { inject, ref, watch } from 'vue'
-import { setDoc, updateDoc, doc, getDoc } from 'firebase/firestore'
-import type { Playlist, VideoInfo, VideoMenuItem } from '~/types'
+import { useVideoRating, useVideoSubscription } from '~/composables/use'
+
 import type { DefaultVideoMenuActions } from '~/data'
+import type { VideoInfo, VideoMenuItem } from '~/types'
+
+const emit = defineEmits<{ action: [method: DefaultVideoMenuActions] }>()
+
+const { id } = useRoute().params as { id: string }
+const router = useRouter()
 
 const menuItems: VideoMenuItem[] = [
   {
@@ -40,180 +45,59 @@ const menuItems: VideoMenuItem[] = [
   },
   {
     label: 'Download',
-    icon: 'i-fa7-solid:download'
+    icon: 'i-fa7-solid:download',
+    command: () => emit('action', 'Download')
   },
   {
     label: 'Save',
-    icon: 'i-fa7-solid:save'
+    icon: 'i-fa7-solid:save',
+    command: () => emit('action', 'Save')
   },
   {
     label: 'Gift',
-    icon: 'i-fa7-solid:gift'
+    icon: 'i-fa7-solid:gift',
+    command: () => emit('action', 'Gift')
   },
   {
     label: 'Donate',
-    icon: 'i-fa7-solid:dollar-sign'
+    icon: 'i-fa7-solid:dollar-sign',
+    command: () => emit('action', 'Donate')
   },
   {
     label: 'Share',
-    icon: 'i-fa7-solid:share'
+    icon: 'i-fa7-solid:share',
+    command: () => emit('action', 'Share')
   },
   {
     label: 'Recommendations',
-    icon: 'i-fa7-solid:star'
+    icon: 'i-fa7-solid:star',
+    command: () => emit('action', 'Recommendations')
+  },
+  {
+    label: 'Classify',
+    icon: 'i-fa7-solid:clipboard-list',
+    command: () => emit('action', 'Classify')
   },
   {
     label: 'Community note',
-    icon: 'i-fa7-solid:note-sticky'
+    icon: 'i-fa7-solid:note-sticky',
+    command: () => emit('action', 'Community note')
   },
   {
     label: 'Fact check',
-    icon: 'i-fa7-solid:building-shield'
+    icon: 'i-fa7-solid:building-shield',
+    command: () => {
+      router.push(`/fact-checking?v=${id}`)
+    }
   },
   {
     label: 'Report',
-    icon: 'i-fa7-solid:store'
+    icon: 'i-fa7-solid:store',
+    command: () => emit('action', 'Report')
   }
 ]
 
-const subscribeMenuItems: { label: string, icon: string }[] = [
-  {
-    label: 'All',
-    icon: 'i-fa7-solid:i-fa7-solid:bullhorn'
-  },
-  {
-    label: 'None',
-    icon: 'i-fa7-solid:i-fa7-solid:bell-slash'
-  },
-  {
-    label: 'Unsubscribe',
-    icon: 'i-fa7-solid:i-fa7-solid:user-minus'
-  }
-]
-
-const db = useFirestore()
-
-const viewingProfileId = useCookie('vp_id')
-const { $client } = useNuxtApp()
-const route = useRoute()
-const router = useRouter()
-
-const emit = defineEmits({
-  action (_method: DefaultVideoMenuActions) {
-    return true
-  },
-  'update-playlists'(_data: Playlist[]) {
-    return true
-  }
-})
-
-const currentVideo = inject<VideoInfo>('currentVideo')
-
-const playlists = ref<Playlist[]>([])
-const requestData = ref({
-  liked: false,
-  unliked: false,
-  subscription: {
-    active: false,
-    mode: null
-  }
-})
-
-
-watch(requestData.value, (values) => {
-  if (!values.subscription.active) {
-    requestData.value.subscription.mode = null
-  }
-})
-
-// Sends a request to to indicate that the
-// video was liked or disliked by the user
-async function handleLikeDislike() {
-  try {
-    await $client.post('/fake-endpoint', requestData.value)
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-/**
- * 
- */
-async function handleLike () {
-  requestData.value.liked = !requestData.value.liked
-  await handleLikeDislike()
-}
-
-/**
- * 
- */
-async function handleUnlike () {
-  requestData.value.unliked = !requestData.value.unliked
-  await handleLikeDislike()
-}
-
-/**
- * 
- */
-async function handleSubscription () {
-  requestData.value.subscription.active = !requestData.value.subscription.active
-  await handleLikeDislike()
-}
-
-const { execute } = useFetch('/api/playlists', {
-  method: 'get',
-  immediate: false,
-  async transform(data: Playlist[]) {
-    if (viewingProfileId.value) {
-      try {
-        const playlistDocRef = doc(db, 'playlists', viewingProfileId.value)
-        const docSnap = await getDoc(playlistDocRef)
-  
-        if (docSnap.exists()) {
-          await setDoc(playlistDocRef, { playlists: data })
-        } else {
-          await updateDoc(playlistDocRef, { playlists: data })
-        }
-      } catch(e) {
-        console.error(e)
-      }
-    }
-
-    playlists.value = data
-    emit('update-playlists', data)
-    return data
-  }
-})
-
-/**
- * 
- */
-function handleMoreAction (action: VideoMenuItem) {
-  switch (action.name) {
-    case 'Save':
-      execute()
-      emit('action', action.name)
-      break
-      
-    case 'Fact check':
-      router.push({
-        path: '/fact-checking',
-        query: {
-          v: route.params.id
-        }
-      })
-      break
-  
-    default:
-      emit('action', action.name)
-      break
-  }
-}
-
-/**
- * 
- */
-function handleSubscriptionMode (mode: string) {
-  requestData.value.subscription.mode = mode
-}
+const currentVideo = inject<Ref<VideoInfo>>('currentVideo')
+const { like, dislike, liked, unliked } = useVideoRating(currentVideo)
+const { subscribe, active, mode, subscribeMenuItems } = useVideoSubscription(currentVideo)
 </script>

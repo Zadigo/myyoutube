@@ -9,7 +9,15 @@ export const defaultVideoMenuActions = [
   'Community note',
   'Classify',
   'Fact check',
-  'Report'
+  'Report',
+  'Classify'
 ] as const
 
 export type DefaultVideoMenuActions = (typeof defaultVideoMenuActions)[number]
+
+export const subscriptionModes = [
+  'All',
+  'None'
+] as const
+
+export type SubscriptionModes = (typeof subscriptionModes)[number]

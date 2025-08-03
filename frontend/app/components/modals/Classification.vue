@@ -1,69 +1,50 @@
 <template>
-  <!-- TODO: Transform to drawer -->
-  <v-dialog id="classification-modal" v-model="show" location="right" :width="400" temporary>
-    <v-card>
-      <v-card-text>
-        <div class="container">
-          <div class="row">
-            <div class="col-12">
-              <h2 class="h5">
-                Classification
-              </h2>
+  <VoltDrawer id="classification-modal" v-model:visible="show" position="right">
+    <template #header>
+      <h2 class="font-bold text-2xl">
+        Classification
+      </h2>
+    </template>
 
-              <div class="alert alert-warning">
-                Use this tool to signal that this video was not properly
-                categorized by the creator and therefore does not correspond to
-                the result you were expecting
-              </div>
+    <VoltAlert class="my-5">
+      Use this tool to signal that this video was not properly
+      categorized by the creator and therefore does not correspond to
+      the result you were expecting
+    </VoltAlert>
 
-              <v-list>
-                <v-list-item>
-                  <v-switch label="Mark as wrong category" inset />
-                </v-list-item>
+    <div class="space-y-2">
+      <div>
+        <VoltLabel>
+          <VoltToggleSwitch />
+          <label for="">
+            Mark as wrong category
+          </label>
+        </VoltLabel>
+      </div>
 
-                <v-list-item>
-                  <v-switch label="Block this channel" inset />
-                </v-list-item>
-              </v-list>
+      <div>
+        <VoltLabel>
+          <VoltToggleSwitch />
+          <label for="">
+            Block this channel
+          </label>
+        </VoltLabel>
+      </div>
+    </div>
 
-              <v-divider />
-            </div>
-          </div>
-        </div>
+    <VoltDivider class="my-5" />
 
-        <div class="d-flex justify-content-end gap-2 mt-3 p-4">
-          <v-btn variant="outlined" color="primary" rounded="xl" flat @click="show=false">
-            Cancel
-          </v-btn>
-
-          <v-btn color="primary" rounded="xl" flat>
-            <font-awesome :icon="['fas', 'fa-save']" class="me-2" />
-            Save
-          </v-btn>
-        </div>
-      </v-card-text>
-    </v-card>
-  </v-dialog>
+    <div class="space-x-2">
+      <VoltButton variant="primary">
+        <Icon name="i-fa7-solid:check" />
+        Save
+      </VoltButton>
+    </div>
+  </VoltDrawer>
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits({
-  'update:modelValue' (_value: boolean) {
-    return true
-  }
-})
-
-const props = defineProps({
-  modelValue: {
-    type: Boolean,
-    required: true
-  }
-})
-
-const show = computed({
-  get: () => props.modelValue,
-  set: (value) => {
-    emit('update:modelValue', value)
-  }
-})
+const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
+const props = defineProps<{ modelValue: boolean }>()
+const show = useVModel(props, 'modelValue', emit, { defaultValue: false })
 </script>

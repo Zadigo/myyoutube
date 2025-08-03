@@ -1,10 +1,16 @@
+import type { VideoMenuItem } from '~/types'
+
 export type VideoMenuAction = 'Gift'
-  | 'Save' 
-  | 'Store' 
-  | 'Recommendations' 
+  | 'Store'
+  | 'Download'
+  | 'Save'
+  | 'Gift'
   | 'Donate' 
-  | 'Report' 
   | 'Share' 
+  | 'Recommendations' 
+  | 'Community note'
+  | 'Fact check'
+  | 'Report' 
   | 'Classify'
 
 

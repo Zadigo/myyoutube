@@ -2,14 +2,13 @@
   <section id="video-details">
     <ClientOnly>
       <section v-if="currentVideo" id="video-player">
-        <VideoPlayerBase :video-source="videoSource" />
+        <VideoPlayerBase :video-source="videoSource" @update:details="handleLoadedMetaData" />
       </section>
     </ClientOnly>
 
     <section id="information" class="mt-4">
       <!-- Actions -->
-      <!-- @action="openModal" -->
-      <VideoActionsCard />
+      <VideoActionsCard @action="openModal" />
 
       <!-- Information -->
       <VideoInformation />
@@ -55,12 +54,15 @@
 
     <!-- Modals -->
     <ClientOnly>
-      <!-- <ModalsClassification v-model="showClassificationDrawer" />
+      <ModalsSave v-model="showSaveModal" />
       <ModalsReport v-model="showReportModal" />
-      <ModalsGift v-model="showGiftsModal" /> -->
+      <ModalsGift v-model="showGiftsModal" />
+      <ModalsClassification v-model="showClassificationDrawer" />
+      
+      <!-- 
+      -->
       <!-- TODO: Remove in favor the fact checking center -->
       <!-- <ModalsCommunityNotes v-model="showCommunityNotes" />
-      <ModalsSave v-model="showSaveModal" />
       <ModalsDonation v-model="showDonationModal" />
       <ModalsShare v-model="showShareModal" /> -->
     </ClientOnly>
@@ -69,6 +71,8 @@
 
 <script setup lang="ts">
 import { useVideoDetailModals } from '~/composables/use'
+
+import type { VideoTechnicalDetails } from '~/types'
 
 const AsyncVideoCommentSection = defineAsyncComponent({
   loader: () => import('~/components/video/comment/Section.vue'),
@@ -91,4 +95,17 @@ videoDetailStore.testRun()
 const { showClassificationDrawer, showReportModal, showGiftsModal, showSaveModal, showShareModal, showDonationModal, showCommunityNotes, openModal  } = useVideoDetailModals()
 
 const videoSource = computed(() => '/video_fixture_1.mp4')
+
+/**
+ * Video
+ */
+
+const playingDetails = ref<VideoTechnicalDetails>()
+const { history } = useRefHistory(playingDetails)
+
+console.log(history)
+
+function handleLoadedMetaData (data: VideoTechnicalDetails) {
+  playingDetails.value = data
+}
 </script>

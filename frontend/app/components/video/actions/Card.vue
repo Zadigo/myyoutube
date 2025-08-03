@@ -3,7 +3,7 @@
     <template #content>
       <ClientOnly>
         <div v-if="currentVideo">
-          <h1 class="font-bold">
+          <h1 class="font-bold text-2xl">
             {{ currentVideo.title }}
           </h1>
         </div>
@@ -25,8 +25,8 @@
               </p>
             </div>
           </div>
-          
-          <VideoActionsButtons />
+
+          <VideoActionsButtons @action="emit('action', $event)" />
         </div>
         <VoltSkeleton v-else height="50px" />
       </ClientOnly>
@@ -36,50 +36,14 @@
 
 <script lang="ts" setup>
 import type { DefaultVideoMenuActions } from '~/data';
-import type { Playlist, VideoInfo } from '~/types'
+import type { VideoInfo } from '~/types';
 
-defineEmits<{ action: [method: DefaultVideoMenuActions], 'update-playlists': [data: Playlist[]] }>()
+const emit = defineEmits<{ action: [method: DefaultVideoMenuActions] }>()
 
 const currentVideo = inject<VideoInfo>('currentVideo')
 
-const playlists = ref<Playlist[]>([])
-const requestData = ref({
-  liked: false,
-  unliked: false,
-  subscription: {
-    active: false,
-    mode: null
-  }
+onMounted(() => {
+  const playlistsStore = usePlaylistStore()
+  playlistsStore.fetch()
 })
-
-watch(requestData.value, (values) => {
-  if (!values.subscription.active) {
-    requestData.value.subscription.mode = null
-  }
-})
-
-// const { execute } = useFetch('/api/playlists', {
-//   method: 'get',
-//   immediate: false,
-//   async transform(data: Playlist[]) {
-//     if (viewingProfileId.value) {
-//       try {
-//         const playlistDocRef = doc(db, 'playlists', viewingProfileId.value)
-//         const docSnap = await getDoc(playlistDocRef)
-  
-//         if (docSnap.exists()) {
-//           await setDoc(playlistDocRef, { playlists: data })
-//         } else {
-//           await updateDoc(playlistDocRef, { playlists: data })
-//         }
-//       } catch(e) {
-//         console.error(e)
-//       }
-//     }
-
-//     playlists.value = data
-//     emit('update-playlists', data)
-//     return data
-//   }
-// })
 </script>

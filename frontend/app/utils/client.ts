@@ -6,7 +6,7 @@ import type { CustomLoginApiResponse, LoginApiResponse, RefreshApiResponse } fro
  * 
  * @param refresh The refresh token
  */
-export async function refreshAccessToken(refresh: string | undefined) {
+export async function refreshAccessToken(refresh: string | null | undefined) {
   if (!refresh) {
     return {
       access: null
@@ -24,6 +24,27 @@ export async function refreshAccessToken(refresh: string | undefined) {
   return {
     access: response.access
   }
+}
+
+/**
+ * Function used to refresh the access token
+ * on the client side
+ */
+export async function refreshAccessTokenClient() {
+  if (import.meta.server) {
+    return {
+      access: null
+    }
+  }
+
+  const refreshToken = useCookie('refresh')
+  const response = await refreshAccessToken(refreshToken.value)
+
+  if (response.access) {
+    useCookie('access').value = response.access
+  }
+
+  return response
 }
 
 /**

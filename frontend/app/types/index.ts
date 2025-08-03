@@ -10,6 +10,7 @@ export * from './video'
 export * from './studio'
 export * from './notifications'
 export * from './settings'
+export * from './playlist'
 
 export interface VideoMenuItem extends MenuItem {
   label?: DefaultVideoMenuActions

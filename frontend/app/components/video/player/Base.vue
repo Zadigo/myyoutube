@@ -16,16 +16,10 @@
 </template>
 
 <script setup lang="ts">
-interface PlayingDetails {
-  currentTime: number
-  formattedCurrentTime: string
-  wasPlayed: boolean
-  percentagePlayed: number
-  playPauseCount: number
-}
+import type { VideoTechnicalDetails } from '~/types' 
 
 defineProps<{ videoSource: string }>()
-const emit = defineEmits<{ 'loaded-meta-data': [], play: [], pause: [PlayingDetails], 'update:details': [data: PlayingDetails] }>()
+const emit = defineEmits<{ 'loaded-meta-data': [], play: [], pause: [VideoTechnicalDetails], 'update:details': [data: VideoTechnicalDetails] }>()
 
 const speeds = [2, 1.75, 1.5, 1, 0.75, 0.5] as const
 
@@ -43,10 +37,6 @@ const quality = ref<string>('1080p')
 
 const videoContainerEl = useTemplateRef('videoContainerEl')
 const videoPlayerEl = useTemplateRef('videoPlayerEl')
-
-onMounted(() => {
-  emit('loaded-meta-data')
-})
 
 onBeforeUnmount(() => {
   if (videoPlayerEl.value) {
@@ -113,7 +103,7 @@ watchOnce(() => count.value === 1, () => {
   wasPlayed.value = true
 })
 
-const playingDetails = computed((): PlayingDetails => {
+const playingDetails = computed((): VideoTechnicalDetails => {
   return {
     currentTime: currentTime.value,
     formattedCurrentTime: currentTimeFormatted.value,
@@ -121,6 +111,11 @@ const playingDetails = computed((): PlayingDetails => {
     wasPlayed: wasPlayed.value,
     playPauseCount: count.value
   }
+})
+
+onMounted(() => {
+  emit('loaded-meta-data')
+  emit('update:details', playingDetails.value)
 })
 
 /**
