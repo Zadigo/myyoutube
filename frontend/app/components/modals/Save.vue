@@ -1,14 +1,16 @@
 <template>
   <VoltDialog id="save" v-model:visible="show" modal>
+    <template #header>
+      <h2 class="font-bold">
+        Save to Playlist
+      </h2>
+    </template>
+
     <form @submit.prevent>
-      <VoltAutoComplete v-model="selectedPlaylistId" :suggestions="playlists" option-label="name" dropdown @complete="handleSearch" />
+      <VoltAutoComplete v-model="selectedPlaylistId" :suggestions="filteredPlaylists" option-label="name" dropdown @complete="handleSearch" />
     </form>
 
     <template #footer>
-      <VoltButton @click="() => show=false">
-        Close
-      </VoltButton>
-
       <VoltButton @click="() => add(selectedPlaylistId, $route.params.id)">
         Save
       </VoltButton>
@@ -29,6 +31,8 @@ const selectedPlaylistId = ref<string | null>(null)
 
 const playlistStore = usePlaylistStore()
 const { playlists } = storeToRefs(playlistStore)
+
+const playlistMenuItems = computed(() => playlists.value.map(item => ({ name: item.name })))
 
 const { add } = useEditPlaylists(playlists)
 

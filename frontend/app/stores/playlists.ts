@@ -7,6 +7,8 @@ import { playlistsFixture } from '~/data/fixtures'
 export const usePlaylistStore = defineStore('playlists', () => {
   const playlists = ref<Playlist[]>([])
 
+  const hasPlaylists = computed(() => playlists.value.length > 0)
+
   async function fetch() {
     if (playlists.value.length === 0) {
       // const { data, execute } = useFetch<Playlist[]>('/v1/playlists', {
@@ -63,6 +65,10 @@ export const usePlaylistStore = defineStore('playlists', () => {
     /**
      * Filtered list of playlists based on search term
      */
-    searched
+    searched,
+    /**
+     * Reactive boolean indicating if there are videos in the playlists
+     */
+    hasPlaylists
   }
 })
