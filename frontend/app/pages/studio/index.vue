@@ -1,18 +1,18 @@
 <template>
   <section id="studio" class="container mx-auto px-5">
-    <VoltCard>
+    <VoltCard class="shadow-sm">
       <template #header>
         <div class="flex justify-between gap-4 items-center p-5 border-b border-slate-50">
           <div class="actions">
-            <VoltButton to="/studio/upload" class="me-2">
+            <VoltLink to="/studio/upload" class="me-2">
               <Icon name="i-fa7-solid:upload" class="me-2" />
               Upload
-            </VoltButton>
+            </VoltLink>
 
-            <VoltButton>
+            <VoltLink to="/studio/statistics" class="me-2">
               <Icon name="i-fa7-solid:chart-simple" class="me-2" />
               Statistics
-            </VoltButton>
+            </VoltLink>
           </div>
 
           <form id="search" @submit.prevent>
@@ -35,7 +35,7 @@
                 {{ video.description }}
               </p>
 
-              <p class="d-flex justify-content-left text-muted">
+              <p class="flex justify-left text-muted">
                 <span>4456 vues</span> - <span class="mx-2">400 likes</span>
               </p>
             </div>
