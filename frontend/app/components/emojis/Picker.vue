@@ -26,15 +26,9 @@
 <script lang="ts" setup>
 import emojis from './emojis-data.json'
 
-const emit = defineEmits({
-  'emoji-click' (_emoji: string) {
-    return true
-  }
-})
+const emit = defineEmits<{ 'emoji-click': [emoji: string] }>()
 
-const categories = computed(() => {
-  return Object.keys(emojis)
-})
+const categories = computed(() => Object.keys(emojis))
 
 function handleEmojiClick (emoji: string) {
   emit('emoji-click', emoji)
