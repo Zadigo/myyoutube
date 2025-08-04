@@ -34,6 +34,11 @@ const navLinks = [
     icon: 'i-fa7-solid:bell'
   },
   {
+    name: 'Community notes',
+    to: '/community-notes',
+    icon: 'i-fa7-solid:book-open'
+  },
+  {
     name: 'My studio',
     to: '/studio',
     icon: 'i-fa7-solid:chart-simple'

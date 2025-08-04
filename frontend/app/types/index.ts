@@ -11,6 +11,7 @@ export * from './studio'
 export * from './notifications'
 export * from './settings'
 export * from './playlist'
+export * from './fact_checking'
 
 export interface VideoMenuItem extends MenuItem {
   label?: DefaultVideoMenuActions
@@ -18,14 +19,6 @@ export interface VideoMenuItem extends MenuItem {
 
 export interface SessionCache {
   categories: []
-}
-
-export interface SourceDetails {
-  id: number
-  start_time: string | ''
-  end_time: string | ''
-  explanation: string | ''
-  article_sources: string[]
 }
 
 export interface ExtendedRouteParamsGeneric extends RouteParamsGeneric {

@@ -1,11 +1,11 @@
 <template>
   <div ref="videoContainerEl" class="relative flex items-center justify-center cursor-pointer bg-primary-900 mx-auto overflow-hidden">
-    <video ref="videoPlayerEl" class="h-full w-full touch-manipulation z-40 has-[source]:h-full" preload="metadata" controlist="nodownload" oncontextmenu="return false;" @loadedmetadata="getVideoDetails" @timeupdate="getVideoDetails" @canplay="() => isLoading=false" @click.stop="handlePlayPause">
+    <video ref="videoPlayerEl" class="h-full w-full touch-manipulation z-40 has-[source]:h-full" preload="metadata" controlist="nodownload" oncontextmenu="return false;" @loadedmetadata="handleVideoMetadata" @timeupdate="handleVideoMetadata" @canplay="handleCanPlay" @click.stop="handlePlayPause">
       <source :src="videoSource" type="video/mp4">
     </video>
 
     <DevOnly>
-      <div class="p-5 rounded-md absolute top-1/6 w-xl z-50 bg-primary-50/80 text-primary-900">
+      <div class="p-5 rounded-md absolute top-1/6 max-w-xs z-50 bg-primary-50/80 text-primary-900">
         {{ playingDetails }}
       </div>
     </DevOnly>
@@ -19,7 +19,13 @@
 import type { VideoTechnicalDetails } from '~/types' 
 
 defineProps<{ videoSource: string }>()
-const emit = defineEmits<{ 'loaded-meta-data': [], play: [], pause: [VideoTechnicalDetails], 'update:details': [data: VideoTechnicalDetails] }>()
+
+const emit = defineEmits<{ 
+  'play': [], 
+  'pause': [VideoTechnicalDetails], 
+  'player:loaded': [], 
+  'update:metadata': [data: VideoTechnicalDetails] 
+}>()
 
 const speeds = [2, 1.75, 1.5, 1, 0.75, 0.5] as const
 
@@ -47,20 +53,6 @@ onBeforeUnmount(() => {
     }
   }
 })
-
-/**
- * Loads the metadata for the current
- * loaded video: duration, size etc.
- */
-function getVideoDetails () {
-  if (videoPlayerEl.value) {
-    if (!Number.isNaN(videoPlayerEl.value.duration)) {
-      duration.value = videoPlayerEl.value.duration
-    }
-
-    currentTime.value = videoPlayerEl.value.currentTime
-  }
-}
 
 /**
  * Formats the time to a human readable
@@ -114,9 +106,41 @@ const playingDetails = computed((): VideoTechnicalDetails => {
 })
 
 onMounted(() => {
-  emit('loaded-meta-data')
-  emit('update:details', playingDetails.value)
+  emit('player:loaded')
+  emit('update:metadata', playingDetails.value)
 })
+
+/**
+ * Function that handles the video metadata
+ * and updates the duration and current time
+ * of the video player
+ */
+function handleVideoMetadata () {
+  if (videoPlayerEl.value) {
+    if (!Number.isNaN(videoPlayerEl.value.duration)) {
+      duration.value = videoPlayerEl.value.duration
+    }
+
+    currentTime.value = videoPlayerEl.value.currentTime
+    emit('update:metadata', playingDetails.value)
+  }
+}
+
+/**
+ * Indicates that the video has ended, in other
+ * words that the current time is equals the total
+ * video duration time
+ */
+const isEnded = computed(() => currentTimeFormatted.value === durationFormatted.value)
+
+watchOnce(isEnded, () => {
+  isPlaying.value = false
+  emit('update:metadata', playingDetails.value)
+})
+
+provide('completionPercentage', completionPercentage)
+
+// Player state
 
 /**
  * Function that handles the playing
@@ -140,16 +164,9 @@ function handlePlayPause () {
 }
 
 /**
- * Indicates that the video has ended, in other
- * words that the current time is equals the total
- * video duration time
+ * Handles the canplay event for the video player.
  */
-const isEnded = computed(() => currentTimeFormatted.value === durationFormatted.value)
-
-watchOnce(isEnded, () => {
-  isPlaying.value = false
-  emit('update:details', playingDetails.value)
-})
-
-provide('completionPercentage', completionPercentage)
+function handleCanPlay () {
+  isLoading.value = false
+}
 </script>

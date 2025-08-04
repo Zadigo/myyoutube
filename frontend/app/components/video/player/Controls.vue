@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute bottom-1/12 bg-primary-900/30 p-5 w-2xl text-white rounded-md shadow-sm z-50">
+  <div class="absolute bottom-1/12 bg-primary-900/30 p-5 max-w-2xl text-white rounded-md shadow-sm z-50">
     <div class="grid grid-cols-2">
       <div class="col-span-2">
         <div class="py-5">

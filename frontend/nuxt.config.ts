@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     '/studio/**': { ssr: false },
     '/school': { ssr: false },
     '/channels': { ssr: false },
-    '/fact-checking': { swr: true, cache: { maxAge: 15 * 60 } },
+    '/fact-checking': { ssr: false },
     '/login': { ssr: false },
     '/notification': { swr: true, cache: { maxAge: 30 * 60 }},
     '/search': { ssr: false }

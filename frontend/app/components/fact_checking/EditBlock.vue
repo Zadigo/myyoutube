@@ -1,89 +1,96 @@
 <template>
-  <div v-if="isSaved" class="source card-body">
-    <div class="d-flex justify-content-between align-items-center">
-      <p class="fw-bold d-flex gap-3">
-        <time>{{ block.start_time }}</time>
-        <time>{{ block.end_time }}</time>
-      </p>
+  <div v-if="isSaved" class="source p-5 rounded-lg bg-slate-50">
+    <div class="flex-col">
+      <div class="font-bold flex gap-2">
+        <VoltBadge><time>{{ block.start_time }}</time></VoltBadge>
+        <VoltBadge><time>{{ block.end_time }}</time></VoltBadge>
+        <VoltBadge>4 sources</VoltBadge>
+      </div>
 
-      <p class="fw-light">
+      <p class="font-light my-2 p-2 rounded-lg">
         {{ block.explanation }}
       </p>
 
-      <v-btn variant="text" color="dark" @click="isSaved=false">
-        <font-awesome icon="pen" />
-      </v-btn>
+      <VoltButton @click="handleEdit">
+        <Icon name="i-fa7-solid:pen" />
+      </VoltButton>
     </div>
   </div>
 
-  <div v-else class="source card-body">
-    <div class="d-flex justify-content-between gap-2">
-      <VoltInputText v-model="sourceDetails.start_time" type="text" placeholder="Start time"  flat />
-      <VoltInputText v-model="sourceDetails.end_time" type="text" placeholder="End time"  flat />
+  <div v-else class="space-y-3 p-5">
+    <div class="flex justify-start gap-2">
+      <VoltInputText v-model="sourceDetails.start_time" type="time" class="w-full" placeholder="Start time" />
+      <VoltInputText v-model="sourceDetails.end_time" type="time" class="w-full" placeholder="End time" />
     </div>
 
-    <v-textarea v-model="sourceDetails.explanation" placeholder="Explanation"  flat no-resize />
+    <VoltTextarea v-model="sourceDetails.explanation" class="w-full resize-none" placeholder="Explanation" rows="4" />
 
     <div class="mt-3">
-      <v-btn variant="tonal" color="dark" @click="handleAddSource">
+      <VoltButton class="mb-2" variant="outlined" @click="handleAddSource">
+        <Icon name="i-fa7-solid:book" />
         Add source
-      </v-btn>
+      </VoltButton>
 
-      <div class="d-flex justify-content-between align-items-center gap-3">
-        <VoltInputText v-for="(articleSource, i) in sourceDetails.article_sources" :key="i" v-model="sourceDetails.article_sources[i]" :rules="[rules.validateUrl]" type="url" placeholder="Source"  class="mt-1" flat />
-        <v-btn variant="tonal" color="danger" rounded>
-          <font-awesome icon="trash" />
-        </v-btn>
+      <div v-for="(articleSource, idx) in sourceDetails.article_sources" :key="idx" class="flex justify-between items-center gap-3">
+        <VoltInputText v-model="sourceDetails.article_sources[idx]" type="url" placeholder="Source" class="w-full" />
+        <VoltButton variant="outlined" @click="() => handleRemoveSource(idx)">
+          <Icon name="i-fa7-solid:trash" />
+        </VoltButton>
       </div>
     </div>
 
-    <v-divider />
+    <VoltDivider />
 
-    <div class="d-flex justify-content-end">
-      <v-btn variant="tonal" color="secondary" rounded @click="handleSave">
-        <font-awesome icon="save" class="me-2" />
+    <div class="flex justify-end">
+      <VoltButton variant="outlined" @click="handleSave">
+        <Icon name="i-fa7-solid:save" class="me-2" />
         Save source
-      </v-btn>
+      </VoltButton>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { SourceDetails } from '~/types';
-import type { PropType } from 'vue';
-import { ref } from 'vue';
+import type { SourceDetails } from '~/types'
 
-const props = defineProps({
-  index: {
-    type: Number,
-    required: true
-  },
-  block: {
-    type: Object as PropType<SourceDetails>,
-    required: true
-  }
-})
+const emit = defineEmits<{ 'update:blocks': [block: SourceDetails] }>()
+const props = defineProps<{
+  index: number;
+  block: SourceDetails;
+}>()
 
-const rules = {
-  validateUrl: (url: string) => !!url || !!url.startsWith('http://') || 'Url is not valid'
-}
+const sourceDetails = ref<SourceDetails>(props.block)
 
-const emit = defineEmits({
-  'update:blocks' (_block: SourceDetails) {
-    return true
-  }
-})
-
-const isSaved = ref(false)
-const sourceDetails = ref(props.block)
-
+/**
+ * Handles the addition of a new source
+ */
 function handleAddSource () {
   sourceDetails.value.article_sources.push('')
 }
 
+ const isSaved = ref<boolean>(false)
+
+/**
+ * Handles the edit action for a block
+ */
+function handleEdit () {
+  isSaved.value = false
+}
+
+ /**
+ * Handles the save action for a block
+ */
 function handleSave () {
   isSaved.value = !isSaved.value
   sourceDetails.value.id = props.index
   emit('update:blocks', sourceDetails.value)
+}
+
+/**
+ * Handles the removal of a source from the list
+ * @param index - The index of the source to remove
+ */
+function handleRemoveSource (index: number) {
+  sourceDetails.value.article_sources.splice(index, 1)
 }
 </script>
