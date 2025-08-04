@@ -1,12 +1,8 @@
 <template>
   <section id="settings">
-    <VoltCard class="shadow-sm">
-      <template #content>
-        <h1 class="font-bold text-3xl">
-          Choose how you appear and what you see on YouTube
-        </h1>
-      </template>
-    </VoltCard>
+    <SettingsHeader>
+      Choose how you appear and what you see on YouTube
+    </SettingsHeader>
 
     <!-- Account Type -->
     <SettingsCard title="Account type" subtitle="Manage what you share on YouTube">

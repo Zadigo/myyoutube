@@ -1,239 +1,95 @@
 <template>
   <section class="moderation">
-    <div class="row">
-      <div class="col-8 offset-md-2">
-        <div class="card mb-2">
-          <div class="card-body">
-            <h2>
-              Customize your viewing experience
-            </h2>
+    <SettingsHeader>
+      Moderate what you see on YouTube
+    </SettingsHeader>
+
+    <!-- Blocked channels -->
+    <SettingsCard title="Blocked channels" subtitle="Channels that you blocked and do not want to see">
+      <VoltList v-if="hasChannels" :items="channels">
+        <template #default="{ item }">
+          <div class="flex justify-start items-center gap-3">
+            <VoltAvatar image="/avatars/avatar1.png" shape="circle" size="large" />
+            <span>{{ item.channel.name }}</span>
           </div>
+
+          <VoltButton color="danger" variant="text">
+            <Icon name="i-fa7-solid:arrow-left" />"['fas', 'fa-trash']" />
+          </VoltButton>
+        </template> 
+      </VoltList>
+    </SettingsCard>
+
+    <!-- Blocked Keywords -->
+    <SettingsCard title="Blocked keywords" subtitle="Block videos containing certain specific keywords (title, description)">
+      <template #default>
+        <div class="flex justify-start gap-2">
+          <VoltInputText v-model="newKeyword.word" variant="outlined" placeholder="Enter a keyword to block" @keypress.enter="create" />
+          <VoltSelect v-model="newKeyword.duration" :options="Array.from(blockingDurations)" />
         </div>
-      </div>
-    </div>
 
-    <div class="row">
-      <!-- Blocked channels -->
-      <div class="col-8 offset-md-2">
-        <SettingsCard title="Blocked channels" subtitle="Channels that you blocked and do not want to see">
-          <template #default>
-            <div class="list-group">
-              <div v-for="blockedChannel in blockedChannels" :key="blockedChannel.channel.reference" class="list-group-item d-flex justify-content-between align-items-center">
-                <div class="d-flex justify-content-start align-items-center gap-3">
-                  <VoltAvatar image="/avatars/avatar1.png" size="20" />
-                  <span>{{ blockedChannel.channel.name }}</span>
-                </div>
+        <VoltLabel class="my-5">
+          <template #input>
+            <VoltToggleSwitch v-model="excludeFollowedAccounts" />
+          </template>
 
-                <v-btn color="danger" variant="text">
-                  <font-awesome :icon="['fas', 'fa-trash']" />
-                </v-btn>
+          <template #label>
+            Exclude accounts that you follow
+          </template> 
+        </VoltLabel>
+
+        <VoltList v-if="hasKeywords" :items="keywords" item-label="word">
+          <template #default="{ item }">
+            <div class="flex justify-between items-center gap-2">
+              <div class="space-x-2">
+                <p>
+                  {{ item.word }}
+                </p>
+
+                <VoltBadge>
+                  {{ item.duration }}
+                </VoltBadge>
               </div>
+
+              <VoltButton @click="() => remove(i)">
+                <Icon name="i-fa7-solid:trash" />
+              </VoltButton>
             </div>
           </template>
-        </SettingsCard>
-      </div>
+        </VoltList>
+      </template>
+    </SettingsCard>
 
-      <!-- Blocked Keywords -->
-      <div class="col-8 offset-md-2">
-        <SettingsCard title="Blocked keywords" subtitle="Block videos containing certain specific keywords (title, description)">
-          <template #default>
-            <div class="d-flex justify-content-between gap-2">
-              <VoltInputText v-model="blockedKeyword.word" variant="outlined" placeholder="Enter a keyword to block" @keypress.enter="handleAddBlockedKeyWord" />
-              
-              <div class="w-50">
-                <v-select v-model="blockedKeyword.duration" :items="blockingDurations" variant="outlined" :auto-select-first="true" />
-              </div>
-            </div>
-
-            <v-switch v-model="excludeFollowedAccounts" label="Exclude accounts that you follow" inset />
-
-            <div class="list-group">
-              <div v-for="(item, i) in blockedKeywords" :key="i" class="list-group-item d-flex justify-content-between align-items-center">
-                <div class="d-flex gap-2">
-                  <span>
-                    {{ item.word }}
-                  </span>
-
-                  <span class="badge badge-secondary">
-                    {{ item.duration }}
-                  </span>
-                </div>
-
-                <v-btn variant="text" rounded @click="() => handleRemoveBlockedKeyword(i)">
-                  <font-awesome icon="trash" />
-                </v-btn>
-              </div>
-            </div>
-          </template>
-        </SettingsCard>
-      </div>
-
-      <!-- Moderation Lists -->
-      <div class="col-8 offset-md-2">
-        <SettingsCard title="Block lists" subtitle="Create shareable block lists">
-          <template #default>
-            <p class="fw-light">
-              Blocklists are lists of accounts that other users have create of
-              accounts that they have associated to be problematic
-            </p>
-            
-            <div class="d-flex justify-content-center">
-              <v-btn color="secondary" variant="tonal" rounded @click="showBlockLists=true">
-                Use or create block lists
-              </v-btn>
-            </div>
-          </template>
-        </SettingsCard>
-      </div>
-    </div>
+    <!-- Moderation Lists -->
+    <SettingsCard title="Block lists" subtitle="Create shareable block lists">
+      <template #default>
+        <VoltAlert>
+          Blocklists are lists of accounts that other users have create of
+          accounts that they have associated to be problematic
+        </VoltAlert>
+        
+        <div class="flex justify-center">
+          <VoltButton color="secondary" variant="tonal" rounded @click="showBlockLists=true">
+            Use or create block lists
+          </VoltButton>
+        </div>
+      </template>
+    </SettingsCard>
 
     <!-- Modals -->
-    <Teleport to="body">        
-      <v-dialog v-model="showBlockLists" width="900" scrollable>
-        <v-card>
-          <v-card-item>
-            <h2 class="h4">
-              Block lists
-            </h2>
-          </v-card-item>
-          
-          <v-card-text>
-            <VoltInputText  placeholder="Search by list names..." flat />
-            
-            <div class="d-flex gap-2 mb-3">
-              <v-btn :disabled="!showBlockedItems" color="dark" variant="tonal" rounded @click="showBlockedItems=false">
-                <font-awesome icon="arrow-left" />
-              </v-btn>
-
-              <v-btn :disabled="!showBlockedItems" class="mb-3" color="dark" variant="tonal" rounded>
-                Use this list
-              </v-btn>
-              
-              <v-btn class="mb-3" color="dark" variant="tonal" rounded @click="showCreateList=true">
-                Create my list
-              </v-btn>
-            </div>
-            
-            <div v-if="showBlockedItems" class="list-group">
-              <div class="list-group-item">
-                Something
-              </div>
-            </div>
-
-            <div v-else class="list-group">
-              <a v-for="i in 15" :key="i" href="#" class="list-group-item list-group-item-action p-3 d-flex justify-content-between align-items-center" @click.prevent="showBlockedItems=true">
-                <span>Utilisateurs Hitchens</span>
-                
-                <div class="popularity">
-                  <font-awesome v-for="x in 10" :key="x" icon="star" />
-                </div>
-              </a>
-            </div>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
-    </Teleport>
-
-    <Teleport to="body">
-      <v-dialog v-model="showCreateList" :persistent="true" width="400">
-        <v-card>
-          <v-card-item>
-            <h2 class="h4">
-              New list
-            </h2>
-          </v-card-item>
-
-          <v-card-text>
-            <VoltInputText  placeholder="Name of your list" flat />
-            <VoltInputText  placeholder="Search for users..." flat />
-          </v-card-text>
-          
-          <v-card-actions>
-            <v-btn variant="tonal" @click="showCreateList=false">
-              Cancel
-            </v-btn>
-
-            <v-btn variant="tonal" @click="showCreateList=false">
-              Save
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </Teleport>
+    <ModalsModerationBlockLists v-model="showBlockLists" />
+    <ModalsModerationCreateList v-model="showCreateList" />
   </section>
 </template>
 
 <script setup lang="ts">
-import { useRefHistory } from '@vueuse/core'
-import { ref } from 'vue'
-
-import type { BlockedChannel } from '~/types'
-
-import SettingsCard from '~/components/settings/Card.vue'
-
-
-const blockingDurations = [
-  'Forever',
-  'For 24 hours',
-  '7 days',
-  '30 days'
-] as const
-
-type BlockingDurations = (typeof blockingDurations)[number]
-
-interface BlockedKeyword {
-  word: string
-  duration: BlockingDurations
-}
-
-useHead({
-  title: 'Moderation'
-})
+import { useBlockedKeywords, useBlockedChannels } from '~/composables/use'
+import { blockingDurations } from '~/data'
 
 definePageMeta({
   layout: 'settings'
 })
 
-const showBlockedItems = ref<boolean>(false)
-const showCreateList = ref<boolean>(false)
-const showBlockLists = ref<boolean>(false)
-const excludeFollowedAccounts = ref<boolean>(false)
-const blockedChannels = ref<BlockedChannel[]>([])
-const blockedKeyword = ref<BlockedKeyword>({
-  word: '',
-  duration: 'Forever'
-})
-const blockedKeywords = ref<BlockedKeyword[]>([])
-const { history, undo, redo } = useRefHistory(blockedKeywords)
-
-/**
- * 
- */
-const { execute } = useAsyncData(() => {
-  return $fetch<BlockedChannel[]>('/user-channels/blocked', {
-    method: 'GET',
-    baseURL: useRuntimeConfig().public.djangoProdUrl
-  })
-}, {
-  immediate: false
-})
-
-/**
- * 
- */
-async function handleAddBlockedKeyWord () {
-  blockedKeywords.value.push(blockedKeyword.value)
-  blockedKeyword.value = { word: '', duration: 'Forever' }
-}
-
-/**
- * 
- */
-async function handleRemoveBlockedKeyword (index: number) {
-  blockedKeywords.value.splice(index, 1)
-}
-
-onBeforeMount(async () => {
-  await execute()
-})
-</script>>
+const { keywords, hasKeywords, create, remove, newKeyword, excludeFollowedAccounts } = useBlockedKeywords()
+const { channels, hasChannels, showCreateList, showBlockLists } = useBlockedChannels()
+</script>

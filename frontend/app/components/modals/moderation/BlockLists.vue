@@ -1,45 +1,43 @@
 <template>
-  <v-dialog v-model="showBlockLists" width="900" scrollable>
-    <v-card>
-      <v-card-item>
-        <h2 class="h4">
-          Block lists
-        </h2>
-      </v-card-item>
+  <VoltDialog v-model:visible="show" modal>
+    <VoltInputText placeholder="Search by list names..." flat />
+    
+    <div class="flex gap-2 mb-3">
+      <VoltButton :disabled="!showBlockedItems" rounded @click="showBlockedItems=false">
+        <Icon icon="i-fa7-solid:arrow-left" />
+      </VoltButton>
+
+      <VoltButton :disabled="!showBlockedItems" class="mb-3" rounded>
+        Use this list
+      </VoltButton>
       
-      <v-card-text>
-        <VoltInputText  placeholder="Search by list names..." flat />
-        
-        <div class="d-flex gap-2 mb-3">
-          <v-btn :disabled="!showBlockedItems" color="dark" variant="tonal" rounded @click="showBlockedItems=false">
-            <font-awesome icon="arrow-left" />
-          </v-btn>
+      <VoltButton class="mb-3" rounded @click="show=true">
+        Create my list
+      </VoltButton>
+    </div>
+    
+    <div v-if="showBlockedItems" class="list-group">
+      <div class="list-group-item">
+        Something
+      </div>
+    </div>
 
-          <v-btn :disabled="!showBlockedItems" class="mb-3" color="dark" variant="tonal" rounded>
-            Use this list
-          </v-btn>
-          
-          <v-btn class="mb-3" color="dark" variant="tonal" rounded @click="showCreateList=true">
-            Create my list
-          </v-btn>
-        </div>
+    <div v-else class="list-group">
+      <a v-for="i in 15" :key="i" href="#" class="list-group-item list-group-item-action p-3 d-flex justify-content-between align-items-center" @click.prevent="showBlockedItems=true">
+        <span>Utilisateurs Hitchens</span>
         
-        <div v-if="showBlockedItems" class="list-group">
-          <div class="list-group-item">
-            Something
-          </div>
+        <div class="popularity">
+          <Icon v-for="x in 10" :key="x" icon="i-fa7-solid:star" />
         </div>
-
-        <div v-else class="list-group">
-          <a v-for="i in 15" :key="i" href="#" class="list-group-item list-group-item-action p-3 d-flex justify-content-between align-items-center" @click.prevent="showBlockedItems=true">
-            <span>Utilisateurs Hitchens</span>
-            
-            <div class="popularity">
-              <font-awesome v-for="x in 10" :key="x" icon="star" />
-            </div>
-          </a>
-        </div>
-      </v-card-text>
-    </v-card>
-  </v-dialog>
+      </a>
+    </div>
+  </VoltDialog>
 </template>
+
+<script setup lang="ts">
+const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
+const props = defineProps<{ modelValue: boolean }>()
+const show = useVModel(props, 'modelValue', emit, { defaultValue: false })
+
+const showBlockedItems = ref<boolean>(false)
+</script>

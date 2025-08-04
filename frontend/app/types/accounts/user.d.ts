@@ -31,8 +31,3 @@ export interface ViewingProfile {
   subscriptions_private: boolean
   personalize_ads: false
 }
-
-export interface BlockedChannel {
-  channel: UserChannel
-  user: CustomUser
-}

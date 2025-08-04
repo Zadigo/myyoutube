@@ -1,26 +1,22 @@
 <template>
-  <v-dialog v-model="showCreateList" :persistent="true" width="400">
-    <v-card>
-      <v-card-item>
-        <h2 class="h4">
-          New list
-        </h2>
-      </v-card-item>
+  <VoltDialog v-model:visible="show" modal>
+    <VoltInputText placeholder="Name of your list" flat />
+    <VoltInputText placeholder="Search for users..." flat />
+    
+    <template #footer>
+      <VoltButton @click="show=false">
+        Cancel
+      </VoltButton>
 
-      <v-card-text>
-        <VoltInputText  placeholder="Name of your list" flat />
-        <VoltInputText  placeholder="Search for users..." flat />
-      </v-card-text>
-      
-      <v-card-actions>
-        <v-btn variant="tonal" @click="showCreateList=false">
-          Cancel
-        </v-btn>
-
-        <v-btn variant="tonal" @click="showCreateList=false">
-          Save
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      <VoltButton @click="show=false">
+        Save
+      </VoltButton>
+    </template>
+  </VoltDialog>
 </template>
+
+<script setup lang="ts">
+const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
+const props = defineProps<{ modelValue: boolean }>()
+const show = useVModel(props, 'modelValue', emit, { defaultValue: false })
+</script>
