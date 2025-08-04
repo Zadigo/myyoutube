@@ -4,7 +4,7 @@
       <!-- Sidebar -->
       <Transition tag="div" name="sidebar" mode="out-in">
         <nav v-if="showSidebar" id="sidebar" class="bg-white fixed top-0 left-0 bottom-0 p-3 shadow-md w-[240px] z-30">
-          <SidebarsBase :links="navLinks" />
+          <SidebarsSite :links="navLinks" />
         </nav>
       </Transition>
 

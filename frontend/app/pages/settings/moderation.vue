@@ -169,7 +169,7 @@ import { ref } from 'vue'
 
 import type { BlockedChannel } from '~/types'
 
-import SettingsCard from '~s/components/settings/Card.vue'
+import SettingsCard from '~/components/settings/Card.vue'
 
 
 const blockingDurations = [

@@ -1,150 +1,110 @@
 <template>
   <section id="settings">
-    <div class="row">
-      <div class="col-8 offset-md-2">
-        <div class="card">
-          <div class="card-body">
-            <h1 class="h4">
-              Choose how you appear and what you see on YouTube
-            </h1>
-          </div>
+    <VoltCard class="shadow-sm">
+      <template #content>
+        <h1 class="font-bold text-3xl">
+          Choose how you appear and what you see on YouTube
+        </h1>
+      </template>
+    </VoltCard>
+
+    <!-- Account Type -->
+    <SettingsCard title="Account type" subtitle="Manage what you share on YouTube">
+      <VoltAlert>
+        You can choose to rank you account as a professional account. This will allow you to access 
+        more features and tools on YouTube, such as advanced analytics and monetization options.
+      </VoltAlert>
+
+      <VoltLabel class="mt-5">
+        <template #input>
+          <VoltToggleSwitch v-model="professionalAccount" />
+        </template>
+
+        <template #label>
+          My account is professional or artistic
+        </template>
+      </VoltLabel>
+
+      {{ userSettings }}
+
+      <div v-if="professionalAccount" class="p-5 rounded-lg bg-slate-100 mt-10 ms-10">
+        <VoltLabel v-for="item in rankAs" :key="item">
+          <VoltCheckbox v-model="userSettings.account_type" :value="item" />
+          <label class="py-3 pe-5 font-semibold">
+            {{ item }}
+          </label>
+        </VoltLabel>
+        
+        <div v-if="settingsStore.isBusiness">
+          <VoltInputText placeholder="Business ID" />
+          <VoltInputText placeholder="Business VAT" />
+        </div>
+      </div>
+    </SettingsCard>
+
+    <!-- Membership -->
+    <SettingsCard title="YouTube Membership" subtitle="Manage your YouTube membership settings" class="mt-1">
+      <template #default>
+        <div class="grid grid-cols-3 gap-2">
+          <VoltCard v-for="subscriptionType in subscriptionTypes" :key="subscriptionType" class="shadow-sm cursor-pointer" @click="() => { userSettings.subscription_name = subscriptionType }">
+            <template #content>
+              {{ subscriptionType }}
+            </template>
+          </VoltCard>
         </div>
 
-        <!-- Account Type -->
-        <SettingsCard title="Account type" subtitle="Manage what you share on YouTube">
-          <template #default>
-            <div class="alert alert-info">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas quo quibusdam nihil non placeat sed saepe aliquam dolore. Reiciendis soluta sed, voluptatem minima cumque alias obcaecati delectus recusandae similique pariatur.
-            </div>
+        {{ hasSubscription }}
 
-            <v-switch v-model="professionalAccount" label="My account is professional" inset />
+        <div class="text-center">
+          <VoltButton :disabled="!hasSubscription" class="mt-3" @click="() => { showPayment=true }">
+            Payment <Icon name="i-fa7-solid:arrow-right" />
+          </VoltButton>
+        </div>
+      </template>
+    </SettingsCard>
 
-            <div v-if="professionalAccount" class="list-group list-group-radio d-grid gap-2 border-0 w-auto mt-4">
-              <div class="position-relative">
-                <input id="account-selection-0" name="account-selection" class="form-check-input position-absolute top-50 end-0 me-3 fs-5" type="radio" value="0">
-                <label class="list-group-item py-3 pe-5" for="account-selection-0">
-                  <strong class="fw-semibold">Artist</strong>
-                </label>
-              </div>
-            </div>
-          </template>
-        </SettingsCard>
+    <SettingsCard title="Vos chaînes YouTube" subtitle="Manage what you share on YouTube">
+      <div class="my-2">
+        <NuxtLink to="/" class="bg-slate-50 p-5 rounded-lg flex items-center w-full">
+          <VoltAvatar image="/avatars/avatar1.png" shape="circle" size="large" alt="" />
 
-        <SettingsCard title="Membership" subtitle="Manage what you share on YouTube" class="card mt-1">
-          <template #default>
-            <v-item-group v-model="currentSubscription" selected-class="bg-primary">
-              <v-container>
-                <v-row>
-                  <v-col v-for="subscription in subscriptions" :key="subscription" cols="12" md="4">
-                    <v-item v-slot="{ selectedClass, toggle }">
-                      <v-card :class="[selectedClass]" class="d-flex align-center" height="200" dark @click="toggle">
-                        <div class="text-h5 flex-grow-1 text-center">
-                          {{ subscription }}
-                        </div>
-                      </v-card>
-                    </v-item>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-item-group>
-
-            <div class="text-center">
-              <v-btn :disabled="currentSubscription < 1" class="mt-3" rounded="xl" size="x-large" color="warning" flat @click="showSubscriptions = true">
-                Payment <font-awesome :icon="[ 'fas', 'fa-arrow-right' ]" />
-              </v-btn>
-            </div>
-          </template>
-        </SettingsCard>
-
-        <SettingsCard title="Vos chaînes YouTube" subtitle="Manage what you share on YouTube">
-          <template #default>
-            <div class="list-group my-2">
-              <NuxtLink to="/" class="list-group-item list-group-item-action">
-                <div class="d-flex align-items-center gap-3">
-                  <VoltAvatar image="/avatars/avatar1.png" size="30" alt="" />
-
-                  <p class="m-0">
-                    Channel name 1
-                  </p>
-                </div>
-              </NuxtLink>
-            </div>
-          </template>
-        </SettingsCard>
+          <p class="m-0">
+            Channel name 1
+          </p>
+        </NuxtLink>
       </div>
-    </div>
+    </SettingsCard>
 
     <!-- Modals -->
-    <v-dialog v-model="showSubscriptions" width="700px" persistent>
-      <v-card>
-        <v-card-text>
-          <!-- <v-stepper v-model="currentPaymentStep" :items="['Address', 'Payment']" model-value="0">
-            <template #item.1>
-              <v-card title="Address" flat>
-                <v-form id="address" @submit.prevent>
-                  <input type="text" autocomplete="address-level1">
-                  <VoltInputText autocomplete="address-level1"></VoltInputText>
-                </v-form>
-              </v-card>
-            </template>
+    <VoltDialog v-model:visible="showPayment" modal>
+      <VoltButton @click="showPayment = false">
+        Disagree
+      </VoltButton>
 
-            <template #:item.2>
-              <v-card title="Payment" flat>
-                <v-form id="paymment" @submit.prevent>
-                  <div id="payment">
-                    <VoltInputText placeholder="Card number" aria-placeholder="Card number" autocomplete="cc-number" variant="outlined"></VoltInputText>
-
-                    <div class="d-flex justify-content-between gap-2">
-                      <VoltInputText autocomplete="cc-exp-month" placeholder="Expiry month" variant="outlined"></VoltInputText>
-                      <VoltInputText autocomplete="cc-exp-year" placeholder="Expiry year" variant="outlined"></VoltInputText>
-                      <VoltInputText autocomplete="cc-csc" placeholder="CVV" variant="outlined"></VoltInputText>
-                    </div>
-                  </div>
-                </v-form>
-              </v-card>
-            </template>
-          </v-stepper> -->
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer />
-
-          <v-btn @click="showSubscriptions = false">
-            Disagree
-          </v-btn>
-
-          <v-btn @click="showSubscriptions = false">
-            Agree
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+      <VoltButton @click="showPayment = false">
+        Agree
+      </VoltButton>
+    </VoltDialog>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { ViewingProfile } from '~/types'
+import { rankAs, subscriptionTypes } from '~/data'
 
 definePageMeta({
   layout: 'settings'
 })
 
-const subscriptions = [
-  'Free',
-  'YouTube+',
-  'YouTube++'
-]
-
 const professionalAccount = ref(false)
-const showSubscriptions = ref(false)
-const currentSubscription = ref<number>(0)
+const showPayment = ref<boolean>(false)
 
 const { data } = useFetch('/api/account/viewer-profile', {
-  transform(data: ViewingProfile) {
-    return data
-  }
+  baseURL: useRuntimeConfig().public.djangoProdUrl,
+  method: 'GET'
 })
+
+const settingsStore = useSettingsStore()
+const { userSettings, hasSubscription } = storeToRefs(settingsStore)
 
 const store = useViewerProfile()
 const { profileData } = storeToRefs(store)

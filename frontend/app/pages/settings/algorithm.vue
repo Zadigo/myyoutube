@@ -1,121 +1,62 @@
 <template>
   <section id="algorithm">
-    <div class="row">
-      <div class="col-sm-12 col-md-8 offset-md-2">
-        <div class="card mb-2">
-          <div class="card-body">
-            <h2>
-              Customize your viewing experience
-            </h2>
-          </div>
-        </div>
+    <VoltCard class="shadow-sm">
+      <template #content>
+        <h1 class="font-bold text-3xl">
+          Customize your viewing experience
+        </h1>
+      </template>
+    </VoltCard>
 
-        <settings-card title="Algorithm constructor" subtitle="Build your own viewing algorithm">
-          <template #default>
-            <SettingsConditionalBlocks />
-          </template>
-        </settings-card>
-      </div>
-    </div>
+    <SettingsCard title="Algorithm constructor" subtitle="Build your own viewing algorithm">
+      <template #default>
+        <SettingsAlgorithmConditionalBlocks />
+      </template>
+    </SettingsCard>
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import type { CustomUser } from '~/types'
+import { useCategories } from '~/composables/use'
 
 definePageMeta({
   layout: 'settings'
 })
 
-const selectedCategory = ref(null)
-const subCategories = ref([])
-const selectedSubcategory = ref(null)
 
-const hasSelectedCategory = computed(() => {
-  return selectedCategory.value !== null
-})
+const { load, categories } = useCategories()
 
-const { data } = await useAsyncData(() => {
-  return Promise.all([
-    $fetch(`videos/categories/${selectedCategory.value.toLowerCase()}/sub-categories`, {
-      method: 'GET',
-      baseURL: useRuntimeConfig().public.djangoProdUrl
-    })
-  ])
-}, {
-  immediate: false,
-  watch: [selectedCategory]
-})
+await load()
 
-console.log(data)
+provide('categories', categories)
 
 
-// whenever(hasSelectedCategory, () => {
-//   execute()
-//   getCategories()
-//   subCategories.value = response.data
-//   instance.create(selectedCategory.value, response.data)
+// const selectedCategory = ref(null)
+// const selectedSubcategory = ref(null)
+
+// const requestData = ref({
+//   preferred_categories: [
+//     {
+//       "title": "Sports",
+//       "subcategories": ["WNBA"]
+//     },
+//     {
+//       "title": "Movies",
+//       "subcategories": ["Trailers"]
+//     }
+//   ]
 // })
 
-const requestData = ref({
-  preferred_categories: [
-    {
-      "title": "Sports",
-      "subcategories": ["WNBA"]
-    },
-    {
-      "title": "Movies",
-      "subcategories": ["Trailers"]
-    }
-  ]
-})
+// watch(selectedCategory, (n, o) => {
+//   if (n !== o) {
+//     selectedSubcategory.value = null
+//   }
+// })
 
-useHead({
-  title: 'Algorithm builder',
-  meta: [
-    {
-      name: 'description',
-      content: 'Some description to use'
-    }
-  ]
-})
-
-watch(selectedCategory, (n, o) => {
-  if (n !== o) {
-    selectedSubcategory.value = null
-  }
-})
-
-/**
- * 
- */
-async function handleAccountDetails () {
-  try {
-    const response = await client.get<CustomUser>('/accounts/base')
-    this.requestData = response.data
-  } catch {
-    // Handle error
-  }
-}
-
-/**
- * 
- */
-function handleAddCategory () {
-  const category = requestData.value.preferred_categories.find( () => {
-    return {
-      title: selectedCategory.value
-    }
-  })
-  
-  if (category) {
-    category.subcategories.push(this.selectedSubcategory)
-  } else {
-    requestData.value.preferred_categories.push({
-      title: selectedCategory.value,
-      subcategories: [selectedSubcategory.value]
-    })
-  }
-}
+// const { data } = useFetch('/accounts/base', {
+//   baseURL: useRuntimeConfig().public.djangoProdUrl,
+//   method: 'GET',
+//   immediate: true,
+//   lazy: true
+// })
 </script>

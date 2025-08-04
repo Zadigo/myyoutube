@@ -8,7 +8,7 @@
 const { variant = 'neutral' } = defineProps<{ variant?: 'success' | 'error' | 'warning' | 'neutral' }>()
 
 const theme = ref([
-  'p-5 rounded-lg mt-5',
+  'p-5 rounded-lg',
   {
     success: 'bg-success-100 text-success-900',
     error: 'bg-error-100 text-error-900',

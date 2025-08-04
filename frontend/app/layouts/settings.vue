@@ -1,8 +1,8 @@
 <template>
-  <section class="dashboard">
+  <section id="settings">
     <header>
       <!-- Sidebar -->
-      <nav id="sidebar" class="collapse d-lg-block sidebar collapse bg-white">
+      <nav id="sidebar" class="bg-white">
         <div class="position-sticky">
           <SidebarsSettings />
         </div>
@@ -10,7 +10,7 @@
     </header>
 
     <main>
-      <div class="container pt-4">
+      <div class="container px-4 pt-4">
         <slot />
       </div>
     </main>
