@@ -1,33 +1,11 @@
 <template>
-  <v-dialog v-model="show" width="500" @close="show=false">
-    <v-card>
-      <v-card-text>
-        <v-form>
-          <VoltInputText type="number" :min="10" :max="500" :step="10" variant="outlined" />
-        </v-form>
-      </v-card-text>
-    </v-card>
-  </v-dialog>
+  <VoltDialog v-model:visible="show">
+    <VoltInputText type="number" :min="10" :max="500" :step="10" variant="outlined" />
+  </VoltDialog>
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits({
-  'update:modelValue' (_value: boolean) {
-    return true
-  }
-})
-
-const props = defineProps({
-  modelValue: {
-    type: Boolean,
-    required: true
-  }
-})
-
-const show = computed({
-  get: () => props.modelValue,
-  set: (value) => {
-    emit('update:modelValue', value)
-  }
-})
+const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
+const props = defineProps<{ modelValue: boolean }>()
+const show = useVModel(props, 'modelValue', emit, { defaultValue: false })
 </script>

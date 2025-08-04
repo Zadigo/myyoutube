@@ -1,10 +1,13 @@
 <template>
-  <div class="list-group list-group-flush mx-3 mt-4">
-    <NuxtLink v-for="navLink in navLinks" :key="navLink.to" :to="navLink.to" :aria-current="route.path === navLink.to" class="list-group-item list-group-item-action border-0">
-      <font-awesome :icon="navLink.icon" class="me-3" />
-      {{ navLink.name }}
-    </NuxtLink>
-  </div>
+  <!-- <div class="mx-3 mt-4 flex-col justify-between">
+    <div id="links" class="space-y-5">
+      <NuxtLink v-for="navLink in navLinks" :key="navLink.to" :to="navLink.to" :aria-current="route.path === navLink.to" class="p-2 px-4 rounded-lg flex gap-3 items-center font-semibold hover:bg-primary-50">
+        <font-awesome :icon="navLink.icon" class="me-3" />
+        {{ navLink.name }}
+      </NuxtLink>
+    </div>
+  </div> -->
+  <SidebarsBase :links="navLinks" />
 </template>
 
 <script setup lang="ts">
@@ -12,46 +15,44 @@ const navLinks = [
   {
     name: 'Feed',
     to: '/',
-    icon: 'fas fa-home'
+    icon: 'i-fa7-solid:home'
   },
   {
     name: 'My account',
     to: '/settings',
-    icon: 'fas fa-user'
+    icon: 'i-fa7-solid:user'
   },
   {
     name: 'Algorithm',
     to: '/settings/algorithm',
-    icon: 'fas fa-microchip'
+    icon: 'i-fa7-solid:microchip'
   },
   {
     name: 'Moderation',
     to: '/settings/moderation',
-    icon: 'fas fa-a'
+    icon: 'i-fa7-solid:a'
   },
   {
     name: 'Notifications',
     to: '/settings/notifications',
-    icon: 'fas fa-bell'
+    icon: 'i-fa7-solid:bell'
   },
   {
     name: 'Performance',
     to: '/settings/performance',
-    icon: 'fas fa-tv'
+    icon: 'i-fa7-solid:tv'
   },
   {
     name: 'Privacy',
     to: '/settings/privacy',
-    icon: 'fas fa-lock'
+    icon: 'i-fa7-solid:lock'
   },
   {
     name: 'Advanced',
     to: '/settings/advanced',
-    icon: 'fas fa-chart-simple'
+    icon: 'i-fa7-solid:chart-simple'
   }
 ]
-
-const route = useRoute()
 </script>
 
 <style lang="scss" scoped>

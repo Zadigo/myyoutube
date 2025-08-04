@@ -10,23 +10,21 @@
 
       <!-- Navbar -->
       <nav v-show="$route.meta.requiresNav" class="bg-white fixed top-0 left-0 right-0 p-2 shadow-md z-40">
-        <div class="container-fluid">
-          <VoltButton class="navbar-toggler" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-            <Icon name="i-fa7-solid:bars" />
-          </VoltButton>
-          
-          <VoltButton @click="showSidebar=!showSidebar">
-            <Icon name="i-fa7-solid:bars" />
-          </VoltButton>
+        <VoltButton class="navbar-toggler" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+          <Icon name="i-fa7-solid:bars" />
+        </VoltButton>
+        
+        <VoltButton @click="showSidebar=!showSidebar">
+          <Icon name="i-fa7-solid:bars" />
+        </VoltButton>
 
-          <NuxtLink to="/" class="uppercase font-bold">
-            My Youtube
-          </NuxtLink>
+        <NuxtLink to="/" class="uppercase font-bold">
+          My Youtube
+        </NuxtLink>
 
-          <ul class="ms-auto flex">
-            <VoltAvatar image="/avatars/avatar1.png" size="35" />
-          </ul>
-        </div>
+        <ul class="ms-auto flex">
+          <VoltAvatar image="/avatars/avatar1.png" size="35" />
+        </ul>
       </nav>
     </header>
 

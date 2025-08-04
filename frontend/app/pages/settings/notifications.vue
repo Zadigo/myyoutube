@@ -1,24 +1,25 @@
 <template>
   <section id="notifications">
-    <div class="row">
-      <div class="col-8 offset-md-2">
-        <div class="card">
-          <div class="card-body">
-            <h2>Choose when and how to be notified</h2>
-          </div>
-        </div>
+    <SettingsHeader>
+      Choose when and how to be notified
+    </SettingsHeader>
 
-        <SettingsCard title="General" subtitle="Manage your mobile and desktop notifications">
-          <template #default>
-            <div v-if="notificationData" class="list-group">
-              <div v-for="notificationOption in notificationOptions" :key="notificationOption.action" class="list-group-item">
-                <v-switch v-model="notificationData[notificationOption.action]" :label="notificationOption.label" inset />
-              </div>
-            </div>
-          </template>
-        </SettingsCard>
-      </div>
-    </div>
+    <SettingsCard title="General" subtitle="Manage your mobile and desktop notifications">
+      <VoltList :items="notificationOptions">
+        <template #item="{ item, theme }">
+          <div :class="theme">
+            <VoltLabel>
+              <template #input>
+                <VoltToggleSwitch v-model="item.action" />
+              </template>
+              <template #label>
+                {{ item.label }}
+              </template>
+            </VoltLabel>
+          </div>
+        </template>
+      </VoltList>
+    </SettingsCard>
   </section>
 </template>
 
@@ -82,17 +83,7 @@ const { data } = useFetch('/api/notifications/profile', {
   }
 })
 
-// console.log('this is working', data.value)
-
 if (data.value) {
   notificationData.value = data.value
 }
-
-// async function getData() {
-//   const client = createDjangoClient('/api/v1/notifications')
-//   const response = await client.get('/profile')
-//   notificationData.value = response.data
-// }
-
-// getData()
 </script>

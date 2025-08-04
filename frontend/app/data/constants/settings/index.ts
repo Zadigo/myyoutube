@@ -29,3 +29,16 @@ export const blockingDurations = [
 ] as const
 
 export type BlockingDuration = (typeof blockingDurations)[number]
+
+
+// Ads
+
+export const sensitiveCategories = [
+  'Alcohol',
+  'Dating',
+  'Gambling',
+  'Pregnancy and parenting',
+  'Weight loss'
+] as const
+
+export type SensitiveCategory = (typeof sensitiveCategories)[number]

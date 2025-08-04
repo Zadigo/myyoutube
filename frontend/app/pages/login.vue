@@ -4,13 +4,13 @@
       <div class="col-md-5 col-sm-12 offset-md-4">
         <div class="card">
           <div class="card-body">
-            <v-form @submit.prevent>
-              <VoltInputText v-model="email" type="email" placeholder="Email"  flat />
-              <VoltInputText v-model="password" type="password" placeholder="Password"  flat />
-              <v-btn variant="tonal" color="primary" @click="handleLogin">
+            <form @submit.prevent>
+              <VoltInputText v-model="email" type="email" placeholder="Email" />
+              <VoltInputText v-model="password" type="password" placeholder="Password" />
+              <VoltButton variant="tonal" color="primary" @click="handleLogin">
                 Login
-              </v-btn>
-            </v-form>
+              </VoltButton>
+            </form>
           </div>
         </div>
       </div>

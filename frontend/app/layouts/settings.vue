@@ -1,8 +1,8 @@
 <template>
-  <section id="settings">
+  <section id="settings" class="relative">
     <header>
       <!-- Sidebar -->
-      <nav id="sidebar" class="bg-white">
+      <nav id="sidebar" class="bg-white fixed top-0 left-0 bottom-0 w-[240px] shadow-sm z-30">
         <div class="position-sticky">
           <SidebarsSettings />
         </div>

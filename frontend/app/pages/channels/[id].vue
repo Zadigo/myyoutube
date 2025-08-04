@@ -18,10 +18,10 @@
           310 vidéos
         </p>
 
-        <v-btn rounded="xl">
+        <VoltButton rounded="xl">
           <font-awesome :icon="['fas', 'fa-plus']" class="me-2" />
           Subscribe
-        </v-btn>
+        </VoltButton>
       </div>
     </div>
   </section>
