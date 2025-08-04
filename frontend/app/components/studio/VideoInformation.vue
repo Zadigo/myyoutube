@@ -1,203 +1,154 @@
 <template>
-  <div class="card-body">
-    <div class="row">
-      <div v-if="requestData" class="col-7">
-        <VoltInputText v-model="requestData.title" type=" text" placeholder="Title"  flat />
+  <div class="space-y-2">
+    <!-- Title/Description -->
+    <StudioSettingBlock>
+      <template #description>
+        Your title should be an accurate representation of your video and can influence user moderation
+        if it is misleading or not. The title should be short and concise, ideally under 60 characters.
+        Your description should explain as much as possible and precisely what your video is about
+      </template>
+      
+      <template #actions>
+        <VoltInputText v-model="newVideo.title" class="w-full" placeholder="Title" />
+        <VoltTextarea v-model="newVideo.description" cols="4" class="my-1 w-full resize-none" placeholder="Description" />
+      </template>
+    </StudioSettingBlock>
 
-        <div class="alert alert-info fw-light">
-          <p class="fw-bold">
-            Video ranking
-          </p>
+    <!-- Ranking -->
+    <StudioSettingBlock help="/help/video-ranking" callout>
+      <template #title>
+        Video ranking
+      </template> 
 
-          In order for you video to rank correctly, you should describe as much as possible and
-          precisely what your video is about then select a category/sub-category that matches
-          exactly the subject of the video you are uploading. Users may consider you video to
-          be unfit if the category/sub-category don't match what they were expecting.
-        </div>
+      <template #description>
+        In order for you video to rank correctly, you should select a category/sub-category that matches
+        exactly the subject of the video you are uploading. Users may consider you video to
+        be unfit if the category/sub-category don't match what they were expecting.
+      </template>
 
-        <v-textarea v-model="requestData.description" cols="30" rows="7" class="my-1" placeholder="Description"  flat no-resize />
-
-        <v-autocomplete v-model="requestData.category" :items="categories" item-title="title" item-value="title"  placeholder="Select a category" flat auto-select-first>
+      <template #actions>
+        <VoltAutoComplete v-model="newVideo.category" :suggestions="categories" item-label="title" placeholder="Select a category">
           <VoltInputText />
-        </v-autocomplete>
+        </VoltAutoComplete>
 
-        <v-autocomplete v-model="requestData.subcategory" :items="subCategories" item-title="title" item-value="title"  placeholder="Select a sub-category" flat auto-select-first>
+        <VoltAutoComplete v-model="newVideo.subcategory" :suggestions="subCategories" item-label="title" placeholder="Select a sub-category">
           <VoltInputText />
-        </v-autocomplete>
-      </div>
+        </VoltAutoComplete>
+      </template>
+    </StudioSettingBlock>
 
-      <div class="col-5">
-        <!-- TODO: Upload the video at first in order to edit it afterwards -->
-        <!-- <base-video-player :video-source="store.previewUrl" :revoke-url="true" @loaded-meta-data="handleFrameInformation" /> -->
+    <!-- Thumbnail -->
+    <StudioSettingBlock help="/help/video-thumbnail" callout>
+      <template #title>
+        Thumbnail
+      </template>
 
-        <div class="mt-3">
-          <h5>Thumbnail</h5>
-          
-          <p class="text-muted">
-            Select or upload a picture that shows what's in your video.
-            A good thumbnail stands out and draws viewers'
-            attention. Learn more
-          </p>
-          
-          <div class="row">
-            <div v-for="(frame, i) in frames" :key="i" class="col-3">
-              <img :src="frame[1]" class="img-fluid" alt="">
-            </div>
-          </div>
+      <template #description>
+        Select or upload a picture that shows what's in your video.
+        A good thumbnail stands out and draws viewers' attention
+      </template>
+
+      <template #actions>
+        <div v-for="(frame, i) in frames" :key="i" class="col-3">
+          <img :src="frame[1]" class="img-fluid" alt="">
         </div>
+      </template>
+    </StudioSettingBlock>
+
+    <!-- Paid Promotion -->
+    <StudioSettingBlock help="/help/video-thumbnail" callout>
+      <template #title>
+        Paid promotion
+      </template>
+
+      <template #description>
+        If you accepted anything of value from a third party to make your video, 
+        you must let us know. We'll show viewers a message that tells them your 
+        video contains paid promotion.
+      </template>
+
+      <VoltLabel class="my-5">
+        <VoltToggleSwitch v-model="newVideo.has_paid_promotion" />
+        <label>My video contains paid promotion like a product placement, sponsorship, or endorsement</label>
+      </VoltLabel>
+
+      <div v-if="newVideo.has_paid_promotion" class="font-light italic my-3">
+        By selecting this box, you confirm that the paid promotion 
+        follows our ad policies and any applicable laws and regulations
+
+        <VoltButton variant="text" color="primary" class="mt-2" href="/help/video-paid-promotion">
+          <Icon name="i-fa7-solid:external-link-alt" class="me-2" />
+          Learn more
+        </VoltButton>
       </div>
-    </div>
+    </StudioSettingBlock>
+    
+    <!-- Tags -->
+    <StudioSettingBlock>
+      <template #title>
+        Tags
+      </template>
 
-    <div class="row">
-      <!-- Paid promotion -->
-      <div class="col-12">
-        <p class="fw-bold">
-          Paid promotion
-        </p>
+      <template #description>
+        Tags can be useful if content in your video is 
+        commonly misspelled. Otherwise, tags play a minimal role in helping 
+        viewers find your video. Learn more
+      </template>
 
-        <p class="fw-light">
-          If you accepted anything of value from a third party to make your video, 
-          you must let us know. we'll show viewers a message that tells them your 
-          video contains paid promotion.
-        </p>
-        
-        <v-switch label="My video contains paid promotion like a product placement, sponsorship, or endorsement" inset />
-        
-        <p class="fw-light">
-          By selecting this box, you confirm that the paid promotion 
-          follows our ad policies and any applicable laws and regulations. Learn more
-        </p>
-      </div>
+      <template #actions>
+        <VoltAutoComplete :suggestions="newVideo.tags" placeholder="Tags" class="w-full" />
+      </template>
+    </StudioSettingBlock>
 
-      <!-- Tags -->
-      <div class="col-12">
-        <p class="fw-bold">
-          Tags
-        </p>
+    <!-- Language/Location -->
+    <StudioSettingBlock>
+      <template #title>
+        Language and location
+      </template>
 
-        <p class="fw-light">
-          Tags can be useful if content in your video is 
-          commonly misspelled. Otherwise, tags play a minimal role in helping 
-          viewers find your video. Learn more
-        </p>
+      <template #description>
+        Select the language of your video and the location where it was recorded.
+        This information can help viewers find your video and understand its context. Specifying
+        the parameters can improve the discoverability of your video for your target audience
+      </template>
 
-        <v-combobox  placeholder="Add tag" :items="tags" flat chips multiple />
-      </div>
-
-      <div class="col-12">
-        <p class="fw-bold">
-          Language
-        </p>
-
-        <p class="fw-light">
-          Select your video's language
-        </p>
-
-        <v-select  flat />
-      </div>
-    </div>
+      <template #actions>
+        <div class="w-80 space-y-2">
+          <VoltSelect v-model="newVideo.publication.language" class="w-full" />
+          <VoltInputText v-model="newVideo.publication.recording_location" class="w-full" placeholder="Location" />
+        </div>
+      </template>
+    </StudioSettingBlock>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { Categories, FileUploadRequestData, Subcategories, SessionCache } from '~/types';
-import { useSessionStorage, whenever } from '@vueuse/core';
-import { computed, inject, ref } from 'vue';
+import type { Categories, Subcategories } from '~/types'
 
-// import BaseVideoPlayer from 'src/components/BaseVideoPlayer.vue';
-
-type StringOrNull = string | null
-
-interface ReturnData {
-  title: StringOrNull
-  description: StringOrNull
-  category: StringOrNull
-  subcategory: StringOrNull
-}
-
-const emit = defineEmits({
-  'update:data' (_data: ReturnData) {
-    return true
-  }
-})
-
-const { $client } = useNuxtApp()
-const returnData = ref<ReturnData>({
-  title: null,
-  description: null,
-  category: null,
-  subcategory: null
-})
-
-const frames = ref(null)
-const categories = ref<Categories[]>([])
-const subCategories = ref<Subcategories[]>([])
-
-const hasCategory = computed(() => {
-  return returnData.value.category !== null
-})
-
-const requestData = inject<FileUploadRequestData>('requestData')
-const tags = ref<string[]>([])
-
-const sessionCache = useSessionStorage<SessionCache>('cache', null, {
-  serializer: {
-    read (raw) {
-      return JSON.parse(raw)
-    },
-    write (value) {
-      return JSON.stringify(value)
-    }
-  }
-})
+const studioStore = useStudioStore()
+const { newVideo, hasCategory } = storeToRefs(studioStore)
 
 /**
- * 
+ * Fetch subcategories based on the selected category
  */
-async function getSubcategories () {
-  try {
-    if (instance.keyExists('subcategories')) {
-      subCategories.value = instance.retrieve('subcategories')
-    } else {
-      const response = await $client.get(`/videos/categories/${returnData.value.category}/sub-categories`)
-      subCategories.value = response.data
-      instance.create('subcategories', response.data)
-    }
-  } catch {
-    // Handle error
-  }
-}
+const { data: subCategories, execute: getSubcategories } = useFetch<Subcategories>(`/videos/categories/${newVideo.value.category}/sub-categories`, {
+  baseURL: useRuntimeConfig().public.djangoProdUrl,
+  method: 'GET',
+  immediate: false
+})
 
 whenever(hasCategory, () => {
   getSubcategories()
 })
 
-async function requestCategories () {
-  try {
-    if (!('categories' in sessionCache.value)) {
-      const response = await $client.get<Categories[]>('/videos/categories')
-      sessionCache.value.categories = response.data
-    }
-  } catch {
-    // Handle error
-  }
-}
-
-/**
- * 
- */
-function handleFrameInformation () {
-  
-}
-
-/**
- * 
- */
-function handleChange () {
-  emit('update:data', returnData.value)
-}
-
-onBeforeMount(async () => {
-  await requestCategories()
+const { execute, data: categories } = useFetch<Categories>('/videos/categories', {
+  baseURL: useRuntimeConfig().public.djangoProdUrl,
+  keepalive: true,
+  lazy: true,
+  method: 'GET'
 })
+
+await execute()
+
+const frames = ref<string | null>(null)
 </script>

@@ -1,149 +1,77 @@
 <template>
-  <section id="uploads">
-    <div class="row">
-      <div class="col-10 offset-md-1 mb-4">
-        <BaseStepper :steps="steps" @update:step="(value) => uploadStep = value" />
-      </div>
-      
-      <div class="col-10 offset-md-1">
-        <div class="card shadow-sm">
-          <KeepAlive>
-            <component :is="uploadComponents[uploadStep]" @update:file="handleUpdateFile" @update:data="handleChange" @next="increase" @cancel="decrease" />
-          </KeepAlive>
+  <section id="uploads" class="container mx-auto px-5">
+    <VoltCard class="shadow-sm">
+      <template #content>
+        <div class="card">
+          <VoltStepper v-model:value="activeStep">
+            <VoltStepItem value="1">
+              <VoltStep>
+                <h4 class="font-bold">
+                  Upload video
+                </h4>
+              </VoltStep>
+              <VoltStepPanel v-slot="{ activateCallback }">
+                <StudioUpload :callback="() => activateCallback('2')" />
+              </VoltStepPanel>
+            </VoltStepItem>
 
-          <div class="card-footer d-flex justify-content-end gap-2">
-            <button v-if="isFinalStep" type="button" class="btn btn-primary" @click="handleUploadVideo">
-              Complete
-            </button>
+            <VoltStepItem value="2">
+              <VoltStep>
+                <h4 class="font-bold">
+                  Video Information
+                </h4>
+              </VoltStep>
+              <VoltStepPanel v-slot="{ activateCallback }">
+                <Suspense>
+                  <StudioVideoInformation :callback="() => activateCallback('3')" />
+                </Suspense>
 
-            <v-btn v-else variant="tonal" color="dark" rounded @click="increase">
-              Next
-              <font-awesome icon="arrow-right" class="ms-2" />
-            </v-btn>
-          </div>
+                <div class="flex py-6 gap-2">
+                  <VoltSecondaryButton label="Back" @click="() => activateCallback('1')" />
+                  <VoltButton label="Next" @click="() => activateCallback('3')" />
+                </div>
+              </VoltStepPanel>
+            </VoltStepItem>
+            
+            <VoltStepItem value="3">
+              <VoltStep>
+                <h4 class="font-bold">
+                  Visibility
+                </h4>
+              </VoltStep>
+              <VoltStepPanel v-slot="{ activateCallback }">
+                <StudioVideoVisibility :callback="() => activateCallback('4')" />
+              </VoltStepPanel>
+            </VoltStepItem>
+
+            <VoltStepItem value="4">
+              <VoltStep>
+                <h4 class="font-bold">
+                  Finalize
+                </h4>
+              </VoltStep>
+              <VoltStepPanel v-slot="{ activateCallback }">
+                <StudioFinalize :callback="() => activateCallback('5')" />
+              </VoltStepPanel>
+            </VoltStepItem>
+          </VoltStepper>
         </div>
-      </div>
-    </div>
+      </template>
+
+      <template #footer>
+        {{ activeStep }}
+        <VoltButton :disabled="!isFinalStep" @click="studioStore.submit">
+          Complete
+        </VoltButton>
+      </template>
+    </VoltCard>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { computed, provide, ref } from 'vue';
-import type { FileUploadRequestData } from '~/types';
+const studioStore = useStudioStore()
+const { newVideo } = storeToRefs(studioStore)
 
-const steps = [
-  {
-    id: 1,
-    title: 'Upload videos'
-  },
-  {
-    id: 2,
-    title: 'Information'
-  },
-  {
-    id: 3,
-    title: 'Publication'
-  },
-  {
-    id: 4,
-    title: 'Finalize'
-  }
-]
-
-const router = useRouter()
-const uploadStep = ref(0)
-const requestData = ref<FileUploadRequestData>({
-  video: null,
-  title: null,
-  description: null,
-  channel_playlist: null,
-  recording_location: null,
-  visibility: true,
-  category: null,
-  subcategory: null,
-  age_restricted: false
-})
-
-
-const { $client } = useNuxtApp()
-const UploadComponent = resolveComponent('StudioUpload')
-const FinalizeComponent = resolveComponent('StudioFinalize')
-const VideoInformationComponent = resolveComponent('StudioVideoInformation')
-const VideoVisibilityComponent = resolveComponent('StudioVideoVisibility')
-
-const uploadComponents = [
-  UploadComponent,
-  VideoInformationComponent,
-  VideoVisibilityComponent,
-  FinalizeComponent
-]
-
-const isFirstStep = computed(() => {
-  return uploadStep.value === 0
-})
-
-const isFinalStep = computed(() => {
-  return uploadStep.value === 3
-})
-
-provide('requestData', requestData)
-
-/**
- * 
- */
-function increase () {
-  uploadStep.value = uploadStep.value + 1
-}
-
-/**
- * 
- */
-function decrease () {
-  uploadStep.value = uploadStep.value - 1
-}
-
-/**
- * Handle the data coming from the components
- * in order to update the request data property
- */
-function handleChange (data: Record<string, string | number>) {
-  requestData.value = {...requestData.value, ...data}
-}
-
-function handleUpdateFile (data: File) {
-  requestData.value.video = data
-  increase()
-}
-
-/**
- * 
- */
-async function handleUploadVideo () {
-  try {
-    if (requestData.value.video) {
-      const form = new FormData()
-      // TODO: Allow uploading of multiple videos
-      form.append('video', requestData.value.video[0])
-
-      if (requestData.value.title) {
-        form.append('title', requestData.value.title)
-      }
-      
-      form.append('description', requestData.value.description || '')
-      form.append('channel_playlist', requestData.value.channel_playlist || '')
-      form.append('recording_location', requestData.value.recording_location || '')
-
-      await $client.post('/videos/studio/upload', form, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-    } else {
-      console.error('There is no video')
-    }
-    router.push('/studio')
-  } catch {
-    // Handle error
-  }
-}
+const activeStep = ref<number>(1)
+const isFinalStep = computed(() => activeStep.value === 4)
 </script>

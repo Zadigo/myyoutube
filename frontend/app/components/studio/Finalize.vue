@@ -1,42 +1,51 @@
 <template>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-8">
-        <p class="fw-bold">
-          Tag users
-        </p>
+  <div class="space-y-2">
+    <StudioSettingBlock>
+      <template #title>
+        Participants
+      </template>
 
-        <p class="fw-light">
-          If your video contains users that need to be tagged,
-          you can do so by indicating either their socials or
-          their YouTube handle
-        </p>
+      <template #description>
+        If your video contains users that need to be tagged,
+        you can do so by indicating either their socials or
+        their YouTube handle
+      </template>
 
-        <div v-for="(participant, i) in participants" :key="i" class="d-flex justify-content-between gap-1">
-          <VoltInputText v-model="participant.url" type="url" placeholder="Social url"  flat />
-          <v-select v-model="participant.handle" :items="socials" placeholder="User handle"  flat />
-          <v-btn variant="text" color="danger" @click="handleRemoveParticipant(i)">
-            <font-awesome icon="trash" />
-          </v-btn>
+      <div class="my-5 space-y-2">
+        <div v-for="(participant, idx) in newVideo.participants" :key="idx" class="flex justify-start gap-1">
+          <VoltInputText v-model="participant.fullname" placeholder="Full name" />
+          <VoltInputText v-model="participant.url" type="url" placeholder="Social url" />
+          <VoltSelect v-model="participant.handle" :options="socials" placeholder="User handle" />
+          <VoltButton variant="outlined" color="danger" @click="() => handleRemoveParticipant(idx)">
+            <Icon name="i-fa7-solid:trash" />
+          </VoltButton>
         </div>
 
-        <v-btn variant="tonal" color="secondary" rounded @click="handleAddParticipant">
-          <font-awesome icon="plus" class="me-2" />
+        <VoltButton class="mt-5" rounded @click="handleAddParticipant">
+          <Icon name="i-fa7-solid:plus" class="me-2" />
           Add participant
-        </v-btn>
+        </VoltButton>
       </div>
-    </div>
+    </StudioSettingBlock>
+
+    <StudioSettingBlock>
+      <template #title>
+        LLM Generation and Text transcription
+      </template>
+
+      <template #description>
+        If you want to generate an accurate transcript of your video
+        or generate a summary, you can do so by enabling the
+        LLM generation feature. This will use the video content
+        to generate text.
+      </template>
+
+      <input type="file" label="Upload a text transcription of your video" />
+    </StudioSettingBlock>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-
-interface Participant {
-  url: string | null
-  handle: 'Facebook' | 'X' | 'Instagram' | 'YouTube'
-}
-
 const socials = [
   'Facebook',
   'X',
@@ -44,21 +53,26 @@ const socials = [
   'YouTube'
 ]
 
-const participants = ref<Participant[]>([
-  {
-    url: null,
-    handle: 'Instagram'
-  }
-])
+const studioStore = useStudioStore()
+const { newVideo } = storeToRefs(studioStore)
 
+/**
+ * This function adds a new participant to the
+ * video being created. The participant is initialized
+ */
 function handleAddParticipant () {
-  participants.value.push({
+  newVideo.value.participants.push({
+    fullname: '',
     url: null,
     handle: 'Instagram'
   })
 }
 
+/**
+ * This function removes a participant from the
+ * video being created. The participant is removed
+ */
 function handleRemoveParticipant(index: number) {
-  participants.value.splice(index, 1)
+  newVideo.value.participants.splice(index, 1)
 }
 </script>
