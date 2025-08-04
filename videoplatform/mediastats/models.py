@@ -1,5 +1,3 @@
-import datetime
-
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import pre_save
@@ -12,8 +10,6 @@ from mediastats.managers import StatisticsManager
 from stories.models import Story
 from videos.models import Video
 
-USER_MODEL = get_user_model()
-
 
 class MediaView(models.Model):
     """Collects the views for a given video"""
@@ -25,7 +21,7 @@ class MediaView(models.Model):
         unique=True
     )
     user = models.ForeignKey(
-        USER_MODEL,
+        get_user_model(),
         on_delete=models.CASCADE,
         blank=True,
         null=True

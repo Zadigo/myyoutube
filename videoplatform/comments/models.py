@@ -1,10 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
 from videos.models import Video
-
-USER_MODEL = get_user_model()
 
 
 class AbstractComment(models.Model):
@@ -13,7 +10,7 @@ class AbstractComment(models.Model):
         on_delete=models.CASCADE
     )
     user = models.ForeignKey(
-        USER_MODEL,
+        get_user_model(),
         on_delete=models.CASCADE
     )
     content = models.TextField(max_length=500)

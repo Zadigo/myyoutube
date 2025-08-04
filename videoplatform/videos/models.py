@@ -9,16 +9,14 @@ from django.dispatch import receiver
 from django.shortcuts import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-
 from mychannel.models import ChannelPlaylist, UserChannel
-from videoplatform.utils import create_id
 from videos import choices
 from videos.choices import (CategoryChoices, CommentingStrategy,
                             LanguageChoices, VisibilityChoices)
 from videos.managers import VideoManager
 from videos.utils import video_directory_path
 
-USER_MODEL = get_user_model()
+from videoplatform.utils import create_id
 
 
 class Tag(models.Model):
@@ -38,7 +36,7 @@ class Video(models.Model):
     video uploaded on the plateform"""
 
     user = models.ForeignKey(
-        USER_MODEL,
+        get_user_model(),
         on_delete=models.CASCADE
     )
     video_id = models.CharField(
