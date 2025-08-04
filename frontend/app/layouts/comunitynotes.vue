@@ -18,9 +18,10 @@
       </template>
     </VoltCard>
 
-    <CommunityNotes />
+    <slot />
   </section>
 </template>
 
 <script setup lang="ts">
+// TODO: Create a specific dashboard for community notes
 </script>
