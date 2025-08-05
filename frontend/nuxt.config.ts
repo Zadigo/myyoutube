@@ -44,6 +44,8 @@ export default defineNuxtConfig({
     public: {
       // Django
       djangoProdUrl: process.env.NUXT_DJANGO_PROD_URL || 'http://127.0.0.1:8000',
+      apiCategories: process.env.NUXT_DJANGO_PROD_URL || 'http://127.0.0.1:5000',
+      apiReports: process.env.NUXT_DJANGO_PROD_URL || 'http://127.0.0.1:5001',
       
       // Stripe
       stripeSecretKey: process.env.NUXT_STRIPE_TEST_SECRET_KEY,

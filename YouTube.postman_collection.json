@@ -1,0 +1,993 @@
+{
+	"info": {
+		"_postman_id": "d693efaa-78aa-48f7-8278-449b101af0a5",
+		"name": "YouTube",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8871030"
+	},
+	"item": [
+		{
+			"name": "videos",
+			"item": [
+				{
+					"name": "Videos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"get all the videos\", () => {\r",
+									"    const video = pm.response.json()[0]\r",
+									"    pm.environment.set(\"videoID\", video.video_id)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}videos/",
+							"host": [
+								"{{api_url}}videos"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Video",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('get video details', () => {\r",
+									"    const data = pm.response.json()\r",
+									"    pm.environment.set('videoID', data.reference)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}videos/{{videoID}}",
+							"host": [
+								"{{api_url}}videos"
+							],
+							"path": [
+								"{{videoID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Viewing Profile Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('get video details', () => {\r",
+									"    const data = pm.response.json()\r",
+									"    pm.environment.set('videoID', data.reference)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}videos/viewing-profile",
+							"host": [
+								"{{api_url}}videos"
+							],
+							"path": [
+								"viewing-profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Viewing Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('get video details', () => {\r",
+									"    const data = pm.response.json()\r",
+									"    pm.environment.set('videoID', data.reference)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "account_type",
+									"value": "Basic",
+									"type": "text"
+								},
+								{
+									"key": "night_mode",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "blocked_keywords",
+									"value": "[\"kendall\"]",
+									"type": "text"
+								},
+								{
+									"key": "blocked_channels",
+									"value": "[]",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_url}}videos/viewing-profile",
+							"host": [
+								"{{api_url}}videos"
+							],
+							"path": [
+								"viewing-profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Viewing profile Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('get video details', () => {\r",
+									"    const data = pm.response.json()\r",
+									"    pm.environment.set('videoID', data.reference)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"account_type\": \"Basic\",\r\n    \"subscriptions\": [],\r\n    \"night_mode\": true,\r\n    \"algorithm_decides\": false,\r\n    \"recommend_popular_videos\": false,\r\n    \"preferred_categories\": [],\r\n    \"preferred_ad\": null,\r\n    \"performance\": null,\r\n    \"playlists_private\": false,\r\n    \"subscriptions_private\": false,\r\n    \"personalize_ads\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}videos/viewing-profile",
+							"host": [
+								"{{api_url}}videos"
+							],
+							"path": [
+								"viewing-profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Some name",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "username",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "channel",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "age_restricted",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "category",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "recorded_on",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "recorded_after",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "recorded_before",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "recording_language",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "created_on",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "this_year",
+									"value": "false",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "last_week",
+									"value": "true",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "this_month",
+									"value": "false",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "today",
+									"value": "false",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_url}}videos/search",
+							"host": [
+								"{{api_url}}videos"
+							],
+							"path": [
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rate Video",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"get rating\", () => {\r",
+									"\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"liked\": false,\r\n    \"unliked\": false,\r\n    \"subscription\": {\r\n        \"subscribed\": false,\r\n        \"mode\": null\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}ratings/videos/{{videoID}}",
+							"host": [
+								"{{api_url}}ratings"
+							],
+							"path": [
+								"videos",
+								"{{videoID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Channel",
+			"item": [
+				{
+					"name": "Channels",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"get channels\", () => {\r",
+									"    const channel = pm.response.json()[0]\r",
+									"    pm.environment.set(\"channelID\", channel.reference)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}user-channels/",
+							"host": [
+								"{{api_url}}user-channels"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Channel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('get channel details', () => {\r",
+									"    const data = pm.response.json()\r",
+									"    pm.environment.set('channelID', data.reference)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}user-channels/{{channelID}}",
+							"host": [
+								"{{api_url}}user-channels"
+							],
+							"path": [
+								"{{channelID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Channel search",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "video_name",
+									"value": "Fashion",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_url}}user-channels/{{channelID}}/search",
+							"host": [
+								"{{api_url}}user-channels"
+							],
+							"path": [
+								"{{channelID}}",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Channel subscribe",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/channels/{{channel_reference}}/subscribe",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"channels",
+								"{{channel_reference}}",
+								"subscribe"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "settings",
+			"item": [
+				{
+					"name": "Notifications",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"channel_activities\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}accounts/notifications",
+							"host": [
+								"{{api_url}}accounts"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Notifications",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"channel_activities\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}accounts/notifications",
+							"host": [
+								"{{api_url}}accounts"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Video",
+			"item": [
+				{
+					"name": "New comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua another\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}videos/{{videoID}}/comment",
+							"host": [
+								"{{api_url}}videos"
+							],
+							"path": [
+								"{{videoID}}",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"retrieve comments\", () => {\r",
+									"    const data = pm.response.json()\r",
+									"    pm.environment.set(\"commentID\", data[0].id)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}comments/{{videoID}}?desc=true",
+							"host": [
+								"{{api_url}}comments"
+							],
+							"path": [
+								"{{videoID}}"
+							],
+							"query": [
+								{
+									"key": "desc",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reply",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"This is a reply\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}comments/{{commentID}}/reply",
+							"host": [
+								"{{api_url}}comments"
+							],
+							"path": [
+								"{{commentID}}",
+								"reply"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Studio",
+			"item": [
+				{
+					"name": "Videos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}videos/studio/videos",
+							"host": [
+								"{{api_url}}videos"
+							],
+							"path": [
+								"studio",
+								"videos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "video",
+									"type": "file",
+									"src": "/C:/Users/Pende/Downloads/3127285-uhd_3840_2160_24fps.mp4"
+								},
+								{
+									"key": "title",
+									"value": "Fashion is not tall",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "A elegant description",
+									"type": "text"
+								},
+								{
+									"key": "visibility",
+									"value": "Public",
+									"type": "text"
+								},
+								{
+									"key": "age_restricted",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "Entertainment",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "[]",
+									"type": "text"
+								},
+								{
+									"key": "recording_date",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "recording_location",
+									"value": "Lille",
+									"type": "text"
+								},
+								{
+									"key": "recording_language",
+									"value": "French",
+									"type": "text"
+								},
+								{
+									"key": "comment_strategy",
+									"value": "Allow all comments",
+									"type": "text"
+								},
+								{
+									"key": "ratings_are_visible",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "channel_playlist",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_url}}videos/studio/upload",
+							"host": [
+								"{{api_url}}videos"
+							],
+							"path": [
+								"studio",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('set token', () => {\r",
+									"    const data = pm.response.json()\r",
+									"\r",
+									"    pm.environment.set(\"accessToken\", data.access)\r",
+									"    pm.environment.set(\"refreshToken\", data.refresh)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"zadigo@gmail.com\",\r\n    \"password\": \"touparet\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{authUrl}}token/",
+							"host": [
+								"{{authUrl}}token"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}accounts/base",
+							"host": [
+								"{{api_url}}accounts"
+							],
+							"path": [
+								"base"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Viewing Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}accounts/viewing-profile",
+							"host": [
+								"{{api_url}}accounts"
+							],
+							"path": [
+								"viewing-profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Blocked channels",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}user-channels/blocked",
+							"host": [
+								"{{api_url}}user-channels"
+							],
+							"path": [
+								"blocked"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Can get categories\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"    const data = pm.response.json()\r",
+									"    pm.environment.set(\"category\", data[0])\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiCategories}}",
+							"host": [
+								"{{apiCategories}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sub-categories",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiCategories}}{{category}}",
+							"host": [
+								"{{apiCategories}}{{category}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Playlists",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}playlists/",
+					"host": [
+						"{{api_url}}playlists"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test('set authorization token', () => {",
+					"    const token = pm.environment.get('authenticationToken')",
+					"    const accessToken = pm.environment.get(\"accessToken\")",
+					"",
+					"    if (accessToken && accessToken !== \"null\") {",
+					"        pm.request.headers.add({",
+					"            key: 'Authorization',",
+					"            value: `Token ${accessToken}`",
+					"        }) ",
+					"    } else if (token && token !== \"null\") {",
+					"        pm.request.headers.add({",
+					"            key: 'Authorization',",
+					"            value: `Token ${token}`",
+					"        }) ",
+					"    }",
+					"",
+					"    pm.request.headers.add({",
+					"        key: 'Content-Type',",
+					"        value: 'application/json'",
+					"    })",
+					"})"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"failed response\", () => {\r",
+					"    if (pm.response.status === 401) {\r",
+					"        pm.environment.set(\"accessToken\", null)\r",
+					"        pm.environment.set(\"refreshToken\", null)\r",
+					"    }\r",
+					"})"
+				]
+			}
+		}
+	]
+}
