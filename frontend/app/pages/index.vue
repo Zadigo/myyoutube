@@ -1,6 +1,6 @@
 <template>
   <section id="videos">
-    <VoltCard>
+    <VoltCard class="shadow-sm">
       <template #content>
         <form @submit.prevent>
           <VoltInputText type="search" placeholder="Search" class="w-2/5" />
@@ -27,7 +27,8 @@
         <template #fallback>
           <div class="grid grid-cols-4 auto-rows-min gap-2">
             <div v-for="i in 28" :key="i">
-              <VoltSkeleton class="h-[200px]" />
+              <VoltSkeleton height="150px" />
+              <VoltSkeleton class="mt-1" height="20px" width="30%" />
             </div>
           </div>
         </template>

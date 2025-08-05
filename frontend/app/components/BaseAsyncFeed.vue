@@ -1,8 +1,8 @@
 <template>
-  <div class="grid grid-cols-3 auto-rows-min gap-2">
+  <div v-if="hasVideos" class="grid grid-cols-3 auto-rows-min gap-2">
     <article v-for="video in videos" :key="video.id" class="my-1">
       <NuxtLinkLocale :to="`/videos/${video.video_id}`">
-        <VoltCard>
+        <VoltCard class="shadow-sm">
           <template #content>
             <VoltSkeleton height="200px" class="w-full" />
 
@@ -19,9 +19,9 @@
     </article>
   </div>
 
-  <VoltCard>
+  <VoltCard v-else class="shadow-sm">
     <template #content>
-      <h2 class="text-center font-bold text-3xl">
+      <h2 class="text-center font-bold text-4xl">
         No videos
       </h2>
     </template>
@@ -31,12 +31,10 @@
 <script setup lang="ts">
 import type { VideosFeedResponseData } from '~/types'
 
-const emit = defineEmits<{ 'feed-loaded': [videos: VideosFeedResponseData[]] }>()
-
 const feedStore = useFeedStore()
 const { videos, hasVideos } = storeToRefs(feedStore)
 
-const { data, status } = await useFetch<VideosFeedResponseData[]>('/api/videos', {
+const { data } = await useFetch<VideosFeedResponseData[]>('/api/videos', {
   method: 'GET',
   immediate: true
 })
@@ -44,10 +42,4 @@ const { data, status } = await useFetch<VideosFeedResponseData[]>('/api/videos',
 if (data.value) {
   videos.value = data.value || []
 }
-
-onMounted(() => {
-  if (status.value === 'success') {
-    emit('feed-loaded', videos.value)
-  }
-})
 </script>
