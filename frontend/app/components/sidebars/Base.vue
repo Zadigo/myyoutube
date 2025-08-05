@@ -1,14 +1,16 @@
 <template>
-  <div :class="theme.base">
-    <div id="links" class="space-y-5">
-      <NuxtLink v-for="navLink in links" :key="navLink.to" :to="navLink.to" :aria-current="route.path === navLink.to" :class="theme.link">
-        <Icon :name="navLink.icon" />
-        {{ navLink.name }}
-      </NuxtLink>
-    </div>
+  <nav class="fixed top-0 left-0 bottom-0 p-3 shadow-sm w-[240px] z-30 bg-white">
+    <div :class="theme.base">
+      <div id="links" class="space-y-5">
+        <NuxtLink v-for="navLink in links" :key="navLink.to" :to="navLink.to" :aria-current="route.path === navLink.to" :class="theme.link">
+          <Icon :name="navLink.icon" />
+          {{ navLink.name }}
+        </NuxtLink>
+      </div>
 
-    <slot name="footer" />
-  </div>
+      <slot name="footer" />
+    </div>
+  </nav>
 </template>
 
 <script setup lang="ts">
@@ -17,7 +19,7 @@ defineProps<{ links: { name: string, to: string, icon: string }[] }>()
 const route = useRoute()
 
 const theme = ref({
-  base: `mx-3 mt-4 flex-col justify-between`,
+  base: `mx-3 mt-[calc(55px+1rem)] flex-col justify-between`,
   link: `p-2 px-4 rounded-lg flex gap-3 items-center font-semibold`
 })
 </script>

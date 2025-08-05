@@ -3,7 +3,7 @@
     <!-- v-slot:activator="{ props }" -->
     <template #activator="{ props }">
       <VoltButton v-bind="props" color="secondary" size="small" rounded="xl" flat>
-        <font-awesome icon="face-smile" />
+        <Icon name="i-fa7-solid:face-smile" />
       </VoltButton>
     </template>
 

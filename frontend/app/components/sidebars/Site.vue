@@ -1,20 +1,4 @@
 <template>
-  <!-- <div class="mx-3 mt-4 flex-col justify-between">
-    <div id="links" class="space-y-5">
-      <NuxtLink v-for="navLink in navLinks" :key="navLink.to" :to="navLink.to" :aria-current="route.path === navLink.to" class="p-2 px-4 rounded-lg flex gap-3 items-center font-semibold">
-        <Icon :name="navLink.icon" />
-        {{ navLink.name }}
-      </NuxtLink>
-      
-      <VoltDivider class="my-4" />
-    </div>
-
-    <NuxtLink to="/settings" class="p-2 px-4 bg-primary-200 rounded-lg flex gap-3 items-center text-white font-semibold" aria-current="true">
-      <Icon name="i-fa7-solid:cog" />
-      Settings
-    </NuxtLink>
-  </div> -->
-
   <SidebarsBase :links="navLinks">
     <template #footer>
       <VoltDivider class="my-4" />
