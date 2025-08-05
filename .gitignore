@@ -131,6 +131,8 @@ dmypy.json
 
 cache
 media/
+!apicategories/media/
+!apireports/media/
 media/uploads/
 media/CACHE/
 

@@ -37,7 +37,7 @@ async def read_json_file(path):
     return []
 
 
-@app.get('/v1/categories')
+@app.get('/api/v1/categories')
 async def categories():
     path = MEDIA_PATH.joinpath('categories.json')
     initial_data = await read_json_file(path)
@@ -45,7 +45,7 @@ async def categories():
     return jsonify(list(data))
 
 
-@app.get('/v1/categories/<category>')
+@app.get('/api/v1/categories/<category>')
 async def subcategories(category):
     path = MEDIA_PATH.joinpath('reports.json')
     categories = await read_json_file(path)
@@ -55,6 +55,12 @@ async def subcategories(category):
     )
     subcategories = map(lambda x: x['subcategories'], selected_categories)
     return jsonify(list(subcategories))
+
+
+@app.get('/api/v1/reports')
+async def reports():
+    path = MEDIA_PATH.joinpath('reports.json')
+    return jsonify(read_json_file(path))
 
 
 if __name__ == '__main__':

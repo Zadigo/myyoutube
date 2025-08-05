@@ -1,0 +1,494 @@
+[
+    {
+        "title": "General",
+        "subcategories": [
+            {
+                "title": "Vlogs",
+                "restrictions": false
+            },
+            {
+                "title": "Tutorials",
+                "restrictions": false
+            },
+            {
+                "title": "Reviews",
+                "restrictions": false
+            },
+            {
+                "title": "Unboxing",
+                "restrictions": false
+            },
+            {
+                "title": "How-To",
+                "restrictions": false
+            },
+            {
+                "title": "Challenges",
+                "restrictions": false
+            },
+            {
+                "title": "Q&A",
+                "restrictions": false
+            },
+            {
+                "title": "Behind the Scenes",
+                "restrictions": false
+            },
+            {
+                "title": "Comedy",
+                "restrictions": false
+            },
+            {
+                "title": "Dating",
+                "restrictions": false
+            },
+            {
+                "title": "Cooking",
+                "restrictions": false
+            },
+            {
+                "title": "Game",
+                "restrictions": false
+            },
+            {
+                "title": "General - Other",
+                "restrictions": false
+            }
+        ]
+    },
+    {
+        "title": "TV Show",
+        "subcategories": [
+            {
+                "title": "Cooking",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion",
+                "restrictions": false
+            },
+            {
+                "title": "Politics",
+                "restrictions": true
+            },
+            {
+                "title": "Real TV",
+                "restrictions": false
+            },
+            {
+                "title": "News",
+                "restrictions": true
+            },
+            {
+                "title": "Game",
+                "restrictions": false
+            },
+            {
+                "title": "Comedy",
+                "restrictions": false
+            },
+            {
+                "title": "Drama",
+                "restrictions": false
+            },
+            {
+                "title": "Animation",
+                "restrictions": false
+            },
+            {
+                "title": "Kids",
+                "restrictions": false
+            },
+            {
+                "title": "Music",
+                "restrictions": false
+            },
+            {
+                "title": "Documentary",
+                "restrictions": false
+            },
+            {
+                "title": "Movies",
+                "restrictions": false
+            },
+            {
+                "title": "Sports",
+                "restrictions": false
+            },
+            {
+                "title": "TV Show - Other",
+                "restrictions": false
+            }
+        ]
+    },
+    {
+        "title": "Fashion",
+        "subcategories": [
+            {
+                "title": "Makeup",
+                "restrictions": false
+            },
+            {
+                "title": "Hairstyle",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion Tips",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion Show",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion Trends",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion History",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion Design",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion Photography",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion Events",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion Brands",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion Designers",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion Culture",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion Sustainability",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion Accessories",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion DIY",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion Vlogs",
+                "restrictions": false
+            },
+            {
+                "title": "Fashion Influencers",
+                "restrictions": false
+            },
+            {
+                "title": "Other",
+                "restrictions": false
+            }
+        ]
+    },
+    {
+        "title": "Music",
+        "subcategories": [
+            {
+                "title": "Music Videos",
+                "restrictions": false
+            },
+            {
+                "title": "Music Covers",
+                "restrictions": false
+            },
+            {
+                "title": "Music Tutorials",
+                "restrictions": false
+            },
+            {
+                "title": "Music Reviews",
+                "restrictions": false
+            },
+            {
+                "title": "Music News",
+                "restrictions": false
+            },
+            {
+                "title": "Music Interviews",
+                "restrictions": false
+            },
+            {
+                "title": "Music Festivals",
+                "restrictions": false
+            },
+            {
+                "title": "Music History",
+                "restrictions": false
+            },
+            {
+                "title": "Music Genres",
+                "restrictions": false
+            },
+            {
+                "title": "Music Production",
+                "restrictions": false
+            },
+            {
+                "title": "Music Theory",
+                "restrictions": false
+            },
+            {
+                "title": "Music Instruments",
+                "restrictions": false
+            },
+            {
+                "title": "Other",
+                "restrictions": false
+            }
+        ]
+    },
+    {
+        "title": "Sports",
+        "subcategories": [
+            {
+                "title": "Sporting Event",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting Highlights",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting News",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting Analysis",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting Interviews",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting Commentary",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting Training",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting Techniques",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting Equipment",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting Personalities",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting Teams",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting Tournaments",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting Records",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting Culture",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting History",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting Events",
+                "restrictions": false
+            },
+            {
+                "title": "Sporting - Other",
+                "restrictions": false
+            }
+        ]
+    },
+    {
+        "title": "Gaming",
+        "subcategories": [
+            {
+                "title": "Gaming News",
+                "restrictions": false
+            },
+            {
+                "title": "Gaming Reviews",
+                "restrictions": false
+            },
+            {
+                "title": "Gaming Tutorials",
+                "restrictions": false
+            },
+            {
+                "title": "Gaming Walkthroughs",
+                "restrictions": false
+            },
+            {
+                "title": "Gaming Live Streams",
+                "restrictions": false
+            },
+            {
+                "title": "Gaming Competitions",
+                "restrictions": false
+            },
+            {
+                "title": "Gaming Commentary",
+                "restrictions": false
+            },
+            {
+                "title": "Gaming Analysis",
+                "restrictions": false
+            },
+            {
+                "title": "Gaming Culture",
+                "restrictions": false
+            },
+            {
+                "title": "Gaming History",
+                "restrictions": false
+            },
+            {
+                "title": "Gaming Events",
+                "restrictions": false
+            },
+            {
+                "title": "Gaming Technology",
+                "restrictions": false
+            },
+            {
+                "title": "Gaming Hardware",
+                "restrictions": false
+            },
+            {
+                "title": "Gaming Genres",
+                "restrictions": false
+            },
+            {
+                "title": "Gaming Merchandise",
+                "restrictions": false
+            },
+            {
+                "title": "Gaming - Other",
+                "restrictions": false
+            }
+        ]
+    },
+    {
+        "title": "Education",
+        "subcategories": [
+            {
+                "title": "Science",
+                "restrictions": false
+            },
+            {
+                "title": "Mathematics",
+                "restrictions": false
+            },
+            {
+                "title": "History",
+                "restrictions": false
+            },
+            {
+                "title": "Language Learning",
+                "restrictions": false
+            },
+            {
+                "title": "Technology",
+                "restrictions": false
+            },
+            {
+                "title": "Arts and Crafts",
+                "restrictions": false
+            },
+            {
+                "title": "Health and Wellness",
+                "restrictions": false
+            },
+            {
+                "title": "Business and Finance",
+                "restrictions": false
+            },
+            {
+                "title": "Social Sciences",
+                "restrictions": false
+            },
+            {
+                "title": "Education - Other",
+                "restrictions": false
+            }
+        ]
+    },
+    {
+        "title": "Podcasting",
+        "subcategories": [
+            {
+                "title": "General",
+                "restrictions": false
+            },
+            {
+                "title": "Politics",
+                "restrictions": true
+            },
+            {
+                "title": "Comedy",
+                "restrictions": false
+            },
+            {
+                "title": "True Crime",
+                "restrictions": false
+            },
+            {
+                "title": "Technology",
+                "restrictions": false
+            },
+            {
+                "title": "Health",
+                "restrictions": false
+            },
+            {
+                "title": "Business",
+                "restrictions": false
+            },
+            {
+                "title": "Education",
+                "restrictions": false
+            },
+            {
+                "title": "Entertainment",
+                "restrictions": false
+            },
+            {
+                "title": "Sports",
+                "restrictions": false
+            },
+            {
+                "title": "Podcasting - Other",
+                "restrictions": false
+            }
+        ]
+    }
+]
