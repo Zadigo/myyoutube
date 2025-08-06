@@ -27,12 +27,16 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = get_debug()
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost'
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -162,6 +166,12 @@ USE_TZ = True
 
 USE_S3 = False
 
+STATIC_URL = 'static/'
+
+STATIC_ROOT = BASE_DIR / 'static'
+
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 def aws_endpoint(path=None):
     base_url = 'https://{bucket}.s3.{region}.amazonaws.com'
@@ -174,6 +184,7 @@ def aws_endpoint(path=None):
         return url + f'/{path}'
 
     return url
+
 
 if USE_S3:
     # S3 Backend Storage
@@ -214,8 +225,7 @@ if USE_S3:
     }
 
     MEDIA_ROOT = aws_endpoint('media')
-else:
-    MEDIA_ROOT = BASE_DIR / 'media'
+
 
 MEDIA_URL = 'media/'
 

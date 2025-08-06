@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
+
 import type { BlockNames } from '~/data'
 import type { FeedBlocks, NewFeed } from '~/types'
+import type { WebsocketMessage } from '~/types/websocket'
 
 export const useFeedsStore = defineStore('feeds', () => {
   const feeds = reactive<NewFeed[]>([
@@ -68,6 +70,15 @@ export const useFeedsStore = defineStore('feeds', () => {
       currentFeed.value.blocks.push(newBlock)
     }
   }
+
+  // watch(currentFeed, (newFeed) => {
+  //   if (newFeed) {
+  //     // Ensure the current feed is always set to the first feed if no feed is selected
+  //     if (!feeds.includes(newFeed)) {
+  //       currentFeed.value = feeds[0]
+  //     }
+  //   }
+  // })
 
   return {
     isDisabled,

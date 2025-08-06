@@ -3,6 +3,10 @@
     <div class="">      
       <h1 class="font-bold text-2xl">
         Feed builder
+
+        <VoltButton @click="open()">
+          Connect
+        </VoltButton>
       </h1>
       
       <div class="mt-5">
@@ -31,14 +35,15 @@
 
 <script setup lang="ts">
 import { blockNames, type BlockNames } from '~/data'
+import type { MessageReceivedFeedVideos, MessageSetCurrentFeed, WebsocketMessage } from '~/types/websocket'
 
 const ResolvedBlockSource = resolveComponent('BlockSource')
 const ResolvedBlockLimit = resolveComponent('BlockLimit')
 const ResolvedBlockRegex = resolveComponent('BlockRegex')
 const ResolvedBlockSort = resolveComponent('BlockSort')
 
-// const videoStore = useVideoStore()
-// const {  } = storeToRefs(videoStore)
+const videoStore = useVideoStore()
+const { items } = storeToRefs(videoStore)
 
 const feedsStore = useFeedsStore()
 const { currentFeed, currentFeedBlocks, isDisabled } = storeToRefs(feedsStore)
@@ -51,4 +56,35 @@ const componentMapping: { [K in BlockNames]: ReturnType<typeof resolveComponent>
   'Remove': '',
   'Replace': ''
 }
+
+const { send, decode } = useWebsocketMessages()
+
+const { open, ws } = useWebSocket<WebsocketMessage>(`${useRuntimeConfig().public.prodDomain}/ws/feed-builder`, {
+  immediate: false,
+  onConnected(connection) {
+    // TODO: Set current feed from the parent
+    send<MessageSetCurrentFeed>({ action: 'set_current_feed', feed: currentFeed.value }, connection)
+  },
+  onError() {
+
+  },
+  onMessage(_, event) {
+    const data = decode<MessageReceivedFeedVideos>(event.data as string)
+    
+    if (data.value.action === 'feed_videos') {
+      items.value = data.value.videos
+    }
+  }
+})
+
+onMounted(async () => {
+  open()
+})
+
+watchDebounced(currentFeed, (newFeed) => {
+  send<MessageSetCurrentFeed>({ action: 'update_feed_videos', feed: newFeed }, ws.value)
+}, {
+  debounce: 3000,
+  deep: true
+})
 </script>

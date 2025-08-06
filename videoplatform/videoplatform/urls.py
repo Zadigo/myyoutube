@@ -85,7 +85,6 @@ urlpatterns = [
     ),
     path('admin/secondary/', custom_admin_site.urls),
     path('admin/', admin.site.urls),
-    path('', include('hero.urls')),
 ]
 
 if settings.DEBUG:

@@ -29,7 +29,8 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/icon',
     '@nuxt/fonts',
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
+    'nuxt-vuefire'
   ],
 
   vuefire: {
@@ -42,6 +43,12 @@ export default defineNuxtConfig({
       measurementId: process.env.NUXT_FIREBASE_MEASUREMENT_ID,
       messageSenderId: process.env.NUXT_FIREBASE_MESSAGE_SENDER_ID,
       projectId: process.env.NUXT_FIREBASE_PROJECT_ID
+    }
+  },
+
+  runtimeConfig: {
+    public: {
+      prodDomain: process.env.NUXT_PROD_DOMAIN || 'http://127.0.0.1:8000',
     }
   },
   

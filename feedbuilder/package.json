@@ -21,6 +21,7 @@
     "flowbite": "^3.1.2",
     "nuxt": "^4.0.3",
     "pinia": "^3.0.3",
+    "nuxt-vuefire": "1.1.0",
     "primevue": "^4.3.7",
     "sass-embedded": "^1.90.0",
     "tailwind-merge": "^3.3.1",
