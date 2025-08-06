@@ -1,5 +1,9 @@
 import type { BlockedChannel, BlockedKeyword } from '~/types'
 
+/**
+ * Composables for managing blocked channels in the settings.
+ * It provides functionality to fetch and manage blocked channels.
+ */
 export function useBlockedChannels() {
   /**
    * Fetch the list of blocked channels.
@@ -25,9 +29,21 @@ export function useBlockedChannels() {
 
 
   return {
+    /**
+     * Flag to control the visibility of the create list modal.
+     */
     showCreateList,
+    /**
+     * Flag to control the visibility of the block lists modal.
+     */
     showBlockLists,
+    /**
+     * List of blocked channels.
+     */
     channels,
+    /**
+     * Flag indicating whether there are blocked channels.
+     */
     hasChannels
   }
 }

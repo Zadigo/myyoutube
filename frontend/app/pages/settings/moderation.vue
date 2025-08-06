@@ -69,7 +69,7 @@
         </VoltAlert>
         
         <div class="flex justify-center">
-          <VoltButton color="secondary" variant="tonal" rounded @click="showBlockLists=true">
+          <VoltButton color="secondary" variant="tonal" rounded @click="() => { showBlockLists=true }">
             Use or create block lists
           </VoltButton>
         </div>

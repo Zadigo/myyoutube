@@ -1,10 +1,14 @@
 <template>
   <VoltDialog v-model:visible="show" modal>
-    <VoltInputText placeholder="Search by list names..." flat />
+    <template #header>
+      <h3 class="text-lg font-semibold">Block lists</h3>
+    </template>
+
+    <VoltInputText class="w-full mb-10" placeholder="Search by list names..." />
     
     <div class="flex gap-2 mb-3">
       <VoltButton :disabled="!showBlockedItems" rounded @click="showBlockedItems=false">
-        <Icon icon="i-fa7-solid:arrow-left" />
+        <Icon name="i-fa7-solid:arrow-left" />
       </VoltButton>
 
       <VoltButton :disabled="!showBlockedItems" class="mb-3" rounded>
@@ -16,21 +20,23 @@
       </VoltButton>
     </div>
     
-    <div v-if="showBlockedItems" class="list-group">
-      <div class="list-group-item">
+    <VoltList v-if="showBlockedItems">
+      <template #default>
         Something
-      </div>
-    </div>
+      </template>
+    </VoltList>
 
-    <div v-else class="list-group">
-      <a v-for="i in 15" :key="i" href="#" class="list-group-item list-group-item-action p-3 d-flex justify-content-between align-items-center" @click.prevent="showBlockedItems=true">
-        <span>Utilisateurs Hitchens</span>
-        
-        <div class="popularity">
-          <Icon v-for="x in 10" :key="x" icon="i-fa7-solid:star" />
-        </div>
-      </a>
-    </div>
+    <VoltList v-else item-label="name">
+      <template #body="{ theme }">
+        <a v-for="item in [{ id: 1, name: 'Hitchens' }, { id: 2, name: 'Dawkins' }]" :key="item.id" :class="theme" class="flex justify-between" @click.prevent="() => { showBlockedItems=true }">
+          <span>Utilisateurs {{ item.name }}</span>
+          
+          <div class="popularity">
+            <Icon v-for="x in 10" :key="x" name="i-fa7-solid:star" />
+          </div>
+        </a>
+      </template>
+    </VoltList>
   </VoltDialog>
 </template>
 
