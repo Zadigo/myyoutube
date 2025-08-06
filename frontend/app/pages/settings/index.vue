@@ -7,7 +7,7 @@
     <!-- Account Type -->
     <SettingsCard title="Account type" subtitle="Manage what you share on YouTube">
       <VoltAlert>
-        You can choose to rank you account as a professional account. This will allow you to access 
+        You can choose to rank your account as a professional account. This will allow you to access 
         more features and tools on YouTube, such as advanced analytics and monetization options.
       </VoltAlert>
 
@@ -31,10 +31,8 @@
           </label>
         </VoltLabel>
         
-        <div v-if="settingsStore.isBusiness">
-          <VoltInputText placeholder="Business ID" />
-          <VoltInputText placeholder="Business VAT" />
-        </div>
+        <SettingsIndexProAdditionalInfo />
+        <SettingsIndexArtistAdditionalInfo />
       </div>
     </SettingsCard>
 

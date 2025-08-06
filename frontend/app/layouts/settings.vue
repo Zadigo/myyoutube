@@ -2,15 +2,11 @@
   <section id="settings" class="relative">
     <header>
       <!-- Sidebar -->
-      <nav id="sidebar" class="bg-white fixed top-0 left-0 bottom-0 w-[240px] shadow-sm z-30">
-        <div class="position-sticky">
-          <SidebarsSettings />
-        </div>
-      </nav>
+      <SidebarsSettings />
     </header>
 
     <main>
-      <div class="container px-4 pt-4">
+      <div class="container max-w-280 mx-auto ps-[calc(240px+1rem)] my-10">
         <slot />
       </div>
     </main>
@@ -18,77 +14,11 @@
 </template>
 
 <script setup lang="ts">
+onMounted(() => {
+  document.body.classList.add('bg-primary-50/20')
+})
 
+onUnmounted(() => {
+  document.body.classList.remove('bg-primary-50/20')
+})
 </script>
-
-<style lang="scss" scoped>
-body {
-  background-color: #fbfbfb;
-}
-
-main {
-  margin-top: 58px;
-  margin-bottom: 58px;
-}
-
-@media (min-width: 991.98px) {
-  main {
-    padding-left: 240px;
-  }
-
-  footer {
-    padding-left: 240px;
-  }
-}
-
-/* Sidebar */
-.sidebar {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  padding: 58px 0 0;
-  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
-  width: 240px;
-  z-index: 600;
-}
-
-@media (max-width: 991.98px) {
-  .sidebar {
-    width: 100%;
-  }
-}
-
-.sidebar-sticky {
-  position: relative;
-  top: 0;
-  height: calc(100vh - 48px);
-  padding-top: 0.5rem;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-#back-to-top {
-  position: fixed;
-  z-index: 1000;
-  top: 90%;
-  right: 2%;
-}
-
-.sidebar-enter-active,
-.sidebar-leave-active {
-  transition: opacity .4s ease-in-out;
-}
-
-.sidebar-enter-from,
-.sidebar-leave-to {
-  opacity: 0;
-  transform: translateX(-100%);
-}
-
-.sidebar-enter-to,
-.sidebar-leave-from {
-  opacity: 1;
-  transform: translateX(0%);
-}
-</style>

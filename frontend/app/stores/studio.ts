@@ -25,6 +25,10 @@ export interface NewVideo {
     panelize: boolean,
     age_restricted: boolean
   },
+  monetization: {
+    ads: boolean
+    gifts: boolean
+  },
   files: File[]
   has_paid_promotion: boolean
   participants: Participant[]
@@ -54,6 +58,10 @@ export const useStudioStore = defineStore('studio', () => {
       is_premiere: false,
       panelize: false,
       age_restricted: false
+    },
+    monetization: {
+      ads: false,
+      gifts: false
     },
     participants: []
   })

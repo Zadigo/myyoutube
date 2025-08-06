@@ -2,6 +2,33 @@
   <div class="space-y-2">
     <StudioSettingBlock>
       <template #title>
+        Monetization
+      </template>
+
+      <template #description>
+        If you want to monetize your video, you can do so by enabling the
+        monetization feature. This will allow you to earn money from your video
+        through ads and other monetization methods. Note that you can enable these
+        features globally in your channel settings.
+      </template>
+
+      <template #actions>
+        <div class="space-y-2">
+          <VoltLabel>
+            <VoltToggleSwitch v-model="newVideo.monetization.ads" />
+            <label>Enable monetization through Ads</label>
+          </VoltLabel>
+
+          <VoltLabel>
+            <VoltToggleSwitch v-model="newVideo.monetization.gifts" />
+            <label>Enable monetization through gifts</label>
+          </VoltLabel>
+        </div>
+      </template>
+    </StudioSettingBlock>
+
+    <StudioSettingBlock>
+      <template #title>
         Participants
       </template>
 

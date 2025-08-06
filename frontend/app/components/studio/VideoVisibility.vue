@@ -77,7 +77,8 @@
             You can post your video to a panel of users that you selected
             to watch it before it goes public. This is useful for getting feedback
             and making changes before the video is released to the public. The panel
-            does not count towards the view count of the video
+            does not count towards the view count of the video and can only watch
+            within 5 minutes of the video being posted.
           </template>
 
           <VoltLabel>
