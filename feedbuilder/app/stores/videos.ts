@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import type { VideoItem } from '~/types'
 
-export const useFeedStore = defineStore('feed', () => {    
+export const useVideoStore = defineStore('videos', () => {    
     const items = ref<VideoItem[]>([])
     const isLoading = ref(false)
 

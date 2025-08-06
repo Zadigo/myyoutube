@@ -1,3 +1,5 @@
+import type { BlockNames, SortBy, SortDirection } from '~/data'
+
 export interface SourceOptions {
     duration: '30 minutes' | '3 hours' | '12 hours' | '24 hours' | '3 days' | '7 days'
     source: 'Entire network' | 'Tags' | 'Single user' | 'List' | 'Feed' | 'Single post' | 'Labels'
@@ -11,22 +13,19 @@ export interface RegexOptions {
 }
 
 export interface SortOptions {
-    by: 'Creation date' | 'Like count' | 'Reply count' | 'Random'
-    direction: 'Ascending' | 'Descending'
+    by: SortBy
+    direction: SortDirection
 }
 
-export interface RequestData {
-    sources: SourceOptions[]
-    regex: RegexOptions[],
-    sorting: SortOptions[]
-}
-
-export type BlockNames = 'Source' | 'Remove' | 'RegExp' | 'Replace' | 'Sort' | 'Limit'
-
-export interface CreatedComponent {
+export interface FeedBlocks {
     position: number
-    component: Component,
-    data: SourceOptions | RegexOptions | SortOptions
+    component: BlockNames
+    data: SourceOptions | RegexOptions | SortOptions | null
+}
+
+export interface NewFeed {
+    name: string
+    blocks: FeedBlocks[]
 }
 
 export interface CustomUser {

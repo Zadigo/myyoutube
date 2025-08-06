@@ -1,29 +1,17 @@
 <template>
-  <BlockBase title="Limit" @delete-block="handleDeleteBlock(index)">
-    <div class="row">
-      <div class="col-12">
-        <div class="d-flex gap-2">
-          <BaseInput v-model="limit" :min="0" variant="solo-filled" hide-details flat @change="emit('define-options', limit)" />
-        </div>
-      </div>
-    </div>
+  <BlockBase title="Limit" @delete-block="feedsStore.deleteBlock(index)">
+    <VoltInputText v-model="limit" :min="0" class="w-full" />
   </BlockBase>
 </template>
 
 <script setup lang="ts">
-const { handleDeleteBlock } = useBlocks()
-const limit = ref<number>(100)
+const feedsStore = useFeedsStore()
 
-defineProps({
-  index: {
-    type: Number,
-    required: true
-  }
-})
+const props = defineProps<{ modelValue: number, index: number }>()
+const emit = defineEmits<{ 'update:modelValue': [limit: number] }>()
 
-const emit = defineEmits({
-  'define-options' (_limit: number) {
-    return true
-  }
+const limit = useVModel(props, 'modelValue', emit, {
+  passive: true,
+  eventName: 'update:modelValue'
 })
 </script>

@@ -6,20 +6,21 @@
       </h1>
       
       <div class="mt-5">
-        <VoltInputText placeholder="Feed name" flat />
-
-        <VoltButton @click="handleUpdateData">Run</VoltButton>
+        <div class="flex gap-2">
+          <VoltInputText placeholder="Feed name" class="flex-grow" />
+          <VoltButton @click="handleUpdateData">Run</VoltButton>
+        </div>
 
         <div class="flex flex-wrap gap-1 mt-5">
-          <VoltBadge v-for="block in blocks" :key="block" class="flex gap-1 items-center" @click="handleAddBlock(block)">
-            <Icon name="fa-solid:plus" />
+          <VoltButton v-for="block in blockNames" :key="block" size="small" @click="feedsStore.addBlock(block)">
+            <Icon name="i-fa7-solid:plus" />
             {{ block }}
-          </VoltBadge>
+          </VoltButton>
         </div>
 
         <div>
-          <div v-for="(component, i) in createdComponents" :key="i" class="my-3">
-            <component v-model="component.data" :is="component.component" :index="i" @update-data="handleUpdateData" @delete-block="handleDeleteBlock" />
+          <div v-for="(block, i) in currentFeedBlocks" :key="i" class="my-3">
+            <component v-model="block.data" :is="componentMapping[block.component]" :index="i" />
           </div>
         </div>
       </div>
@@ -28,95 +29,25 @@
 </template>
 
 <script setup lang="ts">
-import { blocks } from '~/data'
-import type { BlockNames, CreatedComponent, RequestData, VideoItem } from '~/types'
-// import Remove from '~/components/block/Remove.vue'
-// import Source from '~/components/block/Source.vue'
-// import Limit from '~/components/block/Limit.vue'
-// import Regex from '~/components/block/Regex.vue'
-// import Sort from '~/components/block/Sort.vue'
+import { blockNames, type BlockNames } from '~/data'
 
-const Source = resolveComponent('Source')
-const Limit = resolveComponent('Limit')
-const Regex = resolveComponent('Regex')
-const Sort = resolveComponent('Sort')
+const ResolvedBlockSource = resolveComponent('BlockSource')
+const ResolvedBlockLimit = resolveComponent('BlockLimit')
+const ResolvedBlockRegex = resolveComponent('BlockRegex')
+const ResolvedBlockSort = resolveComponent('BlockSort')
 
-const store = useFeedStore()
-const { items } = storeToRefs(store)
+const videoStore = useVideoStore()
+const {  } = storeToRefs(videoStore)
 
-const componentMapping: Record<string, Component> = {
-  source: markRaw(Source),
-  // remove: markRaw(Remove),
-  regexp: markRaw(Regex),
-  // replace: markRaw('BlockReplace'),
-  sort: markRaw(Sort),
-  limit: markRaw(Limit)
-}
+const feedsStore = useFeedsStore()
+const { currentFeed, feeds, currentFeedBlocks } = storeToRefs(feedsStore)
 
-
-const createdComponents = ref<CreatedComponent[]>([
-  {
-    position: 1,
-    component: componentMapping.source,
-    data: {
-      source: 'Entire network',
-      duration: '7 days'
-    }
-  }
-])
-
-// const requestData = ref<RequestData>({
-//   sources: [],
-//   regex: [],
-//   sorting: []
-// })
-
-// const { execute, data } = useFetch('/api/videos', {
-//   method: 'post',
-//   immediate: false,
-//   // params: requestData,
-//   onResponse() {
-
-//   },
-//   transform(data: VideoItem[]) {
-//     items.value = data
-//     return data
-//   }
-// })
-
-function handleAddBlock (block: BlockNames) {
-  let blockName = block.toLowerCase()
-
-  let dataToWrite = {
-    duration: '7 days',
-    source: 'Entire network'
-  }
-  
-  if (block === 'Source') {
-    dataToWrite = {
-      duration: '7 days',
-      source: 'Entire network'
-    }
-  }
-
-  const data: CreatedComponent = { 
-    position: createdComponents.value.length + 1, 
-    component: componentMapping[blockName],
-    data: dataToWrite
-  }
-
-  createdComponents.value.push(data)
-}
-
-function handleDeleteBlock (index: number) {
-  createdComponents.value.splice(index, 1)
-}
-
-function handleUpdateData () {
-  execute()
-
-  // if (data.value) {
-  //   items.value = data.value
-  // }
+const componentMapping: { [K in BlockNames]: ReturnType<typeof resolveComponent> } = {
+  'Source': ResolvedBlockSource,
+  'RegExp': ResolvedBlockRegex,
+  'Sort': ResolvedBlockSort,
+  'Limit': ResolvedBlockLimit,
+  'Remove': '',
+  'Replace': ''
 }
 </script>

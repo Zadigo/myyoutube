@@ -1,43 +1,34 @@
 <template>
-  <BaseCard>
+  <VoltCard class="shadow-sm">
     <template #header>
-      <div class="flex justify-between">
-        <BaseButton variant="text" draggable="true">
-          <Icon name="fa-solid:grip-vertical" />
-        </BaseButton>
+      <div class="px-3 py-2">
+        <div class="flex justify-between">
+          <VoltButton variant="text" draggable="true">
+            <Icon name="fa-solid:grip-vertical" />
+          </VoltButton>
 
-        <BaseButton variant="tonal" @click="handleDeleteBlock">
-          <Icon name="fa-solid:trash" />
-        </BaseButton>
+          <VoltButton @click="handleDeleteBlock">
+            <Icon name="fa-solid:trash" />
+          </VoltButton>
+        </div>
+
+        <VoltDivider />
       </div>
+    </template>
 
-      <h5 class="mb-2 text-1xl font-bold tracking-tight text-gray-900 dark:text-white">
+    <template #content>
+      <h5 class="font-bold tracking-tight text-gray-900 dark:text-white mb-3">
         {{ title }}
       </h5>
-    </template>
 
-    <template #default>
-      <div class="card-body">
-        <div class="row">
-          <slot />
-        </div>
-      </div>
+      <slot />
     </template>
-  </BaseCard>
+  </VoltCard>
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits({
-  'delete-block' () {
-    return true
-  }
-})
-
-defineProps({
-  title: {
-    type: String
-  }
-})
+const emit = defineEmits<{ 'delete-block': [] }>()
+defineProps<{ title: string }>()
 
 function handleDeleteBlock () {
   emit('delete-block')

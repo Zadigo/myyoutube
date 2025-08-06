@@ -1,19 +1,17 @@
 <template>
-  <BlockBase @delete-block="handleDeleteBlock(index)">
+  <BlockBase @delete-block="feedsStore.deleteBlock(index)">
     <div class="row">
       <div class="col-12">
-        <v-text-field v-model="regexOptions.regex" variant="solo-filled" placeholder="Regex: ^Taylor|Swift" flat hide-details @keypress="emit('define-options', regexOptions)" />
+        <VoltInputText v-model="regexOptions.regex" variant="solo-filled" placeholder="Regex: ^Taylor|Swift" flat hide-details @keypress="emit('define-options', regexOptions)" />
 
-        <v-chip-group v-model="regexOptions.source">
-          <v-chip v-for="targetOption in targetOptions" :key="targetOption">
-            {{ targetOption }}
-          </v-chip>
-        </v-chip-group>
+        <VoltBadge v-for="targetOption in targetOptions" :key="targetOption">
+          {{ targetOption }}
+        </VoltBadge>
       </div>
 
       <div class="col-12">
-        <v-switch v-model="regexOptions.invert" label="Invert" inset />
-        <v-switch v-model="regexOptions.case_sensitive" label="Case sensitive" inset />
+        <VoltToggleSwitch v-model="regexOptions.invert" label="Invert" inset />
+        <VoltToggleSwitch v-model="regexOptions.case_sensitive" label="Case sensitive" inset />
       </div>
     </div>
   </BlockBase>
@@ -27,7 +25,7 @@ interface RegexOptions {
   case_sensitive: boolean
 }
 
-const { handleDeleteBlock } = useBlocks()
+const feedsStore = useFeedsStore()
 
 const targetOptions = [
   'Video description',
@@ -35,18 +33,8 @@ const targetOptions = [
   'Video title'
 ]
 
-defineProps({
-  index: {
-    type: Number,
-    required: true
-  }
-})
-
-const emit = defineEmits({
-  'define-options' (_data: RegexOptions) {
-    return true
-  }
-})
+defineProps<{ index: number }>()
+const emit = defineEmits<{ 'define-options': [regexOptions: RegexOptions] }>()
 
 const regexOptions = ref<RegexOptions>({
   regex: '',
