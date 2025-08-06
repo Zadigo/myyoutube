@@ -34,6 +34,7 @@ def add_new_view(user_id: str | int, video_id: str | int, duration: int | float,
 
 @shared_task
 def get_video_metadata(video_id: str | int):
+    # TODO: Create Go server that does this task
     try:
         instance = Video.objects.get(id=video_id)
     except:
@@ -58,6 +59,7 @@ def get_video_metadata(video_id: str | int):
 
 @shared_task
 def get_video_frames(video_id: str | int):
+    # TODO: Create Go server that does this task
     try:
         instance = Video.objects.get(id=video_id)
     except:

@@ -1,26 +1,26 @@
 <template>
-  <section id="videos">
+  <section id="videos" class="container mx-auto px-4">
     <VoltCard class="shadow-sm">
       <template #content>
         <form @submit.prevent>
-          <VoltInputText type="search" placeholder="Search" class="w-2/5" />
-          
+          <VoltInputText v-model="search" placeholder="Search" class="w-2/5" />
+
           <div class="flex justify-around gap-2 mt-3">
-            <VoltSelect :options="defaultMainCategories.map(x => ({ name: x }))" class="w-full" option-label="name" placeholder="Categories" />
-            <VoltSelect :options="defaultVideoLength.map(x => ({ name: x }))" class="w-full" option-label="name" placeholder="Video length" />
-            <VoltSelect :options="defaultUploadDate.map(x => ({ name: x }))" class="w-full" option-label="name" placeholder="Upload date" />
+            <VoltSelect v-model="category" :options="mainCategoriesSelect" class="w-full" option-label="name" placeholder="Categories" />
+            <VoltSelect v-model="videoLength" :options="videoLengthSelect" class="w-full" option-label="name" placeholder="Video length" />
+            <VoltSelect v-model="uploadDate" :options="uploadDateSelect" class="w-full" option-label="name" placeholder="Upload date" />
           </div>
         </form>
-      </template>
-
-      <template #footer>
-        <VoltButton>
-          <Icon name="i-fa7-solid:sort" /> Sort by
-        </VoltButton>
       </template>
     </VoltCard>
 
     <section id="content" class="mt-5">
+      <div class="pt-2 pb-5 flex justify-end">
+        <VoltDropdownButton id="sort-by" :items="sortByMenuItems">
+          <Icon name="i-fa7-solid:sort" /> Sort by
+        </VoltDropdownButton>
+      </div>
+
       <Suspense>
         <AsyncFeedComponent />
 
@@ -39,9 +39,43 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
+import { useMenuItems } from '~/composables/use'
 import { defaultVideoLength, defaultMainCategories, defaultUploadDate } from '~/data'
+
+import type { DefaultSortByMenuItem } from '~/data'
 
 const AsyncFeedComponent = defineAsyncComponent({
   loader: () => import('~/components/BaseAsyncFeed.vue')
-})
+})  
+
+const { menuItems: mainCategoriesSelect } = useMenuItems(Array.from(defaultMainCategories))
+const { menuItems: videoLengthSelect } = useMenuItems(Array.from(defaultVideoLength))
+const { menuItems: uploadDateSelect } = useMenuItems(Array.from(defaultUploadDate))
+
+const feedStore = useFeedStore()
+const { search, uploadDate, videoLength, category,  sortBy } = storeToRefs(feedStore)
+
+const sortByMenuItems: DefaultSortByMenuItem[] = [
+  {
+    label: 'Upload date',
+    icon: 'i-fa7-solid:clock',
+    command: () => {
+      sortBy.value = 'Upload date'
+    }
+  },
+  {
+    label: 'View count',
+    icon: 'i-fa7-solid:eye',
+    command: () => {
+      sortBy.value = 'View count'
+    }
+  },
+  {
+    label: 'Rating',
+    icon: 'i-fa7-solid:star',
+    command: () => {
+      sortBy.value = 'Rating'
+    }
+  }
+]
 </script>

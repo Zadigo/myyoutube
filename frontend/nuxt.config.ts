@@ -44,8 +44,9 @@ export default defineNuxtConfig({
     public: {
       // Django
       djangoProdUrl: process.env.NUXT_DJANGO_PROD_URL || 'http://127.0.0.1:8000',
-      apiCategories: process.env.NUXT_DJANGO_PROD_URL || 'http://127.0.0.1:5000',
-      apiReports: process.env.NUXT_DJANGO_PROD_URL || 'http://127.0.0.1:5001',
+      apiCategories: process.env.NUXT_QUART_CATEGORIES_PROD_URL || 'http://127.0.0.1:5000',
+      apiReports: process.env.NUXT_QUART_REPORTS_PROD_URL || 'http://127.0.0.1:5001',
+      apiUploads: process.env.NUXT_GO_UPLOADS_PROD_URL || 'http://127.0.0.1:8080',
       
       // Stripe
       stripeSecretKey: process.env.NUXT_STRIPE_TEST_SECRET_KEY,
@@ -62,7 +63,6 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxt/eslint',
-    '@vesp/nuxt-fontawesome',
     '@nuxt/test-utils/module',
     '@unlok-co/nuxt-stripe',
     '@nuxtjs/sitemap',

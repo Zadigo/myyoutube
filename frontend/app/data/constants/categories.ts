@@ -1,9 +1,13 @@
 export const defaultMainCategories = [
+  'All',
+  'General',
   'Documentaries',
   'TV Shows',
   'Fashion',
   'Music',
   'Sports',
+  'Education',
+  'Gaming',
   'Podcasting'
 ] as const
 

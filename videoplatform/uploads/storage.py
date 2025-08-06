@@ -3,7 +3,7 @@ import secrets
 from django.conf import settings
 from django.core.files.base import File
 from django.core.files.storage import FileSystemStorage
-# from storages.backends.s3boto3 import S3Boto3Storage
+from storages.backends.s3boto3 import S3Boto3Storage
 
 
 # class StaticFilesStorage(S3Boto3Storage):
@@ -11,19 +11,16 @@ from django.core.files.storage import FileSystemStorage
 #     default_acl = 'public-read'
 
 
-# class PublicMediaStorage(S3Boto3Storage):
-#     location = 'nawoka/media'
-#     default_acl = 'public-read'
-#     default_content_type = 'image/jpg'
-#     file_overwrite = False
+class PublicMediaStorage(S3Boto3Storage):
+    location = 'media'
+    default_acl = 'public-read'
+    file_overwrite = False
 
 
-# class PrivateMediaStorage(S3Boto3Storage):
-#     location = 'private'
-#     default_acl = 'private'
-#     default_content_type = 'image/jpg'
-#     file_overwrite = False
-#     custom_domain = False
+class PrivateMediaStorage(S3Boto3Storage):
+    location = 'media'
+    default_acl = 'private-read'
+    file_overwrite = False
 
 
 class CustomFileSystemStorage(FileSystemStorage):
@@ -36,5 +33,6 @@ class CustomFileSystemStorage(FileSystemStorage):
 
 
 def select_storage():
-    return (CustomFileSystemStorage()
+    return (
+        CustomFileSystemStorage()
             if settings.DEBUG else PublicMediaStorage())

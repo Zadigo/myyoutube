@@ -23,7 +23,6 @@
     "@primevue/icons": "^4.3.7",
     "@tailwindcss/vite": "^4.1.11",
     "@unlok-co/nuxt-stripe": "^5.0.0",
-    "@vesp/nuxt-fontawesome": "^1.2.1",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vueuse/core": "^13.6.0",
     "@vueuse/integrations": "^13.6.0",
@@ -54,9 +53,6 @@
   },
   "packageManager": "pnpm@9.13.2+sha512.88c9c3864450350e65a33587ab801acf946d7c814ed1134da4a924f6df5a2120fd36b46aab68f7cd1d413149112d53c7db3a4136624cfd00ff1846a0c6cef48a",
   "devDependencies": {
-    "@fortawesome/free-brands-svg-icons": "^6.7.2",
-    "@fortawesome/free-regular-svg-icons": "^6.7.2",
-    "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@iconify-json/fa7-solid": "^1.2.0",
     "@nuxt/eslint": "^1.7.1",
     "@nuxt/test-utils": "^3.19.2",

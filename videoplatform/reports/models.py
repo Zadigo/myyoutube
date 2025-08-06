@@ -1,24 +1,24 @@
 import secrets
 
+from comments.models import Comment, Reply
 from django.contrib.auth import get_user_model
 from django.db import models
-
-from comments.models import Comment, Reply
 from reports.choices import ReportTypes
 from videos.models import Video
 
-MYUSER = get_user_model()
-
 
 class Report(models.Model):
-    """Represents a report on video"""
+    """Represents a report on a video, comment, or reply
+    with a reference ID, user who reported it,
+    and the category of the report"""
+
     reference = models.CharField(
         max_length=100,
         default=secrets.token_hex(10),
         unique=True
     )
     user = models.ForeignKey(
-        MYUSER,
+        get_user_model(),
         on_delete=models.SET_NULL,
         blank=True, null=True,
         related_name='reported_by'
@@ -51,15 +51,21 @@ class Report(models.Model):
         blank=True,
         null=True
     )
-    is_correct = models.BooleanField(default=False)
-    reviewed = models.BooleanField(default=False)
+    is_correct = models.BooleanField(
+        default=False
+    )
+    reviewed = models.BooleanField(
+        default=False
+    )
     reviewed_by = models.ForeignKey(
-        MYUSER,
+        get_user_model(),
         on_delete=models.CASCADE,
         blank=True,
         null=True
     )
-    reviewed_on = models.DateTimeField(auto_now_add=True)
+    reviewed_on = models.DateTimeField(
+        auto_now_add=True
+    )
 
     def __str__(self):
         return self.video.title

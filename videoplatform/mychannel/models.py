@@ -1,22 +1,18 @@
 import os
-import pathlib
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models.signals import post_delete, post_save, pre_save
+from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.shortcuts import reverse
-from django.utils.crypto import get_random_string
 from django.utils.functional import cached_property
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
-
 from mychannel.choices import ChannelCategories
 from mychannel.utils import banners_directory_path
-from videoplatform.utils import create_id
 
-USER_MODEL = get_user_model()
+from videoplatform.utils import create_id
 
 
 class ChannelTag(models.Model):
@@ -29,14 +25,22 @@ class ChannelTag(models.Model):
 
 
 class ChannelPlaylist(models.Model):
-    """Represents a playlist for a channel"""
+    """Represents a playlist for a channel where videos can 
+    be organized into different categories or themes"""
 
-    user_channel = models.ForeignKey('UserChannel', on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
+    user_channel = models.ForeignKey(
+        'UserChannel', 
+        on_delete=models.CASCADE
+    )
+    name = models.CharField(
+        max_length=50
+    )
     description = None
     addition_type = None
     active = None
-    created_on = models.DateTimeField(auto_now_add=True)
+    created_on = models.DateTimeField(
+        auto_now_add=True
+    )
 
     class Meta:
         indexes = [
@@ -48,16 +52,16 @@ class ChannelPlaylist(models.Model):
 
 
 class UserChannel(models.Model):
-    """Represents a user's channel. A channel can
-    be defined a space in which the user can reunite
-    all the videos that has uploaded on the plateform"""
+    """Represents a user's channel. A channel 
+    is a collection of videos and playlists
+    that a user can create and manage."""
 
     reference = models.CharField(
         max_length=50,
         unique=True
     )
     user = models.ForeignKey(
-        USER_MODEL,
+        get_user_model(),
         on_delete=models.CASCADE,
         blank=True,
         null=True
@@ -112,7 +116,7 @@ class UserChannel(models.Model):
         null=True
     )
     subscribers = models.ManyToManyField(
-        USER_MODEL,
+        get_user_model(),
         related_name='channel_subscribers',
         blank=True
     )
@@ -156,6 +160,7 @@ class UserChannel(models.Model):
         return self.channelplaylist_set.count()
 
 
+# TODO: Move into a separate project
 class BlockedChannel(models.Model):
     """Represents a channeld that was blocked by 
     the current viewer"""
@@ -166,7 +171,7 @@ class BlockedChannel(models.Model):
         blank=True
     )
     user = models.ForeignKey(
-        USER_MODEL,
+        get_user_model(),
         models.CASCADE,
         blank=True
     )

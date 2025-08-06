@@ -68,9 +68,7 @@ INSTALLED_APPS = [
     'notifications',
     'mychannel',
     'history',
-    'school',
-    'playlists',
-    'hero',
+    'playlists'
 ]
 
 MIDDLEWARE = [
@@ -107,7 +105,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'videoplatform.wsgi.application'
+# WSGI_APPLICATION = 'videoplatform.wsgi.application'
+ASGI_APPLICATION = 'videoplatform.asgi.application'
 
 
 # Database
@@ -163,55 +162,62 @@ USE_TZ = True
 
 USE_S3 = False
 
+
+def aws_endpoint(path=None):
+    base_url = 'https://{bucket}.s3.{region}.amazonaws.com'
+
+    bucket = os.getenv('AWS_S3_REGION_NAME')
+    region = os.getenv('AWS_S3_REGION_NAME')
+    url = base_url.format(bucket=bucket, region=region)
+
+    if path is not None:
+        return url + f'/{path}'
+
+    return url
+
 if USE_S3:
-    # S3
-    # https://forum.djangoproject.com/t/static-path-with-s3/28696/9
-    # https://levelup.gitconnected.com/hosting-django-static-files-in-aws-using-s3-and-cloudfront-a-comprehensive-guide-2f8f5d0a845c
+    # S3 Backend Storage
+    # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
+    # https://forum.djangoproject.com/t/storage-4-2-how-to-subclass-default/29190/2
+    # FIXME: https://github.com/jschneier/django-storages/issues/1361 there seems to
+    # be a bug when trying to access the admin with DEBUG
 
-    AWS_S3_FILE_OVERWRITE = False
-
-    AWS_DEFAULT_ACL = 'public-read'
-
-    AWS_QUERYSTRING_AUTH = False
-
-    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-
-    AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
-
-    AWS_S3_ACCESS_KEY_ID = os.getenv('AWS_S3_ACCESS_KEY_ID')
-
-    AWS_S3_SECRET_ACCESS_KEY = os.getenv('AWS_S3_SECRET_ACCESS_KEY')
+    DEFAULT_S3_SETTINGS = {
+        'access_key': os.getenv('AWS_S3_ACCESS_KEY_ID'),
+        'secret_key': os.getenv('AWS_S3_SECRET_ACCESS_KEY'),
+        'bucket_name': os.getenv('AWS_STORAGE_BUCKET_NAME'),
+        'region_name': os.getenv('AWS_S3_REGION_NAME'),
+        'object_parameters': {'CacheControl': 'max-age=86400'},
+        'endpoint_url': aws_endpoint(),
+        # 'cloudfront_key': '',  # AWS_CLOUDFRONT_KEY
+        # 'cloudfront_key_id': '',  # AWS_CLOUDFRONT_KEY_ID
+        'querystring_auth': False,
+        'default_acl': 'public-read'
+    }
 
     STORAGES = {
         'default': {
-            'BACKEND': 'videoplatform.custom_storages.MediaStorage'
+            'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+            'OPTIONS': {
+                **DEFAULT_S3_SETTINGS,
+                'location': 'media',
+            }
         },
         'staticfiles': {
-            'BACKEND': 'videoplatform.custom_storages.StaticStorage'
+            'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+            'OPTIONS': {
+                **DEFAULT_S3_SETTINGS,
+                'file_overwrite': True,
+                'location': 'static',
+            }
         }
     }
 
-    AWS_S3_OBJECT_PARAMETERS = {
-        'ACL': 'public-read',
-        'CacheControl': 'max-age=2592000'
-    }
-
-    AWS_CLOUDFRONT_DISTRIBUTION = os.getenv('AWS_CLOUDFRONT_DISTRIBUTION')
-
-if USE_S3:
-    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-
-    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+    MEDIA_ROOT = aws_endpoint('media')
 else:
-    MEDIA_URL = 'media/'
-
     MEDIA_ROOT = BASE_DIR / 'media'
 
-    STATIC_URL = 'static/'
-
-    STATIC_ROOT = BASE_DIR / 'static'
+MEDIA_URL = 'media/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'staticfiles'
@@ -360,17 +366,18 @@ LOCALE_PATHS = [
 LANGUAGE_CODE = 'fr'
 
 
-# Redis
+# Celery + Redis
+# https://docs.celeryq.dev/en/stable/
+
+# Redis default user requires a default
+# password to establish the connection:
+# https://github.com/redis/redis/issues/13437
 
 REDIS_HOST = os.getenv('REDIS_HOST', '127.0.0.1')
 
 REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
 
 REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:6379'
-
-
-# Celery
-# https://docs.celeryq.dev/en/stable/#
 
 RABBITMQ_HOST = os.getenv('RABBITMQ_HOST', 'localhost')
 
@@ -391,6 +398,21 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Oslo'
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+
+# Caching
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': REDIS_URL,
+        'KEY_PREFIX': 'myyoutube'
+    },
+    'file': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': BASE_DIR / 'cache'
+    }
+}
 
 
 # HTTPS
@@ -418,36 +440,10 @@ N8N_REQUEST_USERNAME = os.getenv('N8N_REQUEST_USERNAME')
 N8N_REQUEST_PASSWORD = os.getenv('N8N_REQUEST_PASSWORD')
 
 
-# CACHE
-# https://pypi.org/project/pymemcache/
-# https://pypi.org/project/pylibmc/
-
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': REDIS_URL,
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient'
-        },
-        'KEY_PREFIX': 'myyoutube'
-    },
-    'memcache': {
-        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-        'LOCATION': [
-            '127.0.0.1:11211'
-        ]
-    },
-    'file': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': BASE_DIR / 'cache'
-    }
-}
-
-
 # Fixtures
 
 FIXTURE_DIRS = [
-    '/base_fixtures'
+    'fixtures/videos'
 ]
 
 GOOGLE_CLOUD_PROJECT = 'gency313'

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
+import type { DefaultMainCategories, DefaultSortBy, DefaultUploadDate, DefaultVideoLength } from '~/data'
 import type { VideoInfo, VideosFeedResponseData } from '~/types'
 
 export const useFeedStore = defineStore('feed', () => {
@@ -8,7 +9,22 @@ export const useFeedStore = defineStore('feed', () => {
 
   const hasVideos = computed(() => videos.length > 0)
 
+  /**
+   * Search
+   */
+
+  const search = ref<string>('')
+  const category = ref<DefaultMainCategories>('All')
+  const videoLength = ref<DefaultVideoLength>('4-20 minutes')
+  const uploadDate = ref<DefaultUploadDate>('This week')
+  const sortBy = ref<DefaultSortBy>('Upload date')
+
   return {
+    search,
+    category,
+    videoLength,
+    uploadDate,
+    sortBy,
     /**
      * List of videos in the feed
      */

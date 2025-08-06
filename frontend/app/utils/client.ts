@@ -84,7 +84,7 @@ export async function login(email: string, password: string): Promise<CustomLogi
 }
 
 /**
- * 
+ * Function used to logout the user
  */
 export async function logout() {
   if (import.meta.server) {
@@ -98,4 +98,23 @@ export async function logout() {
   refreshToken.value = null
 
   // router.push('/')
+}
+
+/**
+ * Function used to encode and decode messages
+ * for websocket communication
+ */
+export function useWebsocketMessages<T extends object>() {
+  function send(message: T): string {
+    return JSON.stringify(message)
+  }
+
+  function decode(message: string): Ref<T> {
+    return toRef(JSON.parse(message)) as Ref<T>
+  }
+
+  return {
+    send,
+    decode
+  }
 }

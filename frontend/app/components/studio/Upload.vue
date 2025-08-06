@@ -106,4 +106,19 @@ function removeFile(file: File) {
   selectedFiles.value = selectedFiles.value.filter(f => f !== file)
   emit('update:files', selectedFiles.value)
 }
+
+
+// Go Websocket
+
+const { send } = useWebsocketMessages()
+
+const { data } = useWebSocket(`${useRuntimeConfig().public.apiUploads}/ws/uploads`, {
+  immediate: true,
+  onConnected() {
+    send({
+      type: 'init',
+      data: 'Welcome'
+    })
+  }
+})
 </script>
