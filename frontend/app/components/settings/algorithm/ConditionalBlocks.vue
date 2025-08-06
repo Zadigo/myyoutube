@@ -6,10 +6,11 @@
       keywords. This allows you to customize your viewing experience and focus on the content that matters most to you.
 
       {{ conditions }}
-      <div>
+
+      <div class="mt-5">
         <VoltLink to="/">
           <Icon name="i-fa7-solid:arrow-right" />
-          Learn more
+          Advanced algorithm builder
         </VoltLink>
       </div>
     </VoltAlert>

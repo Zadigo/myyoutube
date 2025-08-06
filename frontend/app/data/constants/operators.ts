@@ -1,17 +1,3 @@
-export const joinOperators = [
-  'And',
-  'Or'
-] as const
-
-export type JoinOperators = (typeof joinOperators)[number]
-
-export const negationOperators = [
-  'Not negated',
-  'Not'
-] as const
-
-export type NegationOperators = (typeof negationOperators)[number]
-
 export const generalConditions = [
   'Is',
   'Is not',
@@ -34,3 +20,10 @@ export const keywordOperators = [
 ] as const
 
 export type KeywordOperators = (typeof keywordOperators)[number]
+
+export const joinOperators = [
+  'And',
+  'Or'
+] as const
+
+export type JoinOperators = (typeof joinOperators)[number]

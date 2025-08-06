@@ -6,7 +6,7 @@
       <div v-else>
         <div v-if="conditionProxy">
           <header class="flex justify-end">
-            <VoltDropdownButton id="negation" :items="Array.from(negationOperators).map(x => ({ label: x }))">
+            <VoltDropdownButton id="negation" :items="negationOperatorsMenuItems">
               <span v-if="conditionProxy.negation">Not</span>
               <span v-else>Not negated</span>
             </VoltDropdownButton>
@@ -38,19 +38,27 @@
 
             <!-- Subconditions -->
             <div v-if="conditionProxy.keywords_subconditions.length > 0" class="bg-slate-100 rounded-lg my-3 p-5 space-y-2 w-7/8">
-              <!-- v-model="conditionProxy.video_sections" -->
-              <VoltDropdownButton id="operator" :items="Array.from(joinOperators).map(x => ({ label: x }))">
-                {{ conditionProxy.join_operator }}
-              </VoltDropdownButton>
+              <div class="flex justify-start">
+                <VoltDropdownButton id="operator" :items="joinOperatorsMenuItems">
+                  {{ conditionProxy.join_operator }}
+                </VoltDropdownButton>
+              </div>
               
-              <SettingsAlgorithmKeywordSubCondition v-for="(subCondition, i) in conditionProxy.keywords_subconditions" :key="i" :sub-condition="subCondition" /> 
-              
+              <SettingsAlgorithmKeywordSubCondition v-for="(subCondition, i) in conditionProxy.keywords_subconditions" :key="i" :sub-condition="subCondition" />
+
               <div class="flex justify-end my-3">
                 <VoltButton variant="tonal" @click="handleAddSubcondition">
                   <Icon name="i-fa7-solid:plus" class="me-2" />
-                  Add
+                  New condition
                 </VoltButton>
               </div>
+            </div>
+            
+            <div class="flex justify-end my-3">
+              <VoltButton variant="tonal" @click="handleAddSubcondition">
+                <Icon name="i-fa7-solid:plus" class="me-2" />
+                Add
+              </VoltButton>
             </div>
 
           </div>
@@ -58,7 +66,7 @@
           <!-- Sections -->
           <div>
             <p class="font-bold mb-2">Which appear in these sections of the video...</p>
-            <VoltSelect v-model="conditionProxy.video_sections" :options="['Title', 'Description', 'Theme', 'Classfication']" placeholder="Sections" />
+            <VoltSelect v-model="conditionProxy.video_sections" :options="videoSections" placeholder="Sections" />
           </div>
         </div>
       </div>
@@ -76,7 +84,24 @@
 </template>
 
 <script setup lang="ts">
-import { defaultMainCategories, joinOperators, keywordOperators, negationOperators, type JoinOperators, type NegationOperators } from '~/data';
+import type { MenuItem } from 'primevue/menuitem'
+import { useMenuItems } from '~/composables/use'
+import { defaultMainCategories, keywordOperators, type JoinOperators } from '~/data'
+
+const negationOperators = [
+  'Not negated',
+  'Not'
+] as const
+
+type NegationOperators = (typeof negationOperators)[number]
+
+interface NegationOperatorsMenuItems extends MenuItem {
+  label: NegationOperators
+}
+
+interface JoinOperatorsMenuItems extends MenuItem {
+  label: JoinOperators
+}
 
 const props = defineProps<{ index: number }>()
 const emit = defineEmits<{ 'delete-block': [index: number] }>()
@@ -89,36 +114,9 @@ async function handleSaveBlock() {
 
 const algorithmStore = useAlgorithmSettingsStore()
 const conditionProxy = algorithmStore.getCurrentBlock(props.index)
-console.log('test', algorithmStore.getCurrentBlock(toRef(0)).value)
 
 /**
- * 
- */
-function handleJoinOperator(operator: JoinOperators) {
-  if (conditionProxy.value) {
-    if (operator === 'And') {
-      conditionProxy.value.join_operator = 'And'
-    } else if (operator === 'Or') {
-      conditionProxy.value.join_operator = 'Or'
-    }
-  }
-}
-
-/**
- * 
- */
-function handleNegation(operator: NegationOperators) {
-  if (conditionProxy.value) {
-    if (operator === 'Not') {
-      conditionProxy.value.negation = true
-    } else if (operator === 'Not negated') {
-      conditionProxy.value.negation = false
-    }
-  }
-}
-
-/**
- * 
+ * Function that adds a new subcondition to the current condition block
  */
 function handleAddSubcondition() {
   if (conditionProxy.value) {
@@ -128,4 +126,46 @@ function handleAddSubcondition() {
     })
   }
 }
+
+// Menu Items
+
+const videoSections = ['Title', 'Description', 'Theme', 'Classfication']
+
+const negationOperatorsMenuItems: NegationOperatorsMenuItems[] = [
+  {
+    label: 'Not negated',
+    command: () => {
+      if (conditionProxy.value) {
+        conditionProxy.value.negation = false
+      }
+    }
+  },
+  {
+    label: 'Not',
+    command: () => {
+      if (conditionProxy.value) {
+        conditionProxy.value.negation = true
+      }
+    }
+  }
+]
+
+const joinOperatorsMenuItems: JoinOperatorsMenuItems[] = [
+  {
+    label: 'And',
+    command: () => {
+      if (conditionProxy.value) {
+        conditionProxy.value.join_operator = 'And'
+      }
+    }
+  },
+  {
+    label: 'Or',
+    command: () => {
+      if (conditionProxy.value) {
+        conditionProxy.value.join_operator = 'Or'
+      }
+    }
+  }
+]
 </script>

@@ -56,17 +56,21 @@
 
     <VoltDivider class="my-5" />
 
-    <h2>Sensitive ad categories on YouTube</h2>
-    <p>Select the categories for which you want to see less of</p>
+    <div>
+      <h2 class="text-3xl font-bold">Sensitive ad categories on YouTube</h2>
+      <p class="text-sm mb-5">Select the categories for which you want to see less of</p>
 
-    <VoltList :items="Array.from(sensitiveCategories).map(x => ({ label: x }))">
-      <template #item="{ item }">
-        <VoltLabel>
-          <VoltToggleSwitch />
-          <label>{{ item.label }}</label>
-        </VoltLabel>
-      </template>
-    </VoltList>
+      <VoltList>
+        <template #body="{ theme }">
+          <div v-for="item in Array.from(sensitiveCategories).map(x => ({ label: x }))" :key="item.label" :class="theme">
+            <VoltLabel>
+              <VoltToggleSwitch />
+              <label>{{ item.label }}</label>
+            </VoltLabel>
+          </div>
+        </template>
+      </VoltList>
+    </div>
   </section>
 </template>
 

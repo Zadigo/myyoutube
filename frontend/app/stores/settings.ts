@@ -5,7 +5,9 @@ import type { NotificationProfile, ViewingProfile } from '~/types'
 export interface UserSettings {
   account_type: RankAs[]
   is_professional: boolean
-  subscription_name: SubscriptionType
+  subscription: {
+    name: SubscriptionType
+  }
 }
 
 /**
@@ -16,7 +18,9 @@ export const useSettingsStore = defineStore('settings', () => {
   const userSettings = reactive<UserSettings>({
     account_type: [],
     is_professional: false,
-    subscription_name: 'Free'
+    subscription: {
+      name: 'Free'
+    }
   })
 
   const isBusiness = computed(() => {
@@ -27,7 +31,7 @@ export const useSettingsStore = defineStore('settings', () => {
     return userSettings.account_type.includes('Artist')
   })
 
-  const hasSubscription = computed(() => userSettings.subscription_name !== 'Free')
+  const hasSubscription = computed(() => userSettings.subscription.name !== 'Free')
 
   return {
     userSettings,

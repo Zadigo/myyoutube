@@ -25,13 +25,3 @@ const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
 const props = defineProps<{ modelValue: boolean }>()
 const show = useVModel(props, 'modelValue', emit, { defaultValue: false })
 </script>
-
-<style lang="scss" scoped>
-#donation {
-  cursor: pointer;
-}
-
-#donation:hover {
-  opacity: .9;
-}
-</style>

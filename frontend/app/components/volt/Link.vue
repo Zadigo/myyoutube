@@ -5,9 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-defineProps<{
-  to: string
-}>()
+defineProps<{ to: string }>()
 
 const theme = ref([
   `bg-primary hover:bg-primary-emphasis active:bg-primary-emphasis-alt text-primary-contrast 

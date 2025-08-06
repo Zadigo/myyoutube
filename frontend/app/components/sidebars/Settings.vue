@@ -33,6 +33,11 @@ const navLinks = [
     icon: 'i-fa7-solid:a'
   },
   {
+    name: 'Billing',
+    to: '/settings/billing',
+    icon: 'i-fa7-solid:dollar'
+  },
+  {
     name: 'Notifications',
     to: '/settings/notifications',
     icon: 'i-fa7-solid:bell'
