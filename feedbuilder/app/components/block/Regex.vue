@@ -1,18 +1,23 @@
 <template>
   <BlockBase @delete-block="feedsStore.deleteBlock(index)">
-    <div class="row">
-      <div class="col-12">
-        <VoltInputText v-model="regexOptions.regex" variant="solo-filled" placeholder="Regex: ^Taylor|Swift" flat hide-details @keypress="emit('define-options', regexOptions)" />
+    <VoltInputText v-model="regexOptions.regex" class="w-full" placeholder="Regex: ^Taylor|Swift" />
 
-        <VoltBadge v-for="targetOption in targetOptions" :key="targetOption">
-          {{ targetOption }}
-        </VoltBadge>
-      </div>
+    <div class="gap-2 my-2 flex flex-wrap">
+      <VoltBadge v-for="targetOption in targetOptions" :key="targetOption">
+        {{ targetOption }}
+      </VoltBadge>
+    </div>
+    
+    <div class="space-y-2">
+      <VoltLabel>
+        <VoltToggleSwitch v-model="regexOptions.invert" />
+        <label>Invert the match</label>
+      </VoltLabel>
 
-      <div class="col-12">
-        <VoltToggleSwitch v-model="regexOptions.invert" label="Invert" inset />
-        <VoltToggleSwitch v-model="regexOptions.case_sensitive" label="Case sensitive" inset />
-      </div>
+      <VoltLabel>
+        <VoltToggleSwitch v-model="regexOptions.case_sensitive" />
+        <label>Case sensitive</label>
+      </VoltLabel>
     </div>
   </BlockBase>
 </template>

@@ -1,9 +1,7 @@
 <template>
   <section id="site">
-    <div class="px-20 grid grid-cols-3 grid-rows-1 h-screen w-full">
-      <aside id="navigation" class="border-r-2 border-r-gray-100 p-5">
-        Left
-
+    <div class="px-5 grid grid-cols-12 grid-rows-1 h-screen w-full">
+      <aside id="navigation" class="border-r-2 border-r-gray-100 p-5 col-span-3">
         <ul>
           <li v-for="(feed, idx) in feeds" :key="idx" class="bg-slate-50 cursor-pointer hover:bg-gray-100 p-2 rounded" @click="feedsStore.setCurrentFeed(feed)">
             {{ feed.name }}
@@ -15,12 +13,12 @@
         </div>
       </aside>
 
-      <main id="content" class="p-5 overflow-y-scroll">
+      <main id="content" class="p-5 overflow-y-scroll col-span-6">
         <slot />
       </main>
 
-      <aside id="previewer" class="border-l-2 border-l-gray-100 p-5">
-        <div class="overflow-y-scroll h-[550px] w-full px-2">
+      <aside id="previewer" class="border-l-2 border-l-gray-100 bg-gray-100 p-5 col-span-3">
+        <div v-if="items.length > 0" class="overflow-y-scroll h-[550px] w-full px-2">
           <div ref="infiniteEl">
             <VoltCard v-for="(item, i) in items" :key="item.id" :data-index="i" class="mb-1">
               <template #content>
@@ -38,6 +36,10 @@
               </template> 
             </VoltCard>
           </div>
+        </div>
+
+        <div v-else class="text-center text-gray-500 mt-10">
+          Feed does not have any items yet.
         </div>
       </aside>
     </div>

@@ -17,10 +17,14 @@ export interface SortOptions {
     direction: SortDirection
 }
 
+export interface LimitOptions {
+    limit: number
+}
+
 export interface FeedBlocks {
     position: number
     component: BlockNames
-    data: SourceOptions | RegexOptions | SortOptions | null
+    data: SourceOptions | RegexOptions | SortOptions | LimitOptions | null
 }
 
 export interface NewFeed {

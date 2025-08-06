@@ -6,13 +6,14 @@
       </h1>
       
       <div class="mt-5">
-        <div class="flex gap-2">
-          <VoltInputText placeholder="Feed name" class="flex-grow" />
-          <VoltButton @click="handleUpdateData">Run</VoltButton>
+        <div v-if="currentFeed" class="flex gap-2">
+          <VoltInputText v-model="currentFeed.name" placeholder="Feed name" class="flex-grow" />
+          <VoltButton>Run</VoltButton>
         </div>
 
         <div class="flex flex-wrap gap-1 mt-5">
-          <VoltButton v-for="block in blockNames" :key="block" size="small" @click="feedsStore.addBlock(block)">
+          {{ isDisabled }}
+          <VoltButton v-for="block in blockNames" :key="block" :disabled="isDisabled" size="small" @click="feedsStore.addBlock(block)">
             <Icon name="i-fa7-solid:plus" />
             {{ block }}
           </VoltButton>
@@ -36,11 +37,11 @@ const ResolvedBlockLimit = resolveComponent('BlockLimit')
 const ResolvedBlockRegex = resolveComponent('BlockRegex')
 const ResolvedBlockSort = resolveComponent('BlockSort')
 
-const videoStore = useVideoStore()
-const {  } = storeToRefs(videoStore)
+// const videoStore = useVideoStore()
+// const {  } = storeToRefs(videoStore)
 
 const feedsStore = useFeedsStore()
-const { currentFeed, feeds, currentFeedBlocks } = storeToRefs(feedsStore)
+const { currentFeed, currentFeedBlocks, isDisabled } = storeToRefs(feedsStore)
 
 const componentMapping: { [K in BlockNames]: ReturnType<typeof resolveComponent> } = {
   'Source': ResolvedBlockSource,

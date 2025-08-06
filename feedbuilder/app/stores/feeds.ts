@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { BlockNames } from '~/data'
-import type { NewFeed } from '~/types'
+import type { FeedBlocks, NewFeed } from '~/types'
 
 export const useFeedsStore = defineStore('feeds', () => {
   const feeds = reactive<NewFeed[]>([
@@ -20,6 +20,7 @@ export const useFeedsStore = defineStore('feeds', () => {
   ])
   const currentFeed = ref<NewFeed>()
 
+  const isDisabled = computed(() => typeof currentFeed.value === 'undefined')
   const currentFeedBlocks = computed(() => currentFeed.value?.blocks || [])
 
   function setCurrentFeed(feed: NewFeed) {
@@ -38,7 +39,7 @@ export const useFeedsStore = defineStore('feeds', () => {
   }
 
   function addBlock(blockName: BlockNames) {
-    const newBlock = {
+    const newBlock: FeedBlocks = {
       position: currentFeedBlocks.value.length,
       component: blockName,
       data: null
@@ -50,6 +51,18 @@ export const useFeedsStore = defineStore('feeds', () => {
         duration: '12 hours'
       }
     }
+    if (blockName === 'Sort') {
+      newBlock.data = {
+        by: 'Creation date',
+        direction: 'Ascending'
+      }
+    }
+
+    if (blockName === 'Limit') {
+      newBlock.data = {
+        limit: 100 // Default limit
+      }
+    }
 
     if (currentFeed.value) {
       currentFeed.value.blocks.push(newBlock)
@@ -57,6 +70,7 @@ export const useFeedsStore = defineStore('feeds', () => {
   }
 
   return {
+    isDisabled,
     feeds,
     currentFeed,
     currentFeedBlocks,
