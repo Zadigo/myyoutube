@@ -1,12 +1,15 @@
-export interface CustomUser {
-  id: number
+import type { _DatabaseObject } from '..'
+
+/**
+ * @deprecated
+ */
+export interface CustomUser extends _DatabaseObject {
   firstname: string
   lastname: string
   get_full_name: string
 }
 
-export interface UserProfile {
-  id: number
+export interface UserProfile extends _DatabaseObject {
   avatar: string
   birthdate: string
   telephone: string
@@ -16,10 +19,9 @@ export interface UserProfile {
   is_professional: boolean
 }
 
-export interface ViewingProfile {
-  id: number
+export interface ViewingProfile extends _DatabaseObject {
   account_type: string
-  subscriptions: string[],
+  subscriptions: string[]
   night_mode: boolean
   algorithm_decides: boolean
   recommend_popular_videos: boolean

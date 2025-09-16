@@ -5,8 +5,8 @@ export const commentsFixture: VideoComment[] = [
     id: 2,
     user: {
       id: 1,
-      firstname: null,
-      lastname: null,
+      firstname: 'my firstname',
+      lastname: 'my lastname',
       username: "qtigawWIuWyJv5T",
       get_full_name: "None None"
     },
@@ -23,8 +23,8 @@ export const commentsFixture: VideoComment[] = [
     id: 1,
     user: {
       id: 1,
-      firstname: null,
-      lastname: null,
+      firstname: 'my firstname 2',
+      lastname: 'my lastname 2',
       username: "qtigawWIuWyJv5T",
       get_full_name: "None None"
     },

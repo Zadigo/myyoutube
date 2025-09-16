@@ -1,4 +1,4 @@
-import type { CustomUser } from './authentication'
+import type { CustomUser } from './accounts'
 
 export interface UserChannel {
     reference: string

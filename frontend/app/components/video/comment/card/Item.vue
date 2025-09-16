@@ -4,14 +4,14 @@
       <div class="flex-col items-start gap-4">
         <div class=" flex items-center gap-2 mb-3">
           <NuxtLink :to="`/channels/${comment.user_channel}`" aria-label="">
-            <VoltAvatar image="/avatars/avatar2.png" shape="circle" size="small" alt="" />
+            <VoltAvatar image="/avatars/avatar2.png" :alt="comment.user_channel" shape="circle" size="small" />
           </NuxtLink>
-         
-          <VoltButton :to="`/channels/${comment.user_channel}`">
-            {{ comment.user.get_full_name }}
+
+          <VoltButton :to="`/channels/${comment.user_channel}`" size="small" variant="outlined">
+            {{ comment.user_channel }}
           </VoltButton>
 
-          <VoltButton class="mx-2" disabled>
+          <VoltButton size="small" variant="outlined" disabled>
             3 weeks ago
           </VoltButton>
         </div>
@@ -24,7 +24,16 @@
           </VoltBadge>
 
           <VoltBadge severity="contrast">
-            Aimé par le creator
+            <Icon name="i-fa7-solid:heart" />
+            Aimé par le createur
+          </VoltBadge>
+
+          <VoltBadge severity="contrast">
+            Premier commentaire
+          </VoltBadge>
+
+          <VoltBadge severity="contrast">
+            Donateur
           </VoltBadge>
         </div>
 

@@ -1,8 +1,5 @@
-export interface NotificationProfile {
-    subscribed_channel_activity: boolean
-    video_recommendation: boolean
-    channel_activity: boolean
-    replies_activity: boolean
-    mentions: boolean
-    repost: boolean
+type NotificationTypes = 'subscribed_channel_activity' | 'video_recommendation' | 'channel_activity' | 'replies_activity' | 'mentions' | 'repost'
+
+export type NotificationProfile = {
+    [key in NotificationTypes]: boolean
 }

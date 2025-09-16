@@ -5,9 +5,9 @@ import type { DefaultMainCategories, DefaultSortBy, DefaultUploadDate, DefaultVi
 import type { VideoInfo, VideosFeedResponseData } from '~/types'
 
 export const useFeedStore = defineStore('feed', () => {
-  const videos = reactive<VideosFeedResponseData[]>([])
+  const videos = ref<VideosFeedResponseData[]>([])
 
-  const hasVideos = computed(() => videos.length > 0)
+  const hasVideos = computed(() => videos.value.length > 0)
 
   /**
    * Search
@@ -43,7 +43,7 @@ export const useVideoDetailStore = defineStore('videoDetail', () => {
   const currentVideo = ref<VideoInfo>()
   const isLoading = ref<boolean>(true)
 
-  function testRun() {
+  function getVideo() {
     if (!currentVideo.value) {
       try {
         const { id: videoId } = useRoute().params as { id: string }
@@ -65,7 +65,7 @@ export const useVideoDetailStore = defineStore('videoDetail', () => {
   }
 
   return {
-    testRun,
+    getVideo,
     isLoading,
     currentVideo
   }

@@ -90,7 +90,7 @@ const { currentVideo, isLoading } = storeToRefs(videoDetailStore)
 provide('currentVideo', currentVideo)
 provide('isLoading', isLoading)
 
-videoDetailStore.testRun()
+videoDetailStore.getVideo()
 
 const { showClassificationDrawer, showReportModal, showGiftsModal, showSaveModal, showShareModal, showDonationModal, showCommunityNotes, openModal  } = useVideoDetailModals()
 

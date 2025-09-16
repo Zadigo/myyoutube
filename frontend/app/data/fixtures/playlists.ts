@@ -50,8 +50,8 @@ export const playlistsFixture: Playlist[] = [
         channel_playlist: null,
         user: {
           id: 1,
-          firstname: null,
-          lastname: null,
+          firstname: 'my firstname',
+          lastname: 'my lastname',
           username: "qtigawWIuWyJv5T",
           get_full_name: "None None"
         },

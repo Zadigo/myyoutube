@@ -1,7 +1,7 @@
+import type { _DatabaseObject } from '.'
 import type { CustomUser } from './authentication'
 
-export interface VideoTag {
-    id: number
+export interface VideoTag extends _DatabaseObject {
     name: string
 }
 
@@ -12,8 +12,10 @@ export type NestedChannelInfo = Pick<UserChannel, 'reference', 'name'> & {
     tags: VideoTag[]
 }
 
-export interface VideosFeedResponseData {
-    id: number
+/**
+ * @deprecated
+ */
+export interface VideosFeedResponseData extends _DatabaseObject {
     title: string
     description: string
     video_id: string
@@ -25,12 +27,17 @@ export interface VideosFeedResponseData {
     created_on: string
 }
 
-export interface VideoInfo {
-    id: number
+/**
+ * @deprecated
+ */
+export interface VideoInfo extends _DatabaseObject {
     title: string
+    description: string
     video_id: string
     user_channel: NestedChannelInfo,
     user: CustomUser
+    age_restricted: boolean
     video: string
     channel_playlist: null
+    created_on: string
 }

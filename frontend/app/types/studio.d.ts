@@ -1,4 +1,6 @@
-export interface Categories {
+import type { _DatabaseObject } from '.'
+
+export interface Categories extends _DatabaseObject {
     title: string
 }
 

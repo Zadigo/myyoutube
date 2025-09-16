@@ -6,13 +6,17 @@
           <template #content>
             <VoltSkeleton height="200px" class="w-full" />
 
-            <h1 class="font-bold mb-1">
-              {{ video.title }}
-            </h1>
+            <div class="mt-3">
+              <VoltAvatar :image="video.user_channel.avatar" :alt="video.user_channel.name" shape="circle" />
 
-            <p class="font-light">
-              {{ video.user.get_full_name }}
-            </p>
+              <h1 class="font-bold">
+                {{ video.title }}
+              </h1>
+
+              <p class="font-light">
+                {{ video.user_channel.name }} . 25 views . {{ new Date(video.created_on).toLocaleDateString() }}
+              </p>
+            </div>
           </template>
         </VoltCard>
       </NuxtLinkLocale>
@@ -42,4 +46,6 @@ const { data } = await useFetch<VideosFeedResponseData[]>('/api/videos', {
 if (data.value) {
   videos.value = data.value || []
 }
+
+console.log(videos.value)
 </script>

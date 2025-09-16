@@ -1,12 +1,8 @@
-export interface VideoComment {
-    id: number
-    user: {
-        id: number
-        firstname: string | null
-        lastname: string | null
-        username: string
-        get_full_name: string
-    },
+import type { _DatabaseObject } from '.'
+import type { BaseUser } from './accounts'
+
+export interface VideoComment extends _DatabaseObject {
+    user: BaseUser,
     content: string
     from_creator: boolean
     pinned: boolean
