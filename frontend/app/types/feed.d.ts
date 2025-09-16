@@ -1,5 +1,5 @@
 import type { _DatabaseObject } from '.'
-import type { CustomUser } from './authentication'
+import type { CustomUser } from './accounts'
 
 export interface VideoTag extends _DatabaseObject {
     name: string
@@ -28,9 +28,21 @@ export interface VideosFeedResponseData extends _DatabaseObject {
 }
 
 /**
- * @deprecated
+ * @deprecated Use BaseVideo instead
  */
 export interface VideoInfo extends _DatabaseObject {
+    title: string
+    description: string
+    video_id: string
+    user_channel: NestedChannelInfo,
+    user: CustomUser
+    age_restricted: boolean
+    video: string
+    channel_playlist: null
+    created_on: string
+}
+
+export interface BaseVideo extends _DatabaseObject {
     title: string
     description: string
     video_id: string

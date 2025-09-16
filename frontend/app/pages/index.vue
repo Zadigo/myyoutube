@@ -1,5 +1,6 @@
 <template>
   <section id="videos" class="container mx-auto px-4">
+    <!-- Header -->
     <VoltCard class="shadow-sm">
       <template #content>
         <form @submit.prevent>
@@ -14,6 +15,7 @@
       </template>
     </VoltCard>
 
+    <!-- Content -->
     <section id="content" class="mt-5">
       <div class="pt-2 pb-5 flex justify-end">
         <VoltDropdownButton id="sort-by" :items="sortByMenuItems">
@@ -39,21 +41,31 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
-import { useMenuItems } from '~/composables/use'
-import { defaultVideoLength, defaultMainCategories, defaultUploadDate } from '~/data'
+import { useFeedComposable, useMenuItems } from '~/composables/use'
+import { defaultMainCategories, defaultUploadDate, defaultVideoLength } from '~/data'
 
 import type { DefaultSortByMenuItem } from '~/data'
 
 const AsyncFeedComponent = defineAsyncComponent({
   loader: () => import('~/components/BaseAsyncFeed.vue')
-})  
+})
+
+/**
+ * Menu items
+ */
 
 const { menuItems: mainCategoriesSelect } = useMenuItems(Array.from(defaultMainCategories))
 const { menuItems: videoLengthSelect } = useMenuItems(Array.from(defaultVideoLength))
 const { menuItems: uploadDateSelect } = useMenuItems(Array.from(defaultUploadDate))
 
-const feedStore = useFeedStore()
-const { search, uploadDate, videoLength, category,  sortBy } = storeToRefs(feedStore)
+// const feedStore = useFeedStore()
+// const { search, uploadDate, videoLength, category,  sortBy } = storeToRefs(feedStore)
+
+const { search, uploadDate, videoLength, category, sortBy } = await useFeedComposable()
+
+/**
+ * Sort by menu items
+ */
 
 const sortByMenuItems: DefaultSortByMenuItem[] = [
   {

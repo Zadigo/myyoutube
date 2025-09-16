@@ -1,9 +1,13 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
 
 import type { DefaultMainCategories, DefaultSortBy, DefaultUploadDate, DefaultVideoLength } from '~/data'
 import type { VideoInfo, VideosFeedResponseData } from '~/types'
 
+/**
+ * Store to manage videos on the feed
+ * @see ~/composables/use/feed.ts
+ * @deprecated Use the composable instead
+ */
 export const useFeedStore = defineStore('feed', () => {
   const videos = ref<VideosFeedResponseData[]>([])
 

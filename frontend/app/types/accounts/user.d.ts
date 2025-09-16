@@ -1,7 +1,7 @@
 import type { _DatabaseObject } from '..'
 
 /**
- * @deprecated
+ * @deprecated use BaseUser instead
  */
 export interface CustomUser extends _DatabaseObject {
   firstname: string

@@ -94,4 +94,8 @@ export function useBlockedKeywords() {
   }
 }
 
+/**
+ * Composables for managing block lists in the settings.
+ * It provides functionality to fetch and manage block lists.
+ */
 export function useBlockLists() {}

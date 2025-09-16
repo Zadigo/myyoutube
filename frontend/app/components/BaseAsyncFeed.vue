@@ -27,25 +27,31 @@
     <template #content>
       <h2 class="text-center font-bold text-4xl">
         No videos
+        {{ videos }}
       </h2>
     </template>
   </VoltCard>
 </template>
 
 <script setup lang="ts">
-import type { VideosFeedResponseData } from '~/types'
+import { useFeedComposable } from '~/composables/use'
 
-const feedStore = useFeedStore()
-const { videos, hasVideos } = storeToRefs(feedStore)
+const { hasVideos, videos, execute } = await useFeedComposable()
+await execute()
 
-const { data } = await useFetch<VideosFeedResponseData[]>('/api/videos', {
-  method: 'GET',
-  immediate: true
-})
+// import type { VideosFeedResponseData } from '~/types'
 
-if (data.value) {
-  videos.value = data.value || []
-}
+// const feedStore = useFeedStore()
+// const { videos, hasVideos } = storeToRefs(feedStore)
 
-console.log(videos.value)
+// const { data } = await useFetch<VideosFeedResponseData[]>('/api/videos', {
+//   method: 'GET',
+//   immediate: true
+// })
+
+// if (data.value) {
+//   videos.value = data.value || []
+// }
+
+// console.log(videos.value)
 </script>
