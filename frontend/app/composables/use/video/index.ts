@@ -2,6 +2,8 @@ import type { MenuItem } from 'primevue/menuitem'
 import type { SubscriptionModes } from '~/data'
 import type { VideoInfo } from '~/types'
 
+export type * from './modals'
+
 /**
  * Composable for managing video rating state
  * @param video Reactive reference to the video information

@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-white fixed top-0 left-0 right-0 p-2 border-b border-slate-50 z-20">
+  <nav class="bg-slate-50 fixed top-0 left-0 right-0 p-2 border-b border-slate-50 z-40">
     <div class="flex items-center ps-[calc(240px+1rem)] space-x-2">
       <VoltButton class="navbar-toggler" variant="outlined" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation" @click="() => emit('show:navbar', true)">
         <Icon name="i-fa7-solid:bars" />

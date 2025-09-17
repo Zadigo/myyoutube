@@ -1,14 +1,16 @@
 <template>
-  <SidebarsBase :links="navLinks">
+  <sidebars-base :links="navLinks">
     <template #footer>
-      <VoltDivider class="my-4" />
+      <volt-divider class="my-4" />
+
+      {{ isAuthenticated }}
       
-      <NuxtLink to="/settings" class="p-2 px-4 bg-primary-200 rounded-lg flex gap-3 items-center text-white font-semibold" aria-current="true">
-        <Icon name="i-fa7-solid:cog" />
+      <nuxt-link to="/settings" class="p-2 px-4 bg-primary-200 rounded-lg flex gap-3 items-center text-white font-semibold" aria-current="true">
+        <icon name="i-lucide-settings" />
         Settings
-      </NuxtLink>
+      </nuxt-link>
     </template>
-  </SidebarsBase>
+  </sidebars-base>
 </template>
 
 <script setup lang="ts">
@@ -16,31 +18,31 @@ const navLinks = [
   {
     name: 'Home',
     to: '/',
-    icon: 'i-fa7-solid:home'
+    icon: 'i-lucide-home'
   },
   {
     name: 'Playlists',
     to: '/playlists',
-    icon: 'i-fa7-solid:list'
+    icon: 'i-lucide-list'
   },
   {
     name: 'Notifications',
     to: '/notifications',
-    icon: 'i-fa7-solid:bell'
+    icon: 'i-lucide-bell'
   },
   {
     name: 'Community notes',
     to: '/community-notes',
-    icon: 'i-fa7-solid:book-open'
+    icon: 'i-lucide-book-open-check'
   },
   {
     name: 'My studio',
     to: '/studio',
-    icon: 'i-fa7-solid:chart-simple'
+    icon: 'i-lucide-chart-area'
   }
 ]
 
-const route = useRoute()
+const isAuthenticated = useState('isAuthenticated')
 </script>
 
 <style lang="scss" scoped>

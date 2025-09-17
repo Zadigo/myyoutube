@@ -6,7 +6,7 @@
     </header>
 
     <main>
-      <div class="container max-w-280 mx-auto ps-[calc(240px+1rem)] my-10">
+      <div class="max-w-280 mx-auto ps-[calc(var(--sidebar-width)+1rem)] my-10">
         <slot />
       </div>
     </main>

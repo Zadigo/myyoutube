@@ -1,4 +1,6 @@
 export * from './categories'
+export * from './comments'
+export * from './feed'
 export * from './modals'
 export * from './navbar'
 export * from './playlists'
@@ -6,7 +8,6 @@ export * from './settings'
 export * from './utils'
 export * from './video'
 export * from './viewing_profile'
-export * from './feed'
 
 /**
  * Composable used to manage the sidebar state

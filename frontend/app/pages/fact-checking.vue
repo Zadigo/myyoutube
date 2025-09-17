@@ -1,5 +1,5 @@
 <template>
-  <section id="fact-checking" class="container mx-auto px-4">
+  <section id="fact-checking" class="mx-auto">
     <VoltCard class="shadow-sm">
       <template #content>
         <h1 class="font-bold text-2xl mb-4">

@@ -1,5 +1,5 @@
 <template>
-  <section id="community-notes" class="container mx-auto px-4">
+  <section id="community-notes" class="mx-auto">
     <VoltCard class="shadow-sm">
       <template #content>
         <h1 class="font-bold text-2xl mb-4">

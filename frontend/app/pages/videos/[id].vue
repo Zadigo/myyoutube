@@ -1,10 +1,10 @@
 <template>
   <section id="video-details">
-    <ClientOnly>
+    <client-only>
       <section v-if="currentVideo" id="video-player">
         <VideoPlayerBase :video-source="videoSource" @update:details="handleLoadedMetaData" />
       </section>
-    </ClientOnly>
+    </client-only>
 
     <section id="information" class="mt-4">
       <!-- Actions -->
@@ -19,9 +19,9 @@
       <div class="col-span-8">
         <Suspense>
           <template #default>
-            <ClientOnly>
+            <client-only>
               <AsyncVideoCommentSection />
-            </ClientOnly>
+            </client-only>
           </template>
 
           <template #fallback>
@@ -40,9 +40,9 @@
 
         <Suspense>
           <template #default>
-            <ClientOnly>
+            <client-only>
               <AsyncRecommendationSection />
-            </ClientOnly>
+            </client-only>
           </template>
 
           <template #fallback>
@@ -53,7 +53,7 @@
     </section>
 
     <!-- Modals -->
-    <ClientOnly>
+    <client-only>
       <ModalsSave v-model="showSaveModal" />
       <ModalsReport v-model="showReportModal" />
       <ModalsGift v-model="showGiftsModal" />
@@ -65,7 +65,7 @@
       <!-- <ModalsCommunityNotes v-model="showCommunityNotes" />
       <ModalsDonation v-model="showDonationModal" />
       <ModalsShare v-model="showShareModal" /> -->
-    </ClientOnly>
+    </client-only>
   </section>
 </template>
 

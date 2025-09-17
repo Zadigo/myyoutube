@@ -1,5 +1,5 @@
 <template>
-  <section id="videos" class="container mx-auto px-4">
+  <section id="videos" class="mx-auto">
     <!-- Header -->
     <VoltCard class="shadow-sm">
       <template #content>

@@ -1,5 +1,5 @@
 <template>
-  <nav class="fixed top-0 left-0 bottom-0 p-3 shadow-sm w-[240px] z-30 bg-white">
+  <nav class="fixed top-0 left-0 bottom-0 p-3 shadow-sm w-[var(--sidebar-width)] z-30 bg-slate-50">
     <div :class="theme.base">
       <div id="links" class="space-y-5">
         <NuxtLink v-for="navLink in links" :key="navLink.to" :to="navLink.to" :aria-current="route.path === navLink.to" :class="theme.link">

@@ -2,15 +2,15 @@
   <section :class="{ full: !showSidebar }" class="relative">
     <header>
       <!-- Sidebar -->
-      <Transition name="sidebar" mode="out-in">
+      <transition name="sidebar" mode="out-in">
         <SidebarsSite v-if="showSidebar" />
-      </Transition>
+      </transition>
 
       <!-- Navbar -->
       <BaseNavbar @show:navbar="() => toggle()" />
     </header>
 
-    <main class="mt-[calc(55px+1rem)] mb-10 ps-[calc(240px+1rem)] pe-2">
+    <main class="mt-[calc(55px+1rem)] mb-10 ps-[calc(var(--sidebar-width)+1rem)] pe-2">
       <slot />
     </main>
   </section>

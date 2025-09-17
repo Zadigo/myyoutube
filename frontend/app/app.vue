@@ -27,4 +27,6 @@ onBeforeMount(async () => {
     refreshToken.value = refresh.value
   }
 })
+
+useState('isAuthenticated', () => isDefined('access'))
 </script>

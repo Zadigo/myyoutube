@@ -1,5 +1,5 @@
 <template>
-  <section id="notifications" class="w-4xl mx-auto">
+  <section id="notifications" class="mx-auto">
     <div class="py-5 flex justify-end rounded-lg mb-10">
       <VoltSelectButton v-model="notificationType" :options="['All', 'Messages', 'Uploads']" />
     </div>
