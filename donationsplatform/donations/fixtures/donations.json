@@ -1,0 +1,41 @@
+[
+    {
+        "model": "accounts.CustomUser",
+        "pk": 1,
+        "fields": {
+            "email": "google@gmail.com",
+            "firstname": "Google",
+            "lastname": "Google",
+            "is_active": true,
+            "is_admin": false,
+            "is_staff": false
+        }
+    },
+    {
+        "model": "accounts.UserProfile",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "avatar": null,
+            "customer_id": null,
+            "birthdate": "1997-01-01",
+            "telephone": null,
+            "address": null,
+            "city": null,
+            "zip_code": null
+        }
+    },
+    {
+        "model": "donations.Donation",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "user_channel": 1,
+            "value": 15,
+            "notes": null,
+            "cancellation_asked": false,
+            "cancelled": false,
+            "created_on": "2022-01-01"
+        }
+    }
+]
