@@ -1,5 +1,5 @@
 <template>
-  <section id="studio" class="container mx-auto px-5">
+  <section id="studio" class="mx-auto">
     <VoltCard class="shadow-sm">
       <template #header>
         <div class="flex justify-between gap-4 items-center p-5 border-b border-slate-50">

@@ -2,16 +2,16 @@
   <section id="video-details">
     <client-only>
       <section v-if="currentVideo" id="video-player">
-        <VideoPlayerBase :video-source="videoSource" @update:details="handleLoadedMetaData" />
+        <video-player-base :video-source="videoSource" @update:details="handleLoadedMetaData" />
       </section>
     </client-only>
 
     <section id="information" class="mt-4">
       <!-- Actions -->
-      <VideoActionsCard @action="openModal" />
+      <video-actions-card @action="openModal" />
 
       <!-- Information -->
-      <VideoInformation />
+      <video-information />
     </section>
 
     <section class="grid grid-cols-12 gap-2 mt-4">
@@ -20,33 +20,33 @@
         <Suspense>
           <template #default>
             <client-only>
-              <AsyncVideoCommentSection />
+              <async-video-comment-section />
             </client-only>
           </template>
 
           <template #fallback>
-            <VoltSkeleton height="100px" />
+            <volt-skeleton height="100px" />
           </template>
         </Suspense>
       </div>
 
       <!-- Recommendations -->
       <div class="col-span-4">
-        <VoltCard>
+        <volt-card>
           <template #content>
             Filters
           </template>
-        </VoltCard>
+        </volt-card>
 
         <Suspense>
           <template #default>
             <client-only>
-              <AsyncRecommendationSection />
+              <async-recommendation-section />
             </client-only>
           </template>
 
           <template #fallback>
-            <VoltSkeleton height="100px" />
+            <volt-skeleton height="100px" />
           </template>
         </Suspense>
       </div>
@@ -54,12 +54,12 @@
 
     <!-- Modals -->
     <client-only>
-      <ModalsSave v-model="showSaveModal" />
-      <ModalsReport v-model="showReportModal" />
-      <ModalsGift v-model="showGiftsModal" />
-      <ModalsClassification v-model="showClassificationDrawer" />
-      
-      <!-- 
+      <modals-save v-model="showSaveModal" />
+      <modals-report v-model="showReportModal" />
+      <modals-gift v-model="showGiftsModal" />
+      <modals-classification v-model="showClassificationDrawer" />
+
+      <!--
       -->
       <!-- TODO: Remove in favor the fact checking center -->
       <!-- <ModalsCommunityNotes v-model="showCommunityNotes" />
@@ -71,7 +71,6 @@
 
 <script setup lang="ts">
 import { useVideoDetailModals } from '~/composables/use'
-
 import type { VideoTechnicalDetails } from '~/types'
 
 const AsyncVideoCommentSection = defineAsyncComponent({

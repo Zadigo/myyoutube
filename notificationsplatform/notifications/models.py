@@ -4,22 +4,18 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from notifications.choices import NotificationTypes
-from videos.models import Video
-
-USER_MODEL = get_user_model()
 
 
 class Notification(models.Model):
     """Represents a user notification"""
 
     user = models.ForeignKey(
-        USER_MODEL,
+        get_user_model(),
         on_delete=models.CASCADE,
         help_text=_('User to notify')
     )
-    video = models.ForeignKey(
-        Video,
-        on_delete=models.CASCADE,
+    video = models.CharField(
+        max_length=255,
         blank=True,
         null=True
     )
@@ -47,7 +43,7 @@ class PreferredNotification(models.Model):
     a given user"""
 
     user = models.ForeignKey(
-        USER_MODEL,
+        get_user_model(),
         models.CASCADE
     )
     subscribed_channel_activity = models.BooleanField(
@@ -82,7 +78,7 @@ class PreferredNotification(models.Model):
         return f'Notification choices: {self.user}'
 
 
-@receiver(post_save, sender=USER_MODEL)
+@receiver(post_save, sender=get_user_model())
 def create_notification_choices(instance, created, **kwargs):
     if created:
         PreferredNotification.objects.create(user=instance)

@@ -14,4 +14,3 @@ class TestDonation(TestCase):
         })
         result = views.send_donation(request)
         print(result)
-# python manage.py test

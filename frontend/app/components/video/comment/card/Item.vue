@@ -1,76 +1,76 @@
 <template>
-  <VoltCard class="shadow-none">
+  <volt-card class="shadow-none">
     <template #content>
       <div class="flex-col items-start gap-4">
         <div class=" flex items-center gap-2 mb-3">
-          <NuxtLink :to="`/channels/${comment.user_channel}`" aria-label="">
-            <VoltAvatar image="/avatars/avatar2.png" :alt="comment.user_channel" shape="circle" size="small" />
-          </NuxtLink>
+          <nuxt-link :to="`/channels/${comment.user_channel}`" aria-label="">
+            <volt-avatar image="/avatars/avatar2.png" :alt="comment.user_channel" shape="circle" size="small" />
+          </nuxt-link>
 
-          <VoltButton :to="`/channels/${comment.user_channel}`" size="small" variant="outlined">
+          <volt-button :to="`/channels/${comment.user_channel}`" size="small" variant="outlined">
             {{ comment.user_channel }}
-          </VoltButton>
+          </volt-button>
 
-          <VoltButton size="small" variant="outlined" disabled>
+          <volt-button size="small" variant="outlined" disabled>
             3 weeks ago
-          </VoltButton>
+          </volt-button>
         </div>
 
         <p class="pt-2 pb-5">{{ comment.content }}</p>
 
         <div class="my-3 space-x-2">
-          <VoltBadge severity="contrast">
+          <volt-badge severity="contrast">
             @creator
-          </VoltBadge>
+          </volt-badge>
 
-          <VoltBadge severity="contrast">
-            <Icon name="i-fa7-solid:heart" />
+          <volt-badge severity="info">
             Aimé par le createur
-          </VoltBadge>
+          </volt-badge>
 
-          <VoltBadge severity="contrast">
-            Premier commentaire
-          </VoltBadge>
+          <volt-badge severity="contrast">
+            First comment
+          </volt-badge>
 
-          <VoltBadge severity="contrast">
-            Donateur
-          </VoltBadge>
+          <volt-badge severity="contrast">
+            <icon name="i-lucide-dollar-sign" />
+            Donor
+          </volt-badge>
         </div>
 
         <div class="flex gap-2 mt-4">
-          <VoltButton variant="outlined" size="small" rounded>
-            <Icon v-if="comment?.is_liked" name="i-fa7-solid:thumbs-up" />
-            <Icon v-else name="i-fa7-regular:thumbs-up" />
+          <volt-button variant="outlined" size="small" rounded>
+            <icon v-if="comment?.is_liked" name="i-fa7-solid:thumbs-up" />
+            <icon v-else name="i-fa7-regular:thumbs-up" />
             12.3k
-          </VoltButton>
+          </volt-button>
           
-          <VoltButton variant="outlined" size="small" rounded>
-            <Icon v-if="!comment?.is_disliked" name="i-fa7-solid:thumbs-down" />
-            <Icon v-else name="i-fa7-regular:thumbs-up" />
+          <volt-button variant="outlined" size="small" rounded>
+            <icon v-if="!comment?.is_disliked" name="i-fa7-solid:thumbs-down" />
+            <icon v-else name="i-fa7-regular:thumbs-up" />
             24
-          </VoltButton>
+          </volt-button>
 
-          <VoltButton variant="outlined" size="small" rounded>
-            <Icon name="i-fa7-solid:comment" />
+          <volt-button variant="outlined" size="small" rounded>
+            <icon name="i-lucide-message-circle-more" />
             Answer
-          </VoltButton>
+          </volt-button>
         </div>
 
-        <VoltButton v-if="hasReplies" variant="text" class="mt-3" rounded @click="showReplies = !showReplies">
+        <volt-button v-if="hasReplies" variant="text" class="mt-3" rounded @click="() => { toggleReplies() }">
           Voir {{ comment.number_of_replies }} commentaires
-        </VoltButton>
+        </volt-button>
 
         <!-- Replies -->
-        <Transition id="replies" tag="div" name="pop" mode="in-out">
+        <transition id="replies" tag="div" name="pop" mode="in-out">
           <div v-if="showReplies" class="replies">
-            <VideoUserReply v-for="i in 3" :key="i" :reply="{}" />
+            <video-user-reply v-for="i in 3" :key="i" :reply="{}" />
           </div>
-        </Transition>
+        </transition>
       </div>
 
-      <VoltDivider class=" mt-2 mb-5" />
+      <volt-divider class=" mt-2 mb-5" />
     </template>
-  </VoltCard>
+  </volt-card>
 </template>
 
 <script lang="ts" setup>
@@ -78,7 +78,7 @@ import type { VideoComment } from '~/types'
 
 const props = defineProps<{ comment: VideoComment }>()
 
-const showReplies = ref<boolean>(false)
+const [showReplies, toggleReplies] = useToggle(false)
 
 const hasReplies = computed(() => props.comment.number_of_replies >= 1)
 const isPinned = computed(() => props.comment.pinned)

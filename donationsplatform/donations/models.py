@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from donations.validators import donation_validator
-from mychannel.models import UserChannel
 
 
 class Donation(models.Model):
@@ -12,9 +11,9 @@ class Donation(models.Model):
         on_delete=models.SET_NULL, 
         null=True
     )
-    user_channel = models.ForeignKey(
-        UserChannel,
-        on_delete=models.SET_NULL,
+    user_channel = models.CharField(
+        max_length=255,
+        blank=True,
         null=True
     )
     value = models.PositiveIntegerField(

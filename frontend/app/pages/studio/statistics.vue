@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section id="statistics">
     Statistics
-  </div>
+  </section>
 </template>

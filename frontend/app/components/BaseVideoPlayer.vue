@@ -1,5 +1,5 @@
 <template>
-  <div ref="videoContainerEl" class="relative flex items-center justify-center cursor-pointer bg-primary-900 m-0">
+  <div ref="videoContainerEl" class="relative flex items-center justify-center cursor-pointer bg-primary-900 m-0 overflow-hidden rounded-lg">
     <video ref="videoPlayerEl" class="video-player" preload="metadata" controlist="nodownload" oncontextmenu="return<boolean> false;" @loadedmetadata="getVideoDetails" @timeupdate="getVideoDetails" @canplay="isLoading<boolean>=false" @click.stop="handlePlayPause">
       <source :src="videoSource" type="video/mp4">
     </video>
@@ -21,13 +21,13 @@
         <!-- Control configuration center -->
         <div class="video-control-configuration-center d-flex justify-content-end">
           <div class="video-control-settings">
-            <NuxtButton @click="showVideoSettings=!showVideoSettings">
+            <NuxtButton @click="() => { showVideoSettings=!showVideoSettings }">
               <Icon name="i-fa7-solid:cog" />
             </NuxtButton>
           </div>
 
           <div class="video-control-volume ms-2">
-            <NuxtButton @click="showVolume=!showVolume">
+            <NuxtButton @click="() => { showVolume=!showVolume }">
               <Icon v-if="volume < 0.1" name="i-fa7-solid:volume-low" />
               <Icon v-else-if="volume >= 0.1 && volume <= 0.8" name="i-fa7-solid:volume-up" />
               <Icon v-else-if="volume > 0.8" name="i-fa7-solid:volume-high" />

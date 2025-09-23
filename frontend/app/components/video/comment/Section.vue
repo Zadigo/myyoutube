@@ -1,28 +1,28 @@
 <template>
-  <VoltCard>
+  <volt-card>
     <template #content>
       <div class="flex items-center justify-between">
         <h2 v-if="comments" class="h4 m-0">
           {{ comments.length }} comments
         </h2>
 
-        <VoltDropdownButton id="comment-sorting" :items="sortActionsMenuItem">
-          Sort by
-        </VoltDropdownButton>
+        <volt-dropdown-button id="comment-sorting" :items="sortActionsMenuItem">
+          <icon name="i-lucide-sort-asc" />
+        </volt-dropdown-button>
       </div>
 
-      <VoltDivider class="my-3" />
+      <volt-divider class="my-3" />
 
       <!-- Actions -->
-      <VideoCommentSectionActions @new-comment="handleNewComment" />
+      <video-comment-section-actions @new-comment="handleNewComment" />
 
-      <VoltDivider class="my-5" />
+      <volt-divider class="my-5" />
 
       <!-- Comments -->
-      <VideoCommentCardItem v-for="comment in pinnedComments" :key="comment.id" :comment="comment" />
-      <VideoCommentCardItem v-for="comment in unpinnedComments" :key="comment.id" :comment="comment" />
+      <video-comment-card-item v-for="comment in pinnedComments" :key="comment.id" :comment="comment" />
+      <video-comment-card-item v-for="comment in unpinnedComments" :key="comment.id" :comment="comment" />
     </template>
-  </VoltCard>
+  </volt-card>
 </template>
 
 <script setup lang="ts">
@@ -45,6 +45,10 @@ type SortActionsMenuItem = {
 const { id: videoId } = useRoute().params as ExtendedRouteParamsGeneric
 
 const queryParams = ref<{ desc: boolean }>({ desc: true })
+
+/**
+ * Comments
+ */
 
 /**
  * Get all the comments for the current video
@@ -77,6 +81,10 @@ const unpinnedComments = computed(() => {
 })
 
 /**
+ * New comment
+ */
+
+/**
  * Append the newly created comment by implementing it
  * at the start of the current comment list
  * @todo - Send to backend
@@ -103,5 +111,10 @@ async function handleSortComments (method: SortActions) {
   // refresh()
 }
 
-const sortActionsMenuItem: SortActionsMenuItem[] = sortActions.map(action => ({ label: action, command: handleSortComments }))
+const sortActionsMenuItem: SortActionsMenuItem[] = sortActions.map(action => {
+  return { 
+    label: action, 
+    command: handleSortComments
+  }
+})
 </script>

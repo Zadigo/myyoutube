@@ -1,25 +1,25 @@
 <template>
-  <VoltCard class="mt-4">
+  <volt-card class="mt-4">
     <template #content>
       <div v-if="currentVideo" class="grid grid-cols-12">
         <div class="col-span-1">
-          <NuxtLink :to="`/channels/${currentVideo.user_channel?.reference}`" class="mt-2" aria-label="">
-            <VoltAvatar image="/avatars/avatar1.png" shape="circle" size="large" alt="" />
-          </NuxtLink>
+          <nuxt-link :to="`/channels/${currentVideo.user_channel?.reference}`" class="mt-2" aria-label="">
+            <volt-avatar image="/avatars/avatar1.png" shape="circle" size="large" alt="" />
+          </nuxt-link>
         </div>
-
-
+        
         <div class="col-span-11">
-          <VoltButton :to="`/channels/${currentVideo.user_channel?.reference}`" variant="outlined" class="px-0">
+          <volt-button :to="`/channels/${currentVideo.user_channel?.reference}`" variant="outlined" class="px-0">
             <span class="font-bold">{{ currentVideo.user_channel?.name }}</span>
             <Icon name="i-fa7-solid:circle-check" class="ms-2" />
-          </VoltButton>
-          
+          </volt-button>
+
           <p class="text-muted my-2">
             345.6K subscribers
           </p>
-        
-          <VideoParticipants class="py-5" />
+          
+          <!-- Participants -->
+          <video-participants class="py-5" />
           
           <div class="bg-slate-50 rounded-lg font-light my-4 p-4">
             <p class="font-light">
@@ -34,14 +34,14 @@
             </p>
           </div>
 
-          <VoltButton color="primary" variant="outlined">
+          <volt-button color="primary" variant="outlined">
             <Icon name="i-fa7-solid:caret-down" class="me-2" />
             More
-          </VoltButton>
+          </volt-button>
         </div>
       </div>
     </template>
-  </VoltCard>
+  </volt-card>
 </template>
 
 <script setup lang="ts">
