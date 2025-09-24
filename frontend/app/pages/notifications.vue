@@ -5,7 +5,7 @@
     </div>
 
     <div class="space-y-2">
-      <VoltCard v-for="notification in notifications" :key="notification" class="shadow-sm">
+      <VoltCard v-for="notification in notifications" :key="notification.id" class="shadow-sm">
         <template #content>
           <article>
             {{ notification }}
@@ -23,12 +23,23 @@
 </template>
 
 <script setup lang="ts">
+import type { Notification, NotificationApiResponse } from '~/types'
+
 const notificationType = ref<'All' | 'Messages' | 'Uploads'>('All')
 
-const notifications = ref<string[]>([])
+const apiResponse = ref<NotificationApiResponse | null>(null)
+const notifications = ref<Notification[]>([])
 
-onMounted(() => {
-  notifications.value = Array.from({ length: 100 }, (_, i) => `Notification ${i + 1}`)
+const { $notificationsClient } = useNuxtApp()
+
+onMounted(async () => {
+  const data = await $notificationsClient<NotificationApiResponse>('/', {
+    method: 'GET'
+  })
+
+  apiResponse.value = data
+  notifications.value = data.results
+
   document.body.classList.add('bg-primary-600/30')
 })
 
@@ -36,11 +47,23 @@ onUnmounted(() => {
   document.body.classList.remove('bg-primary-600/30')
 })
 
+/**
+ * Infinite Scroll
+ */
+
 const moreButtonEl = useTemplateRef<HTMLElement>('moreButtonEl')
 
-useIntersectionObserver(moreButtonEl, (isIntersecting) => {
+useIntersectionObserver(moreButtonEl, async (isIntersecting) => {
   if (isIntersecting) {
-    notifications.value.push(...Array.from({ length: 20 }, (_, i) => `Notification ${i + 1}`))
+    const data = await $notificationsClient<NotificationApiResponse>('/', {
+      method: 'GET',
+      query: {
+        offset: apiResponse.value?.next
+      }
+    })
+
+    apiResponse.value = data
+    notifications.value = data.results
   }
 })
 </script>
