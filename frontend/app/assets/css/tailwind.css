@@ -3,8 +3,8 @@
 @import "tw-animate-css";
 
 @theme {
-  --font-sans: 'Raleway', sans-serif;
-  --font-title: 'Poppins', sans-serif;
+  --font-sans: 'Sora', sans-serif;
+  --font-title: 'Manrope', sans-serif;
 }
 
 /* Primary and Surface Palettes */
@@ -20,6 +20,7 @@
   --p-primary-800: #145960;
   --p-primary-900: #0c3539;
   --p-primary-950: #041213;
+
   --p-surface-0: #ffffff;
   --p-surface-50: #fafafa;
   --p-surface-100: #f4f4f5;
@@ -34,7 +35,7 @@
   --p-surface-950: #09090b;
   --p-content-border-radius: 6px;
 
-  --sidebar-width: 250px;
+  --sidebar-width: 280px;
 }
 
 /* Light */

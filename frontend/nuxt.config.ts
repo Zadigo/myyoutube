@@ -90,18 +90,29 @@ export default defineNuxtConfig({
   fonts: {
     provider: 'google',
     families: [
+      // {
+      //   name: 'Raleway',
+      //   display: 'swap'
+      // },
+      // // Titles
+      // {
+      //   name: 'Poppins',
+      //   display: 'swap'
+      // },
+      // {
+      //   name: 'Be Vietnam Pro',
+      //   display: 'swap'
+      // }
       {
-        name: 'Raleway',
-        display: 'swap'
+        name: 'Sora',
+        display: 'swap',
+        weights: ['100', '200', '300', '400', '500', '600', '700', '800']
       },
       // Titles
       {
-        name: 'Poppins',
-        display: 'swap'
-      },
-      {
-        name: 'Be Vietnam Pro',
-        display: 'swap'
+        name: 'Manrope',
+        display: 'swap',
+        weights: ['200', '300', '400', '500', '600', '700', '800']
       }
     ]
   },
