@@ -26,8 +26,9 @@
 </template>
 
 <script setup lang="ts">
+import { useCommentsComposable } from '~/composables/use'
 import { commentsFixture } from '~/data/fixtures'
-import type { ExtendedRouteParamsGeneric, VideoComment } from '~/types'
+import type { VideoComment } from '~/types'
 
 const sortActions = [
   'Newest',
@@ -42,41 +43,17 @@ type SortActionsMenuItem = {
   label: SortActions
 }
 
-const { id: videoId } = useRoute().params as ExtendedRouteParamsGeneric
-
-const queryParams = ref<{ desc: boolean }>({ desc: true })
-
 /**
  * Comments
  */
 
-/**
- * Get all the comments for the current video
- * in a delayed manner for performance optimization
- * @todo - Reimplemnt
- */
-// const { data: comments, refresh } = useAsyncData<VideoComment[]>(async () => {
-//   return await $fetch<VideoComment[]>(`/v1/comments/${videoId}`, {
-//     baseURL: useRuntimeConfig().public.djangoProdUrl,
-//     params: queryParams.value
-//   })
-// })
-
 const comments = ref<VideoComment[]>(commentsFixture)
+const { comments: allComments, pinnedComments, unpinnedComments, sortCommentsBy } = await useCommentsComposable()
 
-const pinnedComments = computed(() => {
-  if (comments.value) {
-    return comments.value.filter(x => x.pinned === true)
-  } else {
-    return []
-  }
-})
-
-const unpinnedComments = computed(() => {
-  if (comments.value) {
-    return comments.value.filter(x => x.pinned === false)
-  } else {
-    return []
+const sortActionsMenuItem: SortActionsMenuItem[] = sortActions.map(action => {
+  return {
+    label: action,
+    command: sortCommentsBy
   }
 })
 
@@ -94,27 +71,4 @@ async function handleNewComment (comment: VideoComment) {
     comments.value.unshift(comment)
   }
 }
-
-/**
- * Handle sorting of comments
- * @todo - Reimplement
- */
-async function handleSortComments (method: SortActions) {
-  if (method === 'Newest') {
-    queryParams.value.desc = true
-  }
-    
-  if (method === 'Oldest') {
-    queryParams.value.desc = false
-  }
-
-  // refresh()
-}
-
-const sortActionsMenuItem: SortActionsMenuItem[] = sortActions.map(action => {
-  return { 
-    label: action, 
-    command: handleSortComments
-  }
-})
 </script>

@@ -1,6 +1,6 @@
 <template>
-  <div ref="videoContainerEl" class="relative flex items-center justify-center cursor-pointer bg-primary-900 mx-auto overflow-hidden">
-    <video ref="videoPlayerEl" class="h-full w-full touch-manipulation z-40 has-[source]:h-full" preload="metadata" controlist="nodownload" oncontextmenu="return false;" @loadedmetadata="handleVideoMetadata" @timeupdate="handleVideoMetadata" @canplay="handleCanPlay" @click.stop="handlePlayPause">
+  <div ref="videoContainerEl" class="relative z-30 flex items-center justify-center cursor-pointer bg-primary-900 mx-auto overflow-hidden">
+    <video ref="videoPlayerEl" class="h-full w-full touch-manipulation has-[source]:h-full" preload="metadata" controlist="nodownload" oncontextmenu="return false;" @loadedmetadata="handleVideoMetadata" @timeupdate="handleVideoMetadata" @canplay="handleCanPlay" @click.stop="handlePlayPause">
       <source :src="videoSource" type="video/mp4">
     </video>
 

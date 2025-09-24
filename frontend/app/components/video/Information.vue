@@ -21,7 +21,7 @@
           <!-- Participants -->
           <video-participants class="py-5" />
           
-          <div class="bg-slate-50 rounded-lg font-light my-4 p-4">
+          <div class="bg-slate-50 dark:bg-primary-800/20 rounded-lg font-light my-4 p-4">
             <p class="font-light">
               Lorem, ipsum dolor sit amet consectetur adipisicing elit.
               Sequi porro iure repellat optio, ipsum ducimus veniam natus

@@ -29,4 +29,8 @@ onBeforeMount(async () => {
 })
 
 useState('isAuthenticated', () => isDefined('access'))
+
+onMounted(() => {
+  document.body.classList.add('dark:bg-primary/90', 'dark:text-surface-50')
+})
 </script>

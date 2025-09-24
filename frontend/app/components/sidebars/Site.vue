@@ -4,8 +4,8 @@
       <volt-divider class="my-4" />
 
       {{ isAuthenticated }}
-      
-      <nuxt-link to="/settings" class="p-2 px-4 bg-primary-200 rounded-lg flex gap-3 items-center text-white font-semibold" aria-current="true">
+
+      <nuxt-link to="/settings" class="p-2 px-4 bg-primary-200 dark:bg-primary-800 rounded-lg flex gap-3 items-center text-surface-50 dark:text-surface-50 font-semibold" aria-current="true">
         <icon name="i-lucide-settings" />
         Settings
       </nuxt-link>

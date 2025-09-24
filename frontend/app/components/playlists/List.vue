@@ -14,7 +14,7 @@
       <VoltDivider class="my-3" />
 
       <div class="space-y-2">
-        <a v-for="playlist in playlists" :key="playlist.id" href="#" class="bg-primary-50 hover:bg-primary-100 block rounded-lg p-3" @click.prevent="emit('show:details', playlist)">
+        <a v-for="playlist in playlists" :key="playlist.id" href="#" class="bg-primary-50 hover:bg-primary-100 dark:bg-primary-800 dark:hover:bg-primary-700 block rounded-lg p-3" @click.prevent="emit('show:details', playlist)">
           <article :data-id="playlist.id">
             <p class="font-bold">{{ playlist.name }}</p>
             <p v-if="playlist.description" class="font-light m-0">

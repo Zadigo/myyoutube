@@ -1,5 +1,5 @@
 <template>
-  <div class="p-10 bg-slate-50 rounded-lg">
+  <div class="p-10 bg-slate-50 dark:bg-primary rounded-lg">
     <h3 class="font-bold mb-2">
       <slot name="title" />
     </h3>

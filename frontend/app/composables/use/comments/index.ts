@@ -1,4 +1,4 @@
-import type { VideoComment } from "~/types"
+import type { ApiResponse, VideoComment } from "~/types"
 
 export const sortActions = [
   'Newest',
@@ -13,6 +13,9 @@ export type SortActionsMenuItem = {
   label: SortActions
 }
 
+/**
+ * Composable to handle comments fetching and sorting
+ */
 export async function useCommentsComposable() {
   const comments = ref<VideoComment[]>([])
   const queryParams = ref({
@@ -21,14 +24,14 @@ export async function useCommentsComposable() {
     offset: 0
   })
 
-  const { data, execute } = await useFetch('/api/comments', {
+  const { data, refresh } = await useFetch<ApiResponse<VideoComment>>('/api/comments', {
     method: 'GET',
     immediate: true,
     query: queryParams.value
   })
   
-  if (data) {
-    comments.value = data
+  if (isDefined(data)) {
+    comments.value = data.value.results
   }
 
   const pinnedComments = computed(() => {
@@ -51,7 +54,7 @@ export async function useCommentsComposable() {
    * Sorting
    */
 
-  async function handleSortComments(method: SortActions) {
+  async function sortCommentsBy(method: SortActions) {
     if (method === 'Newest') {
       queryParams.value.desc = true
     }
@@ -65,17 +68,33 @@ export async function useCommentsComposable() {
     refresh()
   }, {
     immediate: false,
-    debounced: 700
+    debounce: 300
   })
 
   return {
+    /**
+     * All comments
+     */
     comments,
-    execute,
+    /**
+     * Pinned comments
+     */
     pinnedComments,
-    unpinnedComments
+    /**
+     * Unpinned comments
+     */
+    unpinnedComments,
+    /**
+     * Method to sort comments by
+     */
+    sortCommentsBy
   }
 }
 
+/**
+ * Composable to handle comment creation
+ * and replying to comments
+ */
 export function useCreateCommentComposable() {
   const newComment = ref('')
 

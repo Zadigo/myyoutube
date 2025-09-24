@@ -24,7 +24,7 @@ const props = defineProps<{
 const theme = ref<(string | Record<string, string | boolean | undefined>)[]>([
   'font-light',
   {
-    'bg-slate-200 p-5 rounded-lg': props.callout
+    'bg-slate-200 dark:bg-slate-800 p-5 rounded-lg': props.callout
   }
 ])
 </script>

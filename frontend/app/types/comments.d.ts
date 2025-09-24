@@ -2,7 +2,7 @@ import type { _DatabaseObject } from '.'
 import type { BaseUser } from './accounts'
 
 export interface VideoComment extends _DatabaseObject {
-    user: BaseUser,
+    user: BaseUser
     content: string
     from_creator: boolean
     pinned: boolean
