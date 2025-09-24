@@ -35,3 +35,23 @@
     </volt-card>
   </section>
 </template>
+
+<script setup lang="ts">
+import type { CommunityNote, CommunityNoteApiResponse } from '~/types/moderation'
+
+const { $moderationClient } = useNuxtApp()
+
+const communityNotes = ref<CommunityNote[]>([])
+
+onMounted(async () => {
+  try {
+    const response = await $moderationClient<CommunityNoteApiResponse>('/community-notes/recent', {
+      method: 'GET'
+    })
+
+    communityNotes.value = response.results
+  } catch (error) {
+    console.error('Error fetching community notes:', error)
+  }
+})
+</script>

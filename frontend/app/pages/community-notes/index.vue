@@ -18,7 +18,17 @@
       </template>
     </volt-card>
 
-    <community-notes />
+    <suspense>
+      <template #default>
+        <community-notes />
+      </template>
+
+      <template #fallback>
+        <div class="text-center my-4">
+          Loading...
+        </div>
+      </template>
+    </suspense>
   </section>
 </template>
 
