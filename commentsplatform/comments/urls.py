@@ -1,12 +1,26 @@
 from django.urls import re_path
 
-from comments import views
+from django.urls.conf import re_path
+
+from comments.api import views
+
 
 app_name = 'comments'
 
 urlpatterns = [
-    re_path(r'^reply$', views.new_reply, name='reply'),
-    re_path(r'^new$', views.new_comment, name='new'),
-
-    re_path(r'^$', views.CommentsView.as_view(), name='list')
+    re_path(
+        r'^(?P<pk>\d+)/reply$',
+        views.CreateReply.as_view(),
+        name='reply'
+    ),
+    re_path(
+        r'^(?P<video_id>vid\_[a-zA-Z0-9]+)/create$',
+        views.CreateComment.as_view(),
+        name='create'
+    ),
+    re_path(
+        r'^(?P<video_id>vid\_[a-zA-Z0-9]+)$',
+        views.ListComments.as_view(),
+        name='list'
+    )
 ]

@@ -1,13 +1,28 @@
+from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from rest_framework import fields
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import ModelSerializer, Serializer
 
 # from accounts.api.serializers import UserSerializer
-from comments.api.algorithm import text_algorithm
 from comments.models import Comment, Reply
 # from videos.choices import CommentingStrategy
 from comments import tasks
+
+
+class CreateCommentSerializer(Serializer):
+    content = fields.CharField()
+
+    def create(self, validated_data):
+        request = self.context['request']
+
+        validated_data['user'] = request.user
+        validated_data['video'] = self.context['video_id']
+
+        instance = Comment.objects.create(**validated_data)
+        tasks.moderate.apply_async(args=[instance.id], countdown=60)
+
+        return instance
 
 
 class CommentSerializer(ModelSerializer):
@@ -42,8 +57,20 @@ class CommentSerializer(ModelSerializer):
         if self.instance is None:
             raise ValueError('Update or create did not return an object')
 
-        tasks.moderate_comment.apply_async((self.instance.id,), countdown=60)
+        tasks.moderate.apply_async((self.instance.id,), countdown=60)
         return self.instance
+
+
+class CreateReplySerializer(Serializer):
+    content = fields.CharField()
+
+    def create(self, validated_data):
+        comment = self.context['comment']
+        request = self.context['request']
+        instance = Reply.objects.create(
+            comment=comment, user=request.user, **validated_data)
+        tasks.moderate.apply_async((instance.id,), countdown=60)
+        return instance
 
 
 class ReplySerializer(ModelSerializer):

@@ -1,0 +1,36 @@
+[
+    {
+        "model": "auth.User",
+        "pk": 1,
+        "fields": {
+            "username": "testuser",
+            "email": "testuser@example.com",
+            "is_superuser": false,
+            "is_staff": false,
+            "is_active": true
+        }
+    },
+    {
+        "model": "comments.Comment",
+        "pk": 1,
+        "fields": {
+            "video": "video123",
+            "user": 1,
+            "content": "This is a comment",
+            "from_creator": false,
+            "pinned": false,
+            "created_on": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "comments.Reply",
+        "pk": 1,
+        "fields": {
+            "comment": 1,
+            "user": 1,
+            "content": "This is a reply",
+            "from_creator": false,
+            "created_on": "2023-01-01T01:00:00Z"
+        }
+    }
+]

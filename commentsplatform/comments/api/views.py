@@ -1,16 +1,16 @@
-from django.db.models import Q, Case, When
-from django.shortcuts import get_object_or_404
-from rest_framework.generics import CreateAPIView, GenericAPIView
-from rest_framework.response import Response
-
 from comments.api import serializers
 from comments.models import Comment
+from django.db.models import Case, Q, When
+from django.shortcuts import get_object_or_404
+from rest_framework import status
+from rest_framework.generics import CreateAPIView, GenericAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 
 class ListComments(GenericAPIView):
     serializer_class = serializers.CommentSerializer
     queryset = Comment.objects.all()
-    permission_classes = []
     lookup_field = 'reference'
     lookup_url_kwarg = 'video_id'
 
@@ -53,12 +53,31 @@ class ListComments(GenericAPIView):
         return Response(remapped_comments)
 
 
-class CreateReply(CreateAPIView):
-    serializer_class = serializers.ReplySerializer
+class CreateComment(CreateAPIView):
+    serializer_class = serializers.CreateCommentSerializer
     queryset = Comment.objects.all()
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['video_id'] = self.kwargs.get('video_id')
+        return context
+
+    def create(self, request, *args, **kwargs):
+        super().create(request, *args, **kwargs)
+        return Response(status=status.HTTP_201_CREATED)
+
+
+class CreateReply(CreateAPIView):
+    serializer_class = serializers.CreateReplySerializer
+    queryset = Comment.objects.all()
+    permission_classes = [IsAuthenticated]
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context['comment'] = self.get_object()
         return context
+
+    def create(self, request, *args, **kwargs):
+        super().create(request, *args, **kwargs)
+        return Response(status=status.HTTP_201_CREATED)

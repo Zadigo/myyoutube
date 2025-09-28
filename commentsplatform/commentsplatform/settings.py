@@ -1,5 +1,6 @@
-from pathlib import Path
+import os
 from datetime import timedelta
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
@@ -140,4 +142,74 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME_LATE_USER': timedelta(days=30),
     'UPDATE_LAST_LOGIN': True,
     'AUTH_HEADER_TYPES': ['Token']
+}
+
+
+# CORS
+# https://github.com/adamchainz/django-cors-headers
+
+CORS_ALLOW_ALL_ORIGINS = False
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGIN_REGEXES = []
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+]
+
+
+# Fixtures
+
+FIXTURE_DIRS = [
+    'fixtures/comments'
+]
+
+
+# Celery + Redis
+# https://docs.celeryq.dev/en/stable/
+
+# Redis default user requires a default
+# password to establish the connection:
+# https://github.com/redis/redis/issues/13437
+
+REDIS_HOST = os.getenv('REDIS_HOST', '127.0.0.1')
+
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
+
+REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:6379'
+
+RABBITMQ_HOST = os.getenv('RABBITMQ_HOST', 'localhost')
+
+RABBITMQ_USER = os.getenv('RABBITMQ_DEFAULT_USER', 'guest')
+
+RABBITMQ_PASSWORD = os.getenv('RABBITMQ_DEFAULT_PASS', 'guest')
+
+CELERY_BROKER_URL = f'amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}:5672'
+
+CELERY_RESULT_BACKEND = REDIS_URL
+
+CELERY_ACCEPT_CONTENT = ['json']
+
+CELERY_TASK_SERIALIZER = 'json'
+
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_TIMEZONE = 'Europe/Oslo'
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+
+# Caching
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': REDIS_URL,
+        'KEY_PREFIX': 'ecommerce'
+    }
 }

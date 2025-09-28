@@ -1,14 +1,7 @@
-import pathlib
-
-from comments.models import Comment
 from django.contrib.auth import get_user_model
-from django.core.files.uploadedfile import SimpleUploadedFile
-from django.core.serializers import serialize
-from django.test import TransactionTestCase, override_settings
+from comments.models import Comment
 from django.urls import reverse
 from rest_framework.test import APITestCase
-from videos import tasks
-from videos.models import Video
 
 
 class AuthenticationMixin(APITestCase):
@@ -26,12 +19,12 @@ class AuthenticationMixin(APITestCase):
         response = self.client.post(
             reverse('token_obtain_pair'),
             data={
-                'email': self.user.email,
+                'username': self.user.username,
                 'password': 'touparet'
             }
         )
 
-        self.assertEqual(response.status_code, 200, 'Authentication failed')
+        self.assertEqual(response.status_code, 200, response.content)
 
         token = response.json().get('access')
         self.assertIsNotNone(token, 'Token retrieval failed')
@@ -41,34 +34,44 @@ class AuthenticationMixin(APITestCase):
 
 
 class TestCommentApi(AuthenticationMixin):
-    fixtures = ['base_fixtures/videos']
+    fixtures = ['fixtures/comments']
 
-    def setUp(self):
-        self.video = Video.objects.first()
-
-        comments = [
-            {
-                'user': self.user,
-                'video': self.video,
-                'content': 'Text 1'
-            },
-            {
-                'user': self.user,
-                'video': self.video,
-                'content': 'Text 2'
+    def test_create_comment(self):
+        response = self.client.post(
+            reverse('comments:create', args=['vid_12345']),
+            data={
+                'content': 'This is a test comment'
             }
-        ]
-
-        for comment in comments:
-            Comment.objects.create(**comment)
-
-    def test_list_comments(self):
-        path = reverse(
-            'comments_api:list_comments',
-            args=[self.video.video_id]
         )
-        response = self.client.get(path)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201, response.content)
 
-        data = response.json()
-        self.assertIn('user', data[0])
+    def test_create_reply(self):
+        comment = Comment.objects.first()
+        response = self.client.post(
+            reverse('comments:reply', args=[comment.id]),
+            data={
+                'content': 'This is a test reply'
+            }
+        )
+        self.assertEqual(response.status_code, 201, response.content)
+
+    def test_retrieve_comments(self):
+        response = self.client.get(reverse('comments:list', args=['vid_12345']))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 3)
+
+    def test_update_comment(self):
+        response = self.client.patch(
+            reverse('comment-detail', args=[1]),
+            data={
+                'content': 'Updated comment content'
+            }
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Comment.objects.get(
+            id=1).content, 'Updated comment content')
+
+    def test_delete_comment(self):
+        response = self.client.delete(reverse('comment-detail', args=[1]))
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(Comment.objects.count(), 2)
