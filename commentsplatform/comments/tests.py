@@ -36,6 +36,13 @@ class AuthenticationMixin(APITestCase):
 class TestCommentApi(AuthenticationMixin):
     fixtures = ['fixtures/comments']
 
+    def test_list_comments_unauthenticated(self):
+        self.client.credentials()
+        response = self.client.get(
+            reverse('comments:list', args=['vid_12345']))
+        self.assertEqual(response.status_code, 200)
+        print(response.json())
+
     def test_create_comment(self):
         response = self.client.post(
             reverse('comments:create', args=['vid_12345']),
@@ -56,7 +63,8 @@ class TestCommentApi(AuthenticationMixin):
         self.assertEqual(response.status_code, 201, response.content)
 
     def test_retrieve_comments(self):
-        response = self.client.get(reverse('comments:list', args=['vid_12345']))
+        response = self.client.get(
+            reverse('comments:list', args=['vid_12345']))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 3)
 

@@ -10,6 +10,7 @@ urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('v1/ratings/', include('ratings.urls')),
     path('v1/comments/', include('comments.urls')),
     re_path(r'^$', HomeView.as_view(), name='home'),
     path('admin/', admin.site.urls)

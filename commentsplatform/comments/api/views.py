@@ -16,18 +16,25 @@ class ListComments(GenericAPIView):
 
     def get(self, request, video_id, *args, **kwargs):
         sort_descending = request.GET.get('desc', 'true')
-        video = get_object_or_404(Comment, video_id=video_id)
 
         fields = ['-id', '-created_on']
         if sort_descending != 'true':
             fields = ['id', 'created_on']
 
-        comments = video.comment_set.select_related('user').order_by(*fields)
+        comments = Comment.objects.filter(video_id=video_id).order_by(*fields)
         if self.request.user.is_authenticated:
-            liked = When(Q(rating__user=self.request.user,
-                         rating__rating_type='Like'), then=True)
-            disliked = When(Q(rating__user=self.request.user,
-                            rating__rating_type='Dislike'), then=True)
+            liked = When(
+                Q(
+                    rating__user=self.request.user,
+                    rating__rating_type='Like'
+                ), then=True
+            )
+            disliked = When(
+                Q(
+                    rating__user=self.request.user,
+                    rating__rating_type='Dislike'
+                ), then=True
+            )
 
             case1 = Case(liked, default=False)
             case2 = Case(disliked, default=False)

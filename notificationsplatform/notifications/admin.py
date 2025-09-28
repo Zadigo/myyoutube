@@ -1,17 +1,14 @@
 from django.contrib import admin
 from notifications.models import Notification, PreferredNotification
-from accounts.sites import custom_admin_site
 
 
+@admin.register(Notification)
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ['user', 'created_on', 'read']
     date_hierarchy = 'created_on'
 
 
+@admin.register(PreferredNotification)
 class PreferredNotificationAdmin(admin.ModelAdmin):
     list_display = ['user']
     search_fields = ['user__email']
-
-
-custom_admin_site.register(Notification, NotificationAdmin)
-custom_admin_site.register(PreferredNotification, PreferredNotificationAdmin)

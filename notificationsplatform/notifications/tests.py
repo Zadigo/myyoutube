@@ -1,6 +1,5 @@
 from django.test import TransactionTestCase, override_settings
 from notifications import tasks
-from videos.models import Video
 from rest_framework.test import APITestCase
 
 
@@ -8,8 +7,7 @@ from django.contrib.auth import get_user_model
 from django.test import TransactionTestCase, override_settings
 from django.urls import reverse
 from rest_framework.test import APITestCase
-from videos import tasks
-from videos.models import Video
+from notifications import tasks
 
 
 class AuthenticationMixin(APITestCase):

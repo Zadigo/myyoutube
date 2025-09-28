@@ -25,7 +25,8 @@ class Notification(models.Model):
         default=NotificationTypes.FOLLOW
     )
     read = models.BooleanField(
-        default=False
+        default=False,
+        help_text=_('Whether the user has read the notification')
     )
     created_on = models.DateTimeField(
         auto_now_add=True
