@@ -1,0 +1,31 @@
+{% extends "site.html" %}
+
+{% block container %}
+    <div class="row">
+        <div class="col-md-6 offset-md-3 text-center">
+            <div class="d-flex justify-content-center align-items-center vh-100">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title">Welcome to the Home Page</h3>
+                        <p class="card-text">This is the main content area for the home page.</p>
+
+                        <a href="{% url 'admin:login' %}" class="btn btn-primary btn-rounded">
+                            <i class="fas fa-user-shield"></i>
+                            Admin Login
+                        </a>
+
+                        <a href="{% url 'redoc' %}" class="btn btn-info btn-rounded">
+                            <i class="fas fa-json"></i>
+                            Api Redoc
+                        </a>
+
+                        <a href="{% url 'swagger-ui' %}" class="btn btn-info btn-rounded">
+                            <i class="fas fa-json"></i>
+                            Api Swagger
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,13 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from videos.models import Video
 
 
 class AbstractComment(models.Model):
-    video = models.ForeignKey(
-        Video,
-        on_delete=models.CASCADE
+    video = models.CharField(
+        max_length=255,
+        help_text=_('The ID of the video the comment/reply is associated with')
     )
     user = models.ForeignKey(
         get_user_model(),

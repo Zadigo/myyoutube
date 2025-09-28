@@ -3,15 +3,15 @@ from rest_framework import fields
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import ModelSerializer, Serializer
 
-from accounts.api.serializers import UserSerializer
+# from accounts.api.serializers import UserSerializer
 from comments.api.algorithm import text_algorithm
 from comments.models import Comment, Reply
-from videos.choices import CommentingStrategy
+# from videos.choices import CommentingStrategy
 from comments import tasks
 
 
 class CommentSerializer(ModelSerializer):
-    user = UserSerializer(read_only=True)
+    # user = UserSerializer(read_only=True)
     user_channel = fields.CharField(read_only=True)
     is_liked = fields.BooleanField(read_only=True, default=False)
     is_disliked = fields.BooleanField(read_only=True, default=False)
@@ -48,7 +48,7 @@ class CommentSerializer(ModelSerializer):
 
 class ReplySerializer(ModelSerializer):
     id = fields.CharField(read_only=True)
-    user = UserSerializer(read_only=True)
+    # user = UserSerializer(read_only=True)
     content = fields.CharField()
     from_creator = fields.BooleanField(read_only=True)
     pinned = fields.BooleanField(read_only=True)

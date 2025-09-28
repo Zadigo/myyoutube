@@ -5,7 +5,6 @@ from rest_framework.response import Response
 
 from comments.api import serializers
 from comments.models import Comment
-from videos.models import Video
 
 
 class ListComments(GenericAPIView):
@@ -17,7 +16,7 @@ class ListComments(GenericAPIView):
 
     def get(self, request, video_id, *args, **kwargs):
         sort_descending = request.GET.get('desc', 'true')
-        video = get_object_or_404(Video, video_id=video_id)
+        video = get_object_or_404(Comment, video_id=video_id)
 
         fields = ['-id', '-created_on']
         if sort_descending != 'true':
