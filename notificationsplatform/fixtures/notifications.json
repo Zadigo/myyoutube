@@ -1,0 +1,23 @@
+[
+    {
+        "model": "auth.User",
+        "pk": 1,
+        "fields": {
+            "username": "testuser",
+            "is_superuser": false,
+            "is_staff": false,
+            "is_active": true
+        }
+    },
+    {
+        "model": "notifications.Notification",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "video": "vid_123",
+            "notification_type": "Follow",
+            "read": false,
+            "created_on": "2024-10-01T12:00:00Z"
+        }
+    }
+]

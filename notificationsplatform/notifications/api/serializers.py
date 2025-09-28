@@ -1,5 +1,7 @@
+from rest_framework import fields
+from notifications import choices
 from notifications.models import Notification, PreferredNotification
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, Serializer
 
 
 class PreferredNotificationSerializer(ModelSerializer):
@@ -11,8 +13,9 @@ class PreferredNotificationSerializer(ModelSerializer):
         ]
 
 
-
-class NotificationSerializer(ModelSerializer):
-    class Meta:
-        model = Notification
-        fields = '__all__'
+class NotificationSerializer(Serializer):
+    video = fields.CharField()
+    notification_type = fields.ChoiceField(
+        choices=choices.NotificationTypes.choices,
+        default='Follow'
+    )

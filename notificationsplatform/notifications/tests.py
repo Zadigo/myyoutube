@@ -8,69 +8,23 @@ from django.test import TransactionTestCase, override_settings
 from django.urls import reverse
 from rest_framework.test import APITestCase
 from notifications import tasks
-
-
-class AuthenticationMixin(APITestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.user = get_user_model().objects.first()
-        cls.user.set_password('touparet')
-        cls.user.save()
-
-    def setUp(self):
-        self.client = self.client_class()
-        self.token = self._authenticate()
-
-    def _authenticate(self):
-        response = self.client.post(
-            reverse('token_obtain_pair'),
-            data={
-                'email': self.user.email,
-                'password': 'touparet'
-            }
-        )
-
-        self.assertEqual(response.status_code, 200, 'Authentication failed')
-
-        token = response.json().get('access')
-        self.assertIsNotNone(token, 'Token retrieval failed')
-
-        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
-        return token
+from notificationsplatform.unittestmixins import AuthenticationMixin
 
 
 class TestNotificationApi(AuthenticationMixin):
-    fixtures = ['base_fixtures/videos']
+    fixtures = ['fixtures/notifications']
 
-    def test_get_notification_profile(self):
-        path = reverse('notifications_api:detail')
-        response = self.client.get(path)
-        self.assertEqual(response.status_code, 200)
+    def test_list_notifications(self):
+        url = reverse('notifications:list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200, response.json())
 
-    def test_update_notification_profile(self):
-        path = reverse('notifications_api:detail')
+    def test_create_notification(self):
+        url = reverse('notifications:create')
         data = {
-            'subscribed_channel_activity': True,
-            'video_recommendation': True,
-            'channel_activity': True,
-            'replies_activity': True,
-            'mentions': True,
-            'repost': True
+            'user': self.user.id,
+            'video': 'Test Video',
+            'notification_type': 'Follow'
         }
-        response = self.client.patch(path, data=data)
-        self.assertEqual(response.status_code, 200)
-
-
-@override_settings(CELERY_TASK_ALWAYS_EAGER=True, CELERY_TASK_EAGER_PROPAGATES=True)
-class TestTasks(TransactionTestCase):
-    fixtures = ['videos']
-
-    def test_add_notification(self):
-        video = Video.objects.first()
-
-        t1 = tasks.add_notiication.apply(args=(
-            video.user.id,
-            video.id,
-            'Message'
-        ))
-        result = t1.get()
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 201, response.content)

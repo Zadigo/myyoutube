@@ -3,6 +3,8 @@ import os
 from celery import Celery
 from celery.schedules import crontab
 
+# /usr/local/var/log/rabbitmq/rabbit@localhost.log
+
 os.environ.setdefault(
     'DJANGO_SETTINGS_MODULE', 
     'notificationsplatform.settings'
@@ -20,10 +22,10 @@ def get_backend():
 
 
 app = Celery(
-    'youtube',
+    'youtube_notifications',
     broker=get_broker(),
     backend=get_backend(),
-    logger='celery_app.log'
+    logger='youtube_notifications.log'
 )
 
 app.conf.update(
