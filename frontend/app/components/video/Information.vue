@@ -1,7 +1,7 @@
 <template>
   <volt-card class="mt-4">
     <template #content>
-      <div v-if="currentVideo" class="grid grid-cols-12">
+      <div v-if="currentVideo" class="grid grid-cols-1 md:grid-cols-12">
         <div class="col-span-1">
           <nuxt-link :to="`/channels/${currentVideo.user_channel?.reference}`" class="mt-2" aria-label="">
             <volt-avatar image="/avatars/avatar1.png" shape="circle" size="large" alt="" />
@@ -11,7 +11,7 @@
         <div class="col-span-11">
           <volt-button :to="`/channels/${currentVideo.user_channel?.reference}`" variant="outlined" class="px-0">
             <span class="font-bold">{{ currentVideo.user_channel?.name }}</span>
-            <Icon name="i-fa7-solid:circle-check" class="ms-2" />
+            <icon name="i-fa7-solid:circle-check" class="ms-2" />
           </volt-button>
 
           <p class="text-muted my-2">
@@ -35,7 +35,7 @@
           </div>
 
           <volt-button color="primary" variant="outlined">
-            <Icon name="i-fa7-solid:caret-down" class="me-2" />
+            <icon name="i-fa7-solid:caret-down" class="me-2" />
             More
           </volt-button>
         </div>
@@ -45,7 +45,8 @@
 </template>
 
 <script setup lang="ts">
-import type { VideoInfo } from '~/types'
+import { currentVideoSymbol } from '~/data'
+import type { BaseVideo } from '~/types'
 
-const currentVideo = inject<Ref<VideoInfo>>('currentVideo')
+const currentVideo = injectLocal<Ref<BaseVideo>>(currentVideoSymbol)
 </script>

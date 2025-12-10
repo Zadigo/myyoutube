@@ -10,10 +10,16 @@ useNuxtAuthentication()
 useSession()
 
 /**
+ * Sidebar
+ */
+
+useState<boolean>('showSidebar', () => false)
+
+/**
  * Background
  */
 
-const tokens = ['bg-primary-50', 'dark:bg-primary/90', 'dark:text-surface-50']
+const tokens = ['bg-primary-50', 'dark:bg-primary-900', 'dark:text-surface-50']
 
 onMounted(() => {
   document.body.classList.add(...tokens)

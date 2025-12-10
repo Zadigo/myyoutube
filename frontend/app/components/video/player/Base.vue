@@ -1,24 +1,25 @@
 <template>
-  <div ref="videoContainerEl" class="relative z-30 flex items-center justify-center cursor-pointer bg-primary-900 mx-auto overflow-hidden">
-    <video ref="videoPlayerEl" class="h-full w-full touch-manipulation has-[source]:h-full" preload="metadata" controlist="nodownload" oncontextmenu="return false;" @loadedmetadata="handleVideoMetadata" @timeupdate="handleVideoMetadata" @canplay="handleCanPlay" @click.stop="handlePlayPause">
+  <div ref="videoContainerEl" class="relative minx-h-[300px] md:min-h-[500px] xl:min-h-[700px] z-20 flex items-center justify-center cursor-pointer bg-primary-900 dark:bg-primary-950 mx-auto overflow-hidden rounded-lg">
+    <video ref="videoPlayerEl" class="w-full touch-manipulation has-[source]:h-full" preload="metadata" controlist="nodownload" oncontextmenu="return false;" @loadedmetadata="handleVideoMetadata" @timeupdate="handleVideoMetadata" @canplay="handleCanPlay" @click.stop="handlePlayPause">
       <source :src="videoSource" type="video/mp4">
+      Your browser does not support the video tag.
     </video>
 
-    <DevOnly>
+    <dev-only>
       <div class="p-5 rounded-md absolute top-1/6 max-w-xs z-50 bg-primary-50/80 text-primary-900">
         {{ playingDetails }}
       </div>
-    </DevOnly>
+    </dev-only>
 
     <!-- Controls -->
-    <VideoPlayerControls :current-time="currentTimeFormatted" :duration-time="durationFormatted" :is-playing="isPlaying" :volume="volume" @play-pause="handlePlayPause" />
+    <video-player-controls :current-time="currentTimeFormatted" :duration-time="durationFormatted" :is-playing="isPlaying" :volume="volume" @play-pause="handlePlayPause" />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { VideoTechnicalDetails } from '~/types' 
+import type { Undefineable, VideoTechnicalDetails } from '~/types' 
 
-defineProps<{ videoSource: string }>()
+defineProps<{ videoSource: Undefineable<string> }>()
 
 const emit = defineEmits<{ 
   'play': [], 
@@ -76,17 +77,14 @@ function formatTime (value: number) {
   }
 }
 
-// Tracks the amount of the times the
-// button play was pressed during a
-// viewing session
+// Tracks the amount of the times the button play was 
+// pressed during a viewing session
 const { count, inc } = useCounter()
 
 const currentTimeFormatted = computed(() => formatTime(currentTime.value))
 const durationFormatted = computed(() => formatTime(duration.value))
-/**
- * Calculates the current completion of the
- * video in percentage on the total duration
- */
+
+// Calculates the current completion of the video in percentage on the total duration
 const completionPercentage = computed(() => Math.floor((currentTime.value / duration.value) * 100))
 
 const wasPlayed = ref<boolean>(false)

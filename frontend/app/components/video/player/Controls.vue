@@ -1,17 +1,17 @@
 <template>
-  <div class="absolute bottom-1/12 bg-primary-900/30 p-5 max-w-2xl text-white dark:text-primary rounded-md shadow-sm z-50">
+  <div class="absolute bottom-5 bg-primary-500/30 dark:bg-primary-900/30 p-5 max-w-2xl text-primary-50 dark:text-primary rounded-md shadow-sm z-50">
     <div class="grid grid-cols-2">
       <div class="col-span-2">
         <div class="py-5">
-          <VoltSlider v-model="sliderValue" :min="0" :max="100" />
+          <volt-slider v-model="sliderValue" :min="0" :max="100" />
         </div>
       </div>
 
       <div class="flex justify-left items-center gap-3">
-        <VoltButton @click.stop="emit('play-pause')">
-          <Icon v-if="!isPlaying" name="i-fa7-solid:play" />
-          <Icon v-else name="i-fa7-solid:pause" />
-        </VoltButton>
+        <volt-button @click.stop="emit('play-pause')">
+          <icon v-if="!isPlaying" name="i-fa7-solid:play" />
+          <icon v-else name="i-fa7-solid:pause" />
+        </volt-button>
 
         <div class="video-control-duration mx-3">
           <span>{{ currentTime }}</span> /
@@ -22,17 +22,17 @@
       <!-- Control configuration center -->
       <div class="flex justify-end gap-2">
         <div id="video-control-settings">
-          <VoltButton @click="() => emit('show:settings')">
-            <Icon name="i-fa7-solid:cog" />
-          </VoltButton>
+          <volt-button @click="() => emit('show:settings')">
+            <icon name="i-fa7-solid:cog" />
+          </volt-button>
         </div>
 
         <div id="video-control-volume" class="ms-2">
-          <VoltButton @click="() => emit('show:volume')">
-            <Icon v-if="volume < 0.1" name="i-fa7-solid:volume-low" />
-            <Icon v-else-if="volume >= 0.1 && volume <= 0.8" name="i-fa7-solid:volume-up" />
-            <Icon v-else-if="volume > 0.8" name="i-fa7-solid:volume-high" />
-          </VoltButton>
+          <volt-button @click="() => emit('show:volume')">
+            <icon v-if="volume < 0.1" name="i-fa7-solid:volume-low" />
+            <icon v-else-if="volume >= 0.1 && volume <= 0.8" name="i-fa7-solid:volume-up" />
+            <icon v-else-if="volume > 0.8" name="i-fa7-solid:volume-high" />
+          </volt-button>
         </div>
       </div>
     </div>
@@ -53,6 +53,6 @@ const completionPercentage = inject<Ref<number>>('completionPercentage')
 
 const sliderValue = computed({
   get: () => completionPercentage?.value || 0,
-  set: (value) => {}
+  set: (value) => { console.log('Set slider to:', value) }
 })
 </script>
