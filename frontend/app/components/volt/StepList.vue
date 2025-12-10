@@ -1,5 +1,5 @@
 <template>
-  <StepList unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge, }">
+  <StepList unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
     <slot />
   </StepList>
 </template>
@@ -9,10 +9,10 @@ import StepList, { type StepListPassThroughOptions, type StepListProps } from 'p
 import { ref } from 'vue'
 import { ptViewMerge } from './utils'
 
-interface Props extends /* @vue-ignore */ StepListProps {}
+interface Props extends /* @vue-ignore */ StepListProps { }
 defineProps<Props>()
 
 const theme = ref<StepListPassThroughOptions>({
-    root: `relative flex justify-between items-center m-0 p-0 list-none overflow-x-auto`
+  root: `relative flex justify-between items-center m-0 p-0 list-none overflow-x-auto`
 })
 </script>

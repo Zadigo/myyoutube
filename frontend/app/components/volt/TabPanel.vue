@@ -9,7 +9,7 @@ import TabPanel, { type TabPanelPassThroughOptions, type TabPanelProps } from 'p
 import { ref } from 'vue'
 import { ptViewMerge } from './utils'
 
-interface Props extends /* @vue-ignore */ TabPanelProps {}
+interface Props extends /* @vue-ignore */ TabPanelProps { }
 const props = defineProps<Props>()
 
 const theme = ref<TabPanelPassThroughOptions>({

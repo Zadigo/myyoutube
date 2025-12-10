@@ -11,11 +11,11 @@ import ButtonGroup, { type ButtonGroupPassThroughOptions, type ButtonGroupProps 
 import { ref } from 'vue'
 import { ptViewMerge } from './utils'
 
-interface Props extends /* @vue-ignore */ ButtonGroupProps {}
+interface Props extends /* @vue-ignore */ ButtonGroupProps { }
 defineProps<Props>()
 
 const theme = ref<ButtonGroupPassThroughOptions>({
   root: `*:rounded-none *:first:rounded-s-md *:last:rounded-e-md
-    *:focus-visible:relative *:focus-visible:z-10 *:not-last:border-r-0`
+        *:focus-visible:relative *:focus-visible:z-10 *:not-last:border-r-0`
 })
 </script>

@@ -7,7 +7,7 @@ import Slider, { type SliderPassThroughOptions, type SliderProps } from 'primevu
 import { ref } from 'vue'
 import { ptViewMerge } from './utils'
 
-interface Props extends /* @vue-ignore */ SliderProps {}
+interface Props extends /* @vue-ignore */ SliderProps { }
 defineProps<Props>()
 
 const handleCommon = `cursor-grab touch-none flex items-center justify-center h-[20px] w-[20px]
@@ -22,14 +22,14 @@ const handleCommon = `cursor-grab touch-none flex items-center justify-center h-
         p-vertical:start-1/2 p-vertical:-mb-[10px] p-vertical:-ms-[10px]`
 
 const theme = ref<SliderPassThroughOptions>({
-    root: `relative bg-surface-200 dark:bg-surface-700 rounded-xs
+  root: `relative bg-surface-200 dark:bg-surface-700 rounded-xs
             p-horizontal:h-[3px]
             p-vertical:min-h-[100px] p-vertical:w-[3px]`,
-    range: `block bg-primary rounded-xs
+  range: `block bg-primary rounded-xs
             p-horizontal:top-0 p-horizontal:start-0 p-horizontal:h-full
             p-vertical:bottom-0 p-vertical:start-0 p-vertical:w-full`,
-    handle: handleCommon,
-    startHandler: handleCommon,
-    endHandler: handleCommon
+  handle: handleCommon,
+  startHandler: handleCommon,
+  endHandler: handleCommon
 })
 </script>

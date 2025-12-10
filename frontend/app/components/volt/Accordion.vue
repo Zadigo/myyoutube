@@ -9,10 +9,10 @@ import Accordion, { type AccordionPassThroughOptions, type AccordionProps } from
 import { ref } from 'vue'
 import { ptViewMerge } from './utils'
 
-interface Props extends /* @vue-ignore */ AccordionProps {}
+interface Props extends /* @vue-ignore */ AccordionProps { }
 defineProps<Props>()
 
 const theme = ref<AccordionPassThroughOptions>({
-    root: ``
+  root: ``
 })
 </script>

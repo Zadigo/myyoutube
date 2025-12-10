@@ -9,7 +9,7 @@ import AccordionContent, { type AccordionContentPassThroughOptions, type Accordi
 import { ref } from 'vue'
 import { ptViewMerge } from './utils'
 
-interface Props extends /* @vue-ignore */ AccordionContentProps {}
+interface Props extends /* @vue-ignore */ AccordionContentProps { }
 defineProps<Props>()
 
 const theme = ref<AccordionContentPassThroughOptions>({

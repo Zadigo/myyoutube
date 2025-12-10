@@ -1,5 +1,11 @@
 <template>
-  <Skeleton unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" />
+    <Skeleton
+        unstyled
+        :pt="theme"
+        :pt-options="{
+            mergeProps: ptViewMerge
+        }"
+    />
 </template>
 
 <script setup lang="ts">

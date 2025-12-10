@@ -11,11 +11,11 @@ import ToggleButton, { type ToggleButtonPassThroughOptions, type ToggleButtonPro
 import { ref } from 'vue'
 import { ptViewMerge } from './utils'
 
-interface Props extends /* @vue-ignore */ ToggleButtonProps {}
+interface Props extends /* @vue-ignore */ ToggleButtonProps { }
 defineProps<Props>()
 
 const theme = ref<ToggleButtonPassThroughOptions>({
-    root: `inline-flex items-center justify-center overflow-hidden relative cursor-pointer select-none
+  root: `inline-flex items-center justify-center overflow-hidden relative cursor-pointer select-none
         border border-surface-100 dark:border-surface-950 rounded-md
         bg-surface-100 dark:bg-surface-950
         text-surface-500 dark:text-surface-400
@@ -29,10 +29,10 @@ const theme = ref<ToggleButtonPassThroughOptions>({
         transition-colors duration-200
         p-1 p-small:text-sm p-large:text-lg
     `,
-    content: `relative flex-auto inline-flex items-center justify-center gap-2 py-1 px-3
+  content: `relative flex-auto inline-flex items-center justify-center gap-2 py-1 px-3
         rounded-md transition-colors duration-200
         p-checked:bg-surface-0 dark:p-checked:bg-surface-800 p-checked:shadow-[0px_1px_2px_0px_rgba(0,0,0,0.02),0px_1px_2px_0px_rgba(0,0,0,0.04)]`,
-    icon: ``,
-    label: ``
+  icon: ``,
+  label: ``
 })
 </script>
