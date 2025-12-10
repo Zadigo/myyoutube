@@ -1,4 +1,5 @@
 {
+    "tailwind-fold.autoFold": false,
     "vue3snippets.enable-compile-vue-file-on-did-save-code": false,
     "biome.enabled": false,
     "eslint.useFlatConfig": true,

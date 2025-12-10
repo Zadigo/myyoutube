@@ -1,5 +1,6 @@
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, doc, setDoc, updateDoc } from 'firebase/firestore'
 import { useFirestore } from 'vuefire'
+
 
 export interface ViewingProfileApiResponse {
   token: string
@@ -13,6 +14,9 @@ export function useViewingProfile() {
   }
 }
 
+/**
+ * @deprecated use useSession
+ */
 export function useCreateViewingProfile() {
   const { viewingProfileId } = useViewingProfile()
 

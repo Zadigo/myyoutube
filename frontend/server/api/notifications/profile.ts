@@ -1,5 +1,3 @@
-import { refreshAccessToken } from '~/utils'
-
 import type { NotificationProfile } from '~/types'
 
 export default defineCachedEventHandler(async (event) => {

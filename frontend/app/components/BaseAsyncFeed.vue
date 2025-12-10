@@ -1,57 +1,43 @@
 <template>
-  <div v-if="hasVideos" class="grid grid-cols-3 auto-rows-min gap-2">
+  <div v-if="hasVideos" class="grid grid-cols-1 xl:grid-cols-3 auto-rows-min gap-2">
     <article v-for="video in videos" :key="video.id" class="my-1">
-      <NuxtLinkLocale :to="`/videos/${video.video_id}`">
-        <VoltCard class="shadow-sm">
+      <nuxt-link-locale :to="`/videos/${video.video_id}`">
+        <volt-card class="shadow-sm">
           <template #content>
-            <VoltSkeleton height="200px" class="w-full" />
+            <volt-skeleton height="200px" class="w-full" />
 
             <div class="mt-3">
-              <VoltAvatar :image="video.user_channel.avatar" :alt="video.user_channel.name" shape="circle" />
+              <volt-avatar :image="video.user_channel.avatar" :alt="video.user_channel.name" shape="circle" />
 
-              <h1 class="font-bold">
+              <h1 class="font-bold mt-2">
                 {{ video.title }}
               </h1>
 
-              <p class="font-light">
+              <p class="font-light text-sm mt-1">
                 {{ video.user_channel.name }} . 25 views . {{ new Date(video.created_on).toLocaleDateString() }}
               </p>
             </div>
           </template>
-        </VoltCard>
-      </NuxtLinkLocale>
+        </volt-card>
+      </nuxt-link-locale>
     </article>
   </div>
 
-  <VoltCard v-else class="shadow-sm">
+  <volt-card v-else class="shadow-sm">
     <template #content>
       <h2 class="text-center font-bold text-4xl">
         No videos
         {{ videos }}
       </h2>
     </template>
-  </VoltCard>
+  </volt-card>
 </template>
 
 <script setup lang="ts">
-import { useFeedComposable } from '~/composables/use'
+/**
+ * Get Videos
+ */
 
 const { hasVideos, videos, execute } = await useFeedComposable()
 await execute()
-
-// import type { VideosFeedResponseData } from '~/types'
-
-// const feedStore = useFeedStore()
-// const { videos, hasVideos } = storeToRefs(feedStore)
-
-// const { data } = await useFetch<VideosFeedResponseData[]>('/api/videos', {
-//   method: 'GET',
-//   immediate: true
-// })
-
-// if (data.value) {
-//   videos.value = data.value || []
-// }
-
-// console.log(videos.value)
 </script>

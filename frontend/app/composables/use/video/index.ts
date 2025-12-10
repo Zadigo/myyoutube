@@ -12,19 +12,19 @@ export function useVideoRating(video: Refeable<Undefineable<BaseVideo>>) {
   const [liked, like] = useToggle(false)
   const [unliked, dislike] = useToggle(false)
   
-  $fetch(`/v1/fake-endpoint/${video.value?.video_id}`, {
-    baseURL: useRuntimeConfig().public.djangoProdUrl,
-    watch: [liked, unliked],
-    body: {
-      liked: liked.value,
-      unliked: unliked.value
-    },
-    onRequestError({ response }) {
-      if (response && response.status === 401) {
-        refreshAccessTokenClient()
-      }
-    }
-  })
+  // $fetch(`/v1/fake-endpoint/${video.value?.video_id}`, {
+  //   baseURL: useRuntimeConfig().public.djangoProdUrl,
+  //   watch: [liked, unliked],
+  //   body: {
+  //     liked: liked.value,
+  //     unliked: unliked.value
+  //   },
+  //   onRequestError({ response }) {
+  //     if (response && response.status === 401) {
+  //       refreshAccessTokenClient()
+  //     }
+  //   }
+  // })
 
   return {
     /**
@@ -85,19 +85,19 @@ export function useVideoSubscription(video: Refeable<Undefineable<BaseVideo>>) {
     }
   ]
 
-  useFetch(`/v1/fake-endpoint/${video.value?.video_id}`, {
-    baseURL: useRuntimeConfig().public.djangoProdUrl,
-    watch: [active, mode],
-    body: {
-      subscribe: active.value,
-      mode: mode.value
-    },
-    onRequestError({ response }) {
-      if (response && response.status === 401) {
-        refreshAccessTokenClient()
-      }
-    }
-  })
+  // useFetch(`/v1/fake-endpoint/${video.value?.video_id}`, {
+  //   baseURL: useRuntimeConfig().public.djangoProdUrl,
+  //   watch: [active, mode],
+  //   body: {
+  //     subscribe: active.value,
+  //     mode: mode.value
+  //   },
+  //   onRequestError({ response }) {
+  //     if (response && response.status === 401) {
+  //       refreshAccessTokenClient()
+  //     }
+  //   }
+  // })
 
   return {
     active,

@@ -1,5 +1,3 @@
-import { refreshAccessToken } from '~/utils'
-
 import type { VideosFeedResponseData } from '~/types'
 
 export default defineCachedEventHandler(async (event) => {

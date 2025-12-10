@@ -1,19 +1,10 @@
-import type { _DatabaseObject } from '.'
+import type { DefaultMainCategories, DefaultSortBy, DefaultUploadDate, DefaultVideoLength } from '~/data'
+import type { _DatabaseObject, Arrayable } from '.'
 import type { CustomUser } from './accounts'
 
-export interface VideoTag extends _DatabaseObject {
-    name: string
-}
-
-export type NestedChannelInfo = Pick<UserChannel, 'reference', 'name'> & {
-    number_of_subscribers: number
-    number_of_playlists: number
-    channelplaylist_set: string[]
-    tags: VideoTag[]
-}
 
 /**
- * @deprecated
+ * @deprecated Use BaseVideo instead
  */
 export interface VideosFeedResponseData extends _DatabaseObject {
     title: string
@@ -40,6 +31,30 @@ export interface VideoInfo extends _DatabaseObject {
     video: string
     channel_playlist: null
     created_on: string
+}
+
+
+
+
+
+
+export interface VideoTag extends _DatabaseObject {
+    name: string
+}
+
+export type NestedChannelInfo = Pick<UserChannel, 'reference', 'name'> & {
+    number_of_subscribers: number
+    number_of_playlists: number
+    channelplaylist_set: Arrayable<string>
+    tags: Arrayable<VideoTag>
+}
+
+export interface SearchQuery {
+    search?: string
+    category?: DefaultMainCategories
+    videoLength?: DefaultVideoLength
+    uploadDate?: DefaultUploadDate
+    sortBy?: DefaultSortBy
 }
 
 export interface BaseVideo extends _DatabaseObject {

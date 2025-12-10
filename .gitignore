@@ -165,3 +165,5 @@ logs
 
 external_fixtures/
 video_fixture_*.mp4
+
+*.mp4

@@ -1,5 +1,4 @@
 import type { ViewingProfile } from '~/types'
-import { refreshAccessToken } from '~/utils'
 
 export default defineCachedEventHandler(async event => {
   const refresh = getCookie(event, 'refresh')

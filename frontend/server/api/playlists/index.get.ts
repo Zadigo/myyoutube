@@ -1,5 +1,3 @@
-import { refreshAccessToken } from '~/utils'
-
 import type { Playlist } from '~/types'
 
 export default defineEventHandler(async (event) => {

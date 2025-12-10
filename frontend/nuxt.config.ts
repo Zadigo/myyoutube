@@ -29,14 +29,14 @@ export default defineNuxtConfig({
 
   vuefire: {
     config: {
-      apiKey: process.env.NUXT_FIREBASE_API_KEY,
-      authDomain: process.env.NUXT_FIREBASE_AUTH_DOMAIN,
-      dbUrl: process.env.NUXT_FIREBASE_DB_URL,
-      storageBucket: process.env.NUXT_FIREBASE_STORAGE_BUCKET,
-      appId: process.env.NUXT_FIREBASE_APP_ID,
-      measurementId: process.env.NUXT_FIREBASE_MEASUREMENT_ID,
-      messageSenderId: process.env.NUXT_FIREBASE_MESSAGE_SENDER_ID,
-      projectId: process.env.NUXT_FIREBASE_PROJECT_ID
+      apiKey: process.env.NUXT_PUBLIC_FIREBASE_API_KEY,
+      authDomain: process.env.NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+      dbUrl: process.env.NUXT_PUBLIC_FIREBASE_DB_URL,
+      storageBucket: process.env.NUXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+      appId: process.env.NUXT_PUBLIC_FIREBASE_APP_ID,
+      measurementId: process.env.NUXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+      messageSenderId: process.env.NUXT_PUBLIC_FIREBASE_MESSAGE_SENDER_ID,
+      projectId: process.env.NUXT_PUBLIC_FIREBASE_PROJECT_ID
     }
   },
   
@@ -63,46 +63,30 @@ export default defineNuxtConfig({
     }
   },
   
-  // '@artmizu/nuxt-prometheus',
-  // 'vuetify-nuxt-module',
-  // '@nuxtjs/i18n',
-
   modules: [
     '@nuxt/eslint',
+    '@nuxt/hints',
     '@nuxt/test-utils/module',
     '@unlok-co/nuxt-stripe',
     '@nuxtjs/sitemap',
     '@nuxt/image',
-    '@pinia/nuxt',
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
     '@nuxt/fonts',
     '@nuxt/icon',
+    '@pinia/nuxt',
     'vue-sonner/nuxt',
-    'nuxt-vuefire'
+    'nuxt-authentication',
+    'nuxt-vuefire',
   ],
 
   css: [
     '~/assets/css/tailwind.css'
   ],
 
-  // https://www.fontpair.co/all
   fonts: {
     provider: 'google',
     families: [
-      // {
-      //   name: 'Raleway',
-      //   display: 'swap'
-      // },
-      // // Titles
-      // {
-      //   name: 'Poppins',
-      //   display: 'swap'
-      // },
-      // {
-      //   name: 'Be Vietnam Pro',
-      //   display: 'swap'
-      // }
       {
         name: 'Sora',
         display: 'swap',
@@ -117,19 +101,9 @@ export default defineNuxtConfig({
     ]
   },
 
-  // test: true,
-  // testUtils: {
-  //   vitestConfig: {
-  //     css: true,
-  //     deps: {
-  //       optimizer: {
-  //         ssr: {
-  //           include: ['@nuxt/test-utils']
-  //         }
-  //       }
-  //     }
-  //   }
-  // },
+  nuxtAuthentication: {
+    enabled: false
+  },
 
   i18n: {
     baseUrl: './',

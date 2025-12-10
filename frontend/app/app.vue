@@ -1,36 +1,25 @@
 <template>
-  <NuxtLayout>
-    <NuxtLoadingIndicator />
-    <NuxtPage />
-  </NuxtLayout>
+  <nuxt-layout>
+    <nuxt-loading-indicator />
+    <nuxt-page />
+  </nuxt-layout>
 </template>
 
 <script setup lang="ts">
-import { useCreateViewingProfile } from './composables/use/viewing_profile'
+useNuxtAuthentication()
+useSession()
 
-useCreateViewingProfile()
+/**
+ * Background
+ */
 
-const authStore = useAuthenticationStore()
-const { accessToken, refreshToken } = storeToRefs(authStore)
-
-const access = useCookie('access')
-const refresh = useCookie('refresh')
-
-watch([access, refresh], ([access, refresh]) => {
-  authStore.accessToken = access
-  authStore.refreshToken = refresh
-})
-
-onBeforeMount(async () => {
-  if (access.value && refresh.value) {
-    accessToken.value = access.value
-    refreshToken.value = refresh.value
-  }
-})
-
-useState('isAuthenticated', () => isDefined('access'))
+const tokens = ['bg-primary-50', 'dark:bg-primary/90', 'dark:text-surface-50']
 
 onMounted(() => {
-  document.body.classList.add('dark:bg-primary/90', 'dark:text-surface-50')
+  document.body.classList.add(...tokens)
+})
+
+onUnmounted(() => {
+  document.body.classList.remove(...tokens)
 })
 </script>
