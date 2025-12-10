@@ -1,47 +1,41 @@
 <template>
-  <VoltCard class="shadow-none">
+  <volt-card class="shadow-none">
     <template #content>
       <div class="flex justify-start items-start gap-4">
-        <VoltAvatar image="/avatars/avatar3.png" shape="circle" size="large" alt="" />
+        <volt-avatar image="/avatars/avatar3.png" shape="circle" size="large" alt="" />
 
-        <div class="actions" style="width: 100%;">
-          <textarea v-model="requestData.content" label="" />
+        <div class="w-full space-y-3">
+          <volt-textarea v-model="requestData.content" class="w-full" auto-resize label="" :style="{ resize: 'none' }" />
           
-          <div class="flex gap-2">
-            <VoltButton variant="info" size="small" rounded>
+          <div class="flex gap-2 w-full">
+            <volt-button variant="info" size="small" rounded>
               Cancel
-            </VoltButton>
+            </volt-button>
 
             <!-- <EmojisPicker @emoji-click="hanlePickEmoji" /> -->
 
-            <VoltButton variant="info" size="small" rounded @click="handleCreateComment ">
-              <Icon name="i-fa7-solid:comment" />
+            <volt-button variant="info" size="small" rounded @click="handleCreateComment ">
+              <icon name="i-fa7-solid:comment" />
               Comment
-            </VoltButton>
+            </volt-button>
           </div>
         </div>
       </div>
     </template>
-  </VoltCard>
+  </volt-card>
 </template>
 
 <script lang="ts" setup>
 import type { VideoComment } from '~/types'
 
-const emit = defineEmits({
-  'new-comment' (_comment: VideoComment) {
-    return true
-  }
-})
+const emit = defineEmits<{ 'new-comment': [comment: VideoComment] }>()
 
 const { $client } = useNuxtApp()
 const route = useRoute()
 const requestData = ref({ content: '' })
 
-/**
- * Creates a new comment for the video that
- * the user is currently viewing
- */
+// Creates a new comment for the video that
+// the user is currently viewing
 async function handleCreateComment () {
   try {
     const videoID = route.params.id
@@ -53,10 +47,8 @@ async function handleCreateComment () {
   }
 }
 
-/**
- * Adds an emoji selected by the user to the text of the 
- * text area field
- */
+// Adds an emoji selected by the user to the text of the 
+// text area field
 function hanlePickEmoji (emoji: string) {
   requestData.value.content = requestData.value.content + emoji
 }

@@ -12,7 +12,45 @@
       <video-actions-card @action="openModal" />
 
       <!-- Information -->
-      <!-- <video-information /> -->
+      <video-information />
+    </section>
+
+    <section class="grid grid-cols-12 gap-2 mt-4">
+      <!-- Comments -->
+      <div class="col-span-8">
+        <Suspense>
+          <template #default>
+            <client-only>
+              <async-video-comment-section />
+            </client-only>
+          </template>
+
+          <template #fallback>
+            <volt-skeleton height="100px" />
+          </template>
+        </Suspense>
+      </div>
+
+      <!-- Recommendations -->
+      <div class="col-span-4">
+        <volt-card>
+          <template #content>
+            Filters
+          </template>
+        </volt-card>
+
+        <Suspense>
+          <template #default>
+            <client-only>
+              <async-recommendation-section />
+            </client-only>
+          </template>
+
+          <template #fallback>
+            <volt-skeleton height="100px" />
+          </template>
+        </Suspense>
+      </div>
     </section>
   </section>
 </template>
@@ -35,9 +73,6 @@ const AsyncRecommendationSection = defineAsyncComponent({
   loader: () => import('~/components/video/UserRecommendations.vue'),
   timeout: 5000
 })
-
-// const videoDetailStore = useVideoDetailStore()
-// const { currentVideo, isLoading } = storeToRefs(videoDetailStore)
 
 /**
  * Get Video

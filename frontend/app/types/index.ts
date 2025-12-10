@@ -13,7 +13,6 @@ export type * from './settings/notifications'
 export type * from './studio'
 export type * from './video'
 export type * from './notifications'
-export type * from '../data/constants/symbols'
 
 export type Nullable<T> = T | null
 

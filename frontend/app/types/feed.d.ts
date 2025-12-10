@@ -1,5 +1,5 @@
 import type { DefaultMainCategories, DefaultSortBy, DefaultUploadDate, DefaultVideoLength } from '~/data'
-import type { _DatabaseObject, Arrayable } from '.'
+import type { _DatabaseObject, Arrayable, UserChannel } from '.'
 import type { CustomUser } from './accounts'
 
 
@@ -42,7 +42,7 @@ export interface VideoTag extends _DatabaseObject {
     name: string
 }
 
-export type NestedChannelInfo = Pick<UserChannel, 'reference', 'name'> & {
+export type NestedChannelInfo = Pick<UserChannel, 'reference' | 'name'> & {
     number_of_subscribers: number
     number_of_playlists: number
     channelplaylist_set: Arrayable<string>

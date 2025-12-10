@@ -6,9 +6,13 @@
           {{ comments.length }} comments
         </h2>
 
-        <volt-dropdown-button id="comment-sorting" :items="sortActionsMenuItem">
-          <icon name="i-lucide-sort-asc" />
-        </volt-dropdown-button>
+        <volt-dropdown id="comment-sorting" :items="sortActionsMenuItem">
+          <template #default="{ attrs }">
+            <volt-button @click="attrs.toggle">
+              <icon name="i-lucide-sort-asc" />
+            </volt-button>
+          </template>
+        </volt-dropdown>
       </div>
 
       <volt-divider class="my-3" />
