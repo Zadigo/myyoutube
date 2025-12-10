@@ -9,7 +9,7 @@
 
     <section id="information" class="mt-4">
       <!-- Actions -->
-      <!-- <video-actions-card @action="openModal" /> -->
+      <video-actions-card @action="openModal" />
 
       <!-- Information -->
       <!-- <video-information /> -->
@@ -63,14 +63,14 @@ try {
  * Modals
  */
 
-// const { showClassificationDrawer, showReportModal, showGiftsModal, showSaveModal, showShareModal, showDonationModal, showCommunityNotes, openModal  } = useVideoDetailModals()
+const { showClassificationDrawer, showReportModal, showGiftsModal, showSaveModal, showShareModal, showDonationModal, showCommunityNotes, openModal  } = useVideoDetailModals()
 
 /**
  * Video
  */
 
-// const videoSource = computed(() => isDefined(currentVideo) ? currentVideo.value.video : '')
-const videoSource = ref(undefined)
+const videoSource = computed(() => isDefined(currentVideo) ? currentVideo.value.video : '')
+// const videoSource = ref(undefined)
 
 const playingDetails = ref<VideoTechnicalDetails>()
 const { history } = useRefHistory(playingDetails)

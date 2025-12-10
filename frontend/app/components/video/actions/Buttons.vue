@@ -1,25 +1,33 @@
 <template>
   <div class="flex items-center justify-left">
-    <volt-button size="large" color="primary" class="me-1" rounded @click="() => { like() }">
+    <volt-button class="me-1" rounded @click="() => { like() }">
       <icon v-if="liked" name="i-fa7-solid:thumbs-up" class="mr-2" />
       <icon v-else name="i-fa7-regular:thumbs-up" class="mr-2" />
       Like <span class="font-bold">145.3k</span>
     </volt-button>
 
-    <volt-button size="large" color="primary" class="me-3" rounded @click="() => { dislike() }">
+    <volt-button class="me-3" rounded @click="() => { dislike() }">
       <icon v-if="unliked" name="i-fa7-solid:thumbs-down" class="mr-2" />
       <icon v-else name="i-fa7-regular:thumbs-down" class="mr-2" />
       Dislike <span class="font-bold">15</span>
     </volt-button>
     
     <!-- Extra Actions -->
-    <volt-dropdown-button id="more-actions" :items="menuItems">
-      <icon name="i-lucide-ellipsis-vertical" />
-    </volt-dropdown-button>
+    <volt-dropdown id="more-actions" :items="menuItems">
+      <template #default="{ attrs }">
+        <volt-button rounded @click="attrs.toggle">
+          <icon name="i-lucide-ellipsis-vertical" />
+        </volt-button>
+      </template>
+    </volt-dropdown>
 
-    <volt-dropdown-button v-if="active" id="more-actions" :items="subscribeMenuItems" rounded>
-      <icon name="i-lucide-bell-off" />
-    </volt-dropdown-button>
+    <volt-dropdown v-if="active" id="more-actions" :items="subscribeMenuItems" rounded>
+      <template #default="{ attrs }">
+        <volt-button rounded @click="attrs.toggle">
+          <icon name="i-lucide-bell-off" />
+        </volt-button>
+      </template>
+    </volt-dropdown>
 
     <volt-button v-else size="large" color="light" class="ml-5" @click="() => { subscribe() }">
       <icon name="i-lucide-bell" />
@@ -29,8 +37,9 @@
 
 <script lang="ts" setup>
 import { useVideoRating, useVideoSubscription } from '~/composables/use'
-
 import type { DefaultVideoMenuActions } from '~/data'
+import { currentVideoSymbol } from '~/data/constants'
+
 import type { BaseVideo, VideoMenuItem } from '~/types'
 
 const emit = defineEmits<{ action: [method: DefaultVideoMenuActions] }>()
@@ -97,7 +106,16 @@ const menuItems: VideoMenuItem[] = [
   }
 ]
 
-const currentVideo = inject<Ref<BaseVideo>>('currentVideo')
+const currentVideo = injectLocal<Ref<BaseVideo>>(currentVideoSymbol)
+
+/**
+ * Rating
+ */
+
 const { like, dislike, liked, unliked } = useVideoRating(currentVideo)
+
+/**
+ * Subscription
+ */
 const { subscribe, active, mode, subscribeMenuItems } = useVideoSubscription(currentVideo)
 </script>

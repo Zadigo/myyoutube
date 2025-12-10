@@ -3,7 +3,9 @@
     <div class="grid grid-cols-2">
       <div class="col-span-2">
         <div class="py-5">
-          <volt-slider v-model="sliderValue" :min="0" :max="100" />
+          <client-only>
+            <volt-slider v-model="sliderValue" :min="0" :max="100" />
+          </client-only>
         </div>
       </div>
 

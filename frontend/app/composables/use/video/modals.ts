@@ -1,5 +1,3 @@
-import type { VideoMenuItem } from '~/types'
-
 export type VideoMenuAction = 'Gift'
   | 'Store'
   | 'Download'
