@@ -10,7 +10,6 @@ django = "*"
 django-storages = "*"
 django-rest-framework = "*"
 django-cors-headers = "*"
-djangorestframework-jwt = "*"
 django-extensions = "*"
 django-debug-toolbar = "*"
 django-imagekit = "*"
@@ -34,6 +33,10 @@ autobahn = "==22.4.2"
 channels-redis = "*"
 psycopg = {extras = ["binary", "pool"], version = "*"}
 celery = "*"
+graphene-django = "*"
+django-filter = "*"
+drf-spectacular = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 

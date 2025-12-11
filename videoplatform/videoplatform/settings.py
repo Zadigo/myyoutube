@@ -12,11 +12,6 @@ if ENV_PATH.exists():
     dotenv.load_dotenv(ENV_PATH)
 
 
-def get_debug():
-    debug = os.getenv('DEBUG', '0')
-    return True if debug == '1' else False
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -25,7 +20,7 @@ def get_debug():
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = get_debug()
+DEBUG = os.getenv('DEBUG', '0') == '1'
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -46,11 +41,6 @@ INSTALLED_APPS = [
 
     'django.contrib.humanize',
 
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
-
     'corsheaders',
     'debug_toolbar',
     'import_export',
@@ -58,6 +48,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'django_extensions',
     'rest_framework.authtoken',
+    'graphene_django',
     # 'axes',
 
     'accounts',
@@ -85,7 +76,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'allauth.account.middleware.AccountMiddleware'
     # 'axes.middleware.AxesMiddleware'
 ]
 
@@ -104,12 +94,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages'
-            ],
-        },
-    },
+            ]
+        }
+    }
 ]
 
-# WSGI_APPLICATION = 'videoplatform.wsgi.application'
 ASGI_APPLICATION = 'videoplatform.asgi.application'
 
 
@@ -168,7 +157,7 @@ USE_S3 = False
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -230,7 +219,7 @@ if USE_S3:
 MEDIA_URL = 'media/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'staticfiles'
+    BASE_DIR / 'static'
 ]
 
 
@@ -259,7 +248,6 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 AUTHENTICATION_BACKENDS = [
     # 'axes.backends.AxesStandaloneBackend',
-    # 'allauth.account.auth_backends.AuthenticationBackend',
     'accounts.backends.EmailAuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend'
 ]
@@ -336,36 +324,6 @@ SIMPLE_JWT = {
     'UPDATE_LAST_LOGIN': True,
     'AUTH_HEADER_TYPES': ['Token']
 }
-
-
-# Django All Auth for more information
-# on the settings for django-allauth
-# https://docs.allauth.org/en/latest/socialaccount/provider_configuration.html
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
-        'APPS': [
-            {
-                'client_id': '123',
-                'secret': '456',
-                'key': ''
-            }
-        ],
-        # These are provider-specific settings that can only be
-        # listed here:
-        'SCOPE': [
-            "profile",
-            "email",
-        ],
-        'AUTH_PARAMS': {
-            "access_type": "online",
-        }
-    }
-}
-
 
 # Locales
 
