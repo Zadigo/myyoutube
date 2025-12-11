@@ -142,11 +142,9 @@ function handleVideoMetadata () {
   }
 }
 
-/**
- * Indicates that the video has ended, in other
- * words that the current time is equals the total
- * video duration time
- */
+// Indicates that the video has ended, in other
+// words that the current time is equals the total
+// video duration time
 const isEnded = computed(() => currentTimeFormatted.value === durationFormatted.value)
 
 watchOnce(isEnded, () => {

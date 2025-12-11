@@ -83,11 +83,6 @@ const menuItems: VideoMenuItem[] = [
     command: () => emit('action:modal', 'Recommendations')
   },
   {
-    label: 'Community note',
-    icon: 'i-lucide-note-sticky',
-    command: () => emit('action:modal', 'Community note')
-  },
-  {
     label: 'Fact check',
     icon: 'i-lucide-shield-alert',
     command: () => {

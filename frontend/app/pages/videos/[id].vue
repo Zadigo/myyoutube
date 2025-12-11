@@ -3,7 +3,7 @@
     <!-- Video -->
     <section id="video-player">
       <client-only>
-        <video-player-base :video-source="videoSource" @update:details="handleLoadedMetaData" />
+        <video-player-base :video-source="videoSource" @update:metadata="handleLoadedMetaData" />
       </client-only>
     </section>
 
@@ -96,9 +96,9 @@ const currentVideo = injectLocal<Ref<Undefineable<BaseVideo>>>(currentVideoSymbo
 try {
   const { id: videoId } = useRoute().params as { id: string }
   const data = await $fetch<BaseVideo>(`/api/videos/${videoId}`, { method: 'GET' })
-
-  isLoading.value = false
-  currentVideo.value = data
+  
+  if (isLoading) isLoading.value = false
+  if (currentVideo) currentVideo.value = data
 } catch (e) {
   console.log(e)
 }
@@ -107,13 +107,14 @@ try {
  * Video
  */
 
-const videoSource = computed(() => isDefined(currentVideo) ? currentVideo.value.video : '')
+const videoSource = computed(() => currentVideo && isDefined(currentVideo) ? currentVideo.value.video : '')
 // const videoSource = ref(undefined)
 
-const playingDetails = ref<VideoTechnicalDetails>()
-const { history } = useRefHistory(playingDetails)
+/**
+ * Playing Details & History
+ */
 
-console.log(history)
+const playingDetails = ref<VideoTechnicalDetails>()
 
 function handleLoadedMetaData (data: VideoTechnicalDetails) {
   playingDetails.value = data
