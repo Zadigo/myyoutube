@@ -2,8 +2,10 @@
   <section id="playlists" class="grid grid-cols-12 gap-2">
     <!-- Details -->
     <div class="col-span-4">
-      <playlists-details v-if="showPlaylistDetails" @playlist:details="select" />
-      <playlists-list v-else @playlist:create="openCreationDialog" @playlist:details="select" />
+      <transition mode="out-in" enter-active-class="transition-all ease-in-out duration-200" leave-active-class="transition-all ease-in-out duration-200" enter-from-class="opacity-0 -translate-x-10" enter-to-class="opacity-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
+        <playlists-details v-if="showPlaylistDetails" />
+        <playlists-list v-else @playlist:create="openCreationDialog" @playlist:details="select" />
+      </transition>
     </div>
 
     <!-- Videos -->

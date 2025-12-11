@@ -18,12 +18,12 @@
               </nuxt-link>
 
               <nuxt-link :to="`/channels/${video.user_channel.id}`">
-                <p class="font-bold">
+                <p class="font-semibold">
                   {{ video.user_channel.name }}
                 </p>
               </nuxt-link>
 
-              <p v-if="video.description" class="text-sm">
+              <p v-if="video.description" class="text-sm font-light">
                 {{ video.description }}
               </p>
             </div>
