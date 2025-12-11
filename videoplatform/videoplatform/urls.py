@@ -7,16 +7,17 @@ from django.urls import include, path, re_path
 from drf_spectacular import views as spectacular_views
 from graphene_django.views import GraphQLView
 from rest_framework_simplejwt import views as jwt_views
+from django.views.decorators.csrf import csrf_exempt
 
 from videoplatform.views import ViewingProfileToken
 
 urlpatterns = [
     path(
-        'graphql/', 
-         GraphQLView.as_view(graphiql=True)
+        'graphql/',
+        csrf_exempt(GraphQLView.as_view(graphiql=True))
     ),
     path(
-        '__debug__/', 
+        '__debug__/',
         include(debug_toolbar.urls)
     ),
     re_path(

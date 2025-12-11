@@ -20,7 +20,7 @@ if ENV_PATH.exists():
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', '0') == '1'
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -235,13 +235,7 @@ INTERNAL_IPS = [
 ]
 
 
-# Models
-
-NOTIFICATION_MODEL = 'notifications.Notification'
-
-MEDIA_MODEL = 'videos.Video'
-
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -420,3 +414,10 @@ GOOGLE_CLOUD_PROJECT = 'gency313'
 # Firebase
 
 FIREBASE_PROJECT_ID = os.getenv('FIREBASE_PROJECT_ID')
+
+
+# Schema
+
+GRAPHENE = {
+    'SCHEMA': "videoplatform.schema.schema"
+}
