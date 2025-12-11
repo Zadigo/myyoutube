@@ -23,15 +23,19 @@ pillow = "*"
 python-memcached = "*"
 redis = "*"
 django-axes = "*"
-psycopg2 = "*"
 pymemcache = "*"
 social-auth-app-django = "*"
 autopep8 = "*"
 opencv-python = "*"
 opencv-python-headless = "*"
 moviepy = "*"
+channels = {extras = ["daphne"], version = "*"}
+autobahn = "==22.4.2"
+channels-redis = "*"
+psycopg = {extras = ["binary", "pool"], version = "*"}
+celery = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.12"
+python_version = "3.13"
