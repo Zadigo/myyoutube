@@ -27,6 +27,13 @@ export default defineNuxtConfig({
     '/search': { ssr: false }
   },
 
+  app: {
+    pageTransition: {
+      name: 'page',
+      mode: 'out-in'
+    }
+  },
+
   vite: {
     plugins: [
       tailwindcss()

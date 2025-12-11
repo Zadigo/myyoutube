@@ -1,12 +1,14 @@
 <template>
-  <nav class="fixed top-0 left-0 bottom-0 p-3 shadow-sm w-(--sidebar-width) z-30 bg-primary-50 dark:bg-primary dark:text-surface-50">
+  <nav class="fixed top-0 left-0 bottom-0 p-3 shadow-sm w-(--sidebar-width) z-50 bg-white dark:bg-primary dark:text-surface-50">
     <div :class="theme.base">
-      <div id="links" class="space-y-5">
-        <nuxt-link-locale v-for="navLink in links" :key="navLink.to" :to="navLink.to" :aria-current="route.path === navLink.to" :class="theme.link" class="bg-primary-700 text-sm dark:bg-primary-800 dark:text-surface-50">
-          <icon :name="navLink.icon" />
-          {{ navLink.name }}
-        </nuxt-link-locale>
-      </div>
+      <ul id="links" class="space-y-5">
+        <li v-for="navLink in links" :key="navLink.to" class="transition-all ease-in-out duration-200 text-sm font-light bg-primary-50 has-[.router-link-exact-active]:bg-primary-100 has-[.router-link-exact-active]:text-primary-500 dark:bg-primary-800 dark:text-surface-50 hover:bg-primary-100 rounded-lg">
+          <nuxt-link-locale :to="navLink.to" :aria-current="route.path === navLink.to" :class="theme.link" class="">
+            <icon :name="navLink.icon" />
+            {{ navLink.name }}
+          </nuxt-link-locale>
+        </li>
+      </ul>
 
       <slot name="footer" />
     </div>
@@ -23,23 +25,3 @@ const theme = ref({
   link: `p-2 px-4 rounded-lg flex gap-3 items-center font-semibold`
 })
 </script>
-
-<style lang="scss" scoped>
-$box_shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
-
-a {
-  &.active {
-    border-radius: 5px;
-    box-shadow: var(--shadow-sm);
-  }
-  
-  &[class*="-exact-active"] {
-    z-index: 2;
-    color: var(--p-surface-0);
-    background-color: var(--p-primary-500);
-    border-color: var(--p-primary-500);
-    border-radius: 5px;
-    box-shadow: var(--shadow-sm);
-  }
-}
-</style>

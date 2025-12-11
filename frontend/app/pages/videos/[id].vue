@@ -3,7 +3,9 @@
     <!-- Video -->
     <section id="video-player">
       <client-only>
-        <video-player-base :video-source="videoSource" @update:metadata="handleLoadedMetaData" />
+        <video-player-overlay>
+          <video-player-base :video-source="videoSource" @update:metadata="handleLoadedMetaData" />
+        </video-player-overlay>
       </client-only>
     </section>
 

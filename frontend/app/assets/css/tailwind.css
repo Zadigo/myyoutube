@@ -84,3 +84,22 @@
       --p-text-hover-muted-color: var(--p-surface-300);
   }
 }
+
+.page-enter-active,
+.page-leave-active {
+  transition: all .15s ease-in-out;
+  /* transition: opacity .10s ease-in;
+  transition: transform .2s ease-in-out; */
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  transform: scale(.99);
+}
+
+.page-enter-to,
+.page-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
