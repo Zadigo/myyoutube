@@ -10,7 +10,7 @@
       <base-navbar @show:navbar="() => toggle()" />
     </header>
 
-    <main :class="theme" class="mt-[calc(55px+1rem)] mb-10 z-20 transition-all ease-in-out duration-600">
+    <main :class="theme" class="mt-[calc(var(--navbar-height)+1rem)] mb-10 z-20 transition-all ease-in-out duration-600">
       <slot />
     </main>
   </section>
