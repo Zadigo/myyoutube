@@ -9,7 +9,7 @@
 
     <section id="information" class="mt-4">
       <!-- Actions -->
-      <video-actions-card @action="openModal" />
+      <video-actions-card @action:modal="openModal" />
 
       <!-- Information -->
       <video-information />
@@ -51,12 +51,21 @@
           </template>
         </Suspense>
       </div>
+
+      <!-- Modals -->
+      <client-only>
+        <modals-save />
+        <modals-report />
+        <modals-gift />
+        <modals-classification />
+        <modals-donation />
+        <modals-share />
+      </client-only>
     </section>
   </section>
 </template>
 
 <script setup lang="ts">
-// import { useVideoDetailModals } from '~/composables/use'
 import { currentVideoSymbol, isLoadingSymbol } from '~/data/constants'
 import type { BaseVideo, Undefineable, VideoTechnicalDetails } from '~/types'
 
@@ -95,12 +104,6 @@ try {
 }
 
 /**
- * Modals
- */
-
-const { showClassificationDrawer, showReportModal, showGiftsModal, showSaveModal, showShareModal, showDonationModal, showCommunityNotes, openModal  } = useVideoDetailModals()
-
-/**
  * Video
  */
 
@@ -115,4 +118,10 @@ console.log(history)
 function handleLoadedMetaData (data: VideoTechnicalDetails) {
   playingDetails.value = data
 }
+
+/**
+ * Modals
+ */
+
+const { openModal } = useVideoDetailModals()
 </script>

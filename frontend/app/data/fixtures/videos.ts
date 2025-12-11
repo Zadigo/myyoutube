@@ -60,7 +60,7 @@ export const fixtureVideos: BaseVideo[] = [
       ]
     },
     age_restricted: false,
-    video: '/videos/vid3.mp4',
+    video: '/videos/vid4.mp4',
     channel_playlist: null,
     user: {
       id: 1,

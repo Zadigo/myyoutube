@@ -1,10 +1,10 @@
 // import type { VideoInfo } from '~/types'
 // import { refreshAccessToken } from '~/utils'
-import { fixtureVideo } from '~/data/fixtures/videos'
+import { fixtureVideos } from '~/data/fixtures/videos'
 
 export default defineEventHandler(async event => {
   // const refreshToken = getCookie(event, 'refresh')
-  // const id = getRouterParam(event, 'id') as string
+  const id = getRouterParam(event, 'id') as string
 
   // const response = await $fetch<VideoInfo>(`/v1/videos/${id}`, {
   //   method: 'GET',
@@ -19,5 +19,7 @@ export default defineEventHandler(async event => {
 
   // return response
 
-  return fixtureVideo
+  // return fixtureVideo
+
+  return fixtureVideos.find(video => video.video_id === id)
 })

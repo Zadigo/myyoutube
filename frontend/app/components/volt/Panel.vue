@@ -33,8 +33,8 @@ const theme = ref<PanelPassThroughOptions>({
   title: `leading-none font-semibold`,
   headerActions: `flex items-center gap-1`,
   contentContainer: ``,
-  content: `pt-0 pb-[1.125rem] px-[1.125rem] `,
-  footer: `pt-0 pb-[1.125rem] px-[1.125rem] `,
+  content: `pt-0 pb-[1.125rem] px-[1.125rem]`,
+  footer: `pt-0 pb-[1.125rem] px-[1.125rem]`,
   transition: {
     enterFromClass: 'max-h-0',
     enterActiveClass: 'overflow-hidden transition-[max-height] duration-1000 ease-[cubic-bezier(0.42,0,0.58,1)]',

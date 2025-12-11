@@ -1,11 +1,20 @@
-import type { Arrayable, Nullable, Playlist, Refeable } from '~/types'
+import type { Arrayable, Nullable, Playlist } from '~/types'
 
 /**
  * Composable for editing playlists
  * @param playlists Reactive reference to the list of playlists
  */
-export function useEditPlaylists(playlists: Refeable<Arrayable<Playlist>>) {
-  async function add(playlistId: string, videoId: string) {
+export function useEditPlaylists(playlists: MaybeRef<Arrayable<Playlist>>) {
+  if (import.meta.server) {
+    return {
+      add: async () => {},
+      remove: async () => {}
+    }
+  }
+
+  const _playlists = toValue(playlists) 
+  
+  async function add(playlistId: Nullable<string>, videoId: string) {
     const data = await $fetch(`/playlists/${playlistId}/add`, {
       method: 'POST',
       baseURL: useRuntimeConfig().public.djangoProdUrl,
@@ -52,7 +61,13 @@ export interface NewPlaylist {
  * Composable for creating and managing playlists
  * @param playlists Reactive reference to the list of playlists
  */
-export function useCreatePlaylist(playlists: Ref<Playlist[]>) {
+export function useCreatePlaylist(playlists: MaybeRef<Playlist[]>) {
+  const _playlists = toRef(playlists)
+
+  /**
+   * Creation Dialog
+   */
+
   const showCreatePlaylist = ref<boolean>(false)
   const isIntelligent = ref<boolean>(false)
 
@@ -88,7 +103,7 @@ export function useCreatePlaylist(playlists: Ref<Playlist[]>) {
       }
     })
 
-    playlists.value.push(data)
+    _playlists.value.push(data)
   }
 
   watch(showCreatePlaylist, (n) => {

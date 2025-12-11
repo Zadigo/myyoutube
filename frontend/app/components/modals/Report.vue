@@ -1,23 +1,23 @@
 <template>
-  <VoltDialog id="report-video" v-model:visible="show" modal class="max-w-3xl">
-    <VoltAccordion v-for="reportType in reportTypes" :key="reportType.title">
-      <VoltAccordionPanel :value="reportType.title">
-        <VoltAccordionHeader>{{ reportType.title }}</VoltAccordionHeader>
-        <VoltAccordionContent>
+  <volt-dialog id="report-video" v-model:visible="showReportModal" class="w-2xl" modal>
+    <volt-accordion v-for="reportType in reportTypes" :key="reportType.title">
+      <volt-accordion-panel :value="reportType.title">
+        <volt-accordion-header>{{ reportType.title }}</volt-accordion-header>
+        <volt-accordion-content>
           <p>
             {{ reportType.reports }}
           </p>
-        </VoltAccordionContent>
-      </VoltAccordionPanel>
-    </VoltAccordion>
+        </volt-accordion-content>
+      </volt-accordion-panel>
+    </volt-accordion>
 
     <p class="font-bold mt-5">
       Flag the section you believe to be problematic
     </p>
 
-    <div class="flex justify-between gap-2">
-      <VoltInputText type="time" />
-      <VoltInputText type="time" />
+    <div class="flex justify-start gap-2">
+      <volt-input-text type="time" />
+      <volt-input-text type="time" />
     </div>
 
     <div class="p-5 bg-primary-100 rounded-lg mt-5">
@@ -29,21 +29,23 @@
     </div>
 
     <template #footer>
-      <VoltButton @click="() => show=false">
+      <volt-button @click="() => showReportModal = false">
         Close
-      </VoltButton>
+      </volt-button>
 
-      <VoltButton @click="() => add(selectedPlaylistId, $route.params.id)">
+      <volt-button>
         Save
-      </VoltButton>
+      </volt-button>
     </template>
-  </VoltDialog>
+  </volt-dialog>
 </template>
 
 <script setup lang="ts">
 import { reportTypes } from '~/data'
 
-const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
-const props = defineProps<{ modelValue: boolean }>()
-const show = useVModel(props, 'modelValue', emit, { defaultValue: false })
+/**
+ * Modal
+ */
+
+const { showReportModal } = tryUseVideoDetailModalsStore()
 </script>

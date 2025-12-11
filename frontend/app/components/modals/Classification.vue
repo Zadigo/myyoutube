@@ -1,50 +1,46 @@
 <template>
-  <VoltDrawer id="classification-modal" v-model:visible="show" position="right">
+  <volt-drawer id="classification-modal" v-model:visible="showClassificationDrawer" position="right">
     <template #header>
       <h2 class="font-bold text-2xl">
         Classification
       </h2>
     </template>
 
-    <VoltAlert class="my-5">
+    <volt-panel class="my-5">
       Use this tool to signal that this video was not properly
       categorized by the creator and therefore does not correspond to
       the result you were expecting
-    </VoltAlert>
+    </volt-panel>
 
     <div class="space-y-2">
       <div>
-        <VoltLabel>
-          <VoltToggleSwitch />
-          <label for="">
-            Mark as wrong category
-          </label>
-        </VoltLabel>
+        <volt-label label-for="wrong-category" label="Mark as wrong category">
+          <volt-toggle-switch />
+        </volt-label>
       </div>
 
       <div>
-        <VoltLabel>
-          <VoltToggleSwitch />
-          <label for="">
-            Block this channel
-          </label>
-        </VoltLabel>
+        <volt-label label-for="block-channel" label="Block this channel">
+          <volt-toggle-switch />
+        </volt-label>
       </div>
     </div>
 
-    <VoltDivider class="my-5" />
+    <volt-divider class="my-5" />
 
     <div class="space-x-2">
-      <VoltButton variant="primary">
+      <volt-button variant="primary">
         <Icon name="i-fa7-solid:check" />
         Save
-      </VoltButton>
+      </volt-button>
     </div>
-  </VoltDrawer>
+  </volt-drawer>
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
-const props = defineProps<{ modelValue: boolean }>()
-const show = useVModel(props, 'modelValue', emit, { defaultValue: false })
+/**
+ * Modal
+ */
+
+const { showClassificationDrawer } = tryUseVideoDetailModalsStore()
 </script>

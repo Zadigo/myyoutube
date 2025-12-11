@@ -1,12 +1,13 @@
 <template>
-  <VoltDialog v-model:visible="show">
+  <volt-dialog v-model:visible="showShareModal">
     Share
-  </VoltDialog>
+  </volt-dialog>
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
-const props = defineProps<{ modelValue: boolean }>()
-const show = useVModel(props, 'modelValue', emit, { defaultValue: false })
+/**
+ * Modal
+ */
 
+const { showShareModal } = tryUseVideoDetailModalsStore()
 </script>

@@ -42,7 +42,7 @@ import { currentVideoSymbol } from '~/data/constants'
 
 import type { BaseVideo, VideoMenuItem } from '~/types'
 
-const emit = defineEmits<{ action: [method: DefaultVideoMenuActions] }>()
+const emit = defineEmits<{ 'action:modal': [method: DefaultVideoMenuActions] }>()
 
 const { id } = useRoute().params as { id: string }
 const router = useRouter()
@@ -54,43 +54,38 @@ const menuItems: VideoMenuItem[] = [
   },
   {
     label: 'Download',
-    icon: 'i-lucide-download',
-    command: () => emit('action', 'Download')
+    icon: 'i-lucide:download',
+    command: () => emit('action:modal', 'Download')
   },
   {
     label: 'Save',
     icon: 'i-lucide-save',
-    command: () => emit('action', 'Save')
+    command: () => emit('action:modal', 'Save')
   },
   {
     label: 'Gift',
     icon: 'i-lucide-gift',
-    command: () => emit('action', 'Gift')
+    command: () => emit('action:modal', 'Gift')
   },
   {
     label: 'Donate',
     icon: 'i-lucide-dollar-sign',
-    command: () => emit('action', 'Donate')
+    command: () => emit('action:modal', 'Donate')
   },
   {
     label: 'Share',
     icon: 'i-lucide-share',
-    command: () => emit('action', 'Share')
+    command: () => emit('action:modal', 'Share')
   },
   {
     label: 'Recommendations',
     icon: 'i-lucide-star',
-    command: () => emit('action', 'Recommendations')
-  },
-  {
-    label: 'Classify',
-    icon: 'i-lucide-clipboard-list',
-    command: () => emit('action', 'Classify')
+    command: () => emit('action:modal', 'Recommendations')
   },
   {
     label: 'Community note',
     icon: 'i-lucide-note-sticky',
-    command: () => emit('action', 'Community note')
+    command: () => emit('action:modal', 'Community note')
   },
   {
     label: 'Fact check',
@@ -102,7 +97,7 @@ const menuItems: VideoMenuItem[] = [
   {
     label: 'Report',
     icon: 'i-lucide-store',
-    command: () => emit('action', 'Report')
+    command: () => emit('action:modal', 'Report')
   }
 ]
 

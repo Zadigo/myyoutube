@@ -1,27 +1,29 @@
 <template>
-  <VoltDialog id="gifts" v-model:visible="show" modal>
-    <VoltAlert class="mb-4" variant="warning">
+  <volt-dialog id="gifts" v-model:visible="showGiftsModal" :dismissable-mask="false" modal>
+    <volt-alert class="mb-4" variant="warning">
       You have purchased no gifts yet. You can buy gifts here before pursuing.
-    </VoltAlert>
+    </volt-alert>
 
-    <VoltButton class="my-2">
+    <volt-button class="my-2">
       Purchase
-    </VoltButton>
+    </volt-button>
 
     <div class="grid grid-cols-3 gap-2">
       <article v-for="i in 10" id="donation" :key="i" class="font-light">
-        <VoltCard class="shadow-none border border-slate-50 text-center">
+        <volt-card class="shadow-none border border-slate-50 text-center">
           <template #content>
             Gift 1
           </template>
-        </VoltCard>
+        </volt-card>
       </article>
     </div>
-  </VoltDialog>
+  </volt-dialog>
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
-const props = defineProps<{ modelValue: boolean }>()
-const show = useVModel(props, 'modelValue', emit, { defaultValue: false })
+/**
+ * Modal
+ */
+
+const { showGiftsModal } = tryUseVideoDetailModalsStore()
 </script>

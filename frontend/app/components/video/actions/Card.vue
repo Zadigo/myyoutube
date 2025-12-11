@@ -19,7 +19,7 @@
         <volt-skeleton v-else />
 
         <!-- Actions -->
-        <video-actions-buttons @action="emit('action', $event)" />
+        <video-actions-buttons @action:modal="emit('action:modal', $event)" />
       </div>
     </template> 
   </volt-card>
@@ -38,7 +38,15 @@
 import { currentVideoSymbol, type DefaultVideoMenuActions } from '~/data'
 import type { BaseVideo, Undefineable } from '~/types'
 
-const emit = defineEmits<{ action: [method: DefaultVideoMenuActions] }>()
+/**
+ * Emits
+ */
+
+const emit = defineEmits<{ 'action:modal': [method: DefaultVideoMenuActions] }>()
+
+/**
+ * Video
+ */
 
 const currentVideo = injectLocal<Ref<Undefineable<BaseVideo>>>(currentVideoSymbol)
 

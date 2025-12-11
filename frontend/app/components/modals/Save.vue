@@ -1,5 +1,5 @@
 <template>
-  <VoltDialog id="save" v-model:visible="show" modal>
+  <volt-dialog id="save" v-model:visible="showSaveModal" modal>
     <template #header>
       <h2 class="font-bold">
         Save to Playlist
@@ -7,35 +7,38 @@
     </template>
 
     <form @submit.prevent>
-      <VoltAutoComplete v-model="selectedPlaylistId" :suggestions="filteredPlaylists" option-label="name" dropdown @complete="handleSearch" />
+      <volt-autocomplete v-model="selectedPlaylistId" :suggestions="filteredPlaylists" option-label="name" dropdown @complete="handleSearch" />
     </form>
 
     <template #footer>
-      <VoltButton @click="() => add(selectedPlaylistId, $route.params.id)">
+      <volt-button @click="() => add(selectedPlaylistId, $route.params.id)">
         Save
-      </VoltButton>
+      </volt-button>
     </template>
-  </VoltDialog>
+  </volt-dialog>
 </template>
 
 <script setup lang="ts">
 import { useEditPlaylists } from '~/composables/use'
+import type { Playlist } from '~/types'
 
-import type { Playlist } from '~/types';
+/**
+ * Modal
+ */
 
-const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
-const props = defineProps<{ modelValue: boolean }>()
-const show = useVModel(props, 'modelValue', emit, { defaultValue: false })
+const { showSaveModal } = tryUseVideoDetailModalsStore()
+
+/**
+ * Playlists
+ */
 
 const selectedPlaylistId = ref<string | null>(null)
-
 const playlistStore = usePlaylistStore()
 const { playlists } = storeToRefs(playlistStore)
 
 const playlistMenuItems = computed(() => playlists.value.map(item => ({ name: item.name })))
-
+  
 const { add } = useEditPlaylists(playlists)
-
 const filteredPlaylists = ref<Playlist[]>([])
 
 function handleSearch(event: CustomEvent<Event> & { query: string }) {
