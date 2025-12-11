@@ -1,19 +1,19 @@
 <template>
   <section id="playlists" class="grid grid-cols-12 gap-2">
-    <!-- Playlist Details -->
+    <!-- Details -->
     <div class="col-span-4">
-      <playlists-details v-if="showPlaylistDetails" @show:details="select" />
-      <playlists-list v-else @show:create="openCreationDialog" @show:details="select" />
+      <playlists-details v-if="showPlaylistDetails" @playlist:details="select" />
+      <playlists-list v-else @playlist:create="openCreationDialog" @playlist:details="select" />
     </div>
 
     <!-- Videos -->
     <div class="col-span-8">
       <header>
-        <VoltCard>
+        <volt-card>
           <template #header>
             Select a playlist to display
           </template>
-        </VoltCard>
+        </volt-card>
       </header>
 
       <!-- Videos -->
@@ -26,7 +26,7 @@
 
     <!-- Modals -->
     <client-only>
-      <playlists-modals-create v-model="showCreatePlaylist" :playlists="playlists" :is-intelligent="isIntelligent" />
+      <playlists-modals-create :playlists="playlists" />
     </client-only> 
   </section>
 </template>
@@ -34,25 +34,16 @@
 <script setup lang="ts">
 import { useCreatePlaylist } from '~/composables/use'
 
-const showPlaylistDetails = ref<boolean>(false)
-
 /**
  * Playlist
  */
 
-const playlistStore = usePlaylistStore()
-const { playlists } = storeToRefs(playlistStore)
-playlistStore.fetch()
-
-const playlistVideos = computed(() => currentPlaylist.value?.videos || [])
-const hasVideos = computed(() => playlistVideos.value.length > 0)
+const { playlists, select, getPlaylists, hasVideos, playlistVideos, showPlaylistDetails } = usePlaylistsComposable()
+await getPlaylists()
 
 /**
  * Edit
  */
 
-const { showCreatePlaylist, select, openCreationDialog, currentPlaylist, isIntelligent } = useCreatePlaylist(playlists)
-
-provide('playlists', playlists)
-provide('currentPlaylist', currentPlaylist)
+const { openCreationDialog } = useCreatePlaylist(playlists)
 </script>

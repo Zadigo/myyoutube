@@ -1,20 +1,20 @@
 <template>
-  <VoltCard>
+  <volt-card>
     <template #content>
-      <VoltButton class="me-2" color="primary" size="small" @click="emit('show:create', false)">
-        <Icon name="i-fa7-solid:plus" class="me-2" />
+      <volt-button class="me-2" size="small" @click="emit('playlist:create', false)">
+        <icon name="lucide:plus" class="me-2" />
         Playlist
-      </VoltButton>
+      </volt-button>
 
-      <VoltButton variant="outlined" color="primary" size="small" @click="emit('show:create', true)">
-        <Icon name="i-fa7-solid:star" class="me-2" />
+      <volt-button size="small" @click="emit('playlist:create', true)">
+        <icon name="lucide:star" class="me-2" />
         Intelligent playlist
-      </VoltButton>
+      </volt-button>
 
-      <VoltDivider class="my-3" />
+      <volt-divider class="my-3" />
 
       <div class="space-y-2">
-        <a v-for="playlist in playlists" :key="playlist.id" href="#" class="bg-primary-50 hover:bg-primary-100 dark:bg-primary-800 dark:hover:bg-primary-700 block rounded-lg p-3" @click.prevent="emit('show:details', playlist)">
+        <a v-for="playlist in playlists" :key="playlist.id" href="#" class="bg-primary-50 hover:bg-primary-100 dark:bg-primary-900 dark:hover:bg-primary-800 block rounded-lg p-3" @click.prevent="emit('playlist:details', playlist)">
           <article :data-id="playlist.id">
             <p class="font-bold">{{ playlist.name }}</p>
             <p v-if="playlist.description" class="font-light m-0">
@@ -24,13 +24,13 @@
         </a>
       </div>
     </template>
-  </VoltCard>
+  </volt-card>
 </template>
 
 <script setup lang="ts">
 import type { Playlist } from '~/types'
 
-const emit = defineEmits<{ 'show:create': [intelligent: boolean], 'show:details': [playlist: Playlist] }>()
+const emit = defineEmits<{ 'playlist:create': [intelligent: boolean], 'playlist:details': [playlist: Playlist] }>()
 
-const playlists = inject<Playlist[]>('playlists', [])
+const { playlists } = usePlaylistsComposable() 
 </script>

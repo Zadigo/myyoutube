@@ -1,3 +1,4 @@
+import { playlistsFixture } from '~/data/fixtures'
 import type { Arrayable, Nullable, Playlist } from '~/types'
 
 /**
@@ -61,23 +62,17 @@ export interface NewPlaylist {
  * Composable for creating and managing playlists
  * @param playlists Reactive reference to the list of playlists
  */
-export function useCreatePlaylist(playlists: MaybeRef<Playlist[]>) {
+export const useCreatePlaylist = createSharedComposable((playlists: MaybeRef<Playlist[]>) => {
   const _playlists = toRef(playlists)
 
   /**
    * Creation Dialog
    */
 
-  const showCreatePlaylist = ref<boolean>(false)
-  const isIntelligent = ref<boolean>(false)
-
-  function openCreationDialog(intelligent: boolean = false) {
-    isIntelligent.value = intelligent
-    showCreatePlaylist.value = true
-  }
+  const [showCreatePlaylist, toggleShowCreatePlaylist] = useToggle<boolean>(false)
 
   /**
-   * Create
+   * Creation
    */
 
   const newPlaylist = ref<NewPlaylist>({
@@ -85,6 +80,12 @@ export function useCreatePlaylist(playlists: MaybeRef<Playlist[]>) {
     description: null,
     is_intelligent: false
   })
+
+  function openCreationDialog(intelligent = false) {
+    console.log('Opening creation dialog for intelligent:', intelligent)
+    newPlaylist.value.is_intelligent = intelligent
+    toggleShowCreatePlaylist()
+  }
 
   async function create(intelligent: boolean = false) {
     const data = await $fetch<Playlist>('/playlists/create', {
@@ -106,22 +107,6 @@ export function useCreatePlaylist(playlists: MaybeRef<Playlist[]>) {
     _playlists.value.push(data)
   }
 
-  watch(showCreatePlaylist, (n) => {
-    if (!n) {
-      isIntelligent.value = false
-    }
-  })
-
-  /**
-   * Currently selected playlist
-   */
-
-  const currentPlaylist = ref<Playlist>()
-
-  function select(playlist: Playlist) {
-    currentPlaylist.value = playlist
-  }
-
   /**
    * Intelligent playlist
    */
@@ -133,20 +118,115 @@ export function useCreatePlaylist(playlists: MaybeRef<Playlist[]>) {
   ] as const
 
   return {
-    intelligentVideoOptions,
-    currentPlaylist,
-    newPlaylist,
-    showCreatePlaylist,
-    isIntelligent,
-    openCreationDialog,
     /**
-     * Select a playlist to view/edit
+     * Options for intelligent video filtering
      */
-    select,
+    intelligentVideoOptions,
+    /**
+     * Reactive reference to the new playlist being created
+     */
+    newPlaylist,
+    /**
+     * Whether to show the create playlist dialog or not
+     */
+    showCreatePlaylist,
+    /**
+     * Open the creation dialog
+     * @param [intelligent=false] Whether the playlist is intelligent or not
+     */
+    openCreationDialog,
     /**
      * Create a new playlist
      * @param [intelligent=false] Whether the playlist is intelligent or not 
      */
-    create
+    create,
+    /**
+     * Toggle the visibility of the create playlist dialog
+     */
+    toggleShowCreatePlaylist
   }
-}
+})
+
+/**
+ * Global state composable for playlists
+ */
+export const usePlaylistsComposable = createGlobalState(() => {
+  const playlists = ref<Playlist[]>([])
+
+  async function getPlaylists() {
+    // const { data, execute } = useFetch<Playlist[]>('/v1/playlists', {
+    //   method: 'GET',
+    //   baseURL: useRuntimeConfig().public.djangoProdUrl,
+    //   immediate: false,
+    //   lazy: true,
+    //   onRequestError({ response }) {
+    //     if (response) {
+    //       if (response.status === 401) {
+    //         refreshAccessTokenClient()
+    //       }
+    //     }
+    //   }
+    // })
+
+    // await useDebounceFn(execute, 3000)()
+
+
+    // if (data.value) {
+    //   playlists.value.push(...data.value)
+
+    //   // TODO: Save to firebase
+    // }
+
+    playlists.value = playlistsFixture
+    return playlistsFixture
+  }
+
+  /**
+   * Currently selected playlist
+   */
+
+  const currentPlaylist = ref<Playlist>()
+  const query = useUrlSearchParams() as { playlist: string }
+
+  const [showPlaylistDetails, toggleShowPlaylistDetails] = useToggle<boolean>(false)
+  
+  function select(playlist: Nullable<Playlist>) {
+    if (isDefined(playlist)) {
+      currentPlaylist.value = playlist
+      query.playlist = playlist.id
+      showPlaylistDetails.value = true
+    }
+  }
+
+  const playlistVideos = computed(() => currentPlaylist.value?.videos || [])
+  const hasVideos = computed(() => playlistVideos.value.length > 0)
+
+  /**
+   * Search
+   */
+  
+  const search = ref<string>('')
+
+  const searched = computed(() => {
+    if (!search.value) {
+      return playlists.value
+    }
+    else {
+      return playlists.value.filter(item => {
+        return item.name.toLowerCase().includes(search.value.toLowerCase())
+      })
+    }
+  })
+
+  return {
+    currentPlaylist,
+    playlists,
+    searched,
+    playlistVideos,
+    hasVideos,
+    showPlaylistDetails,
+    toggleShowPlaylistDetails,
+    select,
+    getPlaylists
+  }
+})

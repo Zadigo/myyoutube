@@ -6,7 +6,7 @@
           <div class="flex justify-left gap-2 items-center">
             <nuxt-link :to="`/videos/${video.video_id}`">
               <div class="video">
-                <VoltAvatar src="/avatars/avatar1.png" shape="circle" size="large" />
+                <volt-avatar src="/avatars/avatar1.png" shape="circle" size="large" />
               </div>
             </nuxt-link>
 
@@ -36,7 +36,7 @@
 
 
 <script setup lang="ts">
-import type { VideoInfo } from '~/types'
+import type { PlaylistVideo } from '~/types'
 
-defineProps<{ video: VideoInfo }>()
+defineProps<{ video: PlaylistVideo }>()
 </script>

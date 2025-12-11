@@ -17,12 +17,12 @@
 
           <div class="space-x-2">
             <volt-secondary-button variant="secondary" class="mb-4">
-              <Icon name="i-fa7-solid:filter" class="me-2" />
+              <icon name="lucide:filter" />
               Filter Notes
             </volt-secondary-button>
 
             <volt-secondary-button variant="primary" class="mb-4">
-              <Icon name="i-fa7-solid:plus" class="me-2" />
+              <icon name="lucide:plus" />
               Add a Note
             </volt-secondary-button>
           </div>
@@ -40,15 +40,11 @@
 import type { CommunityNote, CommunityNoteApiResponse } from '~/types/moderation'
 
 const { $moderationClient } = useNuxtApp()
-
 const communityNotes = ref<CommunityNote[]>([])
 
 onMounted(async () => {
   try {
-    const response = await $moderationClient<CommunityNoteApiResponse>('/community-notes/recent', {
-      method: 'GET'
-    })
-
+    const response = await $moderationClient<CommunityNoteApiResponse>('/community-notes/recent', { method: 'GET' })
     communityNotes.value = response.results
   } catch (error) {
     console.error('Error fetching community notes:', error)

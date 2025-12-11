@@ -12,7 +12,7 @@
         </p>
 
         <volt-button variant="text" class="mt-3">
-          <Icon name="i-fa7-solid:arrow-up-right-from-square" class="me-2" />
+          <icon name="lucide:external-link" />
           Learn more
         </volt-button>
       </template>

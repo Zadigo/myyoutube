@@ -1,33 +1,23 @@
 <template>
-  <VoltCard>
-    <template #body>
-      <VoltAvatar image="/avatars/avatar1.png" shape="circle" />
+  <volt-card>
+    <template #content>
+      <volt-avatar image="/avatars/avatar1.png" shape="circle" />
 
-      <VoltButton color="primary" class="mt-4" @click="emit('show:details', null)">
-        <Icon name="i-fa7-solid:arrow-left" />
-      </VoltButton>
+      <volt-button color="primary" class="mt-4" @click="() => { toggleShowPlaylistDetails() }">
+        <icon name="lucide:arrow-left" />
+      </volt-button>
       
-      <VoltDivider class="my-5" />
+      <volt-divider class="my-5" />
 
       <div v-if="currentPlaylist">
         <h3>{{ currentPlaylist.name }}</h3>
-        
-        <p v-if="currentPlaylist.description" class="fw-light">
-          {{ currentPlaylist.description }}
-        </p>
-
-        <p v-else class="">
-          No description
-        </p>
+        <p v-if="currentPlaylist.description" class="font-light">{{ currentPlaylist.description }}</p>
+        <p v-else class="font-light">No description provided.</p>
       </div>
     </template>
-  </VoltCard>
+  </volt-card>
 </template>
 
 <script setup lang="ts">
-import type { Playlist } from '~/types'
-
-const emit = defineEmits<{ 'show:details': [playlist: null] }>()
-
-const currentPlaylist = inject<Ref<Playlist> | null>('currentPlaylist', null)
+const { currentPlaylist, toggleShowPlaylistDetails } = usePlaylistsComposable()
 </script>
