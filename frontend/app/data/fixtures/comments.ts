@@ -1,40 +1,31 @@
-import type { VideoComment } from '~/types'
+import type { Arrayable, VideoCommentNode, VideoComments } from '~/types'
 
-export const commentsFixture: VideoComment[] = [
-  {
-    id: 2,
+const commentNodes = Array.from<Arrayable<VideoCommentNode>>({ length: 50 }).map((_, index) => ({
+  node: {
+    id: `comment${index + 1}`,
+    content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Comment number ${index + 1}.`,
+    fromCreator: index % 2 === 0,
+    pinned: index === 0,
+    numberOfReplies: 2,
+    createdOn: new Date(2024, 5, index + 1, 12, 0, 0).toISOString(),
     user: {
-      id: 1,
-      firstname: 'my firstname',
-      lastname: 'my lastname',
-      username: "qtigawWIuWyJv5T",
-      get_full_name: "None None"
-    },
-    content: "What do you expect from use",
-    from_creator: true,
-    pinned: true,
-    number_of_replies: 0,
-    is_liked: false,
-    is_disliked: false,
-    created_on: "2025-08-03T11:58:57.669585Z",
-    user_channel: "ch_N6GUfe7iX7QvOwL"
-  },
-  {
-    id: 1,
-    user: {
-      id: 1,
-      firstname: 'my firstname 2',
-      lastname: 'my lastname 2',
-      username: "qtigawWIuWyJv5T",
-      get_full_name: "None None"
-    },
-    content: "This is some content to use",
-    from_creator: true,
-    pinned: false,
-    number_of_replies: 0,
-    is_liked: false,
-    is_disliked: false,
-    created_on: "2025-08-03T11:58:33.964772Z",
-    user_channel: "ch_N6GUfe7iX7QvOwL"
+      id: index + 1,
+      username: `User${index + 1}`,
+      userChannelSet: [
+        {
+          id: `channel${index + 1}`,
+          name: `Channel ${index + 1}`,
+          reference: `channel-reference-${index + 1}`
+        }
+      ]
+    }
   }
-]
+}))
+
+export const commentsFixture: VideoComments = {
+  data: {
+    videocomments: {
+      edges: commentNodes
+    }
+  }
+}

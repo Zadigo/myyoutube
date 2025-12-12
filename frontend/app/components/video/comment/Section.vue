@@ -23,16 +23,15 @@
       <volt-divider class="my-5" />
 
       <!-- Comments -->
-      <video-comment-card-item v-for="comment in pinnedComments" :key="comment.id" :comment="comment" />
-      <video-comment-card-item v-for="comment in unpinnedComments" :key="comment.id" :comment="comment" />
+      <video-comment-card-item v-for="comment in pinnedComments" :key="comment.node.id" :video-comment="comment" />
+      <video-comment-card-item v-for="comment in unpinnedComments" :key="comment.node.id" :video-comment="comment" />
     </template>
   </volt-card>
 </template>
 
 <script setup lang="ts">
 import { useCommentsComposable } from '~/composables/use'
-import { commentsFixture } from '~/data/fixtures'
-import type { VideoComment } from '~/types'
+import type { VideoComments } from '~/types'
 
 const sortActions = [
   'Newest',
@@ -51,8 +50,7 @@ type SortActionsMenuItem = {
  * Comments
  */
 
-const comments = ref<VideoComment[]>(commentsFixture)
-const { comments: allComments, pinnedComments, unpinnedComments, sortCommentsBy } = await useCommentsComposable()
+const { comments, pinnedComments, unpinnedComments, sortCommentsBy } = await useCommentsComposable()
 
 const sortActionsMenuItem: SortActionsMenuItem[] = sortActions.map(action => {
   return {
@@ -70,9 +68,9 @@ const sortActionsMenuItem: SortActionsMenuItem[] = sortActions.map(action => {
  * at the start of the current comment list
  * @todo - Send to backend
  */
-async function handleNewComment (comment: VideoComment) {
+async function handleNewComment (comment: VideoComments) {
   if (comments.value) {
-    comments.value.unshift(comment)
+    // comments.value.unshift(comment)
   }
 }
 </script>

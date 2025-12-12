@@ -1,4 +1,4 @@
-import type { ApiResponse, VideoComment } from "~/types"
+import type { Arrayable, VideoCommentNode, VideoComments } from '~/types'
 
 export const sortActions = [
   'Newest',
@@ -17,26 +17,27 @@ export type SortActionsMenuItem = {
  * Composable to handle comments fetching and sorting
  */
 export async function useCommentsComposable() {
-  const comments = ref<VideoComment[]>([])
+  const comments = ref<Arrayable<VideoCommentNode>>()
+  
   const queryParams = ref({
     desc: true,
     limit: 20,
     offset: 0
   })
 
-  const { data, refresh } = await useFetch<ApiResponse<VideoComment>>('/api/comments', {
+  const { data, refresh } = await useFetch<VideoComments>('/api/comments', {
     method: 'GET',
     immediate: true,
     query: queryParams.value
   })
   
   if (isDefined(data)) {
-    comments.value = data.value.results
+    comments.value = data.value.data.videocomments.edges
   }
 
   const pinnedComments = computed(() => {
     if (comments.value) {
-      return comments.value.filter(x => x.pinned === true)
+      return comments.value.filter(x => x.node.pinned)
     } else {
       return []
     }
@@ -44,7 +45,7 @@ export async function useCommentsComposable() {
 
   const unpinnedComments = computed(() => {
     if (comments.value) {
-      return comments.value.filter(x => x.pinned === false)
+      return comments.value.filter(x => !x.node.pinned)
     } else {
       return []
     }
