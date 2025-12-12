@@ -1,9 +1,10 @@
 import graphene
 from accounts.schema import AccountsQuery
 from videos.schema import VideosQuery
+from mychannel.schema import MyChannelQuery
 
 
-class Query(VideosQuery, AccountsQuery, graphene.ObjectType):
+class Query(VideosQuery, AccountsQuery, MyChannelQuery, graphene.ObjectType):
     pass
 
 

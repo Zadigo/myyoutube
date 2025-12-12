@@ -1,5 +1,5 @@
 import type { DefaultMainCategories, DefaultSortBy, DefaultUploadDate, DefaultVideoLength } from '~/data'
-import type { BaseVideo } from '~/types'
+import type { BaseVideo, GraphQlResponse } from '~/types'
 
 /**
  * 

@@ -10,16 +10,45 @@ export default defineEventHandler(async event => {
     body: {
       query: `
         query {
-          allvideos {
+          allvideos(first: 100) {
             edges {
               node {
                 id
-                title
+                ageRestricted
+                category
+                createdOn
+                commentStrategy
                 description
-                user {
-                  id
-                  username
+                duration
+                framerate
+                height
+                modifiedOn
+                ratingsAreVisible
+                recordingDate
+                recordingLanguage
+                recordingLocation
+                title
+                userChannel {
+                  isVerified
+                  name
+                  reference
                 }
+                video
+                videoId
+                views
+                visibility
+                width
+                user {
+                  userprofile {
+                    isProfessional
+                  }
+                }
+              }
+              pageInfo {
+                startCursor
+                endCursor
+                hasNextPage
+                hasPreviousPage
               }
             }
           }

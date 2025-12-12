@@ -9,7 +9,11 @@ class VideosNode(DjangoObjectType):
     class Meta:
         model = Video
         interfaces = (relay.Node,)
-        filter_fields = {}
+        filter_fields = {
+            'title': ['exact', 'icontains', 'istartswith'],
+            'description': ['icontains'],
+            'video_id': ['exact']
+        }
 
     @classmethod
     def get_queryset(cls, queryset, info):
@@ -22,22 +26,11 @@ class VideosConnection(relay.Connection):
         node = VideosNode
 
 
-class SearchByNode(DjangoObjectType):
-    class Meta:
-        model = Video
-        interfaces = (relay.Node,)
-        filter_fields = {
-            'title': ['exact', 'icontains', 'istartswith'],
-            'description': ['icontains'],
-            'video_id': ['exact']
-        }
-
-
 class VideosQuery(graphene.ObjectType):
-    video = graphene.Node.Field(SearchByNode)
+    video = graphene.Node.Field(VideosNode)
     # allvideos = DjangoFilterConnectionField(VideosNode)
     allvideos = relay.ConnectionField(VideosConnection)
-    searchvideos = DjangoFilterConnectionField(SearchByNode)
+    searchvideos = DjangoFilterConnectionField(VideosNode)
 
     def resolve_allvideos(self, info, **kwargs):
         return Video.objects.select_related('user', 'user_channel', 'channel_playlist').all()

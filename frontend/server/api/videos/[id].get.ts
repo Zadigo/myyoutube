@@ -1,6 +1,6 @@
-// import type { VideoInfo } from '~/types'
 // import { refreshAccessToken } from '~/utils'
 import { fixtureVideos } from '~/data/fixtures/videos'
+import type { BaseVideo, GraphQlResponse } from '~/types'
 
 export default defineEventHandler(async event => {
   // const refreshToken = getCookie(event, 'refresh')
@@ -19,7 +19,32 @@ export default defineEventHandler(async event => {
 
   // return response
 
-  // return fixtureVideo
+  const response = await $fetch<GraphQlResponse<'allvideos', BaseVideo>>('/graphql/', {
+    method: 'POST',
+    baseURL: useRuntimeConfig().public.videosGraphqlUrl,
+    body: {
+      query: `
+        query {
+          allvideos(first: 100) {
+            edges {
+              node {
+                id
+                title
+                description
+                user {
+                  id
+                  username
+                }
+              }
+            }
+          }
+        }
+      `
+    }
+  })
+
+  console.log('Response:', JSON.stringify(response))
+  console.log(query)
 
   return fixtureVideos.find(video => video.video_id === id)
 })

@@ -55,10 +55,29 @@ export interface SessionCache {
   categories: Arrayable<string>
 }
 
+
+
+
+
 export type GraphQlResponse<T extends string, R = Record<string, unknown>> = {
   data: {
     [key in T]: {
       edges: Array<{ node: R }>
     }
+  }
+}
+
+export type GraphQlSingleResponse<T extends string, R = Record<string, unknown>> = {
+  data: {
+    [key in T]: R
+  }
+}
+
+export interface GraphQlPaginationInfo {
+  pageInfo: {
+    startCursor: string
+    endCursor: string
+    hasNextPage: boolean
+    hasPreviousPage: boolean
   }
 }
