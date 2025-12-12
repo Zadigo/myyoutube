@@ -1,11 +1,12 @@
 import type { Nullable } from '.'
 
 export interface VideoTechnicalDetails {
-  currentTime: number
-  formattedCurrentTime: string
-  wasPlayed: boolean
-  percentagePlayed: number
-  playPauseCount: number
+	currentTime: number
+	duration: number
+	formattedCurrentTime: string
+	wasPlayed: boolean
+	percentagePlayed: number
+	playPauseCount: number
 }
 
 export interface BaseVideo {

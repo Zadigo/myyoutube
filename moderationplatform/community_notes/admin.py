@@ -1,6 +1,5 @@
+from community_notes.models import Note, Source
 from django.contrib import admin
-
-from moderationplatform.community_notes.models import Note, Source
 
 
 @admin.register(Source)
@@ -14,8 +13,8 @@ class SourceAdmin(admin.ModelAdmin):
 
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):
-    list_display = ['user', 'content', 'created_on']
+    list_display = ['pk']
     search_fields = ['user__username', 'content']
     list_filter = ['created_on']
     ordering = ['-created_on']
-    readonly_fields = ['created_on', 'updated_on', 'reference']
+    readonly_fields = ['created_on', 'reference']

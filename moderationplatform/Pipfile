@@ -4,29 +4,23 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-stripe = "*"
-boto3 = "*"
+dotenv = "*"
+autopep8 = "*"
 django = "*"
 django-storages = "*"
 django-rest-framework = "*"
 django-cors-headers = "*"
 django-extensions = "*"
 django-debug-toolbar = "*"
-django-imagekit = "*"
 django-redis = "*"
 gunicorn = "*"
 numpy = "*"
 nltk = "*"
 pandas = "*"
-pillow = "*"
 python-memcached = "*"
 redis = "*"
 django-axes = "*"
 pymemcache = "*"
-autopep8 = "*"
-opencv-python = "*"
-opencv-python-headless = "*"
-moviepy = "*"
 channels = {extras = ["daphne"], version = "*"}
 autobahn = "==22.4.2"
 channels-redis = "*"
@@ -36,8 +30,10 @@ graphene-django = "*"
 django-filter = "*"
 drf-spectacular = "*"
 djangorestframework-simplejwt = "*"
+django-import-export = "*"
 
 [dev-packages]
+autopep8 = "*"
 
 [requires]
 python_version = "3.13"

@@ -1,5 +1,7 @@
 import type { Playlist } from '~/types'
-import { videoDetailsFixture } from './videos'
+import { selectRandomVideo, videoDetailsFixture } from './videos'
+
+const randomVideo = selectRandomVideo()
 
 export const playlistsFixture: Playlist = {
   data: {
@@ -18,14 +20,14 @@ export const playlistsFixture: Playlist = {
               edges: [
                 {
                   node: {
-                    id: videoDetailsFixture.id,
-                    title: videoDetailsFixture.title,
-                    description: videoDetailsFixture.description,
-                    videoId: videoDetailsFixture.videoId,
+                    id: randomVideo.id,
+                    title: randomVideo.title,
+                    description: randomVideo.description,
+                    videoId: randomVideo.videoId,
                     userChannel: {
-                      id: videoDetailsFixture.userChannel.id,
-                      name: videoDetailsFixture.userChannel.name,
-                      reference: videoDetailsFixture.userChannel.reference
+                      id: randomVideo.userChannel.id,
+                      name: randomVideo.userChannel.name,
+                      reference: randomVideo.userChannel.reference
                     }
                   }
                 }

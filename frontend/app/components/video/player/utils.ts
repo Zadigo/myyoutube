@@ -1,4 +1,4 @@
-import type { Arrayable, Nullable, Undefineable } from '~/types'
+import type { Arrayable, Nullable, Undefineable, VideoTechnicalDetails} from '~/types'
 
 export type VideoPlayerEl = Ref<Nullable<HTMLVideoElement>>
 
@@ -35,15 +35,6 @@ export function useVideoPlayerStore() {
   const store = _useVideoPlayerStore()
   if (!store) throw new Error('useVideoPlayerStore must be used after useVideoPlayer')
   return store
-}
-
-export interface VideoTechnicalDetails {
-  currentTime: number
-  duration: number
-  formattedCurrentTime: string
-  wasPlayed: boolean
-  percentagePlayed: number
-  playPauseCount: number
 }
 
 /**
@@ -101,19 +92,19 @@ export const useVideoPlayerControls = createGlobalState((videoPlayerEl: VideoPla
 
   const duration = ref<number>(0)
   const currentTime = ref<number>(0)
-  const wasPlayed = ref<boolean>(false)
-
+  
   const currentTimeFormatted = computed(() => formatTime(currentTime.value))
   const durationFormatted = computed(() => formatTime(duration.value))
-
+  
   // Indicates that the current time is equals the total video duration time
   const isEnded = computed(() => currentTimeFormatted.value === durationFormatted.value)
-
+  
   watchOnce(isEnded, () => {
     isPlaying.value = false
     // emit('update:metadata', playingStatistics.value)
   })
-
+  
+  const wasPlayed = ref<boolean>(false)
   watchOnce(() => numberOfPlays.value === 1, () => {
     wasPlayed.value = true
   })
@@ -157,6 +148,17 @@ export const useVideoPlayerControls = createGlobalState((videoPlayerEl: VideoPla
   //     handlePlayPause(new Event('keyboard'))
   //   }
   // })
+
+  /**
+   * Reset
+   */
+  tryOnUnmounted(() => {
+    duration.value = 0
+    currentTime.value = 0
+    isPlaying.value = false
+    isLoading.value = true
+    wasPlayed.value = false
+  })
 
   return {
     /**

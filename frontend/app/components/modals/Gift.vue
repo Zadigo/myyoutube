@@ -1,8 +1,8 @@
 <template>
   <volt-dialog id="gifts" v-model:visible="showGiftsModal" :dismissable-mask="false" modal>
-    <volt-alert class="mb-4" variant="warning">
+    <volt-panel class="mb-4">
       You have purchased no gifts yet. You can buy gifts here before pursuing.
-    </volt-alert>
+    </volt-panel>
 
     <volt-button class="my-2">
       Purchase

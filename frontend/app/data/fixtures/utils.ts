@@ -2,7 +2,12 @@ export const videoPaths = [
   '/videos/vid1.mp4',
   '/videos/vid2.mp4',
   '/videos/vid3.mp4',
-  '/videos/vid4.mp4'
+  '/videos/vid4.mp4',
+  '/videos/vid5.mp4',
+  '/videos/vid6.mp4',
+  '/videos/vid7.mp4',
+  '/videos/vid8.mp4',
+  '/videos/vid9.mp4'
 ]
 
 /**

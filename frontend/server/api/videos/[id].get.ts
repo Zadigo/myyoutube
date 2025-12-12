@@ -1,5 +1,5 @@
 // import { refreshAccessToken } from '~/utils'
-import { videoDetailsFixture } from '~/data/fixtures/videos'
+import { feedVideoFixtures } from '~/data/fixtures/videos'
 
 export default defineEventHandler(async event => {
   // const refreshToken = getCookie(event, 'refresh')
@@ -44,5 +44,5 @@ export default defineEventHandler(async event => {
 
   // console.log('Video details response:', response.data.searchvideos.edges[0].node)
 
-  return videoDetailsFixture
+  return feedVideoFixtures.find(video => video.videoId === id) || null
 })

@@ -1,8 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from django.contrib.auth import get_user_model
-from videoplatform.videoplatform.utils import create_id
+
+from moderationplatform.utils import create_id
 
 
 class Vote(models.Model):
@@ -55,11 +56,11 @@ class Source(models.Model):
         default=0,
         help_text="Credibility score of the source, from 0 to 100"
     )
-    created_on = models.DateTimeField(
-        auto_now_add=True
-    )
     updated_on = models.DateTimeField(
         auto_now=True
+    )
+    created_on = models.DateTimeField(
+        auto_now_add=True
     )
 
     def __str__(self):
@@ -91,11 +92,11 @@ class Report(models.Model):
     active = models.BooleanField(
         default=True
     )
-    created_on = models.DateTimeField(
-        auto_now_add=True
-    )
     updated_on = models.DateTimeField(
         auto_now=True
+    )
+    created_on = models.DateTimeField(
+        auto_now_add=True
     )
 
     def __str__(self):
