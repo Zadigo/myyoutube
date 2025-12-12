@@ -2,6 +2,8 @@
 @import "tailwindcss-primeui";
 @import "tw-animate-css";
 
+@custom-variant dark (&:where(.p-dark, .p-dark *));
+
 @theme {
   --font-sans: 'Sora', sans-serif;
   --font-title: 'Manrope', sans-serif;

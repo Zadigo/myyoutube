@@ -20,6 +20,6 @@ export type VideoCommentNode = RelayNode<BaseComment>
 
 export type VideoComments = GraphQlData<'videocomments', RelayEdge<BaseComment>>
 
-export type VideoReply = BaseComment
+export type VideoReplies = GraphQlData<'commentreplies', RelayEdge<BaseComment>>
 
 export type VideoReplyNode = RelayNode<Reply>

@@ -12,6 +12,7 @@
     </div>
 
     <ul class="ms-auto">
+      <volt-button @click="() => { toggleDarkMode() }">Dark</volt-button>
       <volt-avatar image="/avatars/avatar1.png" shape="circle" size="normal" />
     </ul>
   </nav>
@@ -31,4 +32,10 @@ const theme = computed(() => {
     'ps-0': !showSidebar.value
   }
 })
+
+/**
+ * Darkmode
+ */
+
+const { toggleDarkMode } = useDarkModeComposable()
 </script>

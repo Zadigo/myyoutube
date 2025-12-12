@@ -1,5 +1,5 @@
 <template>
-  <article class="card my-1 shadow-none" aria-label="">
+  <article class="card my-1 shadow-none bg-primary-50 rounded-lg p-5 max-w-5xl ms-auto" aria-label="">
     <div class="card-body">
       <div class="d-flex justify-content-around">
         <div class="me-3">
@@ -51,14 +51,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { PropType } from 'vue';
-import type { VideoComment } from '~/types';
+import type { VideoReplyNode } from '~/types'
 
-defineProps({
-  reply: {
-    type: Object as PropType<VideoComment>, 
-    default: () => {},
-    required: false
-  }
-})
+defineProps<{ reply: VideoReplyNode }>()
 </script>

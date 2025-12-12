@@ -61,19 +61,17 @@
         </volt-button>
   
         <transition id="replies" tag="div" name="pop" mode="in-out">
-          <div v-if="showReplies" class="replies">
-            <video-user-reply v-for="i in 3" :key="i" :reply="{}" />
+          <div v-if="showReplies && isDefined(replies)" class="replies">
+            <video-user-reply v-for="reply in replies.data.commentreplies.edges" :key="reply.node.id" :reply="reply" />
           </div>
         </transition>
       </div>
-  
-      <volt-divider class=" mt-2 mb-5" />
     </template>
   </volt-card>
 </template>
 
 <script lang="ts" setup>
-import type { VideoCommentNode } from '~/types'
+import type { VideoCommentNode, VideoReplies } from '~/types'
 
 const { videoComment } = defineProps<{ videoComment: VideoCommentNode }>()
 
@@ -82,6 +80,14 @@ const { videoComment } = defineProps<{ videoComment: VideoCommentNode }>()
  */
 
 const [showReplies, toggleReplies] = useToggle(false)
+
+const replies = ref<VideoReplies>()
+
+whenever(showReplies, async (newVal) => {
+  if (newVal && !replies.value) {
+    replies.value = await $fetch<VideoReplies>(`/api/comments/${videoComment.node.id}`)
+  }
+})
 
 /**
  * Userchannel

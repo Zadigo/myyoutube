@@ -1,32 +1,34 @@
 <template>
-  <volt-card>
-    <template #content>
-      <div class="flex items-center justify-between">
-        <h2 v-if="comments" class="h4 m-0">
-          {{ comments.length }} comments
-        </h2>
-
-        <volt-dropdown id="comment-sorting" :items="sortActionsMenuItem">
-          <template #default="{ attrs }">
-            <volt-button @click="attrs.toggle">
-              <icon name="i-lucide-sort-asc" />
-            </volt-button>
-          </template>
-        </volt-dropdown>
-      </div>
-
-      <volt-divider class="my-3" />
-
-      <!-- Actions -->
-      <video-comment-section-actions @new-comment="handleNewComment" />
-
-      <volt-divider class="my-5" />
-
-      <!-- Comments -->
-      <video-comment-card-item v-for="comment in pinnedComments" :key="comment.node.id" :video-comment="comment" />
-      <video-comment-card-item v-for="comment in unpinnedComments" :key="comment.node.id" :video-comment="comment" />
-    </template>
-  </volt-card>
+  <section id="comments">
+    <volt-card>
+      <template #content>
+        <div class="flex items-center justify-between">
+          <h2 v-if="comments" class="h4 m-0">
+            {{ comments.length }} comments
+          </h2>
+  
+          <volt-dropdown id="comment-sorting" :items="sortActionsMenuItem">
+            <template #default="{ attrs }">
+              <volt-button @click="attrs.toggle">
+                <icon name="i-lucide-sort-asc" />
+              </volt-button>
+            </template>
+          </volt-dropdown>
+        </div>
+  
+        <volt-divider class="my-3" />
+  
+        <!-- Actions -->
+        <video-comment-section-actions @new-comment="handleNewComment" />
+      </template>
+    </volt-card>
+    
+    <!-- Comments -->
+     <div class="my-10 space-y-2 max-w-6xl ms-auto">
+       <video-comment-card-item v-for="comment in pinnedComments" :key="comment.node.id" :video-comment="comment" />
+       <video-comment-card-item v-for="comment in unpinnedComments" :key="comment.node.id" :video-comment="comment" />
+     </div>
+  </section>
 </template>
 
 <script setup lang="ts">
