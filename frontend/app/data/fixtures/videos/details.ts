@@ -32,7 +32,7 @@ export const videoDetailsFixture: VideoDetails = {
     channelplaylistSet: [],
     description: "This is a sample channel description.",
     isVerified: true,
-    reference: "sample-channel",
+    reference: "eAsySampleChannel",
     tags: [],
     subscribers: []
   },

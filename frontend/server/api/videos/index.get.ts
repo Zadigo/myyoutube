@@ -1,11 +1,11 @@
 import { feedVideoFixtures } from '~/data/fixtures/videos'
-import type { SearchQuery, FeedVideo, GraphQlResponse } from '~/types'
+import type { SearchQuery, FeedVideo, GraphQlData, RelayNode } from '~/types'
 
 export default defineEventHandler(async event => {
   const query = getQuery<SearchQuery>(event)
   console.log(query)
 
-  const response = await $fetch<GraphQlResponse<'allvideos', FeedVideo>>('/graphql/', {
+  const response = await $fetch<GraphQlData<'allvideos', RelayNode<FeedVideo>>>('/graphql/', {
     method: 'POST',
     baseURL: useRuntimeConfig().public.videosGraphqlUrl,
     body: {

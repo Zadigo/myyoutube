@@ -21,7 +21,7 @@
       <!-- Videos -->
       <div class="mt-5">
         <div v-if="hasVideos">
-          <playlists-horizontal-video-card v-for="video in playlistVideos" :key="video.id" :video="video" />
+          <playlists-horizontal-video-card v-for="video in playlistVideos" :key="video.node.id" :video="video" />
         </div>
       </div>
     </div>

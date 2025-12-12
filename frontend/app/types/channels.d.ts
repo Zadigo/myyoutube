@@ -1,21 +1,17 @@
-// import type { CustomUser } from './accounts'
-
-import type { Arrayable, BaseUser, GraphQlEdges } from "."
+import type { Arrayable, BaseUser, RelayNode } from '.'
 
 export interface Tag {
   id: string
   name: string
 }
 
-export interface Subscriber {
-  edges: GraphQlEdges<Pick<BaseUser, 'id' | 'username'>>
-}
+export type Subscriber = RelayNode<Pick<BaseUser, 'id' | 'username'>>
 
 export interface ChannelPlaylistSet {
   id: string
   name: string
   createdOn: string
-  videoSet: GraphQlEdges<BaseVideo>
+  videoSet: RelayNode<BaseVideo>
 }
 
 export interface BaseUserChannel {

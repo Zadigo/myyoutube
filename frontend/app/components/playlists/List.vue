@@ -14,11 +14,11 @@
       <volt-divider class="my-3" />
 
       <div class="space-y-2">
-        <a v-for="playlist in playlists" :key="playlist.id" href="#" class="bg-primary-50 hover:bg-primary-100 dark:bg-primary-900 dark:hover:bg-primary-800 block rounded-lg p-3" @click.prevent="emit('playlist:details', playlist)">
-          <article :data-id="playlist.id">
-            <p class="font-bold">{{ playlist.name }}</p>
-            <p v-if="playlist.description" class="font-light m-0">
-              {{ playlist.description }}
+        <a v-for="playlist in playlists" :key="playlist.node.id" href="#" class="bg-primary-50 hover:bg-primary-100 dark:bg-primary-900 dark:hover:bg-primary-800 block rounded-lg p-3" @click.prevent="emit('playlist:details', playlist)">
+          <article :data-id="playlist.node.id">
+            <p class="font-bold">{{ playlist.node.name }}</p>
+            <p v-if="playlist.node.description" class="font-light m-0">
+              {{ playlist.node.description }}
             </p>
           </article>
         </a>
@@ -28,9 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import type { Playlist } from '~/types'
+import type { RelayNode, SinglePlaylist } from '~/types'
 
-const emit = defineEmits<{ 'playlist:create': [intelligent: boolean], 'playlist:details': [playlist: Playlist] }>()
+const emit = defineEmits<{ 'playlist:create': [intelligent: boolean], 'playlist:details': [playlist: RelayNode<SinglePlaylist>] }>()
 
 const { playlists } = usePlaylistsComposable() 
 </script>

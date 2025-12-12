@@ -1,11 +1,11 @@
 import { playlistsFixture } from '~/data/fixtures'
-import type { Arrayable, Nullable, Playlist } from '~/types'
+import type { Arrayable, Nullable, Playlist, RelayNode, SinglePlaylist } from '~/types'
 
 /**
  * Composable for editing playlists
  * @param playlists Reactive reference to the list of playlists
  */
-export function useEditPlaylists(playlists: MaybeRef<Arrayable<Playlist>>) {
+export function useEditPlaylists(playlists: MaybeRefOrGetter<Arrayable<RelayNode<SinglePlaylist>>>) {
   if (import.meta.server) {
     return {
       add: async () => {},
@@ -41,13 +41,12 @@ export function useEditPlaylists(playlists: MaybeRef<Arrayable<Playlist>>) {
      * @param playlistId The ID of the playlist to add the video to
      * @param videoId The ID of the video to add to the playlist
      */
-    add
+    add,
     /**
      * Remove a video from a playlist
      * @param playlistId The ID of the playlist to remove the video from
      * @param videoId The ID of the video to remove from the playlist
      */
-    ,
     remove
   }
 }
@@ -62,7 +61,7 @@ export interface NewPlaylist {
  * Composable for creating and managing playlists
  * @param playlists Reactive reference to the list of playlists
  */
-export const useCreatePlaylist = createSharedComposable((playlists: MaybeRef<Playlist[]>) => {
+export const useCreatePlaylist = createSharedComposable((playlists: MaybeRefOrGetter<Arrayable<RelayNode<SinglePlaylist>>>) => {
   const _playlists = toRef(playlists)
 
   /**
@@ -88,23 +87,23 @@ export const useCreatePlaylist = createSharedComposable((playlists: MaybeRef<Pla
   }
 
   async function create(intelligent: boolean = false) {
-    const data = await $fetch<Playlist>('/playlists/create', {
-      method: 'POST',
-      body: newPlaylist.value,
-      onResponse({ response }) {
-        if (response.status === 201) {
-          showCreatePlaylist.value = false
+    // const data = await $fetch<Playlist>('/playlists/create', {
+    //   method: 'POST',
+    //   body: newPlaylist.value,
+    //   onResponse({ response }) {
+    //     if (response.status === 201) {
+    //       showCreatePlaylist.value = false
           
-          newPlaylist.value = {
-            name: null,
-            description: null,
-            is_intelligent: intelligent
-          }
-        }
-      }
-    })
+    //       newPlaylist.value = {
+    //         name: null,
+    //         description: null,
+    //         is_intelligent: intelligent
+    //       }
+    //     }
+    //   }
+    // })
 
-    _playlists.value.push(data)
+    // _playlists.value.push(data)
   }
 
   /**
@@ -151,10 +150,11 @@ export const useCreatePlaylist = createSharedComposable((playlists: MaybeRef<Pla
  * Global state composable for playlists
  */
 export const usePlaylistsComposable = createGlobalState(() => {
-  const playlists = ref<Playlist[]>([])
+  const _playlists = ref<Playlist>()
+  const playlists = computed(() => _playlists.value?.data.allplaylists.edges || [])
 
   async function getPlaylists() {
-    // const { data, execute } = useFetch<Playlist[]>('/v1/playlists', {
+    // const { data, execute } = useFetch<Playlist>('/v1/playlists', {
     //   method: 'GET',
     //   baseURL: useRuntimeConfig().public.djangoProdUrl,
     //   immediate: false,
@@ -177,30 +177,33 @@ export const usePlaylistsComposable = createGlobalState(() => {
     //   // TODO: Save to firebase
     // }
 
-    playlists.value = playlistsFixture
-    return playlistsFixture
+    _playlists.value = playlistsFixture
   }
 
   /**
    * Currently selected playlist
    */
 
-  const currentPlaylist = ref<Playlist>()
+  const currentPlaylist = ref<RelayNode<SinglePlaylist>>()
   const query = useUrlSearchParams() as { playlist: string }
 
   const [showPlaylistDetails, toggleShowPlaylistDetails] = useToggle<boolean>(false)
   
-  function select(playlist: Nullable<Playlist>) {
-    if (isDefined(playlist)) {
-      currentPlaylist.value = playlist
-      query.playlist = playlist.id
-      showPlaylistDetails.value = true
+  function select(item: RelayNode<SinglePlaylist>) {
+    if (isDefined(item)) {
+      currentPlaylist.value = item
+      query.playlist = item.node.playlistId
+      toggleShowPlaylistDetails(true)
     }
   }
 
-  const playlistVideos = computed(() => currentPlaylist.value?.videos || [])
-  const hasVideos = computed(() => playlistVideos.value.length > 0)
+  /**
+   * Videos
+   */
 
+  const playlistVideos = computed(() => currentPlaylist.value?.node.videos.edges)
+  const hasVideos = computed(() => isDefined(playlistVideos) ? playlistVideos.value.length > 0 : false)
+  
   /**
    * Search
    */
@@ -210,10 +213,9 @@ export const usePlaylistsComposable = createGlobalState(() => {
   const searched = computed(() => {
     if (!search.value) {
       return playlists.value
-    }
-    else {
+    } else {
       return playlists.value.filter(item => {
-        return item.name.toLowerCase().includes(search.value.toLowerCase())
+        return item.node.name.toLowerCase().includes(search.value.toLowerCase())
       })
     }
   })

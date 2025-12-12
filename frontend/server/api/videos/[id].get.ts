@@ -1,6 +1,5 @@
 // import { refreshAccessToken } from '~/utils'
 import { videoDetailsFixture } from '~/data/fixtures/videos'
-import type { GraphQlResponse, VideoDetails } from '~/types'
 
 export default defineEventHandler(async event => {
   // const refreshToken = getCookie(event, 'refresh')
