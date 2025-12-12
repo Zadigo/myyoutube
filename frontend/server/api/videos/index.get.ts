@@ -1,17 +1,34 @@
-// import type { VideosFeedResponseData } from '~/types'
 import { fixtureVideos } from '~/data/fixtures'
-import type { SearchQuery } from '~/types'
+import type { SearchQuery, BaseVideo, GraphQlResponse } from '~/types'
 
 export default defineEventHandler(async event => {
   const query = getQuery<SearchQuery>(event)
 
-  // const response = await $fetch<VideosFeedResponseData>('/v1/videos', {
-  //   baseURL: useRuntimeConfig().public.djangoProdUrl,
-  //   params: {
-  //     q: query.search
-  //   }
-  // })
+  const response = await $fetch<GraphQlResponse<'allvideos', BaseVideo>>('/graphql/', {
+    method: 'POST',
+    baseURL: useRuntimeConfig().public.videosGraphqlUrl,
+    body: {
+      query: `
+        query {
+          allvideos {
+            edges {
+              node {
+                id
+                title
+                description
+                user {
+                  id
+                  username
+                }
+              }
+            }
+          }
+        }
+      `
+    }
+  })
 
+  console.log('Response:', JSON.stringify(response))
   console.log(query)
 
   return fixtureVideos

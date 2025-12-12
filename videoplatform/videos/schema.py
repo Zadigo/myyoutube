@@ -38,3 +38,6 @@ class VideosQuery(graphene.ObjectType):
     # allvideos = DjangoFilterConnectionField(VideosNode)
     allvideos = relay.ConnectionField(VideosConnection)
     searchvideos = DjangoFilterConnectionField(SearchByNode)
+
+    def resolve_allvideos(self, info, **kwargs):
+        return Video.objects.select_related('user', 'user_channel', 'channel_playlist').all()

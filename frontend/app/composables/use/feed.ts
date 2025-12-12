@@ -1,6 +1,9 @@
 import type { DefaultMainCategories, DefaultSortBy, DefaultUploadDate, DefaultVideoLength } from '~/data'
 import type { BaseVideo } from '~/types'
 
+/**
+ * 
+ */
 export function useSearchFeedComposable() {
   const search = ref<string>('')
   const searched = refDebounced(search, 500)
@@ -43,6 +46,9 @@ export function useSearchFeedComposable() {
 }
 
 
+/**
+ * Composable for fetching and managing a video feed
+ */
 export const useFeedComposable = createSharedComposable(async () => {
   const { search, category, videoLength, uploadDate, sortBy } = useSearchFeedComposable()
 

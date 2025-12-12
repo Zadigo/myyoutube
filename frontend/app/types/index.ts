@@ -24,14 +24,23 @@ export type Arrayable<T> = T[] | readonly T[]
 
 export type Refeable<T> = Ref<Undefineable<T>> | Ref<Arrayable<T | undefined>>
 
+/**
+ * @deprecated Use GraphQlResponse instead
+ */
 export interface _DatabaseObject { id: number }
 
+/**
+ * @deprecated Use GraphQlResponse instead
+ */
 export interface _DatabaseDataTimes { create_on: string, update_on: string }
 
 export interface ExtendedRouteParamsGeneric extends RouteParamsGeneric {
   id: string
 }
 
+/**
+ * @deprecated Use GraphQlResponse instead
+ */
 export interface ApiResponse<T> {
   next: number
   previous: number
@@ -46,3 +55,10 @@ export interface SessionCache {
   categories: Arrayable<string>
 }
 
+export type GraphQlResponse<T extends string, R = Record<string, unknown>> = {
+  data: {
+    [key in T]: {
+      edges: Array<{ node: R }>
+    }
+  }
+}
