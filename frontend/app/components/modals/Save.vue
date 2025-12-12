@@ -33,8 +33,7 @@ const { showSaveModal } = tryUseVideoDetailModalsStore()
  */
 
 const selectedPlaylistId = ref<string | null>(null)
-const playlistStore = usePlaylistStore()
-const { playlists } = storeToRefs(playlistStore)
+const { playlists } = usePlaylistsComposable()
 
 const playlistMenuItems = computed(() => playlists.value.map(item => ({ name: item.name })))
   

@@ -69,7 +69,7 @@
 
 <script setup lang="ts">
 import { currentVideoSymbol, isLoadingSymbol } from '~/data/constants'
-import type { BaseVideo, Undefineable, VideoTechnicalDetails } from '~/types'
+import type { VideoDetails, Undefineable, VideoTechnicalDetails } from '~/types'
 
 /**
  * Async Components
@@ -90,14 +90,14 @@ const AsyncRecommendationSection = defineAsyncComponent({
  */
 
 provideLocal(isLoadingSymbol, ref<boolean>(true))
-provideLocal(currentVideoSymbol, ref<Undefineable<BaseVideo>>(undefined))
+provideLocal(currentVideoSymbol, ref<Undefineable<VideoDetails>>(undefined))
 
 const isLoading = injectLocal<Ref<boolean>>(isLoadingSymbol)
-const currentVideo = injectLocal<Ref<Undefineable<BaseVideo>>>(currentVideoSymbol)
+const currentVideo = injectLocal<Ref<Undefineable<VideoDetails>>>(currentVideoSymbol)
 
 try {
   const { id: videoId } = useRoute().params as { id: string }
-  const data = await $fetch<BaseVideo>(`/api/videos/${videoId}`, { method: 'GET' })
+  const data = await $fetch<VideoDetails>(`/api/videos/${videoId}`, { method: 'GET' })
   
   if (isLoading) isLoading.value = false
   if (currentVideo) currentVideo.value = data

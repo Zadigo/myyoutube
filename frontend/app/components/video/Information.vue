@@ -3,8 +3,8 @@
     <template #content>
       <div v-if="currentVideo" class="grid grid-cols-1 md:grid-cols-12">        
         <div class="col-span-10 col-start-2">
-          <volt-button :to="`/channels/${currentVideo.user_channel?.reference}`" variant="outlined" class="px-0">
-            <span class="font-bold">{{ currentVideo.user_channel?.name }}</span>
+          <volt-button :to="`/channels/${currentVideo.userChannel.reference}`" variant="outlined" class="px-0">
+            <span class="font-bold">{{ currentVideo.userChannel.name }}</span>
             <icon name="i-fa7-solid:circle-check" class="ms-2" />
           </volt-button>
 
@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import { currentVideoSymbol } from '~/data'
-import type { BaseVideo } from '~/types'
+import type { VideoDetails } from '~/types'
 
-const currentVideo = injectLocal<Ref<BaseVideo>>(currentVideoSymbol)
+const currentVideo = injectLocal<Ref<VideoDetails>>(currentVideoSymbol)
 </script>

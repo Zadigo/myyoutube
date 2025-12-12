@@ -1,5 +1,5 @@
 import type { DefaultMainCategories, DefaultSortBy, DefaultUploadDate, DefaultVideoLength } from '~/data'
-import type { BaseVideo, GraphQlResponse } from '~/types'
+import type { FeedVideo } from '~/types'
 
 /**
  * 
@@ -56,14 +56,14 @@ export const useFeedComposable = createSharedComposable(async () => {
    * Request
    */
 
-  const { data, execute } = await useFetch<BaseVideo[]>('/api/videos', {
+  const { data, execute } = await useFetch<FeedVideo[]>('/api/videos', {
     method: 'GET',
     immediate: false,
     watch: [search, category, videoLength, uploadDate, sortBy],
     key: `videos-feed-${search.value}-${category.value}-${videoLength.value}-${uploadDate.value}-${sortBy.value}`
   })
 
-  const videos = refDefault<BaseVideo[]>(data, [])
+  const videos = refDefault<FeedVideo[]>(data, [])
   const hasVideos = computed(() => videos.value.length > 0)
 
   console.log('Videos:', videos.value, data.value, hasVideos.value)

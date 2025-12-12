@@ -40,7 +40,7 @@ import { useVideoRating, useVideoSubscription } from '~/composables/use'
 import type { DefaultVideoMenuActions } from '~/data'
 import { currentVideoSymbol } from '~/data/constants'
 
-import type { BaseVideo, VideoMenuItem } from '~/types'
+import type { VideoDetails, VideoMenuItem } from '~/types'
 
 const emit = defineEmits<{ 'action:modal': [method: DefaultVideoMenuActions] }>()
 
@@ -96,7 +96,7 @@ const menuItems: VideoMenuItem[] = [
   }
 ]
 
-const currentVideo = injectLocal<Ref<BaseVideo>>(currentVideoSymbol)
+const currentVideo = injectLocal<Ref<VideoDetails>>(currentVideoSymbol)
 
 /**
  * Rating

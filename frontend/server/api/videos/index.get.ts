@@ -1,10 +1,11 @@
-import { fixtureVideos } from '~/data/fixtures'
-import type { SearchQuery, BaseVideo, GraphQlResponse } from '~/types'
+import { feedVideoFixtures } from '~/data/fixtures/videos'
+import type { SearchQuery, FeedVideo, GraphQlResponse } from '~/types'
 
 export default defineEventHandler(async event => {
   const query = getQuery<SearchQuery>(event)
+  console.log(query)
 
-  const response = await $fetch<GraphQlResponse<'allvideos', BaseVideo>>('/graphql/', {
+  const response = await $fetch<GraphQlResponse<'allvideos', FeedVideo>>('/graphql/', {
     method: 'POST',
     baseURL: useRuntimeConfig().public.videosGraphqlUrl,
     body: {
@@ -44,12 +45,12 @@ export default defineEventHandler(async event => {
                   }
                 }
               }
-              pageInfo {
-                startCursor
-                endCursor
-                hasNextPage
-                hasPreviousPage
-              }
+            }
+            pageInfo {
+              startCursor
+              endCursor
+              hasNextPage
+              hasPreviousPage
             }
           }
         }
@@ -57,8 +58,7 @@ export default defineEventHandler(async event => {
     }
   })
 
-  console.log('Response:', JSON.stringify(response))
-  console.log(query)
+  console.log('Feed Videos Response:', JSON.stringify(response))
 
-  return fixtureVideos
+  return feedVideoFixtures
 })

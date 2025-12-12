@@ -3,16 +3,16 @@
     <template #content>
       <div class="flex justify-between items-center mt-3">
         <!-- Channel / Infos -->
-        <div v-if="currentVideo.user_channel" id="left" class="flex justify-left items-center gap-3">
-          <nuxt-link :to="`/channels/${currentVideo.user_channel?.reference}`">
+        <div v-if="currentVideo.userChannel" id="left" class="flex justify-left items-center gap-3">
+          <nuxt-link :to="`/channels/${currentVideo.userChannel.reference}`">
             <volt-avatar image="/avatars/avatar1.png" size="xlarge" shape="circle" alt="" />
           </nuxt-link>
           
           <!-- Video Infos -->
           <div id="channel-info" class="py-1 px-5">
             <h1 class="font-bold text-2xl">{{ currentVideo.title }}</h1>
-            <h3 class="font-bold mb-1">103M views</h3>
-            <p class="font-light text-secondary">20 months ago</p>
+            <h3 class="font-bold mb-1">{{ shorten(currentVideo.views) }} views</h3>
+            <p class="font-light text-secondary">{{ $humanizeDate(currentVideo.createdOn) }}</p>
           </div>
         </div>
 
@@ -36,7 +36,10 @@
 
 <script lang="ts" setup>
 import { currentVideoSymbol, type DefaultVideoMenuActions } from '~/data'
-import type { BaseVideo, Undefineable } from '~/types'
+import type { Undefineable, VideoDetails } from '~/types'
+
+const { $humanizeDate } = useNuxtApp()
+const { shorten } = useNumbersUtils()
 
 /**
  * Emits
@@ -48,10 +51,11 @@ const emit = defineEmits<{ 'action:modal': [method: DefaultVideoMenuActions] }>(
  * Video
  */
 
-const currentVideo = injectLocal<Ref<Undefineable<BaseVideo>>>(currentVideoSymbol)
+const currentVideo = injectLocal<Ref<Undefineable<VideoDetails>>>(currentVideoSymbol)
 
-onMounted(() => {
-  const playlistsStore = usePlaylistStore()
-  playlistsStore.fetch()
-})
+/**
+ * Playlists
+ */
+
+const { playlists } = usePlaylistsComposable()
 </script>

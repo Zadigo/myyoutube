@@ -18,8 +18,10 @@ class UserProfileNode(DjangoObjectType):
     class Meta:
         model = UserProfile
         interfaces = (relay.Node,)
+        # convert_choices_to_enum = ['subscription']
         filter_fields = {
             'city': ['exact', 'icontains', 'istartswith'],
+            # 'subscription': ['exact', 'icontains']
         }
 
 

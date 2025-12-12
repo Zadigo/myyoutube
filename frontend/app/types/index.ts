@@ -57,7 +57,11 @@ export interface SessionCache {
 
 
 
+export type InterfaceKeys<I> = keyof I & string 
 
+export type NullableTypes<T> = {
+  [P in keyof T]?: Nullable<T[P]>
+}
 
 export type GraphQlResponse<T extends string, R = Record<string, unknown>> = {
   data: {
@@ -72,6 +76,8 @@ export type GraphQlSingleResponse<T extends string, R = Record<string, unknown>>
     [key in T]: R
   }
 }
+
+export type GraphQlEdges<T> = { edges: Array<{ node: T }> }
 
 export interface GraphQlPaginationInfo {
   pageInfo: {

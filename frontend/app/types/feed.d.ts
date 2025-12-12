@@ -1,34 +1,31 @@
-import type { DefaultMainCategories, DefaultSortBy, DefaultUploadDate, DefaultVideoLength } from '~/data'
-import type { _DatabaseObject, Arrayable, UserChannel } from '.'
-import type { CustomUser } from './accounts'
+import type { BaseUser, BaseUserProfile } from './accounts'
+import type { BaseUserChannel } from './channels'
+import type { BaseVideo } from './video'
 
-export interface VideoTag extends _DatabaseObject {
-  name: string
+interface _SearchQuery {
+  search: string
+  category: DefaultMainCategories
+  videoLength: DefaultVideoLength
+  uploadDate: DefaultUploadDate
+  sortBy: DefaultSortBy
 }
 
-export type NestedChannelInfo = Pick<UserChannel, 'reference' | 'name'> & {
-  number_of_subscribers: number
-  number_of_playlists: number
-  channelplaylist_set: Arrayable<string>
-  tags: Arrayable<VideoTag>
-}
+/**
+ * Search query parameters for video searches
+ */
+export type SearchQuery = Partial<_SearchQuery>
 
-export interface SearchQuery {
-  search?: string
-  category?: DefaultMainCategories
-  videoLength?: DefaultVideoLength
-  uploadDate?: DefaultUploadDate
-  sortBy?: DefaultSortBy
-}
+/**
+ * Basic Fields included in a basic video type used in feed listings
+ */
+export type BaseVideoFields = 'id' | 'title' | 'description' | 'video' | 'views' | 'videoId' | 'createdOn'
 
-export interface BaseVideo extends _DatabaseObject {
-  title: string
-  description: string
-  video_id: string
-  user_channel: NestedChannelInfo,
-  user: CustomUser
-  age_restricted: boolean
-  video: string
-  channel_playlist: null
-  created_on: string
-}
+/**
+ * Simple feed video type used in feed listings
+ */
+export type FeedVideo<F = BaseVideoFields> = Pick<BaseVideo, F> & { user: Pick<BaseUser, 'id' | 'username'> & { userProfile: Pick<BaseUserProfile, 'avatar'> }} & { userChannel: Pick<UserChannel, 'id' | 'name' | 'reference'> }
+
+/**
+ * Detailed video type used in video details page
+ */
+export type VideoDetails = BaseVideo & { user: BaseUser & { userProfile: BaseUserProfile } } & { userChannel: BaseUserChannel }

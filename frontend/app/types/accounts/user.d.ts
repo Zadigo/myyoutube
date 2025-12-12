@@ -1,35 +1,29 @@
-import type { _DatabaseObject } from '..'
+import type { Nullable, NullableTypes } from ".."
 
-/**
- * @deprecated use BaseUser instead
- */
-export interface CustomUser extends _DatabaseObject {
-  firstname: string
-  lastname: string
-  get_full_name: string
-}
-
-export interface UserProfile extends _DatabaseObject {
-  avatar: string
-  birthdate: string
-  telephone: string
+export type BaseUserProfile = {
+	id: string
+	avatar: string
+	birthdate: string
+	createdOn: string
+	isProfessional: boolean
+} & NullableTypes<{
   address: string
+  telephone: string
+  zipCode: string
   city: string
-  zip_code: string
-  is_professional: boolean
-}
+  customerId: string
+}>
 
-export interface ViewingProfile extends _DatabaseObject {
-  account_type: string
-  subscriptions: string[]
-  night_mode: boolean
-  algorithm_decides: boolean
-  recommend_popular_videos: boolean
-  preferred_categories: string[]
-  preferred_ad: string[]
-  performance: string
-  blocked_keywords: []
-  playlists_private: boolean
-  subscriptions_private: boolean
-  personalize_ads: false
+export interface BaseUser {
+	id: string
+	email: string
+	firstname?: Nullable<string>
+	lastname?: Nullable<string>
+	isActive: boolean
+	isAdmin: boolean
+	isStaff: boolean
+	isSuperuser: boolean
+	lastLogin: string
+	password: string
+	username: string
 }

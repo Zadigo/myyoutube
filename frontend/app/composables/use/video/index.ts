@@ -1,6 +1,6 @@
 import type { MenuItem } from 'primevue/menuitem'
 import type { SubscriptionModes } from '~/data'
-import type { BaseVideo, Nullable, Refeable, Undefineable } from '~/types'
+import type { VideoDetails, Nullable, Refeable, Undefineable } from '~/types'
 
 export * from './modals'
 
@@ -8,7 +8,7 @@ export * from './modals'
  * Composable for managing video rating state
  * @param video Reactive reference to the video information
  */
-export function useVideoRating(video: Refeable<Undefineable<BaseVideo>>) {
+export function useVideoRating(video: Undefineable<Refeable<Undefineable<VideoDetails>>>) {
   const [liked, like] = useToggle(false)
   const [unliked, dislike] = useToggle(false)
   
@@ -50,7 +50,7 @@ export function useVideoRating(video: Refeable<Undefineable<BaseVideo>>) {
  * Composable for managing video subscription state
  * @param video Reactive reference to the video information
  */
-export function useVideoSubscription(video: Refeable<Undefineable<BaseVideo>>) {
+export function useVideoSubscription(video: Undefineable<Refeable<Undefineable<VideoDetails>>>) {
   const [active, subscribe] = useToggle()
   const mode = ref<Nullable<SubscriptionModes>>(null)
 
