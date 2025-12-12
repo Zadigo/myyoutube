@@ -7,7 +7,7 @@ export const videoDetailsFixture: VideoDetails = {
   description: "This is a sample video description.",
   video: getRandomVideoPath(),
   videoId: "vid_sample123",
-  views: 54321,
+  views: 543215,
   active: true,
   ageRestricted: false,
   category: "Entertainment",
@@ -43,7 +43,7 @@ export const videoDetailsFixture: VideoDetails = {
     lastname: "User",
     get_full_name: "Sample User",
     userProfile: {
-      avatar: "/avatars/sample-avatar.png",
+      avatar: "/avatars/avatar1.png",
       birthdate: "1990-05-20",
       isProfessional: false,
       zipCode: null,

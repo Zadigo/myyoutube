@@ -1,35 +1,17 @@
-import type { _DatabaseObject, Arrayable, BaseUser, Nullable } from '.'
+import type { BaseUserChannel, GraphQlEdges, Nullable, VisilityStatus } from "."
 
-interface SimpleTag extends _DatabaseObject {
-    name: string
-}
+type Videos = GraphQlEdges<Pick<BaseVideo, 'id'>>
 
-interface SimpleUserChannel extends _DatabaseObject {
-    reference: string
-    name: string
-    number_of_subscribers: number
-    number_of_playlists: number
-    channelplaylist_set: string[]
-    tags: Arrayable<SimpleTag>
-}
+type UserChannel = Pick<BaseUserChannel, 'id' | 'name'>
 
-export interface PlaylistVideo extends _DatabaseObject {
-    title: string
-    description: string
-    video_id: string
-    user_channel: SimpleUserChannel
-    age_restricted: boolean
-    video: string
-    channel_playlist: Nullable<string>
-    user: BaseUser
-    created_on: string
-}
-
-export interface Playlist {
-    id: number
+type _Playlist = {
+    id: string
+    playlistId: string
+    isIntelligent: boolean
     name: string
     description: Nullable<string>
-    videos: PlaylistVideo[]
-    visibility: string
-    created_on: string
-}
+    visibility: VisilityStatus
+    createdOn: string   
+} 
+
+export type Playlist = _Playlist & { videos: Videos } & { userChannel: UserChannel }

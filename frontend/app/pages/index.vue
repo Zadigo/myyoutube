@@ -24,6 +24,7 @@
         </volt-dropdown>
       </div>
 
+      <!-- Feed -->
       <Suspense>
         <template #default>
           <async-feed-component />
