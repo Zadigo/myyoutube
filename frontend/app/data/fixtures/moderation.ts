@@ -16,6 +16,7 @@ export const communityNotesFixture: CommunityNotes = {
             downvotes: 12,
             score: 18,
             status: 'APPROVED',
+            subjectCreatorId: 'Kendall Marquez',
             author: {
               id: 'user123',
               username: 'moderator1',
@@ -52,6 +53,7 @@ export const communityNotesFixture: CommunityNotes = {
             downvotes: 5,
             score: 5,
             status: 'PENDING',
+            subjectCreatorId: 'Alex Johnson',
             author: {
               id: 'user456',
               username: 'moderator2',

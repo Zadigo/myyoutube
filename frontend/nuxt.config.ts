@@ -21,7 +21,7 @@ export default defineNuxtConfig({
     '/school': { ssr: false },
     '/channels': { ssr: false },
     '/fact-checking': { ssr: false },
-    '/community-notes/**': { swr: true, cache: { maxAge: 30 * 60 }},
+    '/community-notes/**': { ssr: false, swr: true, cache: { maxAge: 30 * 60 }},
     '/login': { ssr: false },
     '/notification': { swr: true, cache: { maxAge: 30 * 60 }},
     '/search': { ssr: false }

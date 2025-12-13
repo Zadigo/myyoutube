@@ -1,7 +1,7 @@
 import { communityNotesFixture } from '~/data/fixtures/moderation'
-import type { CommunityNotes } from "~/types"
+import type { CommunityNotes } from '~/types'
 
-export async function useCommunityNotesComposable() {
+export const useCommunityNotesComposable = createSharedComposable(async () => {
   const { $moderationClient } = useNuxtApp()
   const communityNotes = ref<CommunityNotes>(communityNotesFixture)
 
@@ -33,4 +33,4 @@ export async function useCommunityNotesComposable() {
   return {
     communityNotes
   }
-}
+})

@@ -14,6 +14,7 @@ export interface BaseCommunityNote {
   }
   createdOn: string
   creatorId: string
+  subjectCreatorId: string
   upvotes: number
   downvotes: number
   score: number
