@@ -1,4 +1,4 @@
-from community_notes.models import CommunityNote, CommunityNoteSource
+from community_notes.models import CommunityNote, CommunityNoteSource, CommunityNoteVote
 from django.contrib import admin
 
 
@@ -22,3 +22,15 @@ class CommunityNoteAdmin(admin.ModelAdmin):
         'created_on', 'reference',
         'upvotes', 'downvotes', 'score'
     ]
+
+
+@admin.register(CommunityNoteVote)
+class CommunityNoteVoteAdmin(admin.ModelAdmin):
+    list_display = ['id', 'value']
+    search_fields = [
+        'note__reference', 'note__title', 'note__description',
+        'note__subject_creator_id', 'user__username', 'user__email'
+    ]
+    readonly_fields = ['created_on', 'value', 'note', 'user']
+    list_filter = ['created_on']
+    ordering = ['-created_on']

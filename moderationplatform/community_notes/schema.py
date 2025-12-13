@@ -1,7 +1,9 @@
 import graphene
 from community_notes.api.serializers import CreateNoteSerializer
-from community_notes.models import CommunityNoteSource, CommunityNote
+from community_notes.models import CommunityNote, CommunityNoteSource
+from community_notes.tasks import apply_vote
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 from graphene import relay
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
@@ -60,15 +62,60 @@ class CommunityNoteMutation(graphene.Mutation):
     reference = graphene.String()
 
     class Arguments:
-        author = graphene.String()
-        subject_creator_id = graphene.Int()
+        title = graphene.String(required=True)
+        description = graphene.String(required=True)
+        author = graphene.String(
+            required=True, description="Username or YouTube ID of the author")
+        subject_creator_id = graphene.String(required=True)
 
-    def mutate(root, info, author, subject_creator_id):
-        author = USER_MODEL.objects.get(id=author)
-        
-        instance = CommunityNote.objects.create(
-            author=author, 
-            subject_creator_id=subject_creator_id
+    def mutate(root, info, title, description, author, subject_creator_id):
+        try:
+            author = USER_MODEL.objects.get(
+                Q(username=author) |
+                Q(youtube_id=author)
+            )
+        except USER_MODEL.DoesNotExist:
+            raise Exception('Author not found')
+        else:
+            instance = CommunityNote.objects.create(
+                title=title,
+                description=description,
+                author=author,
+                subject_creator_id=subject_creator_id
+            )
+
+            return CommunityNoteMutation(reference=instance.reference)
+
+
+
+class CommunityNoteVoteMutation(graphene.Mutation):
+    reference = graphene.String()
+
+    class Arguments:
+        reference = graphene.String(
+            required=True
         )
-        
-        return CommunityNoteMutation(reference=instance.reference)
+        vote_type = graphene.String(
+            required=True, 
+            description="'upvote' or 'downvote'"
+        )
+        reason = graphene.String(
+            required=False, 
+            description="Optional reason for downvote"
+        )
+
+    def mutate(root, info, reference, vote_type, reason=None):
+        try:
+            note = CommunityNote.objects.get(reference=reference)
+        except CommunityNote.DoesNotExist:
+            raise Exception('Community Note not found')
+        else:
+            apply_vote.apply_async(
+                args=[
+                    note.id, 
+                    1 if vote_type == 'upvote' else -1, 
+                    info.context.user.id,
+                    reason
+                ]
+            )
+            return CommunityNoteVoteMutation(reference=note.reference)

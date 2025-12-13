@@ -30,7 +30,28 @@
               <h2 class="font-bold text-xl">{{ communityNote.node.title }}</h2>
               <volt-tag>{{ communityNote.node.status }}</volt-tag>
             </div>
+
             <p class="text-sm text-gray-600">{{ communityNote.node.description }}</p>
+
+            <div class="mt-4 space-x-2">
+              <volt-button @click="() => { createVote('upvote') }">
+                <icon name="lucide:thumbs-up" />
+              </volt-button>
+
+              <volt-button @click="() => { toggleShouldDemandReason() }">
+                <icon name="lucide:thumbs-down" />
+              </volt-button>
+
+              <div v-if="shouldDemandReason" id="readon">
+                <volt-fluid>
+                  <volt-textarea v-model="reason" class="mt-2" :style="{ resize: 'none' }" />
+                </volt-fluid>
+
+                <volt-button class="mt-2" @click="() => { createVote('downvote') }">
+                  Submit Reason
+                </volt-button>
+              </div>
+            </div>
           </template> 
         </volt-card>
 
@@ -73,4 +94,10 @@ const { communityNotes } = await useCommunityNotesComposable()
 const { id } = useRoute().params
 const getCommunityNote = reactify(() => communityNotes.value.data.allnotes.edges.find(note => note.node.reference === id))
 const communityNote = getCommunityNote()
+
+/**
+ * Voting
+ */
+
+const { createVote, shouldDemandReason, toggleShouldDemandReason, reason } = useCommunityNoteById(communityNote)
 </script>

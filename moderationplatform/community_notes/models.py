@@ -18,6 +18,12 @@ class CommunityNoteVote(models.Model):
         get_user_model(),
         on_delete=models.CASCADE
     )
+    reason = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text="Optional reason applied only for downvotes"
+    )
     value = models.SmallIntegerField(
         choices=(
             (1, "Upvote"),

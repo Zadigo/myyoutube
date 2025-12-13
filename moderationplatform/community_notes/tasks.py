@@ -2,8 +2,10 @@ from celery import shared_task
 from celery.utils.log import get_task_logger
 from community_notes.models import (CommunityNote, CommunityNoteSource,
                                     CommunityNoteVote)
-from django.db import models
 from django.core.cache import cache
+from django.db import models
+from django.db.models import F
+from django.contrib.auth import get_user_model
 
 logger = get_task_logger(__name__)
 
@@ -38,8 +40,6 @@ def verify_source_credibility(source_id: str, url: str):
         f'Updated source credibility for {instance.reference} to {instance.source_credibility}.')
 
 
-
-
 @shared_task
 def calculate_votes_for_note(note_id: str):
     """Task to calculate the total votes for a community note in order to
@@ -49,19 +49,52 @@ def calculate_votes_for_note(note_id: str):
     except CommunityNote.DoesNotExist:
         logger.error(f'CommunityNote with id {note_id} does not exist.')
         return
+    else:
+        votes = CommunityNoteVote.objects.filter(note=note)
+        upvotes = votes.filter(value=1).count()
+        downvotes = votes.filter(value=-1).count()
+        total_score = upvotes - downvotes
 
-    votes = CommunityNoteVote.objects.filter(note=note)
-    upvotes = votes.filter(value=1).count()
-    downvotes = votes.filter(value=-1).count()
-    total_score = upvotes - downvotes
+        note.score = total_score
+        note.save()
 
-    note.vote_score = total_score
-    note.save()
+        cache_key = f'note_vote_score_{note_id}'
+        cache.set(cache_key, total_score, timeout=3600)  # Cache for 1 hour
 
-    cache_key = f'note_vote_score_{note_id}'
-    cache.set(cache_key, total_score, timeout=3600)  # Cache for 1 hour
+        logger.info(
+            f'Calculated votes for note {note.reference}: Upvotes={upvotes}, '
+            f'Downvotes={downvotes}, Total Score={total_score}.'
+        )
 
-    logger.info(
-        f'Calculated votes for note {note.reference}: Upvotes={upvotes}, '
-        f'Downvotes={downvotes}, Total Score={total_score}.'
-    )
+
+@shared_task
+def apply_vote(noteid: int, value: int, userid: int, reason: str = None):
+    qs = CommunityNote.objects.filter(pk=noteid)
+
+    if not qs.exists():
+        logger.error(f'CommunityNote with id {noteid} does not exist.')
+        return
+
+    try:
+        note = qs.get()
+    except CommunityNote.DoesNotExist:
+        logger.error(f'CommunityNote with id {noteid} does not exist.')
+        return
+    else:
+        try:
+            user = get_user_model().objects.filter(pk=userid).first()
+            
+            # Create the vote record
+            note.votes.create(user=user, value=value, reason=reason)
+        except Exception as e:
+            logger.error(f'Error creating vote: {e}')
+            return
+        else:
+            if value == 1:
+                qs.update(upvotes=F('upvotes') + 1, score=F('score') + 1)
+            else:
+                qs.update(downvotes=F('downvotes') + 1, score=F('score') - 1)
+
+            # Trigger recalculation of cached votes
+            calculate_votes_for_note.delay(noteid)
+            logger.warning(f'Applied vote {value} to note ID {noteid}.')
