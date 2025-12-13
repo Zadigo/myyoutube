@@ -20,7 +20,7 @@
 
     <suspense>
       <template #default>
-        <community-notes />
+        <async-community-notes />
       </template>
 
       <template #fallback>
@@ -33,4 +33,11 @@
 </template>
 
 <script setup lang="ts">
+const AsyncCommunityNotes = defineAsyncComponent({
+  loader: async () => import('~/components/community/Notes.vue'),
+  suspensible: true,
+  delay: 200,
+  timeout: 10000,
+  
+})
 </script>

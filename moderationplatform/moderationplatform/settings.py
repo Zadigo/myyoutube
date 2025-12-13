@@ -144,3 +144,31 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom user model
 
 AUTH_USER_MODEL = 'accounts.ModerationUser'
+
+
+# Graphene
+
+GRAPHENE = {
+    'SCHEMA': 'moderationplatform.schema.schema',
+    'MIDDLEWARE': [
+        'graphene_django.debug.DjangoDebugMiddleware',
+    ]
+}
+
+
+# Cors:
+# https://pypi.org/project/django-cors-headers/
+
+CORS_ALLOW_ALL_ORIGINS = False
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173'
+    'http://localhost:3000',
+]

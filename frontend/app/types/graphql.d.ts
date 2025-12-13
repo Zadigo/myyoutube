@@ -33,7 +33,7 @@ export type RelayNodeWithPagination<E> = RelayEdge<E> & GraphQlPaginationInfo
  * ```ts
  * 
  * // With relay nodes
- * const response = $fetch<GraphQlData<'allvideos', RelayNode<Video>>>(...)
+ * const response = $fetch<GraphQlData<'allvideos', RelayEdge<Video>>>(...)
  * 
  * // With single data
  * const response = $fetch<GraphQlData<'videoDetails', VideoDetails>>(...)

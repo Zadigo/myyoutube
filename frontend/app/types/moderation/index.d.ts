@@ -1,7 +1,2 @@
-import type { _DatabaseObject, ApiResponse } from '..'
-
-export interface CommunityNote extends _DatabaseObject {
-  author: string
-}
-
-export type CommunityNoteApiResponse = ApiResponse<CommunityNote>
+export type * from './community_notes'
+export type * from './fact_checking'

@@ -12,6 +12,7 @@
 
         <volt-divider class="mb-4" />
 
+        <!-- Actions -->
         <div class="flex justify-between gap-2 items-center">
           <volt-input-text placeholder="Search" />
 
@@ -28,8 +29,9 @@
           </div>
         </div>
 
+        <!-- Notes -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <community-card />
+          <community-card v-for="note in communityNotes.data.allnotes.edges" :key="note.node.id" :note="note" />
         </div>
       </template>
     </volt-card>
@@ -37,17 +39,9 @@
 </template>
 
 <script setup lang="ts">
-import type { CommunityNote, CommunityNoteApiResponse } from '~/types/moderation'
+/**
+ * Get Notes
+ */
 
-const { $moderationClient } = useNuxtApp()
-const communityNotes = ref<CommunityNote[]>([])
-
-onMounted(async () => {
-  try {
-    const response = await $moderationClient<CommunityNoteApiResponse>('/community-notes/recent', { method: 'GET' })
-    communityNotes.value = response.results
-  } catch (error) {
-    console.error('Error fetching community notes:', error)
-  }
-})
+const { communityNotes } = await useCommunityNotesComposable()
 </script>

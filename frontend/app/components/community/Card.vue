@@ -1,11 +1,20 @@
 <template>
   <volt-card class="shadow-sm">
     <template #content>
-      <h3 class="font-semibold text-lg">Note Title</h3>
-      <p class="text-sm text-gray-600">This is a brief description of the note. It provides context and information about the video creator.</p>
-      <volt-link to="/community-notes/note_zefino322fzinfo" size="small" variant="primary" class="mt-2">
-        View Note
-      </volt-link>
+      <h3 class="font-semibold text-lg">{{ note.node.title }}</h3>
+      <p class="text-sm text-gray-600">{{ note.node.description }}</p>
+
+      <nuxt-link-locale :to="`/community-notes/${note.node.reference}`" size="small" variant="primary" class="mt-2">
+        <volt-button>
+          View Note
+        </volt-button>
+      </nuxt-link-locale>
     </template>
   </volt-card>
 </template>
+
+<script setup lang="ts">
+import type { CommunityNoteNode } from '~/types'
+
+defineProps<{ note: CommunityNoteNode }>()
+</script>

@@ -37,13 +37,18 @@
 // })
 
 export default defineNuxtPlugin(async _nuxtApp => {
-  const client = $fetch.create({
+  const videoesClient = $fetch.create({
     baseURL: useRuntimeConfig().public.videosGraphqlUrl
+  })
+
+  const moderationClient = $fetch.create({
+    baseURL: useRuntimeConfig().public.moderationGraphqlUrl
   })
 
   return {
     provide: {
-      videosGraphqlClient: client
+      videosGraphqlClient: videoesClient,
+      moderationGraphqlClient: moderationClient
     }
   }
 })

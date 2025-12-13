@@ -55,7 +55,9 @@ export default defineNuxtConfig({
   
   runtimeConfig: {
     public: {
+      // Django GraphQL
       videosGraphqlUrl: process.env.NUXT_PUBLIC_DJANGO_GRAPHQL,
+      moderationGraphqlUrl: process.env.NUXT_PUBLIC_DJANGO_MODERATION_GRAPHQL,
 
       // Django
       djangoProdUrl: process.env.NUXT_DJANGO_PROD_URL || 'http://127.0.0.1:8000',
