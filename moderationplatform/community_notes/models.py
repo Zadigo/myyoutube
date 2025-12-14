@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
+from reportsources.models import ReportSource
 
 from moderationplatform.utils import create_id
 
@@ -46,34 +47,6 @@ class CommunityNoteVote(models.Model):
         return f'NoteVote: Note {self.note.reference} by User {self.user.username}'
 
 
-class CommunityNoteSource(models.Model):
-    """Source model represents a source of information
-    that can be used to support community notes"""
-
-    reference = models.CharField(
-        max_length=255,
-        unique=True
-    )
-    url = models.URLField(
-        max_length=255,
-        unique=True,
-        validators=[]
-    )
-    source_credibility = models.PositiveIntegerField(
-        default=0,
-        help_text="Credibility score of the source, from 0 to 100"
-    )
-    created_on = models.DateTimeField(
-        auto_now_add=True
-    )
-    updated_on = models.DateTimeField(
-        auto_now=True
-    )
-
-    def __str__(self):
-        return f'Source: {self.reference}'
-
-
 class CommunityNote(models.Model):
     """Community notes are general contributions from users
     that can be used to provide additional context or information
@@ -92,7 +65,7 @@ class CommunityNote(models.Model):
         help_text=_("Content of the community note")
     )
     note_sources = models.ManyToManyField(
-        CommunityNoteSource,
+        ReportSource,
         related_name='notes',
         help_text=_("Sources that support the note")
     )
@@ -122,7 +95,7 @@ class CommunityNote(models.Model):
         default=0
     )
     score = models.IntegerField(
-        default=0, 
+        default=0,
         db_index=True
     )
     created_on = models.DateTimeField(
@@ -153,11 +126,4 @@ class CommunityNote(models.Model):
 def create_note_reference(instance, created, **kwargs):
     if created and not instance.reference:
         instance.reference = create_id('no')
-        instance.save()
-
-
-@receiver(post_save, sender=CommunityNoteSource)
-def create_source_reference(instance, created, **kwargs):
-    if created and not instance.reference:
-        instance.reference = create_id('so')
         instance.save()

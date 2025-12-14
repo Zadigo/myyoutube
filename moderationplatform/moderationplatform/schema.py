@@ -3,9 +3,10 @@ from accounts.schema import AccountsQuery
 from community_notes.schema import (CommunityNoteMutation, CommunityNoteQuery,
                                     CommunityNoteVoteMutation)
 from graphene_django.debug import DjangoDebug
+from reportsources.schema import ReportSourceQuery
 
 
-class ModerationQuery(CommunityNoteQuery, AccountsQuery, graphene.ObjectType):
+class ModerationQuery(CommunityNoteQuery, ReportSourceQuery, AccountsQuery, graphene.ObjectType):
     debug = graphene.Field(DjangoDebug, name='_debug')
 
 

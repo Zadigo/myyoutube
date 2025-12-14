@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from factchecking.models import Report, Source, Vote
+from factchecking.models import Report, Vote
 
 
 @admin.register(Report)
@@ -8,15 +8,6 @@ class ReportAdmin(admin.ModelAdmin):
     list_display = ['reference', 'user', 'video_id', 'created_on', 'active']
     search_fields = ['reference', 'user__youtube_id', 'video_id']
     list_filter = ['active', 'created_on']
-    date_hierarchy = 'created_on'
-    ordering = ['-created_on']
-
-
-@admin.register(Source)
-class SourceAdmin(admin.ModelAdmin):
-    list_display = ['reference', 'url', 'source_credibility', 'created_on']
-    search_fields = ['url']
-    list_filter = ['created_on']
     date_hierarchy = 'created_on'
     ordering = ['-created_on']
 

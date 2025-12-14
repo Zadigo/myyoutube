@@ -1,6 +1,7 @@
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from community_notes.models import (CommunityNote, CommunityNoteSource,
+from reportsources.models import ReportSource
+from community_notes.models import (CommunityNote,
                                     CommunityNoteVote)
 from django.core.cache import cache
 from django.db import models
@@ -18,8 +19,8 @@ def verify_source_credibility(source_id: str, url: str):
             models.Q(id=source_id) |
             models.Q(url=url)
         )
-        instance = CommunityNoteSource.objects.get(logic)
-    except CommunityNoteSource.DoesNotExist:
+        instance = ReportSource.objects.get(logic)
+    except ReportSource.DoesNotExist:
         logger.error(f'Source with id {source_id} does not exist.')
         return
 

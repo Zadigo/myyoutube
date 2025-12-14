@@ -1,14 +1,5 @@
-from community_notes.models import CommunityNote, CommunityNoteSource, CommunityNoteVote
+from community_notes.models import CommunityNote, CommunityNoteVote
 from django.contrib import admin
-
-
-@admin.register(CommunityNoteSource)
-class CommunityNoteSourceAdmin(admin.ModelAdmin):
-    list_display = ['reference', 'url', 'source_credibility', 'created_on']
-    search_fields = ['reference', 'url']
-    list_filter = ['source_credibility', 'created_on', 'updated_on']
-    ordering = ['-created_on']
-    readonly_fields = ['created_on', 'updated_on', 'reference']
 
 
 @admin.register(CommunityNote)

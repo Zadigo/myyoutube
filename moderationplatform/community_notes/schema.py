@@ -1,21 +1,12 @@
 import graphene
-from community_notes.api.serializers import CreateNoteSerializer
-from community_notes.models import CommunityNote, CommunityNoteSource
+from community_notes.models import CommunityNote
 from community_notes.tasks import apply_vote
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from graphene import relay
 from graphene_django import DjangoObjectType
-from graphene_django.filter import DjangoFilterConnectionField
-from graphene_django.rest_framework.mutation import SerializerMutation
 
 USER_MODEL = get_user_model()
-
-
-class CommunityNoteSourceType(DjangoObjectType):
-    class Meta:
-        model = CommunityNoteSource
-        fields = '__all__'
 
 
 class CommunityNoteType(DjangoObjectType):
@@ -42,12 +33,8 @@ class CommunityNoteConnection(graphene.relay.Connection):
 
 
 class CommunityNoteQuery(graphene.ObjectType):
-    allsources = graphene.List(CommunityNoteSourceType)
     note = graphene.Field(CommunityNoteType, id=graphene.ID(required=True))
     allnotes = relay.ConnectionField(CommunityNoteConnection)
-
-    def resolve_allsources(self, info, **kwargs):
-        return CommunityNoteSource.objects.all()
 
     def resolve_allnotes(self, info, **kwargs):
         return CommunityNote.objects.all()
@@ -87,7 +74,6 @@ class CommunityNoteMutation(graphene.Mutation):
             return CommunityNoteMutation(reference=instance.reference)
 
 
-
 class CommunityNoteVoteMutation(graphene.Mutation):
     reference = graphene.String()
 
@@ -96,11 +82,11 @@ class CommunityNoteVoteMutation(graphene.Mutation):
             required=True
         )
         vote_type = graphene.String(
-            required=True, 
+            required=True,
             description="'upvote' or 'downvote'"
         )
         reason = graphene.String(
-            required=False, 
+            required=False,
             description="Optional reason for downvote"
         )
 
@@ -112,8 +98,8 @@ class CommunityNoteVoteMutation(graphene.Mutation):
         else:
             apply_vote.apply_async(
                 args=[
-                    note.id, 
-                    1 if vote_type == 'upvote' else -1, 
+                    note.id,
+                    1 if vote_type == 'upvote' else -1,
                     info.context.user.id,
                     reason
                 ]

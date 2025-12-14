@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from reportsources.models import ReportSource
 
 from moderationplatform.utils import create_id
 
@@ -26,47 +27,6 @@ class Vote(models.Model):
         return self.user_id + " - " + self.report.reference
 
 
-class Source(models.Model):
-    """Sources are urls or references that can be used
-    to support fact checking reports. Sources have to follow
-    a set of guidelines to be considered valid:
-
-    - The source must be a valid URL
-    - The source must be unique
-    - The source must be credible, meaning it should come from a reputable organization or individual
-    - The source must be relevant to the report it is being used for
-    - The source must be accessible to the public
-    - The source must not be a personal opinion or a blog post
-    - The source must not be a social media post or a comment
-    - The source must not be a video or audio file
-    - The source must not be a screenshot or an image
-    - The source must not be a link to a private or restricted content
-    - The source must not be a link to a website that is not accessible
-    """
-    reference = models.CharField(
-        max_length=255,
-        unique=True
-    )
-    url = models.URLField(
-        max_length=255,
-        unique=True,
-        validators=[]
-    )
-    source_credibility = models.PositiveIntegerField(
-        default=0,
-        help_text="Credibility score of the source, from 0 to 100"
-    )
-    updated_on = models.DateTimeField(
-        auto_now=True
-    )
-    created_on = models.DateTimeField(
-        auto_now_add=True
-    )
-
-    def __str__(self):
-        return self.reference
-
-
 class Report(models.Model):
     """Reports are direct contributions from users
     that can be used to fact check content on videos 
@@ -86,9 +46,12 @@ class Report(models.Model):
         max_length=255
     )
     sources = models.ManyToManyField(
-        Source,
+        ReportSource,
         related_name='reports'
     )
+    # explanation = models.TextField(
+    #     help_text="Explanation of the report"
+    # )
     active = models.BooleanField(
         default=True
     )
@@ -111,8 +74,3 @@ def create_vote_reference(instance, **kwargs):
 @receiver(pre_save, sender=Report)
 def create_report_reference(instance, **kwargs):
     instance.reference = create_id('re')
-
-
-@receiver(pre_save, sender=Source)
-def create_source_reference(instance, **kwargs):
-    instance.reference = create_id('so')
