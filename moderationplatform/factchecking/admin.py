@@ -1,12 +1,13 @@
 from django.contrib import admin
 
-from factchecking.models import Report, Vote
+from factchecking.models import FactCheck, Vote
 
 
-@admin.register(Report)
-class ReportAdmin(admin.ModelAdmin):
-    list_display = ['reference', 'user', 'video_id', 'created_on', 'active']
-    search_fields = ['reference', 'user__youtube_id', 'video_id']
+@admin.register(FactCheck)
+class FactCheckAdmin(admin.ModelAdmin):
+    list_display = ['reference', 'video_id', 'created_on', 'active']
+    search_fields = ['reference', 'author__youtube_id', 'video_id']
+    filter_horizontal = ['factcheck_sources']
     list_filter = ['active', 'created_on']
     date_hierarchy = 'created_on'
     ordering = ['-created_on']

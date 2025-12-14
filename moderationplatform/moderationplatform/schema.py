@@ -4,15 +4,17 @@ from community_notes.schema import (CommunityNoteMutation, CommunityNoteQuery,
                                     CommunityNoteVoteMutation)
 from graphene_django.debug import DjangoDebug
 from reportsources.schema import ReportSourceQuery
+from factchecking.schema import FactCheckQuery, FactCheckMutation
 
 
-class ModerationQuery(CommunityNoteQuery, ReportSourceQuery, AccountsQuery, graphene.ObjectType):
+class ModerationQuery(CommunityNoteQuery, ReportSourceQuery, AccountsQuery, FactCheckQuery, graphene.ObjectType):
     debug = graphene.Field(DjangoDebug, name='_debug')
 
 
 class ModerationMutation(graphene.ObjectType):
     create_community_note = CommunityNoteMutation.Field()
     create_community_note_vote = CommunityNoteVoteMutation.Field()
+    create_factcheck = FactCheckMutation.Field()
 
 
 schema = graphene.Schema(query=ModerationQuery, mutation=ModerationMutation)

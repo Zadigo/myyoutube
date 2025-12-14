@@ -1,4 +1,4 @@
-import type { Arrayable } from '..'
+import type { Arrayable, ModerationReportSource } from '..'
 import type { GraphQlData, RelayEdge, RelayNode } from '../graphql'
 
 export type CommunityNoteStatus = 'DRAFT' | 'PENDING' | 'APPROVED' | 'REJECTED' | 'FLAGGED'
@@ -21,16 +21,7 @@ export interface BaseCommunityNote {
   status: CommunityNoteStatus
 }
 
-export interface CommunityNoteSource {
-  id: string
-  url: string
-  reference: string
-  sourceCredibility: number
-  updatedOn: string
-  createdOn: string
-}
-
-export type CommunityNote = BaseCommunityNote & { noteSources: Arrayable<CommunityNoteSource> }
+export type CommunityNote = BaseCommunityNote & { noteSources: Arrayable<ModerationReportSource> }
 
 export type CommunityNoteNode = RelayNode<CommunityNote>
 
