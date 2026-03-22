@@ -1,11 +1,10 @@
-import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from "@tailwindcss/vite"
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2024-11-01',
+  compatibilityDate: '2025-07-15',
   devtools: {
     enabled: true,
-
     timeline: {
       enabled: true
     }
@@ -14,16 +13,16 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/': { ssr: false },
-    '/videos/**': { ssr: true },
+    '/videos/**': { ssr: true, swr: true, cache: { maxAge: 30 * 60 } },
     '/playlists': { ssr: false },
     '/settings/**': { ssr: false },
     '/studio/**': { ssr: false },
-    '/school': { ssr: false },
+    '/school': { prerender: true },
     '/channels': { ssr: false },
     '/fact-checking': { ssr: false },
-    '/community-notes/**': { ssr: false, swr: true, cache: { maxAge: 30 * 60 }},
-    '/login': { ssr: false },
-    '/notification': { swr: true, cache: { maxAge: 30 * 60 }},
+    '/community-notes/**': { ssr: false, swr: true, cache: { maxAge: 30 * 60 } },
+    '/login': { prerender: true },
+    '/notification': { ssr:false, swr: true, cache: { maxAge: 30 * 60 } },
     '/search': { ssr: false }
   },
 
@@ -32,12 +31,6 @@ export default defineNuxtConfig({
       name: 'page',
       mode: 'out-in'
     }
-  },
-
-  vite: {
-    plugins: [
-      tailwindcss()
-    ]
   },
 
   vuefire: {
@@ -52,49 +45,20 @@ export default defineNuxtConfig({
       projectId: process.env.NUXT_PUBLIC_FIREBASE_PROJECT_ID
     }
   },
-  
-  runtimeConfig: {
-    public: {
-      // Django GraphQL
-      videosGraphqlUrl: process.env.NUXT_PUBLIC_DJANGO_GRAPHQL,
-      moderationGraphqlUrl: process.env.NUXT_PUBLIC_DJANGO_MODERATION_GRAPHQL,
 
-      // Django
-      djangoProdUrl: process.env.NUXT_DJANGO_PROD_URL || 'http://127.0.0.1:8000',
-      djangoModerationProdUrl: process.env.NUXT_DJANGO_MODERATION_PROD_URL || 'http://127.0.0.1:8001',
-      djangoNotificationsProdUrl: process.env.NUXT_DJANGO_NOTIFICATIONS_PROD_URL || 'http://127.0.0.1:8002',
-      djangoDonationsProdUrl: process.env.NUXT_DJANGO_DONATIONS_PROD_URL || 'http://127.0.0.1:8003',
-      djangoCommentsProdUrl: process.env.NUXT_DJANGO_COMMENTS_PROD_URL || 'http://127.0.0.1:8004',
-
-      // Quart & Go APIs
-      apiCategories: process.env.NUXT_QUART_CATEGORIES_PROD_URL || 'http://127.0.0.1:5000',
-      apiReports: process.env.NUXT_QUART_REPORTS_PROD_URL || 'http://127.0.0.1:5001',
-      apiUploads: process.env.NUXT_GO_UPLOADS_PROD_URL || 'http://127.0.0.1:8080',
-      
-      // Stripe
-      stripeSecretKey: process.env.NUXT_STRIPE_TEST_SECRET_KEY,
-      stripePublishableKey: process.env.NUXT_STRIPE_TEST_PUBLISHABLE_KEY,
-      stripeAccount: process.env.NUXT_STRIPE_TEST_PUBLISHABLE_KEY,
-      stripeApiVersion: '2024-06-20',
-      stripeLocale: 'fr'
-    }
-  },
-  
   modules: [
-    '@nuxt/eslint',
-    '@nuxt/hints',
-    '@nuxt/test-utils/module',
-    '@unlok-co/nuxt-stripe',
-    '@nuxtjs/sitemap',
-    '@nuxt/image',
-    '@vueuse/nuxt',
-    '@nuxtjs/i18n',
-    '@nuxt/fonts',
-    '@nuxt/icon',
     '@pinia/nuxt',
-    'vue-sonner/nuxt',
+    '@vueuse/nuxt',
+    '@nuxt/fonts',
+    '@nuxtjs/seo',
+    '@nuxt/test-utils',
+    '@nuxt/hints',
+    '@nuxt/image',
+    '@nuxt/icon',
     'nuxt-authentication',
     'nuxt-vuefire',
+    '@nuxtjs/i18n',
+    '@nuxt/a11y'
   ],
 
   css: [
@@ -107,19 +71,20 @@ export default defineNuxtConfig({
       {
         name: 'Sora',
         display: 'swap',
-        weights: ['100', '200', '300', '400', '500', '600', '700', '800']
+        weights: [ '100', '200', '300', '400', '500', '600', '700', '800' ]
       },
       // Titles
       {
         name: 'Manrope',
         display: 'swap',
-        weights: ['200', '300', '400', '500', '600', '700', '800']
+        weights: [ '200', '300', '400', '500', '600', '700', '800' ]
       }
     ]
   },
 
   nuxtAuthentication: {
-    enabled: false
+    enabled: false,
+    domain: 'http://127.0.0.1:8000',
   },
 
   i18n: {
@@ -141,6 +106,32 @@ export default defineNuxtConfig({
         dir: 'ltr'
       }
     ]
+  },
+
+  vite: {
+    plugins: [
+      tailwindcss(),
+    ],
+
+    optimizeDeps: {
+      include: [
+        'primevue/config',
+        'dayjs', // CJS
+        'dayjs/plugin/calendar', // CJS
+        'dayjs/plugin/duration', // CJS
+        'dayjs/plugin/relativeTime', // CJS
+        'dayjs/plugin/timezone', // CJS
+        'dayjs/plugin/utc', // CJS
+        'primevue/inputtext',
+        'primevue/skeleton',
+        'primevue/card',
+        'primevue/select',
+        'primevue/button',
+        'primevue/menu',
+        'tailwind-merge',
+        'zod'
+      ]
+    }
   },
 
   nitro: {

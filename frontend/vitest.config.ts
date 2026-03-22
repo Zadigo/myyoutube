@@ -1,16 +1,34 @@
-import { defineVitestConfig } from '@nuxt/test-utils/config'
+import { fileURLToPath } from 'node:url'
+import { defineConfig } from 'vitest/config'
+import { defineVitestProject } from '@nuxt/test-utils/config'
 
-import vue from '@vitejs/plugin-vue'
-
-export default defineVitestConfig({
-    plugins: [vue()],
-    test: {
-        globals: true,
-        environment: 'happy-dom',
-        setupFiles: './tests/setupTests.ts',
-        include: ['**/*.{test,spec}.{js,ts,vue}'],
-        env: {
-            DJANGO_DEV_URL: "127.0.0.1:8000"
-        }
-    }
+export default defineConfig({
+  test: {
+    projects: [
+      {
+        test: {
+          name: 'unit',
+          include: ['test/unit/*.{test,spec}.ts'],
+          environment: 'node',
+        },
+      },
+      await defineVitestProject({
+        test: {
+          name: 'nuxt',
+          include: ['test/nuxt/*.{test,spec}.ts'],
+          environment: 'nuxt',
+          environmentOptions: {
+            nuxt: {
+              rootDir: fileURLToPath(new URL('.', import.meta.url)),
+              domEnvironment: 'happy-dom',
+            },
+          },
+        },
+      }),
+    ],
+    coverage: {
+      enabled: true,
+      provider: 'v8',
+    },
+  },
 })
