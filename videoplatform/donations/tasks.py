@@ -25,8 +25,3 @@ def generate_donation_report(start_date: str, end_date: str):
 @shared_task
 def refund_donation(donation_id: str, reason: str):
     pass
-
-
-@shared_task
-def create_notification(donation_id: str):
-    pass
