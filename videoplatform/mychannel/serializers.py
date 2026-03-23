@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import fields
-from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 
 from mychannel import models

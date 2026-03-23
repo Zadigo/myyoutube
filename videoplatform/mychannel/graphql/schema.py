@@ -1,7 +1,6 @@
 import graphene
-from graphene_django import DjangoObjectType
 from graphql import GraphQLResolveInfo
-from mychannel.models import UserChannel, ChannelPlaylist, ChannelTag
+from mychannel.models import UserChannel
 from mychannel.graphql.types import UserChannelType, ChannelPlaylistType, ChannelTagsType
 from django.core.cache import cache
 

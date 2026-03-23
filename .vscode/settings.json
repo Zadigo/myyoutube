@@ -1,6 +1,5 @@
 {
     "tailwind-fold.autoFold": false,
-    "vue3snippets.enable-compile-vue-file-on-did-save-code": false,
     "biome.enabled": false,
     "eslint.useFlatConfig": true,
     "tailwindCSS.experimental.classRegex": [
@@ -14,10 +13,10 @@
         ]
     ],
     "[python]": {
-        "notebook.codeActionsOnSave": {
+        "editor.codeActionsOnSave": {
             "source.unusedImports": "explicit",
-            "source.renameShadowedStdlibImports": "explicit",
-            "source.fixAll.oxc": "explicit"
+            "source.fixAll.pylance": "explicit",
+            "source.sort.json": "explicit"
         }
     }
 }

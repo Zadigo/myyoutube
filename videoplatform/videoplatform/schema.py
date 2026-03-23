@@ -8,8 +8,10 @@ from ratings.graphql.mutation import CreateRatingMutation
 from ratings.graphql.schema import RatingsQuery
 from accounts.graphql.schema import CustomUserQuery, UserProfileQuery, SubscriptionQuery, PreferredAdQuery, ViewingProfileQuery, ActivationTokenQuery
 from accounts.graphql.mutation import UpdateViewingProfileMutation
+from history.graphql.schema import HistoryQuery
 
 class Query(
+    HistoryQuery,
     VideosQuery,
     MyChannelQuery,
     PlaylistQuery,
