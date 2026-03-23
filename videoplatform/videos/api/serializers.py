@@ -10,8 +10,6 @@ from rest_framework.serializers import Serializer
 from videos import choices
 from videos.api import validators
 from videos.models import Video
-from videos.processing import get_video_metadata
-from videos import tasks
 from warnings import deprecated
 
 
@@ -204,10 +202,10 @@ class ValidateVideoUpload(Serializer):
         # instance.width = details.size[0]
         # instance.height = details.size[1]
         # instance.framerate = details.framerate
-        tasks.get_video_metadata.apply_async(
-            (instance.video.id,),
-            countdown=50
-        )
+        # tasks.get_video_metadata.apply_async(
+        #     (instance.video.id,),
+        #     countdown=50
+        # )
         instance.save()
 
         return instance

@@ -1,23 +1,25 @@
 import graphene
-from django.core.cache import cache
-from graphene import relay
-from graphene_django import DjangoObjectType
-from graphene_django.filter import DjangoFilterConnectionField
-from graphql import GraphQLFieldResolver, GraphQLResolveInfo
-from playlists.models import Playlist
-from playlists.graphql.types import PlaylistType 
+from graphql import GraphQLResolveInfo
 from django.contrib.auth import get_user_model
 from accounts.models import UserProfile, Subscription, PreferredAd, ViewingProfile, ActivationToken
 from accounts.graphql.types import CustomUserType, UserProfileType, SubscriptionType, PreferredAdType, ViewingProfileType, ActivationTokenType
 
 class CustomUserQuery(graphene.ObjectType):
-    get_user = graphene.Field(CustomUserType, id=graphene.String(required=True))
+    all_users = graphene.List(CustomUserType)
+    get_user = graphene.Field(
+        CustomUserType, 
+        id=graphene.String(required=True)
+    )
 
-    def resolve_get_user(self, info, id):
+    def resolve_all_users(self, info):
+        return get_user_model().objects.all()
+
+    def resolve_get_user(self, info: GraphQLResolveInfo, id: str):
         try:
-            return get_user_model().objects.get(pk=id)
-        except get_user_model().DoesNotExist:
-            return None
+            user_model = get_user_model()
+            return user_model.objects.get(pk=id)
+        except user_model.DoesNotExist:
+            raise user_model.DoesNotExist(f"User with id {id} does not exist.")
 
 
 class UserProfileQuery(graphene.ObjectType):
@@ -52,7 +54,7 @@ class ViewingProfileQuery(graphene.ObjectType):
         try:
             return ViewingProfile.objects.get(pk=id)
         except ViewingProfile.DoesNotExist:
-            return None
+            raise ViewingProfile.DoesNotExist(f"ViewingProfile with id {id} does not exist.")
 
 
 class ActivationTokenQuery(graphene.ObjectType):
