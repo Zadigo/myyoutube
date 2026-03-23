@@ -8,6 +8,7 @@ from videos.graphql.types import VideoTagType, VideosType
 from django.core.cache import cache
 import pydantic
 import django_filters
+from videos.models import Video, Tag
 from django.db.models import QuerySet
 from typing import Optional
 from django.core.cache import cache
@@ -70,9 +71,16 @@ class VideosQuery(graphene.ObjectType):
     # search_videos = DjangoFilterConnectionField(VideosType, filterset_class=VideosFilterSet)
     search_videos = DjangoFilterConnectionField(VideosType)
     all_tags = graphene.List(VideoTagType)
+    search_tags = graphene.List(VideoTagType, name=graphene.String(required=True))
 
     def resolve_all_videos(root, info: GraphQLResolveInfo):
         return Video.objects.all()
+
+    def resolve_all_tags(root, info: GraphQLResolveInfo):
+        return Tag.objects.all()
+    
+    def resolve_search_tags(root, info: GraphQLResolveInfo, name: str):
+        return Tag.objects.filter(name__icontains=name)
     
     # def resolve_search_videos(root, info: GraphQLResolveInfo, **kwargs):
     #     queryset = Video.objects.all()

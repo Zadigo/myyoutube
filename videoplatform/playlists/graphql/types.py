@@ -3,7 +3,9 @@ from django.core.cache import cache
 from graphene import relay
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
+from graphql import GraphQLResolveInfo
 from playlists.models import Playlist
+from django.db.models import QuerySet
 
 
 class PlaylistType(DjangoObjectType):
@@ -19,6 +21,6 @@ class PlaylistType(DjangoObjectType):
         }
 
     @classmethod
-    def get_queryset(cls, queryset, info):
-        return queryset.select_related('user').prefetch_related('videos').all()
+    def get_queryset(cls, queryset: QuerySet[Playlist], info: GraphQLResolveInfo):
+        return queryset.select_related('user').all()
 

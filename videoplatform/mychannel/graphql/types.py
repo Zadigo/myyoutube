@@ -8,6 +8,10 @@ class UserChannelType(DjangoObjectType):
         model = UserChannel
         fields = '__all__'
 
+    @classmethod
+    def get_queryset(cls, queryset, info):
+        return queryset.select_related('user').prefetch_related('playlist_set', 'tags').all()
+
 
 class ChannelPlaylistType(DjangoObjectType):
     class Meta:

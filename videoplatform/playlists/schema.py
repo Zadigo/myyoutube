@@ -20,7 +20,7 @@ class PlaylistType(DjangoObjectType):
 
     @classmethod
     def get_queryset(cls, queryset, info):
-        return queryset.select_related('user').prefetch_related('videos').all()
+        return queryset.select_related('user').all()
 
 
 class PlaylistConnection(relay.Connection):
@@ -34,4 +34,4 @@ class PlaylistQuery(graphene.ObjectType):
     searchplaylists = DjangoFilterConnectionField(PlaylistType)
 
     def resolve_allplaylists(self, info, **kwargs):
-        return Playlist.objects.select_related('user').prefetch_related('videos').all()
+        return Playlist.objects.select_related('user').all()
