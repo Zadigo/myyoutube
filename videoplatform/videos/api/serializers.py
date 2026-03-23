@@ -12,6 +12,7 @@ from videos.api import validators
 from videos.models import Video
 from videos.processing import get_video_metadata
 from videos import tasks
+from warnings import deprecated
 
 
 class VideoSerializer(Serializer):
@@ -27,6 +28,7 @@ class VideoSerializer(Serializer):
     created_on = fields.DateTimeField()
 
 
+@deprecated("Will be removed in future versions.")
 class SearchSerializer(Serializer):
     name = fields.CharField(required=False)
     tags = None
