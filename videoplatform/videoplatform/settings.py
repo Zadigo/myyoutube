@@ -1,26 +1,26 @@
 import os
 from datetime import timedelta
 from pathlib import Path
-import dotenv
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ENV_PATH = BASE_DIR / '.env'
+environ.Env.read_env(BASE_DIR / '.env')
 
-if ENV_PATH.exists():
-    dotenv.load_dotenv(ENV_PATH)
-
+env = environ.Env(
+    DEBUG=(bool, False)
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -54,13 +54,9 @@ INSTALLED_APPS = [
     'accounts',
     'mediastats',
     'uploads',
-    'donations',
-    'reports',
     'videos',
     'stories',
     'ratings',
-    'comments',
-    'notifications',
     'mychannel',
     'history',
     'playlists'
@@ -108,11 +104,11 @@ ASGI_APPLICATION = 'videoplatform.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': '5432'
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST', 'localhost'),
+        'PORT': env('DB_PORT', '5432')
     }
 }
 
@@ -165,8 +161,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 def aws_endpoint(path=None):
     base_url = 'https://{bucket}.s3.{region}.amazonaws.com'
 
-    bucket = os.getenv('AWS_S3_REGION_NAME')
-    region = os.getenv('AWS_S3_REGION_NAME')
+    bucket = env('AWS_S3_REGION_NAME')
+    region = env('AWS_S3_REGION_NAME')
     url = base_url.format(bucket=bucket, region=region)
 
     if path is not None:
@@ -183,10 +179,10 @@ if USE_S3:
     # be a bug when trying to access the admin with DEBUG
 
     DEFAULT_S3_SETTINGS = {
-        'access_key': os.getenv('AWS_S3_ACCESS_KEY_ID'),
-        'secret_key': os.getenv('AWS_S3_SECRET_ACCESS_KEY'),
-        'bucket_name': os.getenv('AWS_STORAGE_BUCKET_NAME'),
-        'region_name': os.getenv('AWS_S3_REGION_NAME'),
+        'access_key': env('AWS_S3_ACCESS_KEY_ID'),
+        'secret_key': env('AWS_S3_SECRET_ACCESS_KEY'),
+        'bucket_name': env('AWS_STORAGE_BUCKET_NAME'),
+        'region_name': env('AWS_S3_REGION_NAME'),
         'object_parameters': {'CacheControl': 'max-age=86400'},
         'endpoint_url': aws_endpoint(),
         # 'cloudfront_key': '',  # AWS_CLOUDFRONT_KEY
@@ -253,9 +249,9 @@ EMAIL_USE_TLS = True
 
 EMAIL_PORT = 587
 
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 
 # Axes
@@ -335,17 +331,17 @@ LANGUAGE_CODE = 'fr'
 # password to establish the connection:
 # https://github.com/redis/redis/issues/13437
 
-REDIS_HOST = os.getenv('REDIS_HOST', '127.0.0.1')
+REDIS_HOST = env('REDIS_HOST', '127.0.0.1')
 
-REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
+REDIS_PASSWORD = env('REDIS_PASSWORD')
 
 REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:6379'
 
-RABBITMQ_HOST = os.getenv('RABBITMQ_HOST', 'localhost')
+RABBITMQ_HOST = env('RABBITMQ_HOST', 'localhost')
 
-RABBITMQ_USER = os.getenv('RABBITMQ_DEFAULT_USER', 'guest')
+RABBITMQ_USER = env('RABBITMQ_DEFAULT_USER', 'guest')
 
-RABBITMQ_PASSWORD = os.getenv('RABBITMQ_DEFAULT_PASS', 'guest')
+RABBITMQ_PASSWORD = env('RABBITMQ_DEFAULT_PASS', 'guest')
 
 CELERY_BROKER_URL = f'amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}:5672'
 
@@ -385,17 +381,17 @@ if os.getenv('USES_HTTP_SCHEME', 'http') == 'https':
 
 # N8N
 
-N8N_HOST = os.getenv('N8N_HOST')
+N8N_HOST = env('N8N_HOST')
 
 N8N_TEST_API_URL = 'http://n8n.gency313.fr/webhook-test/'
 
 N8N_API_URL = 'http://n8n.gency313.fr/webhook/'
 
-N8N_AUTHENTICATION_TOKEN = os.getenv('N8N_AUTHENTICATION_TOKEN')
+N8N_AUTHENTICATION_TOKEN = env('N8N_AUTHENTICATION_TOKEN')
 
-N8N_REQUEST_USERNAME = os.getenv('N8N_REQUEST_USERNAME')
+N8N_REQUEST_USERNAME = env('N8N_REQUEST_USERNAME')
 
-N8N_REQUEST_PASSWORD = os.getenv('N8N_REQUEST_PASSWORD')
+N8N_REQUEST_PASSWORD = env('N8N_REQUEST_PASSWORD')
 
 
 # Fixtures
@@ -404,12 +400,12 @@ FIXTURE_DIRS = [
     'fixtures/videos'
 ]
 
-GOOGLE_CLOUD_PROJECT = 'gency313'
+GOOGLE_CLOUD_PROJECT = env('GOOGLE_CLOUD_PROJECT')
 
 
 # Firebase
 
-FIREBASE_PROJECT_ID = os.getenv('FIREBASE_PROJECT_ID')
+FIREBASE_PROJECT_ID = env('FIREBASE_PROJECT_ID')
 
 
 # Schema

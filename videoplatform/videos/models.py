@@ -58,6 +58,13 @@ class Video(models.Model):
         max_length=300,
         validators=[]
     )
+    playlist = models.ForeignKey(
+        ChannelPlaylist,
+        on_delete=models.SET_NULL,
+        related_name='playlist_videos',
+        blank=True,
+        null=True
+    )
     video = models.FileField(
         upload_to=video_directory_path
     )

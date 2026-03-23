@@ -24,11 +24,11 @@ urlpatterns = [
         views.GetVideo.as_view(),
         name='video'
     ),
-    re_path(
-        r'^(?P<video_id>vid_[a-zA-Z0-9]+)/comment$',
-        views.CreateCommentAPI.as_view(),
-        name='create_comment'
-    ),
+    # re_path(
+    #     r'^(?P<video_id>vid_[a-zA-Z0-9]+)/comment$',
+    #     views.CreateCommentAPI.as_view(),
+    #     name='create_comment'
+    # ),
     re_path(
         r'^s/(?P<video_id>vid_[a-zA-Z0-9]+)$',
         views.VideoStreamView.as_view(),

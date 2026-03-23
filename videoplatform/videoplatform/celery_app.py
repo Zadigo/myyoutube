@@ -1,5 +1,5 @@
 import os
-
+import httpx
 from celery import Celery
 from celery.schedules import crontab
 
@@ -46,3 +46,9 @@ app.autodiscover_tasks()
 #         'schedule': crontab(minute=1)
 #     }
 # }
+
+
+@app.task(bind=True)
+def create_notification():
+    with httpx.Client() as client:
+        pass

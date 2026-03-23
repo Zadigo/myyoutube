@@ -31,10 +31,6 @@ class Playlist(models.Model):
         blank=True,
         null=True
     )
-    videos = models.ManyToManyField(
-        'videos.Video',
-        blank=True
-    )
     is_intelligent = models.BooleanField(
         default=False
     )

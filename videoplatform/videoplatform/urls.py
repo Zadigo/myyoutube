@@ -26,20 +26,12 @@ urlpatterns = [
         name='viewing_profile_id'
     ),
     path(
-        'v1/notifications/',
-        include('notifications.api.urls')
-    ),
-    path(
         'v1/playlists/',
         include('playlists.api.urls')
     ),
     path(
         'v1/ratings/',
-        include('ratings.api.urls')
-    ),
-    path(
-        'v1/comments/',
-        include('comments.api.urls')
+        include('ratings.urls')
     ),
     path(
         'v1/accounts/',
@@ -88,8 +80,14 @@ urlpatterns = [
         include('rest_framework.urls'),
         name='rest_framework'
     ),
-    path('admin/secondary/', custom_admin_site.urls),
-    path('admin/', admin.site.urls),
+    path(
+        'admin/secondary/',
+        custom_admin_site.urls
+    ),
+    path(
+        'admin/', 
+        admin.site.urls
+    )
 ]
 
 if settings.DEBUG:

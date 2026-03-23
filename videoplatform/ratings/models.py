@@ -3,11 +3,9 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from comments.models import Comment, Reply
 from ratings.choices import RatingFor, RatingTypes
 from ratings.managers import RatingManager
 from videos.models import Video
-from notifications.models import Notification
 
 
 class Rating(models.Model):
@@ -26,15 +24,13 @@ class Rating(models.Model):
         blank=True,
         null=True
     )
-    comment = models.ForeignKey(
-        Comment,
-        on_delete=models.CASCADE,
+    comment = models.CharField(
+        max_length=500,
         blank=True,
         null=True
     )
-    reply = models.ForeignKey(
-        Reply,
-        on_delete=models.CASCADE,
+    reply = models.CharField(
+        max_length=500,
         blank=True,
         null=True
     )
@@ -56,16 +52,3 @@ class Rating(models.Model):
 
     def __str__(self):
         return f'{self.user.id} - {self.video}'
-
-
-@receiver(post_save, sender=Rating)
-def notify_user(instance, created, **kwargs):
-    if created:
-        notification = Notification.objects.create(
-            user=instance.user,
-            video=instance.video
-        )
-
-        if instance.video is not None:
-            notification.notificiation_type = 'Like'
-            notification.save()

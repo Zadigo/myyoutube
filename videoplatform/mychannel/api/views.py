@@ -3,7 +3,6 @@ from rest_framework.generics import (GenericAPIView, ListAPIView,
 from rest_framework.mixins import Response
 from rest_framework.permissions import AllowAny
 
-from comments.api.serializers import ReplySerializer
 from mychannel.api import serializers
 from mychannel import models
 from mychannel.api.serializers import UserChannelSerializer

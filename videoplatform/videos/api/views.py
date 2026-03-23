@@ -9,8 +9,6 @@ from pathlib import Path
 from wsgiref.util import FileWrapper
 
 import pandas
-from comments.api.serializers import CommentSerializer
-from comments.models import Comment
 from django.conf import settings
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
@@ -310,34 +308,34 @@ class VideoStreamView(APIView):
         return response
 
 
-class CreateCommentAPI(GenericAPIView):
-    """Endpoint used to create a new
-    comment on a given video"""
+# class CreateCommentAPI(GenericAPIView):
+#     """Endpoint used to create a new
+#     comment on a given video"""
 
-    serializer_class = CommentSerializer
-    queryset = models.Video.objects.all()
-    permission_classes = [IsAuthenticated]
-    lookup_field = 'video_id'
-    lookup_url_kwarg = 'video_id'
+#     serializer_class = CommentSerializer
+#     queryset = models.Video.objects.all()
+#     permission_classes = [IsAuthenticated]
+#     lookup_field = 'video_id'
+#     lookup_url_kwarg = 'video_id'
 
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context['video'] = self.get_object()
-        return context
+#     def get_serializer_context(self):
+#         context = super().get_serializer_context()
+#         context['video'] = self.get_object()
+#         return context
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+#     def post(self, request, *args, **kwargs):
+#         serializer = self.get_serializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
 
-        video = self.get_object()
-        comment = serializer.save()
+#         video = self.get_object()
+#         comment = serializer.save()
 
-        if request.user == video.user:
-            comment.from_creator = True
-            comment.save()
+#         if request.user == video.user:
+#             comment.from_creator = True
+#             comment.save()
 
-        # notification = Notification.objects.create()
-        return Response(serializer.data)
+#         # notification = Notification.objects.create()
+#         return Response(serializer.data)
 
 
 class FeedBuilder(GenericAPIView):

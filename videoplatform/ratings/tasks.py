@@ -13,3 +13,10 @@ def create_rating(video_id: str, user_id: int, rating: int):
     instance.rating = rating
     instance.save()
     logger.info(f'Rating updated for video {video_id} by user {user_id}')
+
+
+@shared_task
+def notify_user(user_id: str):
+    user = get_user_model().objects.get(id=user_id)
+    # Add your notification logic here
+    logger.info(f'Notification sent to user {user_id}')

@@ -7,7 +7,6 @@ class PlaylistAdmin(admin.ModelAdmin):
     list_display = ['name', 'user', 'visibility', 'created_on']
     search_fields = ['name', 'user__username', 'visibility']
     sortable_by = ['name', 'visibility']
-    filter_horizontal = ['videos']
     date_hierarchy = 'created_on'
 
 
