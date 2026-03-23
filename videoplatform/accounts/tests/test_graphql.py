@@ -9,7 +9,7 @@ from accounts.models import CustomUser
 class TestVideosGraphQL(GraphQLTestCase):
     def setUp(self):
         self.instance: CustomUser = UserFactory.create()
-
+        
     def test_get_user(self):
         response = self.query(
             '''
