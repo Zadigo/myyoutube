@@ -61,9 +61,6 @@ class FactCheck(models.Model):
         related_name='factcheck_sources',
         help_text="Sources that support the fact check"
     )
-    # explanation = models.TextField(
-    #     help_text="Explanation of the report"
-    # )
     active = models.BooleanField(
         default=True
     )

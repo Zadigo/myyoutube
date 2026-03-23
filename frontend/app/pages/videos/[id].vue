@@ -14,7 +14,7 @@
       <video-actions-card @action:modal="openModal" />
 
       <!-- Information -->
-      <video-information />
+      <lazy-video-information hydrate-on-idle />
     </section>
 
     <section class="grid grid-cols-12 gap-2 mt-4">
@@ -56,12 +56,12 @@
 
       <!-- Modals -->
       <client-only>
-        <modals-save />
-        <modals-report />
-        <modals-gift />
-        <modals-classification />
-        <modals-donation />
-        <modals-share />
+        <lazy-modals-save hydrate-on-visible />
+        <lazy-modals-report hydrate-on-visible />
+        <lazy-modals-gift hydrate-on-visible />
+        <lazy-modals-classification hydrate-on-visible />
+        <lazy-modals-donation hydrate-on-visible />
+        <lazy-modals-share hydrate-on-visible />
       </client-only>
     </section>
   </section>

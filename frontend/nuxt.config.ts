@@ -134,6 +134,33 @@ export default defineNuxtConfig({
     }
   },
 
+  runtimeConfig: {
+    public: {
+      // Django GraphQL
+      videosGraphqlUrl: process.env.NUXT_PUBLIC_DJANGO_GRAPHQL,
+      moderationGraphqlUrl: process.env.NUXT_PUBLIC_DJANGO_MODERATION_GRAPHQL,
+
+      // Django
+      djangoProdUrl: process.env.NUXT_DJANGO_PROD_URL || 'http://127.0.0.1:8000',
+      djangoModerationProdUrl: process.env.NUXT_DJANGO_MODERATION_PROD_URL || 'http://127.0.0.1:8001',
+      djangoNotificationsProdUrl: process.env.NUXT_DJANGO_NOTIFICATIONS_PROD_URL || 'http://127.0.0.1:8002',
+      djangoDonationsProdUrl: process.env.NUXT_DJANGO_DONATIONS_PROD_URL || 'http://127.0.0.1:8003',
+      djangoCommentsProdUrl: process.env.NUXT_DJANGO_COMMENTS_PROD_URL || 'http://127.0.0.1:8004',
+
+      // Quart & Go APIs
+      apiCategories: process.env.NUXT_QUART_CATEGORIES_PROD_URL || 'http://127.0.0.1:5000',
+      apiReports: process.env.NUXT_QUART_REPORTS_PROD_URL || 'http://127.0.0.1:5001',
+      apiUploads: process.env.NUXT_GO_UPLOADS_PROD_URL || 'http://127.0.0.1:8080',
+
+      // Stripe
+      stripeSecretKey: process.env.NUXT_STRIPE_TEST_SECRET_KEY,
+      stripePublishableKey: process.env.NUXT_STRIPE_TEST_PUBLISHABLE_KEY,
+      stripeAccount: process.env.NUXT_STRIPE_TEST_PUBLISHABLE_KEY,
+      stripeApiVersion: '2024-06-20',
+      stripeLocale: 'fr'
+    }
+  },
+
   nitro: {
     storage: {
       redis: {

@@ -5,7 +5,6 @@ from graphene_django.types import DjangoObjectType
 from factchecking.models import FactCheck
 from reportsources.models import ReportSource
 
-
 class FactCheckType(DjangoObjectType):
     class Meta:
         model = FactCheck
@@ -50,7 +49,6 @@ class FactCheckMutation(graphene.Mutation):
 
     @classmethod
     def mutate(cls, root, info, start_time, end_time, author, video_id, sources, explanation, reference=None):
-        print(info.context.user)
         if reference is not None:
             try:
                 factcheck = FactCheck.objects.get(reference=reference)

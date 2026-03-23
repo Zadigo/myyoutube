@@ -28,7 +28,7 @@
 
     <!-- Modals -->
     <client-only>
-      <playlists-modals-create :playlists="playlists" />
+      <lazy-playlists-modals-create :playlists="playlists" hydrate-on-visible />
     </client-only> 
   </section>
 </template>

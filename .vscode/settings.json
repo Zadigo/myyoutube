@@ -12,5 +12,12 @@
             "cx\\(((?:[^()]|\\([^()]*\\))*)\\)",
             "(?:'|\"|`)([^']*)(?:'|\"|`)"
         ]
-    ]
+    ],
+    "[python]": {
+        "notebook.codeActionsOnSave": {
+            "source.unusedImports": "explicit",
+            "source.renameShadowedStdlibImports": "explicit",
+            "source.fixAll.oxc": "explicit"
+        }
+    }
 }
