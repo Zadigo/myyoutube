@@ -85,10 +85,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         return self.firstname
 
-    @property
-    def get_short_name(self):
-        return self.firstname
-
     def clean(self):
         super().clean()
         self.email = self.__class__.objects.normalize_email(self.email)

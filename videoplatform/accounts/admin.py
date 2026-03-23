@@ -107,7 +107,7 @@ class PreferredAdAdmin(admin.ModelAdmin):
 
 
 class PreferredCategoryAdmin(admin.ModelAdmin):
-    pass
+    filter_horizontal = []
 
 
 custom_admin_site.register(ActivationToken, ActivateAccountAdmin)
