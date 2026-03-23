@@ -107,8 +107,8 @@ DATABASES = {
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST', 'localhost'),
-        'PORT': env('DB_PORT', '5432')
+        'HOST': env('DB_HOST', default='localhost'),
+        'PORT': env('DB_PORT', default='5432')
     }
 }
 
@@ -249,9 +249,9 @@ EMAIL_USE_TLS = True
 
 EMAIL_PORT = 587
 
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
 
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
 
 
 # Axes
@@ -331,17 +331,17 @@ LANGUAGE_CODE = 'fr'
 # password to establish the connection:
 # https://github.com/redis/redis/issues/13437
 
-REDIS_HOST = env('REDIS_HOST', '127.0.0.1')
+REDIS_HOST = env('REDIS_HOST', default='127.0.0.1')
 
-REDIS_PASSWORD = env('REDIS_PASSWORD')
+REDIS_PASSWORD = env('REDIS_PASSWORD', default='')
 
 REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:6379'
 
-RABBITMQ_HOST = env('RABBITMQ_HOST', 'localhost')
+RABBITMQ_HOST = env('RABBITMQ_HOST', default='localhost')
 
-RABBITMQ_USER = env('RABBITMQ_DEFAULT_USER', 'guest')
+RABBITMQ_USER = env('RABBITMQ_DEFAULT_USER', default='guest')
 
-RABBITMQ_PASSWORD = env('RABBITMQ_DEFAULT_PASS', 'guest')
+RABBITMQ_PASSWORD = env('RABBITMQ_DEFAULT_PASS', default='guest')
 
 CELERY_BROKER_URL = f'amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}:5672'
 
