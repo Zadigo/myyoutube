@@ -25,7 +25,3 @@ def video_directory_path(instance, filename):
         )
     else:
         return f'uploads/{channel_reference}/{new_file_name}'
-
-
-def vue_dict(item):
-    return json.dumps(item)

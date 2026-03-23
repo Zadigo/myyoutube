@@ -58,7 +58,7 @@ def get_video_metadata(video_id: str | int):
 
 
 @shared_task
-def get_video_frames(video_id: str | int):
+def get_video_frames(video_id: str | int, k: int = 2):
     # TODO: Create Go server that does this task
     try:
         instance = Video.objects.get(id=video_id)

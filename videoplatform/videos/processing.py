@@ -3,7 +3,7 @@ import pathlib
 
 import cv2
 from moviepy import VideoFileClip
-
+from warnings import deprecated
 
 @dataclasses.dataclass
 class VideoDetails:
@@ -12,6 +12,7 @@ class VideoDetails:
     framerate: float = None
 
 
+@deprecated('This function is deprecated and will be removed in future versions.')
 def get_video_metadata(path):
     video = VideoFileClip(path)
     details = VideoDetails(video.duration, video.size)
@@ -19,6 +20,7 @@ def get_video_metadata(path):
     return dataclasses.asdict(details)
 
 
+@deprecated('This function is deprecated and will be removed in future versions.')
 def get_video_frames(path, k=2):
     if isinstance(path, str):
         path = pathlib.Path(path)
