@@ -4,23 +4,25 @@
       <h1 class="font-bold text-2xl">
         Feed builder
 
-        <VoltButton @click="open()">
+        <nuxt-button @click="open()">
           Connect
-        </VoltButton>
+        </nuxt-button>
       </h1>
       
       <div class="mt-5">
         <div v-if="currentFeed" class="flex gap-2">
-          <VoltInputText v-model="currentFeed.name" placeholder="Feed name" class="flex-grow" />
-          <VoltButton>Run</VoltButton>
+          <nuxt-input v-model="currentFeed.name" placeholder="Feed name" class="grow" />
+          <nuxt-button>
+            Run
+          </nuxt-button>
         </div>
 
         <div class="flex flex-wrap gap-1 mt-5">
           {{ isDisabled }}
-          <VoltButton v-for="block in blockNames" :key="block" :disabled="isDisabled" size="small" @click="feedsStore.addBlock(block)">
+          <nuxt-button v-for="block in blockNames" :key="block" :disabled="isDisabled" @click="feedsStore.addBlock(block)">
             <Icon name="i-fa7-solid:plus" />
             {{ block }}
-          </VoltButton>
+          </nuxt-button>
         </div>
 
         <div>
@@ -34,7 +36,6 @@
 </template>
 
 <script setup lang="ts">
-import { blockNames, type BlockNames } from '~/data'
 import type { MessageReceivedFeedVideos, MessageSetCurrentFeed, WebsocketMessage } from '~/types/websocket'
 
 const ResolvedBlockSource = resolveComponent('BlockSource')

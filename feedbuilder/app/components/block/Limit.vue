@@ -1,7 +1,7 @@
 <template>
-  <BlockBase title="Limit" @delete-block="feedsStore.deleteBlock(index)">
-    <VoltInputText v-model="data.limit" :min="0" class="w-full" />
-  </BlockBase>
+  <block-base title="Limit" @delete-block="feedsStore.deleteBlock(index)">
+    <nuxt-input v-model="data.limit" :min="0" class="w-full" />
+  </block-base>
 </template>
 
 <script setup lang="ts">

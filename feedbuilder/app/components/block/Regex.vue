@@ -1,25 +1,18 @@
 <template>
-  <BlockBase @delete-block="feedsStore.deleteBlock(index)">
-    <VoltInputText v-model="regexOptions.regex" class="w-full" placeholder="Regex: ^Taylor|Swift" />
+  <block-base title="Regex" @delete-block="feedsStore.deleteBlock(index)">
+    <nuxt-input v-model="regexOptions.regex" class="w-full" placeholder="Regex: ^Taylor|Swift" />
 
     <div class="gap-2 my-2 flex flex-wrap">
-      <VoltBadge v-for="targetOption in targetOptions" :key="targetOption">
+      <nuxt-badge v-for="targetOption in targetOptions" :key="targetOption">
         {{ targetOption }}
-      </VoltBadge>
+      </nuxt-badge>
     </div>
     
     <div class="space-y-2">
-      <VoltLabel>
-        <VoltToggleSwitch v-model="regexOptions.invert" />
-        <label>Invert the match</label>
-      </VoltLabel>
-
-      <VoltLabel>
-        <VoltToggleSwitch v-model="regexOptions.case_sensitive" />
-        <label>Case sensitive</label>
-      </VoltLabel>
+      <nuxt-switch v-model="regexOptions.invert" label="Invert the match" />
+      <nuxt-switch v-model="regexOptions.case_sensitive" label="Case sensitive" />
     </div>
-  </BlockBase>
+  </block-base>
 </template>
 
 <script setup lang="ts">

@@ -1,29 +1,25 @@
 <template>
-  <VoltCard class="shadow-sm">
+  <nuxt-card class="shadow-sm">
     <template #header>
       <div class="px-3 py-2">
         <div class="flex justify-between">
-          <VoltButton variant="text" draggable="true">
-            <Icon name="fa-solid:grip-vertical" />
-          </VoltButton>
+          <nuxt-button draggable="true">
+            <icon name="fa-solid:grip-vertical" />
+          </nuxt-button>
 
-          <VoltButton @click="handleDeleteBlock">
-            <Icon name="fa-solid:trash" />
-          </VoltButton>
+          <nuxt-button @click="handleDeleteBlock">
+            <icon name="fa-solid:trash" />
+          </nuxt-button>
         </div>
-
-        <VoltDivider />
       </div>
     </template>
 
-    <template #content>
-      <h5 class="font-bold tracking-tight text-gray-900 dark:text-white mb-3">
-        {{ title }}
-      </h5>
+    <h5 class="font-bold tracking-tight text-gray-900 dark:text-white mb-3">
+      {{ title }}
+    </h5>
 
-      <slot />
-    </template>
-  </VoltCard>
+    <slot />
+  </nuxt-card>
 </template>
 
 <script setup lang="ts">

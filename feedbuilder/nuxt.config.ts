@@ -21,7 +21,25 @@ export default defineNuxtConfig({
   vite: {
     plugins: [
       tailwind()
-    ]
+    ],
+    optimizeDeps: {
+      include: [
+        'primevue/inputtext',
+        'primevue/button',
+        'primevue/badge',
+        '@primevue/icons/chevrondown',
+        '@primevue/icons/search',
+        '@primevue/icons/spinner',
+        '@primevue/icons/times',
+        'primevue/select',
+        'primevue/toggleswitch',
+        'tailwind-merge',
+        'primevue/divider',
+        'primevue/card',
+        'vuefire',
+        'primevue/config',
+      ]
+    }
   },
 
   modules: [
@@ -30,8 +48,13 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/fonts',
     '@vueuse/nuxt',
-    'nuxt-vuefire'
+    'nuxt-vuefire',
+    '@nuxt/ui'
   ],
+
+  ui: {
+    prefix: 'Nuxt'
+  },
 
   vuefire: {
     config: {

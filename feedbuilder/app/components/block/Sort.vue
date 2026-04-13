@@ -1,14 +1,13 @@
 <template>
-  <BlockBase @delete-block="feedsStore.deleteBlock(index)">
+  <block-base title="Some title" @delete-block="feedsStore.deleteBlock(index)">
     <div class="grid grid-cols-2 gap-4">
-      <VoltSelect v-model="sort.by" :options="sortBy" />
-      <VoltSelect v-model="sort.direction" :options="sortDirection" />
+      <nuxt-select v-model="sort.by" :items="Array.from(sortBy)" />
+      <nuxt-select v-model="sort.direction" :items="Array.from(sortDirection)" />
     </div>
-  </BlockBase>
+  </block-base>
 </template>
 
 <script setup lang="ts">
-import { sortBy, sortDirection } from '~/data'
 import type { SortOptions } from '~/types'
 
 const feedsStore = useFeedsStore()

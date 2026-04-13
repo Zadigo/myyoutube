@@ -1,5 +1,3 @@
-import type { BlockNames, SortBy, SortDirection } from '~/data'
-
 export interface SourceOptions {
     duration: '30 minutes' | '3 hours' | '12 hours' | '24 hours' | '3 days' | '7 days'
     source: 'Entire network' | 'Tags' | 'Single user' | 'List' | 'Feed' | 'Single post' | 'Labels'

@@ -13,6 +13,7 @@
   "dependencies": {
     "@nuxt/icon": "^2.2.1",
     "@nuxt/image": "^2.0.0",
+    "@nuxt/ui": "4.6.1",
     "@primevue/icons": "^4.5.5",
     "@vueuse/integrations": "^14.2.1",
     "firebase": "^12.12.0",
