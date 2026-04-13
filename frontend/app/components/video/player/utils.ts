@@ -76,7 +76,7 @@ export const useVideoPlayerControls = createGlobalState((videoPlayerEl: VideoPla
       if (videoPlayerEl.value.paused) {
         inc()
         togglePlaying(true)
-        videoPlayerEl.value.play()
+        await videoPlayerEl.value.play()
       } else {
         togglePlaying(false)
         videoPlayerEl.value.pause()

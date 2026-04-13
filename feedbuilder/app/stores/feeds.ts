@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 
 import type { BlockNames } from '~/data'
 import type { FeedBlocks, NewFeed } from '~/types'
-import type { WebsocketMessage } from '~/types/websocket'
 
 export const useFeedsStore = defineStore('feeds', () => {
   const feeds = reactive<NewFeed[]>([
