@@ -7,6 +7,11 @@
         <nuxt-button @click="open()">
           Connect
         </nuxt-button>
+
+        <nuxt-button @click="open()">
+          <icon name="lucide:plus" />
+          Create
+        </nuxt-button>
       </h1>
       
       <div class="mt-5">
@@ -25,9 +30,9 @@
           </nuxt-button>
         </div>
 
-        <div>
-          <div v-for="(block, i) in currentFeedBlocks" :key="i" class="my-3">
-            <component v-model="block.data" :is="componentMapping[block.component]" :index="i" />
+        <div ref="sortableEl">
+          <div v-for="(block, idx) in currentFeedBlocks" :key="block.position" class="my-3">
+            <component v-model="block.data" :is="componentMapping[block.component]" :index="idx" />
           </div>
         </div>
       </div>
@@ -36,6 +41,7 @@
 </template>
 
 <script setup lang="ts">
+import { useSortable } from '@vueuse/integrations/useSortable'
 import type { MessageReceivedFeedVideos, MessageSetCurrentFeed, WebsocketMessage } from '~/types/websocket'
 
 const ResolvedBlockSource = resolveComponent('BlockSource')
@@ -88,4 +94,7 @@ watchDebounced(currentFeed, (newFeed) => {
   debounce: 3000,
   deep: true
 })
+
+const sortableEl = useTemplateRef('sortableEl')
+useSortable(sortableEl, currentFeedBlocks)
 </script>

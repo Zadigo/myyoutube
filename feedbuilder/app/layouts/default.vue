@@ -1,52 +1,21 @@
 <template>
   <section id="site">
     <div class="px-5 grid grid-cols-12 grid-rows-1 h-screen w-full">
-      <aside id="navigation" class="border-r-2 border-r-gray-100 p-5 col-span-3">
-        <ul>
-          <li v-for="(feed, idx) in feeds" :key="idx" class="bg-slate-50 cursor-pointer hover:bg-gray-100 p-2 rounded" @click="feedsStore.setCurrentFeed(feed)">
-            {{ feed.name }}
-          </li>
-        </ul>
+      <!-- Aside -->
+      <lazy-base-aside hydrate-on-idle />
 
-        <div class="mt-10">
-          Current: {{ currentFeed }}
-        </div>
-      </aside>
-
+      <!-- Content -->
       <main id="content" class="p-5 overflow-y-scroll col-span-6">
         <slot />
       </main>
 
-      <aside id="previewer" class="border-l-2 border-l-gray-100 bg-gray-100 p-5 col-span-3">
-        <div v-if="items.length > 0" class="overflow-y-scroll h-137.5 w-full px-2">
-          <div ref="infiniteEl">
-            <nuxt-card v-for="(item, i) in items" :key="item.id" :data-index="i" class="mb-1">
-              <h4 class="font-bold text-1xl">
-                {{ item.title }}
-              </h4>
-
-              <p class="tex-light text-gray-500 text-sm mb-3" >
-                {{ item.created_on }}
-              </p>
-
-              <p class="font-light">
-                {{ item.description }}
-              </p>
-            </nuxt-card>
-          </div>
-        </div>
-
-        <div v-else class="text-center text-gray-500 mt-10">
-          Feed does not have any items yet.
-        </div>
-      </aside>
+      <!-- Videos -->
+      <lazy-base-results hydrate-on-idle />
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-const store = useVideoStore()
-const { items } = storeToRefs(store)
 
 const infiniteEl = useTemplateRef<HTMLElement>('infiniteEl')
 const { reset } = useInfiniteScroll(
@@ -68,8 +37,19 @@ function resetData() {
   reset()
 }
 
-const feedsStore = useFeedsStore()
-const { currentFeed, feeds } = storeToRefs(feedsStore)
+/**
+ * Theme
+ */
+
+// const theme = ['bg-green-50', 'dark:bg-green-900', 'text-green-900', 'dark:text-green-50']
+
+// onMounted(() => {
+//   document.body.classList.add(...theme)
+// })
+
+// onUnmounted(() => {
+//   document.body.classList.remove(...theme)
+// })
 </script>
 
 <style lang="scss" scoped>

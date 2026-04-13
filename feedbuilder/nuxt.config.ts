@@ -38,6 +38,7 @@ export default defineNuxtConfig({
         'primevue/card',
         'vuefire',
         'primevue/config',
+        '@vueuse/integrations/useSortable',
       ]
     }
   },
@@ -49,7 +50,8 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@vueuse/nuxt',
     'nuxt-vuefire',
-    '@nuxt/ui'
+    '@nuxt/ui',
+    '@vueuse/motion'
   ],
 
   ui: {

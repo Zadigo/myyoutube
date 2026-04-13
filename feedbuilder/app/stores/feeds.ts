@@ -67,6 +67,12 @@ export const useFeedsStore = defineStore('feeds', () => {
     if (currentFeed.value) {
       currentFeed.value.blocks.push(newBlock)
     }
+
+    feeds.forEach((feed) => {
+      feed.blocks.forEach((block, idx) => {
+        block.position = idx
+      })
+    })
   }
 
   // watch(currentFeed, (newFeed) => {

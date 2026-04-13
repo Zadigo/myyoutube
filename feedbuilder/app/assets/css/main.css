@@ -4,15 +4,15 @@
 
 @theme static {
   /* Override default green color */
-  --color-green-50: #EFFDF5;
-  --color-green-100: #D9FBE8;
-  --color-green-200: #B3F5D1;
-  --color-green-300: #75EDAE;
-  --color-green-400: #00DC82;
-  --color-green-500: #00C16A;
-  --color-green-600: #00A155;
-  --color-green-700: #007F45;
-  --color-green-800: #016538;
-  --color-green-900: #0A5331;
-  --color-green-950: #052E16;
+  --color-green-50: #e6eef6;
+  --color-green-100: #b3cce3;
+  --color-green-200: #99bbda;
+  --color-green-300: #6698c7;
+  --color-green-400: #3376b5;
+  --color-green-500: #0054a2;
+  --color-green-600: #004c92;
+  --color-green-700: #003b71;
+  --color-green-800: #003261;
+  --color-green-900: #001931;
+  --color-green-950: #000810;
 }
