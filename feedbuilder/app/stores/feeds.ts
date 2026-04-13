@@ -64,7 +64,17 @@ export const useFeedsStore = defineStore('feeds', () => {
       }
     }
 
-    if (currentFeed.value) {
+    if (blockName === 'RegExp') {
+      newBlock.data = {
+        pattern: '',
+        source: 'Video title',
+        invert: false,
+        case_sensitive: false
+        
+      }
+    }
+
+    if (isDefined(currentFeed)) {
       currentFeed.value.blocks.push(newBlock)
     }
 

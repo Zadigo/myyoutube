@@ -14,7 +14,7 @@
       </div>
     </template>
 
-    <h5 class="font-bold tracking-tight text-gray-900 dark:text-white mb-3">
+    <h5 class="font-bold tracking-tight text-gray-900 dark:text-green-50 mb-3">
       {{ title }}
     </h5>
 

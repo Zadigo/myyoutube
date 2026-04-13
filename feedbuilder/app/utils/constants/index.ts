@@ -46,3 +46,9 @@ export type SortBy = (typeof sortBy)[number]
 export const sortDirection = ['Ascending', 'Descending'] as const
 
 export type SortDirection = (typeof sortDirection)[number]
+
+export const targetOptions = [
+    'Video description',
+    'Video transcript',
+    'Video title'
+] as const
