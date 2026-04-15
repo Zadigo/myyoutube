@@ -1,18 +1,18 @@
 <template>
   <section id="algorithm">
-    <VoltCard class="shadow-sm">
+    <volt-card class="shadow-sm">
       <template #content>
         <h1 class="font-bold text-3xl">
           Customize your viewing experience
         </h1>
       </template>
-    </VoltCard>
+    </volt-card>
 
-    <SettingsCard title="Algorithm constructor" subtitle="Build your own viewing algorithm">
+    <settings-card title="Algorithm constructor" subtitle="Build your own viewing algorithm">
       <template #default>
-        <SettingsAlgorithmConditionalBlocks />
+        <lazy-settings-algorithm-conditional-blocks hydrate-on-idle />
       </template>
-    </SettingsCard>
+    </settings-card>
   </section>
 </template>
 
@@ -23,40 +23,18 @@ definePageMeta({
   layout: 'settings'
 })
 
+/**
+ * Categories
+ */
 
 const { load, categories } = useCategories()
-
 await load()
-
 provide('categories', categories)
 
 
-// const selectedCategory = ref(null)
-// const selectedSubcategory = ref(null)
+/**
+ * Settings
+ */
 
-// const requestData = ref({
-//   preferred_categories: [
-//     {
-//       "title": "Sports",
-//       "subcategories": ["WNBA"]
-//     },
-//     {
-//       "title": "Movies",
-//       "subcategories": ["Trailers"]
-//     }
-//   ]
-// })
-
-// watch(selectedCategory, (n, o) => {
-//   if (n !== o) {
-//     selectedSubcategory.value = null
-//   }
-// })
-
-// const { data } = useFetch('/accounts/base', {
-//   baseURL: useRuntimeConfig().public.djangoProdUrl,
-//   method: 'GET',
-//   immediate: true,
-//   lazy: true
-// })
+useAlgorithmSettingsComposable()
 </script>

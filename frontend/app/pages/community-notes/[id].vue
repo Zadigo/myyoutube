@@ -92,7 +92,7 @@
 const { communityNotes } = await useCommunityNotesComposable()
 
 const { id } = useRoute().params
-const getCommunityNote = reactify(() => communityNotes.value.data.allnotes.edges.find(note => note.node.reference === id))
+const getCommunityNote = reactify(() => isDefined(communityNotes) ?  communityNotes.value.find(note => note.node.reference === id) : undefined)
 const communityNote = getCommunityNote()
 
 /**

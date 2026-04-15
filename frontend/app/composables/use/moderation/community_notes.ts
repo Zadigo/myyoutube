@@ -1,5 +1,10 @@
 import type { CommunityNoteNode, CommunityNotes, Undefineable } from '~/types'
 
+/**
+ * Community Notes Composable
+ * This composable is responsible for fetching and managing the state of community notes.
+ * It provides a search functionality to filter notes based on their title and description.
+ */
 export const useCommunityNotesComposable = createSharedComposable(async () => {
   const { $moderationClient } = useNuxtApp()
 
@@ -58,12 +63,19 @@ export const useCommunityNotesComposable = createSharedComposable(async () => {
   }
 })
 
+/**
+ * Community Note By Id Composable
+ * This composable is responsible for managing the state of a single community note, including its approval status and the reason for disapproval if applicable. 
+ * @param note - The community note for which to manage the state. It can be a ref, a getter, or a direct value.
+ */
 export function useCommunityNoteById(note: MaybeRefOrGetter<Undefineable<CommunityNoteNode>>) {
   const _note = toValue(note)
   const { $moderationClient } = useNuxtApp()
+
   /**
    * Appobation
    */
+  
   const approval = ref({
     isApproved: false,
     isDisapproved: false
@@ -87,16 +99,21 @@ export function useCommunityNoteById(note: MaybeRefOrGetter<Undefineable<Communi
         method: 'POST',
         body: {
           query: `
-          mutation {
+          mutation($reference: String!, $voteType: String!, $reason: String) {
             createCommunityNoteVote(
-              reference: "${_note.node.reference}",
-              voteType: "${voteType}",
-              reason: ${reason.value ? `"${reason.value}"` : null}
+              reference: $reference,
+              voteType: $voteType,
+              reason: $reason
             ) {
               reference
             }
           }
-        `
+        `,
+          variables: {
+            reference: _note.node.reference,
+            voteType,
+            reason: reason.value
+          }
         }
       })
     }

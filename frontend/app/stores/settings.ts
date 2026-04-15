@@ -63,21 +63,3 @@ export const useViewerProfile = defineStore('viewer_profile', () => {
     notificationData
   }
 })
-
-export const useAlgorithmSettingsStore = defineStore('algorithm_settings', () => {
-  const conditions = ref<AlgorithmConditionBlock[]>([])
-
-  watchArray(conditions, (newList, oldList) => {
-    // Do something
-    console.log(newList,  oldList)
-  })
-
-  const getCurrentBlock = reactify((index: number) => {
-    return conditions.value[index]
-  })
-
-  return {
-    conditions,
-    getCurrentBlock
-  }
-})

@@ -1,19 +1,19 @@
 <template>
-  <VoltCard id="condition" class="shadow-none border border-slate-200">
+  <volt-card id="condition" class="shadow-none border border-slate-200">
     <template #content>
-      <SettingsAlgorithmSavedConditionBlock v-if="isSaved" :condition="conditionProxy" />
+      <settings-algorithm-saved-condition-block v-if="isSaved" :condition="conditionProxy" />
       
       <div v-else>
         <div v-if="conditionProxy">
           <header class="flex justify-end">
-            <VoltDropdownButton id="negation" :items="negationOperatorsMenuItems">
+            <volt-dropdown-button id="negation" :items="negationOperatorsMenuItems">
               <span v-if="conditionProxy.negation">Not</span>
               <span v-else>Not negated</span>
-            </VoltDropdownButton>
+            </volt-dropdown-button>
 
-            <VoltButton class="ms-2" variant="outlined" rounded @click="() => emit('delete-block', index)">
-              <Icon name="i-fa7-solid:trash" />
-            </VoltButton>
+            <volt-button class="ms-2" variant="outlined" rounded @click="() => emit('delete-block', index)">
+              <icon name="i-fa7-solid:trash" />
+            </volt-button>
           </header>
 
           {{ index }}
@@ -21,7 +21,7 @@
           <!-- Themes -->
           <div id="themes" class="w-full">
             <p class="font-bold mb-2">Show me videos when...</p>
-            <VoltAutoComplete v-model="conditionProxy.theme" :suggestions="Array.from(defaultMainCategories)" placeholder="Choose a general theme..." />
+            <volt-auto-complete v-model="conditionProxy.theme" :suggestions="Array.from(defaultMainCategories)" placeholder="Choose a general theme..." />
           </div>
 
           <!-- Keywords -->
@@ -29,36 +29,36 @@
           <div class="p-5 bg-slate-50 rounded-lg my-3">
             <p class="font-bold mb-2">Matches these keywords...</p>
             <div class="flex justify-between gap-2">            
-              <VoltSelect v-model="conditionProxy.keyword_operator" :options="Array.from(keywordOperators)" class="w-3/8" />
+              <volt-select v-model="conditionProxy.keyword_operator" :options="Array.from(keywordOperators)" class="w-3/8" />
 
               <div class="w-7/8">
-                <VoltAutoComplete v-model="conditionProxy.keywords" :items="['NBA', 'WNBA']" placeholder="Select keywords..." />
+                <volt-auto-complete v-model="conditionProxy.keywords" :items="['NBA', 'WNBA']" placeholder="Select keywords..." />
               </div>
             </div>
 
             <!-- Subconditions -->
             <div v-if="conditionProxy.keywords_subconditions.length > 0" class="bg-slate-100 rounded-lg my-3 p-5 space-y-2 w-7/8">
               <div class="flex justify-start">
-                <VoltDropdownButton id="operator" :items="joinOperatorsMenuItems">
+                <volt-dropdown-button id="operator" :items="joinOperatorsMenuItems">
                   {{ conditionProxy.join_operator }}
-                </VoltDropdownButton>
+                </volt-dropdown-button>
               </div>
               
               <SettingsAlgorithmKeywordSubCondition v-for="(subCondition, i) in conditionProxy.keywords_subconditions" :key="i" :sub-condition="subCondition" />
 
               <div class="flex justify-end my-3">
-                <VoltButton variant="tonal" @click="handleAddSubcondition">
-                  <Icon name="i-fa7-solid:plus" class="me-2" />
+                <volt-button variant="tonal" @click="handleAddSubcondition">
+                  <icon name="i-fa7-solid:plus" class="me-2" />
                   New condition
-                </VoltButton>
+                </volt-button>
               </div>
             </div>
             
             <div class="flex justify-end my-3">
-              <VoltButton variant="tonal" @click="handleAddSubcondition">
-                <Icon name="i-fa7-solid:plus" class="me-2" />
+              <volt-button variant="tonal" @click="handleAddSubcondition">
+                <icon name="i-fa7-solid:plus" class="me-2" />
                 Add
-              </VoltButton>
+              </volt-button>
             </div>
 
           </div>
@@ -66,7 +66,7 @@
           <!-- Sections -->
           <div>
             <p class="font-bold mb-2">Which appear in these sections of the video...</p>
-            <VoltSelect v-model="conditionProxy.video_sections" :options="videoSections" placeholder="Sections" />
+            <volt-select v-model="conditionProxy.video_sections" :options="videoSections" placeholder="Sections" />
           </div>
         </div>
       </div>
@@ -74,13 +74,13 @@
 
     <template #footer>
       <div class="flex justify-end">
-        <VoltButton variant="tonal" @click="handleSaveBlock">
+        <volt-button variant="tonal" @click="handleSaveBlock">
           <span v-if="isSaved">Edit</span>
           <span v-else>Save</span>
-        </VoltButton>
+        </volt-button>
       </div>
     </template>
-  </VoltCard>
+  </volt-card>
 </template>
 
 <script setup lang="ts">
