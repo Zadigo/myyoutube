@@ -2,39 +2,59 @@ import type { CommunityNoteNode, CommunityNotes, Undefineable } from '~/types'
 
 export const useCommunityNotesComposable = createSharedComposable(async () => {
   const { $moderationClient } = useNuxtApp()
-  const communityNotes = ref<CommunityNotes>(communityNotesFixture)
 
-  try {
-    await $moderationClient<CommunityNotes>('/v1/moderation/', {
-      method: 'POST',
-      body: {
-        query: `
-        query {
-          allnotes {
-            edges {
-              node {
-                id
-                reference
-                author {
-                  id
-                  username
-                }
-                title
-                description
-                createdOn
-              }
-            }
-          }
-        }
-      `
-      }
-    })
-  } catch (error) {
-    console.error('Error fetching community notes:', error)
-  }
+  const communityNotes = computedAsync(async () => {
+    try {
+      return communityNotesFixture.data.allnotes.edges
+      // return await $moderationClient<CommunityNotes>('/v1/moderation/', {
+      //   method: 'POST',
+      //   body: {
+      //     query: `
+      //       query {
+      //         allnotes {
+      //           edges {
+      //             node {
+      //               id
+      //               reference
+      //               author {
+      //                 id
+      //                 username
+      //               }
+      //               title
+      //               description
+      //               createdOn
+      //             }
+      //           }
+      //         }
+      //       }
+      //     `
+      //   }
+      // })
+    } catch (error) {
+      console.error('Error fetching community notes:', error)
+    }
+  })
+
+  /**
+   * Search
+   */
+
+  const search = ref<string>('')
+
+  const searchedCommunityNotes = computed(() => {
+    if (isDefined(communityNotes)) {
+      return useArrayFilter<CommunityNoteNode>(communityNotes, (note) => {
+        return note.node.title.toLowerCase().includes(search.value.toLowerCase()) || note.node.description.toLowerCase().includes(search.value.toLowerCase())
+      }).value
+    } else {
+      return []
+    }
+  })
 
   return {
-    communityNotes
+    communityNotes,
+    search,
+    searchedCommunityNotes
   }
 })
 

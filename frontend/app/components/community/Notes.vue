@@ -14,7 +14,7 @@
 
         <!-- Actions -->
         <div class="flex justify-between gap-2 items-center">
-          <volt-input-text placeholder="Search" />
+          <volt-input-text placeholder="Search" v-model="search" />
 
           <div class="space-x-2">
             <volt-secondary-button variant="secondary" class="mb-4">
@@ -31,7 +31,7 @@
 
         <!-- Notes -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <community-card v-for="note in communityNotes.data.allnotes.edges" :key="note.node.id" :note="note" />
+          <community-card v-for="note in searchedCommunityNotes" :key="note.node.id" :note="note" />
         </div>
       </template>
     </volt-card>
@@ -43,5 +43,5 @@
  * Get Notes
  */
 
-const { communityNotes } = await useCommunityNotesComposable()
+const { search, searchedCommunityNotes } = await useCommunityNotesComposable()
 </script>

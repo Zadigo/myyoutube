@@ -37,7 +37,6 @@ const AsyncCommunityNotes = defineAsyncComponent({
   loader: async () => import('~/components/community/Notes.vue'),
   suspensible: true,
   delay: 200,
-  timeout: 10000,
-  
+  timeout: 10000
 })
 </script>
