@@ -13,16 +13,16 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/': { ssr: false },
-    '/videos/**': { ssr: true, swr: true, cache: { maxAge: 30 * 60 } },
+    '/videos/**': { ssr: true },
     '/playlists': { ssr: false },
     '/settings/**': { ssr: false },
     '/studio/**': { ssr: false },
     '/school': { prerender: true },
     '/channels': { ssr: false },
     '/fact-checking': { ssr: false },
-    '/community-notes/**': { ssr: false, swr: true, cache: { maxAge: 30 * 60 } },
+    '/community-notes/**': { ssr: false },
     '/login': { prerender: true },
-    '/notification': { ssr:false, swr: true, cache: { maxAge: 30 * 60 } },
+    '/notification': { ssr:false },
     '/search': { ssr: false }
   },
 
@@ -48,22 +48,27 @@ export default defineNuxtConfig({
 
   modules: [
     '@pinia/nuxt',
-    '@vueuse/nuxt',
     '@nuxt/fonts',
     '@nuxtjs/seo',
     '@nuxt/test-utils',
+    '@nuxtjs/i18n',
+    '@nuxt/a11y',
     '@nuxt/hints',
     '@nuxt/image',
     '@nuxt/icon',
+    '@nuxt/ui',
+    '@vueuse/nuxt',
     'nuxt-authentication',
-    'nuxt-vuefire',
-    '@nuxtjs/i18n',
-    '@nuxt/a11y'
+    'nuxt-vuefire'
   ],
 
   css: [
     '~/assets/css/tailwind.css'
   ],
+
+  ui: {
+    prefix: 'Nuxt'
+  },
 
   fonts: {
     provider: 'google',
@@ -132,6 +137,8 @@ export default defineNuxtConfig({
         'zod',
         'primevue/avatar',
         'primevue/divider',
+        'primevue/toggleswitch',
+        '@faker-js/faker',
       ]
     }
   },

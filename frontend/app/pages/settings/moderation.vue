@@ -1,44 +1,44 @@
 <template>
   <section class="moderation">
-    <SettingsHeader>
+    <settings-header>
       Moderate what you see on YouTube
-    </SettingsHeader>
+    </settings-header>
 
     <!-- Blocked channels -->
-    <SettingsCard title="Blocked channels" subtitle="Channels that you blocked and do not want to see">
-      <VoltList v-if="hasChannels" :items="channels">
+    <settings-card title="Blocked channels" subtitle="Channels that you blocked and do not want to see">
+      <volt-list v-if="hasChannels" :items="channels">
         <template #default="{ item }">
           <div class="flex justify-start items-center gap-3">
-            <VoltAvatar image="/avatars/avatar1.png" shape="circle" size="large" />
+            <volt-avatar image="/avatars/avatar1.png" shape="circle" size="large" />
             <span>{{ item.channel.name }}</span>
           </div>
 
-          <VoltButton color="danger" variant="text">
-            <Icon name="i-fa7-solid:arrow-left" />"['fas', 'fa-trash']" />
-          </VoltButton>
+          <volt-button color="danger" variant="text">
+            <icon name="lucide:arrow-left" />
+          </volt-button>
         </template> 
-      </VoltList>
-    </SettingsCard>
+      </volt-list>
+    </settings-card>
 
     <!-- Blocked Keywords -->
-    <SettingsCard title="Blocked keywords" subtitle="Block videos containing certain specific keywords (title, description)">
+    <settings-card title="Blocked keywords" subtitle="Block videos containing certain specific keywords (title, description)">
       <template #default>
         <div class="flex justify-start gap-2">
-          <VoltInputText v-model="newKeyword.word" variant="outlined" placeholder="Enter a keyword to block" @keypress.enter="create" />
-          <VoltSelect v-model="newKeyword.duration" :options="Array.from(blockingDurations)" />
+          <!-- <volt-input-text v-model="newKeyword.word" variant="outlined" placeholder="Enter a keyword to block" @keypress.enter="create" />
+          <volt-select v-model="newKeyword.duration" :options="Array.from(blockingDurations)" /> -->
         </div>
 
-        <VoltLabel class="my-5">
+        <volt-label class="my-5">
           <template #input>
-            <VoltToggleSwitch v-model="excludeFollowedAccounts" />
+            <volt-toggle-switch v-model="excludeFollowedAccounts" />
           </template>
 
           <template #label>
             Exclude accounts that you follow
-          </template> 
-        </VoltLabel>
+          </template>
+        </volt-label>
 
-        <VoltList v-if="hasKeywords" :items="keywords" item-label="word">
+        <!-- <volt-list v-if="hasKeywords" :items="keywords" item-label="word">
           <template #default="{ item }">
             <div class="flex justify-between items-center gap-2">
               <div class="space-x-2">
@@ -46,50 +46,49 @@
                   {{ item.word }}
                 </p>
 
-                <VoltBadge>
+                <volt-badge>
                   {{ item.duration }}
-                </VoltBadge>
+                </volt-badge>
               </div>
 
-              <VoltButton @click="() => remove(i)">
-                <Icon name="i-fa7-solid:trash" />
-              </VoltButton>
+              <volt-button @click="() => remove(i)">
+                <icon name="i-fa7-solid:trash" />
+              </volt-button>
             </div>
           </template>
-        </VoltList>
+        </volt-list> -->
       </template>
-    </SettingsCard>
+    </settings-card>
 
     <!-- Moderation Lists -->
-    <SettingsCard title="Block lists" subtitle="Create shareable block lists">
+    <settings-card title="Block lists" subtitle="Create shareable block lists">
       <template #default>
-        <VoltAlert>
+        <volt-alert>
           Blocklists are lists of accounts that other users have create of
           accounts that they have associated to be problematic
-        </VoltAlert>
+        </volt-alert>
         
         <div class="flex justify-center">
-          <VoltButton color="secondary" variant="tonal" rounded @click="() => { showBlockLists=true }">
+          <volt-button color="secondary" variant="tonal" rounded @click="() => { showBlockLists=true }">
             Use or create block lists
-          </VoltButton>
+          </volt-button>
         </div>
       </template>
-    </SettingsCard>
+    </settings-card>
 
     <!-- Modals -->
-    <ModalsModerationBlockLists v-model="showBlockLists" />
-    <ModalsModerationCreateList v-model="showCreateList" />
+    <lazy-modals-moderation-block-lists v-model="showBlockLists" hydrate-on-visible />
+    <lazy-modals-moderation-create-list v-model="showCreateList" hydrate-on-visible />
   </section>
 </template>
 
 <script setup lang="ts">
-import { useBlockedKeywords, useBlockedChannels } from '~/composables/use'
 import { blockingDurations } from '~/data'
 
 definePageMeta({
   layout: 'settings'
 })
 
-const { keywords, hasKeywords, create, remove, newKeyword, excludeFollowedAccounts } = useBlockedKeywords()
+const { keywords, hasKeywords, create, remove, newKeyword, excludeFollowedAccounts } = useBlockedKeywordsComposable()
 const { channels, hasChannels, showCreateList, showBlockLists } = useBlockedChannels()
 </script>

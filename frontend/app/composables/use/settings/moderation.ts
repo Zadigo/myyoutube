@@ -5,23 +5,14 @@ import type { BlockedChannel, BlockedKeyword } from '~/types'
  * It provides functionality to fetch and manage blocked channels.
  */
 export function useBlockedChannels() {
-  /**
-   * Fetch the list of blocked channels.
-   */
-  const { execute, data } = useAsyncData(() => {
+  const blockedChannels = computedAsync(() => {
     return $fetch<BlockedChannel[]>('/user-channels/blocked', {
       method: 'GET',
       baseURL: useRuntimeConfig().public.djangoProdUrl
     })
-  }, {
-    immediate: false
   })
 
-  onBeforeMount(async () => {
-    await execute()
-  })
-
-  const channels = toRef(() => data.value || [])
+  const channels = toRef(() => blockedChannels.value || [])
   const hasChannels = computed(() => channels.value.length > 0)
 
   const showCreateList = ref<boolean>(false)
@@ -49,11 +40,18 @@ export function useBlockedChannels() {
 }
 
 /**
+ * Composables for managing block lists in the settings.
+ * It provides functionality to fetch and manage block lists.
+ */
+export function useBlockLists() { }
+
+/**
  * Composables for managing blocked keywords in the settings.
  * It provides functionality to add, remove, and manage blocked keywords.
  */
-export function useBlockedKeywords() {
+const [ useBlockedKeywordsComposable, _useBlockedKeywordsStore ] = createInjectionState(() => {
   const keywords = reactive<BlockedKeyword[]>([])
+
   const newKeyword = ref<BlockedKeyword>({ word: '', duration: 'Forever' })
   const { history, undo, redo } = useRefHistory(newKeyword)
 
@@ -92,10 +90,14 @@ export function useBlockedKeywords() {
     undo,
     redo
   }
-}
+})
 
-/**
- * Composables for managing block lists in the settings.
- * It provides functionality to fetch and manage block lists.
- */
-export function useBlockLists() {}
+export { useBlockedKeywordsComposable }
+
+export function useBlockedKeywordsStore() {
+  const store = _useBlockedKeywordsStore()
+  if (!store) {
+    throw new Error('useBlockedKeywordsStore must be used within a provider.')
+  }
+  return store
+}

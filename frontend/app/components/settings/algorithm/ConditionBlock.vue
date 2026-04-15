@@ -44,11 +44,11 @@
                 </volt-dropdown-button>
               </div>
               
-              <SettingsAlgorithmKeywordSubCondition v-for="(subCondition, i) in conditionProxy.keywords_subconditions" :key="i" :sub-condition="subCondition" />
+              <settings-algorithm-keyword-sub-condition v-for="(subCondition, i) in conditionProxy.keywords_subconditions" :key="i" :sub-condition="subCondition" />
 
               <div class="flex justify-end my-3">
                 <volt-button variant="tonal" @click="handleAddSubcondition">
-                  <icon name="i-fa7-solid:plus" class="me-2" />
+                  <icon name="lucide:plus" class="me-2" />
                   New condition
                 </volt-button>
               </div>
@@ -56,7 +56,7 @@
             
             <div class="flex justify-end my-3">
               <volt-button variant="tonal" @click="handleAddSubcondition">
-                <icon name="i-fa7-solid:plus" class="me-2" />
+                <icon name="lucide:plus" class="me-2" />
                 Add
               </volt-button>
             </div>
