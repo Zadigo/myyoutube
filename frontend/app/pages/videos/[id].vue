@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { currentVideoSymbol, isLoadingSymbol } from '~/data/constants'
+import { currentVideoSymbol, isLoadingSymbol } from '~/utils/constants'
 import type { VideoDetails, Undefineable, VideoTechnicalDetails } from '~/types'
 
 /**

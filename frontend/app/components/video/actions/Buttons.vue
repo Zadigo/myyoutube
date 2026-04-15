@@ -38,7 +38,7 @@
 <script lang="ts" setup>
 import { useVideoRating, useVideoSubscription } from '~/composables/use'
 import type { DefaultVideoMenuActions } from '~/data'
-import { currentVideoSymbol } from '~/data/constants'
+import { currentVideoSymbol } from '~/utils/constants'
 
 import type { VideoDetails, VideoMenuItem } from '~/types'
 

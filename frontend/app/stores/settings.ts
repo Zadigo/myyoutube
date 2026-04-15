@@ -1,5 +1,5 @@
 import type { AlgorithmConditionBlock } from '~/data'
-import type { RankAs, SubscriptionType } from '~/data/constants'
+import type { RankAs, SubscriptionType } from '~/utils/constants'
 import type { NotificationProfile, ViewingProfile } from '~/types'
 
 export interface UserSettings {

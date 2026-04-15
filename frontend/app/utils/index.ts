@@ -1,4 +1,6 @@
 export * from './numbers'
+export * from './fixtures'
+export * from './constants'
 
 export function inProduction() {
   // console.log(process.env.NODE_ENV)

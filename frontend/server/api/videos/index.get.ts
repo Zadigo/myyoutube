@@ -1,4 +1,4 @@
-import { feedVideoFixtures } from '~/data/fixtures/videos'
+import { feedVideoFixtures } from '~/utils/fixtures/videos'
 import type { SearchQuery, FeedVideo, GraphQlData, RelayNode } from '~/types'
 
 export default defineEventHandler(async event => {

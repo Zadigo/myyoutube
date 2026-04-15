@@ -1,4 +1,5 @@
 import type { CommunityNotes } from '~/types'
+import { faker } from '@faker-js/faker'
 
 export const communityNotesFixture: CommunityNotes = {
   data: {
@@ -7,19 +8,19 @@ export const communityNotesFixture: CommunityNotes = {
         {
           node: {
             id: 'note1',
-            title: 'Sample Community Note',
-            description: 'This is a description of the community note.',
+            title: faker.lorem.sentence({ min: 1, max: 3 }),
+            description: faker.lorem.paragraph({ min: 2, max: 5 }),
             reference: 'no_zefino322fzinfo',
             createdOn: '2024-06-01T12:00:00Z',
             creatorId: 'user123',
-            upvotes: 30,
-            downvotes: 12,
-            score: 18,
+            upvotes: faker.number.int({ min: 0, max: 100 }),
+            downvotes: faker.number.int({ min: 0, max: 100 }),
+            score: faker.number.int({ min: 0, max: 100 }),
             status: 'APPROVED',
             subjectCreatorId: 'Kendall Marquez',
             author: {
               id: 'user123',
-              username: 'moderator1',
+              username: faker.person.fullName({ sex: 'generic' }),
             },
             noteSources: [
               {
@@ -45,18 +46,18 @@ export const communityNotesFixture: CommunityNotes = {
           node: {
             id: 'note2',
             reference: 'no_zefino322fzinfo2',
-            title: 'Another Community Note',
-            description: 'Description for another community note.',
+            title: faker.lorem.sentence({ min: 1, max: 3 }),
+            description: faker.lorem.paragraph({ min: 2, max: 5 }),
             createdOn: '2024-06-02T14:30:00Z',
             creatorId: 'user456',
-            upvotes: 10,
-            downvotes: 5,
-            score: 5,
+            upvotes: faker.number.int({ min: 0, max: 100 }),
+            downvotes: faker.number.int({ min: 0, max: 100 }),
+            score: faker.number.int({ min: 0, max: 100 }),
             status: 'PENDING',
-            subjectCreatorId: 'Alex Johnson',
+            subjectCreatorId: faker.person.fullName({ sex: 'generic' }),
             author: {
               id: 'user456',
-              username: 'moderator2',
+              username: faker.person.fullName({ sex: 'generic' }),
             },
             noteSources: [
               {

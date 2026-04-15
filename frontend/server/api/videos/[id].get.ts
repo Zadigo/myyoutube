@@ -1,5 +1,5 @@
 // import { refreshAccessToken } from '~/utils'
-import { feedVideoFixtures } from '~/data/fixtures/videos'
+import { feedVideoFixtures } from '~/utils/fixtures/videos'
 
 export default defineEventHandler(async event => {
   // const refreshToken = getCookie(event, 'refresh')

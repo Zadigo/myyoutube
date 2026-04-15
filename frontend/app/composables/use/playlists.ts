@@ -1,4 +1,4 @@
-import { playlistsFixture } from '~/data/fixtures'
+import { playlistsFixture } from '~/utils/fixtures'
 import type { Arrayable, Nullable, Playlist, RelayNode, SinglePlaylist } from '~/types'
 
 /**

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { defaultMainCategories } from '../constants'
+import { defaultMainCategories } from '../../utils/constants'
 
 export const fileUploadRequestDataSchema = z.object({
   video: z.instanceof(File).nullable(),

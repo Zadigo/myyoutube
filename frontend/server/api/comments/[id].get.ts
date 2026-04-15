@@ -1,4 +1,4 @@
-import { repliesFixture } from '~/data/fixtures/comments'
+import { repliesFixture } from '~/utils/fixtures/comments'
 
 export default defineEventHandler(async (_event) => {
   return repliesFixture

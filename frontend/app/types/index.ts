@@ -1,6 +1,6 @@
 import type { MenuItem } from 'primevue/menuitem'
 import type { RouteParamsGeneric } from 'vue-router'
-import type { DefaultVideoMenuActions } from '~/data/constants/video'
+import type { DefaultVideoMenuActions } from '~/utils/constants/video'
 
 export type * from './accounts'
 export type * from './channels'

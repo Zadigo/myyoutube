@@ -1,4 +1,3 @@
-import { communityNotesFixture } from '~/data/fixtures/moderation'
 import type { CommunityNoteNode, CommunityNotes, Undefineable } from '~/types'
 
 export const useCommunityNotesComposable = createSharedComposable(async () => {

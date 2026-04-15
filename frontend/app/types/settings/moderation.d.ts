@@ -1,4 +1,4 @@
-import type { BlockingDuration } from '~/data/constants'
+import type { BlockingDuration } from '~/utils/constants'
 import type { CustomUser } from '../accounts'
 import type { UserChannel } from '../channels'
 

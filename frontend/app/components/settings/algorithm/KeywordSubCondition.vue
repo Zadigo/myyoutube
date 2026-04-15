@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import type { AlgorithmKeywordSubcondition } from '~/data'
-import { keywordOperators } from '~/data/constants'
+import { keywordOperators } from '~/utils/constants'
 
 const props = defineProps<{ subCondition: AlgorithmKeywordSubcondition }>()
 

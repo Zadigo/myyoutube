@@ -1,5 +1,5 @@
 import z from 'zod'
-import { joinOperators, keywordOperators } from '~/data/constants'
+import { joinOperators, keywordOperators } from '~/utils/constants'
 
 export const AlgorithmKeywordSubconditionSchema = z.object({
   operator: z.enum(keywordOperators),
