@@ -1,5 +1,5 @@
 export function useDjangoUtilities() {
-  function mediaPath(path: string | null | undefined, altImage?: string | undefined): string | undefined {
+  function mediaPath(path: string | null | undefined, altImage?: string): string | undefined {
     const baseUrl = useRuntimeConfig().public.djangoProdUrl
 
     if (path) {

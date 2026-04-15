@@ -65,8 +65,8 @@ export async function useCommentsComposable() {
     }
   }
 
-  watchDebounced(queryParams, () => {
-    refresh()
+  watchDebounced(queryParams, async () => {
+    await refresh()
   }, {
     immediate: false,
     debounce: 300
@@ -101,7 +101,7 @@ export function useCreateCommentComposable() {
 
   async function create() {
     if (isDefined(newComment)) {
-      $fetch('/api/comments', {
+      await $fetch('/api/comments', {
         method: 'POST',
         body: {
           content: newComment.value
@@ -112,7 +112,7 @@ export function useCreateCommentComposable() {
 
   async function reply() {
     if (isDefined(newComment)) {
-      $fetch('/api/comments', {
+      await $fetch('/api/comments', {
         method: 'POST',
         body: {
           content: newComment.value

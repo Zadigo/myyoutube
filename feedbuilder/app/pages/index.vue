@@ -18,14 +18,19 @@
         <div v-if="currentFeed" class="flex gap-2">
           <nuxt-input v-model="currentFeed.name" placeholder="Feed name" class="grow" />
           <nuxt-button>
+            <icon name="lucide:mouse-pointer-click" />
             Run
           </nuxt-button>
         </div>
 
         <div class="flex flex-wrap gap-1 mt-5">
           {{ isDisabled }}
+
           <nuxt-button v-for="block in blockNames" :key="block" :disabled="isDisabled" @click="feedsStore.addBlock(block)">
-            <Icon name="i-fa7-solid:plus" />
+            <icon v-if="block === 'Source'" name="lucide:plug-zap" />
+            <icon v-else-if="block === 'RegExp'" name="lucide:regex" />
+            <icon v-else-if="block === 'Sort'" name="lucide:list-ordered" />
+            <icon v-else name="lucide:plus" />
             {{ block }}
           </nuxt-button>
         </div>

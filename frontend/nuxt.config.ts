@@ -129,7 +129,9 @@ export default defineNuxtConfig({
         'primevue/button',
         'primevue/menu',
         'tailwind-merge',
-        'zod'
+        'zod',
+        'primevue/avatar',
+        'primevue/divider',
       ]
     }
   },
