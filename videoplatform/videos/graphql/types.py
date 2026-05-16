@@ -1,7 +1,5 @@
-import graphene
 from graphene import relay
 from graphene_django import DjangoObjectType
-from graphene_django.filter import DjangoFilterConnectionField
 from graphql import GraphQLResolveInfo
 from videos.models import Video, Tag
 from django.db.models import QuerySet
@@ -38,3 +36,7 @@ class VideosType(DjangoObjectType):
         qs = queryset.select_related('user', 'user_channel', 'channel_playlist')
         return qs.filter(active=True, visibility='Public')
 
+
+class VideosConnection(relay.Connection):
+    class Meta:
+        node = VideosType

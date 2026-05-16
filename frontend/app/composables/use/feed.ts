@@ -1,5 +1,5 @@
 import type { DefaultMainCategories, DefaultSortBy, DefaultUploadDate, DefaultVideoLength } from '~/data'
-import type { FeedVideo } from '~/types'
+import type { Feed, FeedVideoNode, SearchQuery } from '~/types'
 
 /**
  * 
@@ -18,13 +18,7 @@ export function useSearchFeedComposable() {
   const uploadDate = ref<DefaultUploadDate>('This week')
   const sortBy = ref<DefaultSortBy>('Upload date')
 
-  const query = useUrlSearchParams() as {
-    search?: string
-    category?: DefaultMainCategories
-    videoLength?: DefaultVideoLength
-    uploadDate?: DefaultUploadDate
-    sortBy?: DefaultSortBy
-  }
+  const query = useUrlSearchParams() as SearchQuery
 
   watch([search, category, videoLength, uploadDate, sortBy], (newValues) => {
     const [newSearch, newCategory, newVideoLength, newUploadDate, newSortBy] = newValues
@@ -56,20 +50,26 @@ export const useFeedComposable = createSharedComposable(async () => {
    * Request
    */
 
-  const { data, execute } = await useFetch<FeedVideo[]>('/api/videos', {
-    method: 'GET',
-    immediate: false,
-    watch: [search, category, videoLength, uploadDate, sortBy],
-    key: `videos-feed-${search.value}-${category.value}-${videoLength.value}-${uploadDate.value}-${sortBy.value}`
+  // const { data, execute } = await useFetch<Feed>('/api/videos', {
+  //   method: 'GET',
+  //   immediate: false,
+  //   watch: [search, category, videoLength, uploadDate, sortBy],
+  //   key: `videos-feed-${search.value}-${category.value}-${videoLength.value}-${uploadDate.value}-${sortBy.value}`
+  // })
+
+  // const videos = refDefault<FeedVideoNode[]>(data.value?.allVideos?.edges, [])
+
+  const videos = computedAsync<Feed>(async () => {
+    return await $fetch<Feed>('/api/videos', {
+      method: 'GET',
+    })
   })
 
-  const videos = refDefault<FeedVideo[]>(data, [])
-  const hasVideos = computed(() => videos.value.length > 0)
+  const hasVideos = computed(() => isDefined(videos) ? videos.value.length > 0 : false)
 
-  console.log('Videos:', videos.value, data.value, hasVideos.value)
 
   return {
-    execute,
+    // execute,
     /**
      * The search query
      * @default ""

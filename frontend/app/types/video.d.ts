@@ -1,4 +1,4 @@
-import type { Nullable } from '.'
+import type { BaseUser, BaseUserChannel, BaseUserProfile, Nullable, RelayNode } from '.'
 
 export interface VideoTechnicalDetails {
 	currentTime: number
@@ -31,4 +31,5 @@ export interface BaseVideo {
 	visibility: string
 	views: number
 	width: number
+	userChannel: Pick<BaseUserChannel, 'id' | 'reference' | 'name' | 'user'> & { user: Pick<BaseUser, 'id' | 'username'> & { userProfile: Pick<BaseUserProfile, 'avatar'> } }
 }

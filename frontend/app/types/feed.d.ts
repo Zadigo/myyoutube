@@ -29,3 +29,10 @@ export type FeedVideo<F = BaseVideoFields> = Pick<BaseVideo, F> & { user: Pick<B
  * Detailed video type used in video details page
  */
 export type VideoDetails = BaseVideo & { user: BaseUser & { userProfile: BaseUserProfile } } & { userChannel: BaseUserChannel }
+
+
+export type FeedVideoNode = RelayNode<FeedVideo>
+
+export type FeedVideos = RelayEdge<FeedVideo>
+
+export type Feed = GraphQlData<'allVideos', FeedVideos>

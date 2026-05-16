@@ -11,6 +11,13 @@ from videos import choices
 from videos.api import validators
 from videos.models import Video
 from warnings import deprecated
+from rest_framework.pagination import LimitOffsetPagination
+
+class CustomLimitOffsetPagination(LimitOffsetPagination):
+    limit_query_param = 'limit'
+    offset_query_param = 'offset'
+    default_limit = 100
+    max_limit = 100
 
 
 class VideoSerializer(Serializer):

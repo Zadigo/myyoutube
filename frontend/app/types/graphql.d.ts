@@ -1,3 +1,27 @@
+interface GraphQlErrorLocation {
+	line: number
+	column: number
+}
+
+interface GraphQlErrors {
+	message: string
+	locations: GraphQlErrorLocation[]
+}
+
+interface GraphQlErrorData {
+	errors: GraphQlErrors[]
+}
+
+export interface GraphQlErrorResponse {
+	error: boolean
+	url: string
+	statusCode: number
+	statusMessage: string
+	message: string
+	data: GraphQlErrorData
+	stack: string[]
+}
+
 /**
  * Type for GraphQL pagination info using Relay-style pagination
  */
@@ -33,7 +57,7 @@ export type RelayNodeWithPagination<E> = RelayEdge<E> & GraphQlPaginationInfo
  * ```ts
  * 
  * // With relay nodes
- * const response = $fetch<GraphQlData<'allvideos', RelayEdge<Video>>>(...)
+ * const response = $fetch<GraphQlData<'allVideos', RelayEdge<Video>>>(...)
  * 
  * // With single data
  * const response = $fetch<GraphQlData<'videoDetails', VideoDetails>>(...)

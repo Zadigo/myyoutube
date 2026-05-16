@@ -1,7 +1,7 @@
-import graphene
 from graphene_django import DjangoObjectType
 from mychannel.models import UserChannel, ChannelPlaylist, ChannelTag
-
+from django.db.models import QuerySet
+from mychannel.models import UserChannel, ChannelPlaylist, ChannelTag
 
 class UserChannelType(DjangoObjectType):
     class Meta:
@@ -9,8 +9,8 @@ class UserChannelType(DjangoObjectType):
         fields = '__all__'
 
     @classmethod
-    def get_queryset(cls, queryset, info):
-        return queryset.select_related('user').prefetch_related('playlist_set', 'tags').all()
+    def get_queryset(cls, queryset: QuerySet[UserChannel], info):
+        return queryset.select_related('user').prefetch_related('tags').all()
 
 
 class ChannelPlaylistType(DjangoObjectType):

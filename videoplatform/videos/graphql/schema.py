@@ -1,82 +1,87 @@
 import graphene
 from graphene import relay
-from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 from graphql import GraphQLResolveInfo
 from videos.models import Video, Tag
-from videos.graphql.types import VideoTagType, VideosType
-from django.core.cache import cache
-import pydantic
-import django_filters
+from videos.graphql.types import VideoTagType, VideosType, VideosConnection
 from videos.models import Video, Tag
-from django.db.models import QuerySet
-from typing import Optional
-from django.core.cache import cache
-from django.utils.timezone import now
-from django.db.models.functions import (ExtractDay, ExtractMonth, ExtractWeek,
-                                        ExtractYear, Now)
-
-class VideosConnection(relay.Connection):
-    class Meta:
-        node = VideosType
+from videos.api.serializers import CustomLimitOffsetPagination
 
 
-class VideosFilterSet(django_filters.FilterSet):
-    title = django_filters.CharFilter(lookup_expr=['exact', 'icontains', 'istartswith'])
-    this_month = django_filters.BooleanFilter(lookup_expr=['eq'], method='filter_this_month')
-    this_year = django_filters.BooleanFilter(lookup_expr=['eq'], method='filter_this_year')
-    last_week = django_filters.BooleanFilter(lookup_expr=['eq'], method='filter_last_week')
-    today = django_filters.BooleanFilter(lookup_expr=['eq'], method='filter_today')
+# class VideosFilterSet(django_filters.FilterSet):
+#     title = django_filters.CharFilter(lookup_expr=['exact', 'icontains', 'istartswith'])
+#     this_month = django_filters.BooleanFilter(lookup_expr=['eq'], method='filter_this_month')
+#     this_year = django_filters.BooleanFilter(lookup_expr=['eq'], method='filter_this_year')
+#     last_week = django_filters.BooleanFilter(lookup_expr=['eq'], method='filter_last_week')
+#     today = django_filters.BooleanFilter(lookup_expr=['eq'], method='filter_today')
 
-    class Meta:
-        model = Video
-        fields = ['title', 'recording_date']
+#     class Meta:
+#         model = Video
+#         fields = ['title', 'recording_date']
 
-    def filter_this_month(self, queryset: QuerySet[Video], name: str, value: bool):
-        current_date = now()
-        if value:
-            return queryset.filter(
-                recording_date__month=current_date.month,
-                recording_date__year=current_date.year
-            )
-        return queryset
+#     def filter_this_month(self, queryset: QuerySet[Video], name: str, value: bool):
+#         current_date = now()
+#         if value:
+#             return queryset.filter(
+#                 recording_date__month=current_date.month,
+#                 recording_date__year=current_date.year
+#             )
+#         return queryset
     
-    def filter_this_year(self, queryset: QuerySet[Video], name: str, value: bool):
-        current_date = now()
-        if value:
-            return queryset.filter(
-                recording_date__year=current_date.year
-            )
-        return queryset
+#     def filter_this_year(self, queryset: QuerySet[Video], name: str, value: bool):
+#         current_date = now()
+#         if value:
+#             return queryset.filter(
+#                 recording_date__year=current_date.year
+#             )
+#         return queryset
     
-    def filter_last_week(self, queryset: QuerySet[Video], name: str, value: bool):
-        current_date = now()
-        if value:
-            current_week = current_date.isocalendar().week
-            return queryset.filter(
-                recording_date__week=current_week - 1,
-                recording_date__year=current_date.year
-            )
-        return queryset
+#     def filter_last_week(self, queryset: QuerySet[Video], name: str, value: bool):
+#         current_date = now()
+#         if value:
+#             current_week = current_date.isocalendar().week
+#             return queryset.filter(
+#                 recording_date__week=current_week - 1,
+#                 recording_date__year=current_date.year
+#             )
+#         return queryset
     
-    def filter_today(self, queryset: QuerySet[Video], name: str, value: bool):
-        if value:
-            return queryset.filter(created_on__date=Now())
-        return queryset
+#     def filter_today(self, queryset: QuerySet[Video], name: str, value: bool):
+#         if value:
+#             return queryset.filter(created_on__date=Now())
+#         return queryset
 
 
 class VideosQuery(graphene.ObjectType):
-    all_videos = relay.ConnectionField(VideosConnection)
-    video = graphene.Node.Field(VideosType)
+    all_videos = relay.ConnectionField(
+        VideosConnection
+    )
+    video = graphene.Node.Field(
+        VideosType
+    )
     # search_videos = DjangoFilterConnectionField(VideosType, filterset_class=VideosFilterSet)
-    search_videos = DjangoFilterConnectionField(VideosType)
-    all_tags = graphene.List(VideoTagType)
-    search_tags = graphene.List(VideoTagType, name=graphene.String(required=True))
+    search_videos = DjangoFilterConnectionField(
+        VideosType
+    )
+    all_tags = graphene.List(
+        VideoTagType
+    )
+    search_tags = graphene.List(
+        VideoTagType, 
+        name=graphene.String(required=True)
+    )
 
-    def resolve_all_videos(root, info: GraphQLResolveInfo):
-        return Video.objects.all()
+    def resolve_all_videos(root, info: GraphQLResolveInfo, **kwargs):
+        first = kwargs.get('first', 100)
+        last = kwargs.get('last', 0)
 
-    def resolve_all_tags(root, info: GraphQLResolveInfo):
+        qs = Video.objects.all()
+        paginator = CustomLimitOffsetPagination()
+        setattr(info.context, 'query_params', {'limit': first, 'offset': last})
+        paginated_qs = paginator.paginate_queryset(qs, info.context)
+        return paginated_qs
+
+    def resolve_all_tags(root, info: GraphQLResolveInfo, **kwargs):
         return Tag.objects.all()
     
     def resolve_search_tags(root, info: GraphQLResolveInfo, name: str):

@@ -14,6 +14,7 @@ export type * from './settings'
 export type * from './settings/notifications'
 export type * from './studio'
 export type * from './video'
+export type * from './feed'
 
 export type Nullable<T> = T | null
 

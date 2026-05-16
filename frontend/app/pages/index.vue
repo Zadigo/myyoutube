@@ -25,7 +25,7 @@
       </div>
 
       <!-- Feed -->
-      <Suspense>
+      <suspense>
         <template #default>
           <async-feed-component />
         </template>
@@ -38,7 +38,7 @@
             </div>
           </div>
         </template>
-      </Suspense>
+      </suspense>
     </section>
   </section>
 </template>
