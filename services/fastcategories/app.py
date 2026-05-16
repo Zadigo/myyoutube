@@ -7,7 +7,7 @@ import pandas
 from quart import Quart, request
 from quart_cors import cors
 
-from apicategories import BASE_PROJECT, MEDIA_PATH, get_debug
+from fastcategories import BASE_PROJECT, MEDIA_PATH, get_debug
 
 ALLOWED_ORIGINS = [
     'http://localhost:3000'
