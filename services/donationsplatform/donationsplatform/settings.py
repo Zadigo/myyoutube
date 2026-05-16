@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'donations'
-]
+] 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

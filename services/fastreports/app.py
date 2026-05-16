@@ -3,15 +3,11 @@ import os
 import pathlib
 from functools import lru_cache
 
-from quart import Quart, jsonify
-from quart_cors import cors
+from fastapi import FastAPI
 
-from fastcategories import BASE_PROJECT, MEDIA_PATH, get_debug
+from fastcategories import MEDIA_PATH, get_debug
 
-app = Quart(__name__, root_path=BASE_PROJECT)
-app = cors(app, allow_credentials=True, allow_origin=[
-    'http://localhost:5173'
-])
+app = FastAPI()
 
 app.config.update(**{
     'SECRET_KEY': os.getenv('SECRET_KEY')

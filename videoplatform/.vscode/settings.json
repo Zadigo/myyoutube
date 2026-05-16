@@ -1,0 +1,9 @@
+{
+    "python.testing.unittestArgs": [
+        "${workspaceFolder}/videoplatform",
+        // "-v",
+        // "-s",
+        // "-p",
+        "test_*.py",
+    ],
+}

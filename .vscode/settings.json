@@ -26,9 +26,9 @@
     ],
     "[python]": {
         "editor.codeActionsOnSave": {
-            "source.unusedImports": "explicit",
-            "source.fixAll.pylance": "explicit",
-            "source.sort.json": "explicit"
+            "source.unusedImports": "always",
+            "source.fixAll.pylance": "always",
+            "source.sort.json": "always"
         }
     },
     "python-envs.pythonProjects": [
@@ -62,5 +62,8 @@
             "envManager": "ms-python.python:venv",
             "packageManager": "ms-python.python:pip"
         }
-    ]
+    ],
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.autoTestDiscoverOnSaveEnabled": true
 }

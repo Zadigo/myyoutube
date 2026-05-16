@@ -11,6 +11,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "autopep8>=2.3.2",
     "pytest>=9.0.3",
     "pytest-aio>=2.1.7",
     "pytest-cov>=7.1.0",
