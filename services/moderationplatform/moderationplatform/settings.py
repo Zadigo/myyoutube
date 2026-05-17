@@ -1,22 +1,20 @@
 import os
 from pathlib import Path
 
-import dotenv
+import environ
+
+environ.Env.read_env('.env')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ENV_PATH = BASE_DIR / '.env'
-
-if ENV_PATH.exists():
-    dotenv.load_dotenv(ENV_PATH)
-
+env = environ.Env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -91,11 +89,11 @@ WSGI_APPLICATION = 'moderationplatform.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': '5432'
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST', 'localhost'),
+        'PORT': env.int('DB_PORT', 5432)
     }
 }
 
@@ -182,17 +180,17 @@ CSRF_TRUSTED_ORIGINS = [
 # password to establish the connection:
 # https://github.com/redis/redis/issues/13437
 
-REDIS_HOST = os.getenv('REDIS_HOST', '127.0.0.1')
+REDIS_HOST = env('REDIS_HOST', '127.0.0.1')
 
-REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
+REDIS_PASSWORD = env('REDIS_PASSWORD')
 
 REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:6379'
 
-RABBITMQ_HOST = os.getenv('RABBITMQ_HOST', 'localhost')
+RABBITMQ_HOST = env('RABBITMQ_HOST', 'localhost')
 
-RABBITMQ_USER = os.getenv('RABBITMQ_DEFAULT_USER', 'guest')
+RABBITMQ_USER = env('RABBITMQ_DEFAULT_USER', 'guest')
 
-RABBITMQ_PASSWORD = os.getenv('RABBITMQ_DEFAULT_PASS', 'guest')
+RABBITMQ_PASSWORD = env('RABBITMQ_DEFAULT_PASS', 'guest')
 
 CELERY_BROKER_URL = f'amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}:5672'
 
