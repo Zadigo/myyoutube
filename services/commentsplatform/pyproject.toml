@@ -7,9 +7,11 @@ requires-python = ">=3.14"
 dependencies = [
     "autobahn==22.4.2",
     "boto3>=1.42.73",
+    "cbor2==5.9.0",
     "celery>=5.6.2",
     "channels-redis>=4.3.0",
     "channels[daphne]>=4.3.2",
+    "daphne>=4.2.1",
     "django>=6.0.3",
     "django-axes>=8.3.1",
     "django-cors-headers>=4.9.0",
