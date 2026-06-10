@@ -15,22 +15,37 @@
     },
     "python-envs.pythonProjects": [
         {
-            "path": "services/mycart",
+            "path": "services/commentsplatform",
             "envManager": "ms-python.python:venv",
             "packageManager": "ms-python.python:pip"
         },
         {
-            "path": "services/mysubscribers",
+            "path": "services/donationsplatform",
             "envManager": "ms-python.python:venv",
             "packageManager": "ms-python.python:pip"
         },
         {
-            "path": "services/addresses",
+            "path": "services/fastcategories",
             "envManager": "ms-python.python:venv",
             "packageManager": "ms-python.python:pip"
         },
         {
-            "path": "services/shopapi",
+            "path": "services/fastreports",
+            "envManager": "ms-python.python:venv",
+            "packageManager": "ms-python.python:pip"
+        },
+        {
+            "path": "services/moderationplatform",
+            "envManager": "ms-python.python:venv",
+            "packageManager": "ms-python.python:pip"
+        },
+        {
+            "path": "services/notificationsplatform",
+            "envManager": "ms-python.python:venv",
+            "packageManager": "ms-python.python:pip"
+        },
+        {
+            "path": "services/videoplatform",
             "envManager": "ms-python.python:venv",
             "packageManager": "ms-python.python:pip"
         }
