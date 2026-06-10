@@ -1,0 +1,1 @@
+- [ ] The settings on the local admin instance is not synced with the Firebase database. We neeed to load Firebase on Python and sync these elements 

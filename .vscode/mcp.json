@@ -1,8 +1,23 @@
 {
     "servers": {
+        "nuxt-seo": {
+            "type": "http",
+            "url": "https://nuxtseo.com/mcp"
+        },
         "nuxt-ui": {
             "type": "http",
             "url": "https://ui.nuxt.com/mcp"
+        },
+        "nuxt": {
+            "type": "http",
+            "url": "https://nuxt.com/mcp"
+        },
+        "primevue": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@primevue/mcp"
+            ]
         }
     }
 }

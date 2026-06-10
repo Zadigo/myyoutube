@@ -1,69 +1,38 @@
 {
-    "tailwind-fold.autoFold": false,
-    "eslint.useFlatConfig": true,
-    "files.associations": {
-        "*.css": "tailwindcss"
-    },
-    "editor.quickSuggestions": {
-        "strings": "on"
-    },
-    "tailwindCSS.classAttributes": [
-        "class",
-        "ui"
-    ],
-    "tailwindCSS.classFunctions": [
-        "defineAppConfig"
-    ],
-    "tailwindCSS.experimental.classRegex": [
-        [
-            "cva\\(((?:[^()]|\\([^()]*\\))*)\\)",
-            "[\"'`]([^\"'`]*).*?[\"'`]"
-        ],
-        [
-            "cx\\(((?:[^()]|\\([^()]*\\))*)\\)",
-            "(?:'|\"|`)([^']*)(?:'|\"|`)"
-        ]
-    ],
     "[python]": {
         "editor.codeActionsOnSave": {
-            "source.unusedImports": "always",
-            "source.fixAll.pylance": "always",
-            "source.sort.json": "always"
+            "source.organizeImports": "explicit",
+            "source.unusedImports": "explicit"
         }
+    },
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.autoTestDiscoverOnSaveEnabled": true,
+    "python-envs.defaultEnvManager": "ms-python.python:venv",
+    "python.analysis.autoSearchPaths": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.oxc": "never"
     },
     "python-envs.pythonProjects": [
         {
-            "path": "services/fastcategories",
+            "path": "services/mycart",
             "envManager": "ms-python.python:venv",
             "packageManager": "ms-python.python:pip"
         },
         {
-            "path": "services/commentsplatform",
+            "path": "services/mysubscribers",
             "envManager": "ms-python.python:venv",
             "packageManager": "ms-python.python:pip"
         },
         {
-            "path": "services/donationsplatform",
+            "path": "services/addresses",
             "envManager": "ms-python.python:venv",
             "packageManager": "ms-python.python:pip"
         },
         {
-            "path": "services/fastreports",
-            "envManager": "ms-python.python:venv",
-            "packageManager": "ms-python.python:pip"
-        },
-        {
-            "path": "services/moderationplatform",
-            "envManager": "ms-python.python:venv",
-            "packageManager": "ms-python.python:pip"
-        },
-        {
-            "path": "videoplatform",
+            "path": "services/shopapi",
             "envManager": "ms-python.python:venv",
             "packageManager": "ms-python.python:pip"
         }
-    ],
-    "python.testing.pytestEnabled": true,
-    "python.testing.unittestEnabled": false,
-    "python.testing.autoTestDiscoverOnSaveEnabled": true
+    ]
 }

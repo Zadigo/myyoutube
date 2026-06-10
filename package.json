@@ -1,0 +1,16 @@
+{
+  "name": "@myblindtest/project",
+  "private": true,
+  "scripts": {
+    "install:television": "pnpm --filter television install",
+    "install:mainsite": "pnpm --filter mainsite install",
+    "install:mobile": "pnpm --filter mobile install",
+    "dev:television": "pnpm --filter television dev",
+    "dev:mainsite": "pnpm --filter mainsite dev",
+    "dev:mobile": "pnpm --filter mobile dev",
+    "build:television": "pnpm --filter television build",
+    "build:mainsite": "pnpm --filter mainsite build",
+    "build:mobile": "pnpm --filter mobile build",
+    "dev": "pnpm --parallel --filter './frontends/*' dev"
+  }
+}

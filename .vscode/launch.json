@@ -15,7 +15,9 @@
             "name": "Django: YouTube",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}\\manage.py",
+            "cwd": "${workspaceFolder}/services/videoplatform",
+            "program": "${workspaceFolder}/services/videoplatform/manage.py",
+            "envFile": "${workspaceFolder}/services/videoplatform/.env",
             "args": [
                 "runserver"
             ],
