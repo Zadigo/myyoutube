@@ -8,9 +8,8 @@
     "dev:mainsite": "pnpm --filter mainsite dev",
     "build:feedbuilder": "pnpm --filter feedbuilder build",
     "build:mainsite": "pnpm --filter mainsite build",
-    "dev": "pnpm --parallel --filter './frontends/*' dev",
-    "install": "pnpm --parallel --filter './frontends/*' install",
-    "up": "pnpm --parallel --filter './frontends/*' up --latest",
-    "test": "pnpm --parallel --filter './frontends/*' test"
+    "add:feedbuilder": "pnpm --filter feedbuilder add",
+    "add:mainsite": "pnpm --filter mainsite add",
+    "dev": "pnpm --filter './frontends/*' --parallel dev"
   }
 }
