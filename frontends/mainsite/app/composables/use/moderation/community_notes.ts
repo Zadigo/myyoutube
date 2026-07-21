@@ -1,4 +1,4 @@
-import type { CommunityNoteNode, CommunityNotes, Undefineable } from '~/types'
+import type { CommunityNoteNode, Undefineable } from '~/types'
 
 /**
  * Community Notes Composable
@@ -6,8 +6,6 @@ import type { CommunityNoteNode, CommunityNotes, Undefineable } from '~/types'
  * It provides a search functionality to filter notes based on their title and description.
  */
 export const useCommunityNotesComposable = createSharedComposable(async () => {
-  const { $moderationClient } = useNuxtApp()
-
   const communityNotes = computedAsync(async () => {
     try {
       return communityNotesFixture.data.allnotes.edges

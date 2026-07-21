@@ -3,14 +3,14 @@ import type { AlgorithmConditionBlock } from "~/data"
 const [useAlgorithmSettingsComposable, _useAlgorithmSettingsStore] = createInjectionState(() => {
   const conditions = ref<AlgorithmConditionBlock[]>([])
 
-    watchArray(conditions, (newList, oldList) => {
-      // Do something
-      console.log(newList,  oldList)
-    })
+  watchArray(conditions, (newList, oldList) => {
+    // Do something
+    console.log(newList,  oldList)
+  })
 
-    const getCurrentBlock = reactify((index: number) => {
-      return conditions.value[index]
-    })
+  const getCurrentBlock = reactify((index: number) => {
+    return conditions.value[index]
+  })
 
   const { count: currentIndex, inc } = useCounter(0)
 

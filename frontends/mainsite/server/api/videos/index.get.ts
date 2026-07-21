@@ -2,11 +2,11 @@ import { feedVideoFixtures } from '~/utils/fixtures/videos'
 import type { SearchQuery, Feed } from '~/types'
 import { generateErrorTemplate } from '~/utils/errors'
 
-export default defineEventHandler(async event => {
+export default defineEventHandler<Feed>(async event => {
   try {
     const query = getQuery<SearchQuery>(event)
 
-    const response = await $fetch<Feed>('/graphql/', {
+    await $fetch<Feed>('/graphql/', {
       method: 'POST',
       baseURL: useRuntimeConfig().public.videosGraphqlUrl,
       body: {
@@ -58,9 +58,6 @@ export default defineEventHandler(async event => {
         `
       }
     })
-
-    console.log('Feed Videos Response:', JSON.stringify(response))
-
     return feedVideoFixtures
   } catch (error) {
     console.error('Error fetching feed videos:', error)

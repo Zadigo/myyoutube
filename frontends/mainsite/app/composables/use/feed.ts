@@ -4,8 +4,9 @@ import type { Feed, SearchQuery } from '~/types'
 /**
  * 
  */
-export function useSearchFeedComposable() {
+export async function useSearchFeedComposable() {
   const search = ref<string>('')
+
   const searched = refDebounced(search, 500)
   const { history } = useRefHistory(searched)
 
@@ -18,6 +19,10 @@ export function useSearchFeedComposable() {
   const uploadDate = ref<DefaultUploadDate>('This week')
   const sortBy = ref<DefaultSortBy>('Upload date')
 
+  /**
+   * Update URL parameters when the search query or filters change
+   */
+  
   const query = useUrlSearchParams() as SearchQuery
 
   watch([search, category, videoLength, uploadDate, sortBy], (newValues) => {
@@ -30,71 +35,41 @@ export function useSearchFeedComposable() {
     query.sortBy = newSortBy !== 'Upload date' ? newSortBy : undefined
   })
 
+  const { data, execute } = await useFetch<Feed>('/api/videos', {
+    method: 'GET',
+    immediate: false,
+    watch: [search, category, videoLength, uploadDate, sortBy],
+    key: `videos-feed-${search.value}-${category.value}-${videoLength.value}-${uploadDate.value}-${sortBy.value}`
+  })
+
   return {
     search,
     category,
     videoLength,
     uploadDate,
-    sortBy
+    sortBy,
+    data,
+    execute
   }
 }
-
 
 /**
  * Composable for fetching and managing a video feed
  */
-export const useFeedComposable = createSharedComposable(async () => {
-  const { search, category, videoLength, uploadDate, sortBy } = useSearchFeedComposable()
-
-  /**
-   * Request
-   */
-
-  // const { data, execute } = await useFetch<Feed>('/api/videos', {
-  //   method: 'GET',
-  //   immediate: false,
-  //   watch: [search, category, videoLength, uploadDate, sortBy],
-  //   key: `videos-feed-${search.value}-${category.value}-${videoLength.value}-${uploadDate.value}-${sortBy.value}`
-  // })
-
-  // const videos = refDefault<FeedVideoNode[]>(data.value?.allVideos?.edges, [])
-
+export const useFeedComposable = createSharedComposable(() => {
   const videos = computedAsync<Feed>(async () => {
-    console.log($fetch)
     return await $fetch<Feed>('/api/videos', {
-      method: 'GET',
+      method: 'GET'
     })
+  }, [], {
+    onError(e) {
+      console.error('Error fetching feed videos:', e)
+    },
   })
 
   const hasVideos = computed(() => isDefined(videos) ? videos.value?.allVideos?.edges.length > 0 : false)
 
   return {
-    // execute,
-    /**
-     * The search query
-     * @default ""
-     */
-    search,
-    /**
-     * The category to filter videos by
-     * @default 'All'
-     */
-    category,
-    /**
-     * How long the videos should be
-     * @default 'This week'
-     */
-    videoLength,
-    /**
-     * The upload date to filter videos by
-     * @default 'This week'
-     */
-    uploadDate,
-    /**
-     * How to sort the videos
-     * @default 'Upload date'
-     */
-    sortBy,
     /**
      * List of videos in the feed
      * @default []

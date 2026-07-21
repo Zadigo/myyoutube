@@ -16,6 +16,7 @@ export function useEditPlaylists(playlists: MaybeRefOrGetter<Arrayable<RelayNode
   const _playlists = toValue(playlists) 
   
   async function add(playlistId: Nullable<string>, videoId: string) {
+    console.log($fetch)
     const data = await $fetch(`/playlists/${playlistId}/add`, {
       method: 'POST',
       baseURL: useRuntimeConfig().public.djangoProdUrl,
