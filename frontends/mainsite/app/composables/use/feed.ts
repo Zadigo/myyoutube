@@ -1,5 +1,5 @@
 import type { DefaultMainCategories, DefaultSortBy, DefaultUploadDate, DefaultVideoLength } from '~/data'
-import type { Feed, FeedVideoNode, SearchQuery } from '~/types'
+import type { Feed, SearchQuery } from '~/types'
 
 /**
  * 
@@ -60,13 +60,13 @@ export const useFeedComposable = createSharedComposable(async () => {
   // const videos = refDefault<FeedVideoNode[]>(data.value?.allVideos?.edges, [])
 
   const videos = computedAsync<Feed>(async () => {
+    console.log($fetch)
     return await $fetch<Feed>('/api/videos', {
       method: 'GET',
     })
   })
 
-  const hasVideos = computed(() => isDefined(videos) ? videos.value.length > 0 : false)
-
+  const hasVideos = computed(() => isDefined(videos) ? videos.value?.allVideos?.edges.length > 0 : false)
 
   return {
     // execute,

@@ -55,7 +55,13 @@ export default defineEventHandler(async event => {
               }
             }
           }
-        `
+        `,
+        variables: {
+          name: query.name || null,
+          category: query.category || null,
+          uploadDate: query.uploadDate || null,
+          sortBy: query.sortBy || null,
+        }
       }
     })
 

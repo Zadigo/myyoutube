@@ -1,9 +1,10 @@
 import type { Playlist } from '~/types'
 import { generateErrorTemplate } from '~/utils'
 
-export default defineEventHandler(async (_event) => {
+export default defineEventHandler(async (event) => {
   try {
-    return await $fetch<Playlist[]>('/v1/playlists', {
+    const { id } = getQuery<{ id: string }>(event)
+    return await $fetch<Playlist>(`/v1/playlists/${id}`, {
       baseURL: useRuntimeConfig().public.djangoProdUrl,
       method: 'GET'
     })
