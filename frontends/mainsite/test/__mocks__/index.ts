@@ -1,5 +1,3 @@
-export * from './components'
-
 type ComponentOptions<T> = {
   props: T
 }

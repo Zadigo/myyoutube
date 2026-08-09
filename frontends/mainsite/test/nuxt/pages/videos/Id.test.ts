@@ -2,10 +2,29 @@ import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { describe, it, vi } from 'vitest'
 import VideoPage from '~/pages/videos/[id].vue'
 import { videoDetailsFixture } from '~~/test/__fixtures__'
+import { flushPromises } from '@vue/test-utils'
 
 mockNuxtImport('useRoute', () => vi.fn().mockReturnValue({ params: { id: '123' } }))
 
 mockNuxtImport('$fetch', () => vi.fn().mockResolvedValue(async () => videoDetailsFixture))
+
+vi.mock('~/components/video/actions/Card.vue', () => ({
+  default: defineComponent({
+    template: '<div>Action Card</div>'
+  })
+}))
+
+vi.mock('~/components/video/player/Overlay.vue', () => ({
+  default: defineComponent({
+    template: '<div data-testid="overlay"><slot /></div>'
+  })
+}))
+
+vi.mock('~/components/video/Information.vue', () => ({
+  default: defineComponent({
+    template: '<div data-testid="information">Information</div>'
+  })
+}))
 
 vi.mock('~/components/video/comment/Section.vue', () => ({
   default: defineComponent({
@@ -15,7 +34,7 @@ vi.mock('~/components/video/comment/Section.vue', () => ({
 
 vi.mock('~/components/video/UserRecommendations.vue', () => ({
   default: defineComponent({
-    template: '<div>User Recommendations</div>'
+    template: '<div data-testid="user-recommendations">User Recommendations</div>'
   })
 }))
 
@@ -27,31 +46,31 @@ vi.mock('~/components/modals/Save.vue', () => ({
 
 vi.mock('~/components/modals/Report.vue', () => ({
   default: defineComponent({
-    template: '<div>Save Modal</div>'
+    template: '<div>Report Modal</div>'
   })
 }))
 
 vi.mock('~/components/modals/Gift.vue', () => ({
   default: defineComponent({
-    template: '<div>Save Modal</div>'
+    template: '<div>Gift Modal</div>'
   })
 }))
 
 vi.mock('~/components/modals/classification.vue', () => ({
   default: defineComponent({
-    template: '<div>Save Modal</div>'
+    template: '<div>Classification Modal</div>'
   })
 }))
 
 vi.mock('~/components/modals/Donation.vue', () => ({
   default: defineComponent({
-    template: '<div>Save Modal</div>'
+    template: '<div>Donation Modal</div>'
   })
 }))
 
 vi.mock('~/components/modals/Share.vue', () => ({
   default: defineComponent({
-    template: '<div>Save Modal</div>'
+    template: '<div>Share Modal</div>'
   })
 }))
 
@@ -66,10 +85,15 @@ describe.only('pages > videos/[id]', () => {
     const component = await mountSuspended(VideoPage, {
       global: {
         provide: {
-          isLoading: ref(false),
-          currentVideo: ref(videoDetailsFixture)
+          [IS_LOADING_SYMBOL]: ref(false),
+          [CURRENT_VIDEO_SYMBOL]: ref(videoDetailsFixture)
         }
       }
     })
+
+    await flushPromises()
+
+    expect(wrapper.find('[data-testid="comment-section"]').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="user-recommendations"]').exists()).toBe(true)
   })
 })

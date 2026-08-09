@@ -37,8 +37,7 @@
 
 <script lang="ts" setup>
 import { useVideoRating, useVideoSubscription } from '~/composables/use'
-import type { DefaultVideoMenuActions } from '~/data'
-import { currentVideoSymbol } from '~/utils/constants'
+import type { DefaultVideoMenuActions } from '~/constants'
 
 import type { VideoDetails, VideoMenuItem } from '~/types'
 
@@ -96,7 +95,7 @@ const menuItems: VideoMenuItem[] = [
   }
 ]
 
-const currentVideo = injectLocal<Ref<VideoDetails>>(currentVideoSymbol)
+const currentVideo = injectLocal<Ref<VideoDetails>>(CURRENT_VIDEO_SYMBOL)
 
 /**
  * Rating
