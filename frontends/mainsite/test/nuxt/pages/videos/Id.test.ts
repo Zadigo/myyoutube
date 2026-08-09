@@ -1,5 +1,5 @@
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
-import { describe, it, vi } from 'vitest'
+import { describe, it, vi, expect } from 'vitest'
 import VideoPage from '~/pages/videos/[id].vue'
 import { videoDetailsFixture } from '~~/test/__fixtures__'
 import { flushPromises } from '@vue/test-utils'
@@ -93,7 +93,7 @@ describe.only('pages > videos/[id]', () => {
 
     await flushPromises()
 
-    expect(wrapper.find('[data-testid="comment-section"]').exists()).toBe(true)
-    expect(wrapper.find('[data-testid="user-recommendations"]').exists()).toBe(true)
+    expect(component.find('[data-testid="comment-section"]').exists()).toBe(true)
+    expect(component.find('[data-testid="user-recommendations"]').exists()).toBe(true)
   })
 })
