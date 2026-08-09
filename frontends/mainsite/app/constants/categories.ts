@@ -1,4 +1,4 @@
-export const defaultMainCategories = [
+export const DEFAULT_MAIN_CATEGORIES = [
   'All',
   'General',
   'Documentaries',
@@ -11,10 +11,10 @@ export const defaultMainCategories = [
   'Podcasting'
 ] as const
 
-export type DefaultMainCategories = (typeof defaultMainCategories)[number] | (string & {})
+export type DefaultMainCategories = (typeof DEFAULT_MAIN_CATEGORIES)[number] | (string & {})
 
 
-export const defaultCategories = [
+export const DEFAULT_CATEGORIES = [
   {
     'title': 'Documentaries',
     'subcategories': [

@@ -33,7 +33,7 @@ const notifications = ref<Notification[]>([])
 const { $notificationsClient } = useNuxtApp()
 
 onMounted(async () => {
-  const data = await $notificationsClient<NotificationApiResponse>('/', {
+  const data = await $fetch<NotificationApiResponse>('/api.notifications/', {
     method: 'GET'
   })
 
@@ -55,15 +55,19 @@ const moreButtonEl = useTemplateRef<HTMLElement>('moreButtonEl')
 
 useIntersectionObserver(moreButtonEl, async (isIntersecting) => {
   if (isIntersecting) {
-    const data = await $notificationsClient<NotificationApiResponse>('/', {
-      method: 'GET',
-      query: {
-        offset: apiResponse.value?.next
-      }
-    })
+    // const data = await $notificationsClient<NotificationApiResponse>('/', {
+    //   method: 'GET',
+    //   query: {
+    //     offset: apiResponse.value?.next
+    //   }
+    // })
 
+    // apiResponse.value = data
+    // notifications.value = data.results
+
+    const data = await $fetch<NotificationApiResponse>('/api/notifications/', { method: 'GET' })
     apiResponse.value = data
-    notifications.value = data.results
+    notifications.value = apiResponse.value?.results
   }
 })
 </script>

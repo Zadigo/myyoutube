@@ -1,6 +1,5 @@
 export * from './numbers'
 export * from './fixtures'
-export * from './constants'
 export * from './errors'
 
 export function inProduction() {

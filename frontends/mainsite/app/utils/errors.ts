@@ -5,7 +5,7 @@ import { FetchError } from 'ofetch'
  * This function is useful for generating consistent error responses in API handlers. 
  * @param error The error object to generate the template from.
  */
-export function generateErrorTemplate(error: Error | FetchError | unknown): { statusCode: number; statusMessage: string } {
+export function createErrorTemplate(error: Error | FetchError | unknown): { statusCode: number; statusMessage: string } {
   const template: Record<string, string | number> = {
     statusCode: 500,
     statusMessage: 'An unknown error occurred'

@@ -1,26 +1,26 @@
 import type { MenuItem } from 'primevue/menuitem'
 
-export const defaultSortBy = [
+export const DEFAULT_SORT_BY = [
   'Upload date',
   'View count',
   'Rating'
 ] as const
 
-export type DefaultSortBy = (typeof defaultSortBy)[number]
+export type DefaultSortBy = (typeof DEFAULT_SORT_BY)[number]
 
 export interface DefaultSortByMenuItem extends MenuItem {
   label: DefaultSortBy
 }
 
-export const defaultVideoLength = [
+export const DEFAULT_VIDEO_LENGTH = [
   'Under 4 minutes',
   '4-20 minutes',
   'Over 20 minutes'
 ] as const
 
-export type DefaultVideoLength = (typeof defaultVideoLength)[number]
+export type DefaultVideoLength = (typeof DEFAULT_VIDEO_LENGTH)[number]
 
-export const defaultUploadDate = [
+export const DEFAULT_UPLOAD_DATE = [
   'Last hour',
   'Today',
   'This week',
@@ -28,4 +28,4 @@ export const defaultUploadDate = [
   'This year'
 ] as const
 
-export type DefaultUploadDate = (typeof defaultUploadDate)[number]
+export type DefaultUploadDate = (typeof DEFAULT_UPLOAD_DATE)[number]

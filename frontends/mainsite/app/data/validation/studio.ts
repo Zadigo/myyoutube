@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import { defaultMainCategories } from '../../utils/constants'
 
 export const fileUploadRequestDataSchema = z.object({
   video: z.instanceof(File).nullable(),
@@ -8,7 +7,7 @@ export const fileUploadRequestDataSchema = z.object({
   channel_playlist: z.string().nullable(),
   recording_location: z.string().nullable(),
   visibility: z.boolean(),
-  category: z.enum(defaultMainCategories),
+  category: z.enum(DEFAULT_MAIN_CATEGORIES),
   subcategory: z.string().nullable(),
   age_restricted: z.boolean()
 })

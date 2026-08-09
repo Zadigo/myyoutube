@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { useAlgorithmSettingsComposable, useAlgorithmSettingsStore  } from '../../../../app/composables'
+import { useAlgorithmSettingsComposable, useAlgorithmSettingsStore  } from '../../../../app/composables/index.ts'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { defineComponent, toValue } from 'vue'
 import type { AlgorithmConditionBlock } from '../../../../app/data/validation/settings/index.ts'

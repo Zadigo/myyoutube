@@ -44,5 +44,5 @@ const { shorten } = useNumbersUtils()
  * Get Videos
  */
 
-const { hasVideos, videos } = await useFeedComposable()
+const { hasVideos, videos } = useFeedComposable()
 </script>

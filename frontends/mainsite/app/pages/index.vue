@@ -53,6 +53,7 @@ import type { Arrayable } from '~/types'
 const AsyncFeedComponent = defineAsyncComponent({
   loader: () => import('~/components/BaseAsyncFeed.vue')
 })
+console.log('AsyncFeedComponent', AsyncFeedComponent)
 
 /**
  * Menu items
@@ -66,7 +67,7 @@ const { menuItems: uploadDateSelect } = useMenuItems(Array.from(defaultUploadDat
  * Search
  */
 
-const { search, uploadDate, videoLength, category, sortBy } = await useFeedComposable()
+const { search, uploadDate, videoLength, category, sortBy } = useFeedComposable()
 
 /**
  * Sort by menu items

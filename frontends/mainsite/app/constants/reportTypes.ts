@@ -1,4 +1,4 @@
-export const defaultSexualContent = [
+export const DEFAULT_SEXUAL_CONTENT = [
   'Graphic sexual activity',
   'Nudity',
   'Suggestive - Without nudity',
@@ -7,26 +7,26 @@ export const defaultSexualContent = [
   'Other sexual content'
 ] as const
 
-export type DefaultSexualContentReport = (typeof defaultSexualContent)[number]
+export type DefaultSexualContentReport = (typeof DEFAULT_SEXUAL_CONTENT)[number]
 
-export const defaultViolentOrRepulsive = [
+export const DEFAULT_VIOLENT_OR_REPULSIVE = [
   'Adults fighting',
   'Physical attack',
   'Youth violence',
   'Animal abuse'
 ] as const
 
-export type DefaultViolentOrRepulsive = (typeof defaultViolentOrRepulsive)[number]
+export type DefaultViolentOrRepulsive = (typeof DEFAULT_VIOLENT_OR_REPULSIVE)[number]
 
-export const defaultHatredOrAbusive = [
+export const DEFAULT_HATRED_OR_ABUSIVE = [
   'Promotes hatred or violence',
   'Abusing vulnerable individuals',
   'Abusive title or description'
 ] as const
 
-export type DefaultHatredOrAbusive = (typeof defaultHatredOrAbusive)[number]
+export type DefaultHatredOrAbusive = (typeof DEFAULT_HATRED_OR_ABUSIVE)[number]
 
-export const defaultReportTypes = [...defaultSexualContent, ...defaultViolentOrRepulsive, ...defaultHatredOrAbusive]
+export const DEFAULT_REPORT_TYPES = [...DEFAULT_SEXUAL_CONTENT, ...DEFAULT_VIOLENT_OR_REPULSIVE, ...DEFAULT_HATRED_OR_ABUSIVE]
 
 export type DefaultReportTypes = DefaultSexualContentReport | DefaultViolentOrRepulsive | DefaultHatredOrAbusive
 
