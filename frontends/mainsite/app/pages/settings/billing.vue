@@ -59,8 +59,6 @@
 </template>
 
 <script setup lang="ts">
-import { subscriptionTypes } from '~/data'
-
 definePageMeta({
   layout: 'settings'
 })

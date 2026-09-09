@@ -68,8 +68,6 @@
 </template>
 
 <script setup lang="ts">
-import type { VideoDetails, Undefineable, VideoTechnicalDetails } from '~/types'
-
 /**
  * Async Components
  */
@@ -96,12 +94,17 @@ const currentVideo = injectLocal<Ref<Undefineable<VideoDetails>>>(CURRENT_VIDEO_
 
 try {
   const { id: videoId } = useRoute().params as { id: string }
-  const data = await $fetch<VideoDetails>(`/api/videos/${videoId}`, {
+  // const data = await $fetch<VideoDetails>(`/api/videos/${videoId}`, {
+  //   method: 'POST'
+  // })
+  const { data } = await useAsyncData(`video-${videoId}`, () => $fetch<VideoDetails>(`/api/videos/${videoId}`, {
     method: 'POST'
+  }), {
+    default: () => ({} as VideoDetails)
   })
   
   if (isLoading) isLoading.value = false
-  if (currentVideo) currentVideo.value = data
+  if (currentVideo) currentVideo.value = toValue(data)
 } catch (e) {
   console.log(e)
 }

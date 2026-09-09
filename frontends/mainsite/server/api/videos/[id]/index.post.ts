@@ -1,19 +1,27 @@
-// import { refreshAccessToken } from '~/utils'
 import { createErrorTemplate } from '~/utils'
-import { feedVideoFixtures } from '~/utils/fixtures/videos'
 
 export default defineEventHandler(async event => {
-  const id = getRouterParam(event, 'id') as string
+  const _id = getRouterParam(event, 'id') as string
 
   try {
-    $fetch('/graphql/', {
-      method: 'POST',
-      headers: [
-        ['Content-Type', 'application/json'],
-        ['Accept', 'application/json'],
-      ],
-    })
-    return feedVideoFixtures.find(video => video.videoId === id) || null
+    const { singleItem } = useLoadFixtures()
+    const video = singleItem()
+    return {
+      ...video,
+      userChannel: {
+        reference: '12323',
+        name: 'Sample Channel',
+        
+      }
+    } as VideoDetails
+    // $fetch('/graphql/', {
+    //   method: 'POST',
+    //   headers: [
+    //     ['Content-Type', 'application/json'],
+    //     ['Accept', 'application/json'],
+    //   ],
+    // })
+    // return feedVideoFixtures.find(video => video.videoId === id) || null
   } catch (error) {
     const template = createErrorTemplate(error)
     throw createError(template)

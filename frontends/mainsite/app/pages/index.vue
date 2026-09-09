@@ -15,7 +15,7 @@
     <!-- Content -->
     <section id="content" class="mt-5">
       <div class="pt-2 pb-5 flex justify-end">
-        <volt-dropdown id="sort-by" :items="Array.from(sortByMenuItems)">
+        <volt-dropdown id="sort-by" :items="sortByMenuItems">
           <template #default="{ attrs }">
             <volt-button @click="attrs.toggle">
               <icon name="i-fa7-solid:sort" /> Sort by
@@ -45,8 +45,6 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
-import { useFeedComposable, useMenuItems } from '~/composables/use'
-import type { Arrayable } from '~/types'
 
 const AsyncFeedComponent = defineAsyncComponent({
   loader: () => import('~/components/BaseAsyncFeed.vue')
@@ -65,7 +63,8 @@ const { menuItems: uploadDateSelect } = useMenuItems(Array.from(DEFAULT_UPLOAD_D
  * Search
  */
 
-const { search, uploadDate, videoLength, category, sortBy } = useFeedComposable()
+// useFeedComposable()
+const { search, uploadDate, videoLength, category, sortBy } = await useSearchFeedComposable()
 
 /**
  * Sort by menu items

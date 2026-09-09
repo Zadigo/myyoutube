@@ -3,7 +3,7 @@ import type { Feed, SearchQuery } from '#shared/types/feed'
 /**
  * Composable for managing the search feed, including search query, filters, and URL synchronization.
  */
-export async function useSearchFeedComposable() {
+export const useSearchFeedComposable = createSharedComposable(async () => {
   const search = ref<string>('')
 
   const searched = refDebounced(search, 500)
@@ -34,14 +34,23 @@ export async function useSearchFeedComposable() {
     query.sortBy = newSortBy !== 'Upload date' ? newSortBy : undefined
   })
 
-  const { data, execute } = await useFetch<Feed>('/api/videos', {
-    method: 'GET',
-    immediate: false,
-    watch: [search, category, videoLength, uploadDate, sortBy],
-    key: `videos-feed-${search.value}-${category.value}-${videoLength.value}-${uploadDate.value}-${sortBy.value}`
+  // const { data, execute } = await useFetch<Feed>('/api/videos', {
+  //   method: 'GET',
+  //   immediate: false,
+  //   watch: [search, category, videoLength, uploadDate, sortBy],
+  //   key: `videos-feed-${search.value}-${category.value}-${videoLength.value}-${uploadDate.value}-${sortBy.value}`
+  // })
+
+  const { data, execute } = await useAsyncData(`feed-${search.value}-${category.value}-${videoLength.value}-${uploadDate.value}-${sortBy.value}`, async () => $fetch<Feed>('/api/videos', {
+    method: 'GET'
+  }), {
+    default: () => ({} as Feed)
   })
 
+  const hasVideos = computed(() => toValue(data).data.allVideos.edges.length > 0)
+
   return {
+    hasVideos,
     search,
     category,
     videoLength,
@@ -50,7 +59,7 @@ export async function useSearchFeedComposable() {
     data,
     execute
   }
-}
+})
 
 /**
  * Composable for fetching and managing a video feed

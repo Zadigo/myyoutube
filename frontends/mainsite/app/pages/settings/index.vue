@@ -51,8 +51,6 @@
 </template>
 
 <script setup lang="ts">
-import { rankAs } from '~/data'
-
 definePageMeta({
   layout: 'settings'
 })

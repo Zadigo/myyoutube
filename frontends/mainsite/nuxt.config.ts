@@ -71,7 +71,7 @@ export default defineNuxtConfig({
   ],
 
   ui: {
-    prefix: 'Nuxt'
+    
   },
 
   fonts: {

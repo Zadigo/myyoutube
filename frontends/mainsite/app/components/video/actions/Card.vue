@@ -1,43 +1,36 @@
 <template>
-  <volt-card v-if="currentVideo">
-    <template #content>
-      <div class="flex justify-between items-center mt-3">
-        <!-- Channel / Infos -->
-        <div v-if="currentVideo.userChannel" id="left" class="flex justify-left items-center gap-3">
-          <nuxt-link :to="`/channels/${currentVideo.userChannel.reference}`">
-            <volt-avatar image="/avatars/avatar1.png" size="xlarge" shape="circle" alt="" />
-          </nuxt-link>
-          
-          <!-- Video Infos -->
-          <div id="channel-info" class="py-1 px-5">
-            <h1 class="font-bold text-2xl">{{ currentVideo.title }}</h1>
-            <h3 class="font-bold mb-1">{{ shorten(currentVideo.views) }} views</h3>
-            <p class="font-light text-secondary">{{ $humanizeDate(currentVideo.createdOn) }}</p>
-          </div>
+  <u-card v-if="currentVideo">
+    <div class="flex justify-between items-center mt-3">
+      <!-- Channel / Infos -->
+      <div v-if="currentVideo.userChannel" id="left" class="flex justify-left items-center gap-3">
+        <nuxt-link :to="`/channels/${currentVideo.userChannel.reference}`">
+          <volt-avatar image="/avatars/avatar1.png" size="xlarge" shape="circle" alt="" />
+        </nuxt-link>
+        
+        <!-- Video Infos -->
+        <div id="channel-info" class="py-1 px-5">
+          <h1 class="font-bold text-2xl">{{ currentVideo.title }}</h1>
+          <h3 class="font-bold mb-1">{{ shorten(currentVideo.views) }} views</h3>
+          <p class="font-light text-secondary">{{ $humanizeDate(currentVideo.createdOn) }}</p>
         </div>
-
-        <volt-skeleton v-else />
-
-        <!-- Actions -->
-        <video-actions-buttons @action:modal="emit('action:modal', $event)" />
       </div>
-    </template> 
-  </volt-card>
 
-  <volt-card v-else>
-    <template #content>
-      <div class="space-y-2">
-        <volt-skeleton height="50px" />
-        <volt-skeleton height="50px" />
-      </div>
-    </template>
-  </volt-card>
+      <volt-skeleton v-else />
+
+      <!-- Actions -->
+      <video-actions-buttons @action:modal="emit('action:modal', $event)" />
+    </div>
+  </u-card>
+
+  <u-card v-else>
+    <div class="space-y-2">
+      <volt-skeleton height="50px" />
+      <volt-skeleton height="50px" />
+    </div>
+  </u-card>
 </template>
 
 <script lang="ts" setup>
-import { currentVideoSymbol, type DefaultVideoMenuActions } from '~/data'
-import type { Undefineable, VideoDetails } from '~/types'
-
 const { $humanizeDate } = useNuxtApp()
 const { shorten } = useNumbersUtils()
 
@@ -51,7 +44,7 @@ const emit = defineEmits<{ 'action:modal': [method: DefaultVideoMenuActions] }>(
  * Video
  */
 
-const currentVideo = injectLocal<Ref<Undefineable<VideoDetails>>>(currentVideoSymbol)
+const currentVideo = injectLocal<Ref<Undefineable<VideoDetails>>>(CURRENT_VIDEO_SYMBOL)
 
 /**
  * Playlists

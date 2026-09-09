@@ -10,7 +10,7 @@ import { getQuery } from 'h3'
  * Utility functions for loading and manipulating video fixtures for testing purposes.
  */
 export function useLoadFixtures<T extends BaseVideo = BaseVideo>() {
-  const fixtures = computed(() => videoFixtures)
+  const fixtures = computed(() => videoFixtures as FeedVideos['edges'])
 
   function getItem(event: H3Event) {
     const id = getRouterParam(event, 'id')

@@ -83,8 +83,6 @@
 </template>
 
 <script setup lang="ts">
-import { blockingDurations } from '~/data'
-
 definePageMeta({
   layout: 'settings'
 })

@@ -1,36 +1,32 @@
 <template>
-  <volt-card class="shadow-none">
-    <template #content>
-      <div class="flex justify-start items-start gap-4">
-        <volt-avatar image="/avatars/avatar3.png" shape="circle" size="large" alt="" />
+  <u-card class="shadow-none">
+    <div class="flex justify-start items-start gap-4">
+      <u-avatar src="/avatars/avatar3.png" size="lg" alt="" />
 
-        <div class="w-full space-y-3">
-          <volt-textarea v-model="requestData.content" class="w-full" auto-resize label="" :style="{ resize: 'none' }" />
-          
-          <div class="flex gap-2 w-full">
-            <volt-button variant="info" size="small" rounded>
-              Cancel
-            </volt-button>
+      <div class="w-full space-y-3">
+        <u-textarea v-model="requestData.content" class="w-full" auto-resize label="" :style="{ resize: 'none' }" />
+        
+        <div class="flex gap-2 w-full">
+          <u-button variant="subtle" size="md" rounded>
+            Cancel
+          </u-button>
 
-            <!-- <EmojisPicker @emoji-click="hanlePickEmoji" /> -->
+          <!-- <EmojisPicker @emoji-click="hanlePickEmoji" /> -->
 
-            <volt-button variant="info" size="small" rounded @click="handleCreateComment ">
-              <icon name="i-fa7-solid:comment" />
-              Comment
-            </volt-button>
-          </div>
+          <u-button variant="subtle" size="md" rounded @click="handleCreateComment ">
+            <icon name="i-fa7-solid:comment" />
+            Comment
+          </u-button>
         </div>
       </div>
-    </template>
-  </volt-card>
+    </div>
+  </u-card>
 </template>
 
 <script lang="ts" setup>
-import type { VideoComment } from '~/types'
 
-const emit = defineEmits<{ 'new-comment': [comment: VideoComment] }>()
+const emit = defineEmits<{ 'new-comment': [comment: BaseComment] }>()
 
-const { $client } = useNuxtApp()
 const route = useRoute()
 const requestData = ref({ content: '' })
 
@@ -39,9 +35,14 @@ const requestData = ref({ content: '' })
 async function handleCreateComment () {
   try {
     const videoID = route.params.id
-    const response = await $client.post<VideoComment>(`/videos/${videoID}/comment`, requestData.value)
+    const response = await $fetch<BaseComment>(`/api/videos/${videoID}/comment`, {
+      method: 'POST',
+      body: requestData.value
+    })
+    
     requestData.value.content = ''
-    emit('new-comment', response.data)
+
+    emit('new-comment', response)
   } catch {
     // Handle error
   }

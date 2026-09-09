@@ -7,7 +7,6 @@
 
 <script setup lang="ts">
 useNuxtAuthentication()
-// useSession()
 
 /**
  * Sidebar

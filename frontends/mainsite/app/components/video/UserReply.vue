@@ -3,17 +3,17 @@
     <div class="card-body">
       <div class="d-flex justify-content-around">
         <div class="me-3">
-          <NuxtLink :to="`/channels/ch_noienozinfoz`" aria-label="">
-            <VoltAvatar src="/avatars/avatar3.png" class="img-fluid rounded-circle" width="40px" alt="Image 3" />
-          </NuxtLink>
+          <nuxt-link :to="`/channels/ch_noienozinfoz`" aria-label="">
+            <u-avatar src="/avatars/avatar3.png" size="xl" alt="Image 3" />
+          </nuxt-link>
         </div>
 
-        <div clas="ms-1">
+        <div class="ms-1">
           <div class="d-flex justify-content-left">
-            <NuxtLink :to="`/channels/ch_noienozinfoz`" aria-label="">
+            <nuxt-link :to="`/channels/ch_noienozinfoz`" aria-label="">
               <span class="fw-bold me-2">Cee Dee</span>
               <span class="text-body-tertiary">3 weeks ago</span>
-            </NuxtLink>
+            </nuxt-link>
           </div>
 
           <p class="card-text">
@@ -51,7 +51,5 @@
 </template>
 
 <script lang="ts" setup>
-import type { VideoReplyNode } from '~/types'
-
 defineProps<{ reply: VideoReplyNode }>()
 </script>
