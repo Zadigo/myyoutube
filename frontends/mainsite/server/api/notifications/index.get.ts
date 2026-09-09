@@ -1,4 +1,3 @@
-import { NotificationApiResponse } from '~/types'
 import { createErrorTemplate } from '~/utils/errors'
 
 export default defineEventHandler(async (event) => {

@@ -1,8 +1,7 @@
-import type { DefaultMainCategories, DefaultSortBy, DefaultUploadDate, DefaultVideoLength } from '~/data'
-import type { Feed, SearchQuery } from '~/types'
+import type { Feed, SearchQuery } from '#shared/types/feed'
 
 /**
- * 
+ * Composable for managing the search feed, including search query, filters, and URL synchronization.
  */
 export async function useSearchFeedComposable() {
   const search = ref<string>('')
@@ -57,17 +56,12 @@ export async function useSearchFeedComposable() {
  * Composable for fetching and managing a video feed
  */
 export const useFeedComposable = createSharedComposable(() => {
-  const videos = computedAsync<Feed>(async () => {
-    return await $fetch<Feed>('/api/videos', {
-      method: 'GET'
-    })
-  }, [], {
-    onError(e) {
-      console.error('Error fetching feed videos:', e)
-    },
-  })
+  const videos = computedAsync<Feed>(
+    async () => await $fetch<Feed>('/api/videos', { method: 'GET' }),
+    {} as Feed
+  )
 
-  const hasVideos = computed(() => isDefined(videos) ? videos.value?.allVideos?.edges.length > 0 : false)
+  const hasVideos = computed(() => isDefined(videos) ? videos.value?.data.allVideos?.edges.length > 0 : false)
 
   return {
     /**

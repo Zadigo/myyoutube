@@ -1,15 +1,15 @@
-import type { Playlist } from '~/types'
-import { generateErrorTemplate } from '~/utils'
+import { createErrorTemplate } from '#shared/errors'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   try {
-    const { id } = getQuery<{ id: string }>(event)
-    return await $fetch<Playlist>(`/v1/playlists/${id}`, {
-      baseURL: useRuntimeConfig().public.djangoProdUrl,
-      method: 'GET'
-    })
+    return
+    // const { id } = getQuery<{ id: string }>(event)
+    // return await $fetch<Playlist>(`/v1/playlists/${id}`, {
+    //   baseURL: useRuntimeConfig().public.djangoProdUrl,
+    //   method: 'GET'
+    // })
   } catch (error) {
-    const template = generateErrorTemplate(error)
+    const template = createErrorTemplate(error)
     return createError(template)
   }
 })

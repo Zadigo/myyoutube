@@ -1,5 +1,4 @@
-import type { Playlist } from '~/types'
-import { generateErrorTemplate } from '~/utils'
+import { createErrorTemplate } from '#shared/errors'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -9,7 +8,7 @@ export default defineEventHandler(async (event) => {
       method: 'GET'
     })
   } catch (error) {
-    const template = generateErrorTemplate(error)
+    const template = createErrorTemplate(error)
     return createError(template)
   }
 })
