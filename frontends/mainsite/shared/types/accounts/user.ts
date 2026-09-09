@@ -1,4 +1,4 @@
-import type { Nullable, NullableTypes } from ".."
+import type { Nullable, NullableTypes } from '../utils'
 
 export type BaseUserProfile = {
 	id: string

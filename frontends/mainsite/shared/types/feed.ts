@@ -26,7 +26,7 @@ export type BaseVideoFields = 'id' | 'title' | 'description' | 'video' | 'views'
 /**
  * Simple feed video type used in feed listings
  */
-export type FeedVideo<F = BaseVideoFields> = Pick<BaseVideo, F> & { user: Pick<BaseUser, 'id' | 'username'> & { userProfile: Pick<BaseUserProfile, 'avatar'> }} & { userChannel: Pick<UserChannel, 'id' | 'name' | 'reference'> }
+export type FeedVideo<F extends BaseVideoFields = BaseVideoFields> = Pick<BaseVideo, F> & { user: Pick<BaseUser, 'id' | 'username'> & { userProfile: Pick<BaseUserProfile, 'avatar'> } } & { userChannel: Pick<BaseUserChannel, 'id' | 'name' | 'reference'> }
 
 /**
  * Detailed video type used in video details page

@@ -1,5 +1,6 @@
-import type { Arrayable, ModerationReportSource } from '..'
+import type { ModerationReportSource } from '..'
 import type { GraphQlData, RelayEdge, RelayNode } from '../graphql'
+import type { Arrayable } from '../utils'
 
 export type CommunityNoteStatus = 'DRAFT' | 'PENDING' | 'APPROVED' | 'REJECTED' | 'FLAGGED'
 

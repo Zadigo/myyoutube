@@ -1,4 +1,4 @@
-import type { _DatabaseObject } from '..'
+import type { _DatabaseObject } from '../restframework'
 
 export * from './authentication'
 export * from './user'

@@ -1,6 +1,6 @@
-import type { BlockingDuration } from '~/utils/constants'
-import type { CustomUser } from '../accounts'
-import type { UserChannel } from '../channels'
+import type { BlockingDuration } from '~/constants/settings'
+import type { BaseUser } from '../accounts'
+import type { BaseUserChannel } from '../channels'
 
 export interface BlockedKeyword {
   word: string
@@ -8,6 +8,6 @@ export interface BlockedKeyword {
 }
 
 export interface BlockedChannel {
-  channel: UserChannel
-  user: CustomUser
+  channel: BaseUserChannel
+  user: BaseUser
 }
