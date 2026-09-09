@@ -58,4 +58,9 @@ function generalAlert(content: GeneralAlertData) {
   showGeneralAlert.value = true
   generalAlertData.value = content
 }
+
+defineExpose({
+  showFactCheck,
+  showGeneralAlert
+})
 </script>
