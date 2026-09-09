@@ -14,10 +14,10 @@
 
         <p class="text-light font-light mb-10Ò">310 vidéos</p>
 
-        <volt-button class="mt-8" rounded>
+        <u-button class="mt-8 rounded-full" size="xl">
           <Icon name="i-fa7-solid:plus" />
           Subscribe
-        </volt-button>
+        </u-button>
       </div>
     </header>
   </section>

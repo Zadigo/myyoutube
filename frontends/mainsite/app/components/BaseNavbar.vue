@@ -2,9 +2,9 @@
   <nav class="fixed top-0 left-0 h-(--navbar-height) w-full px-6 md:px-16 lg:px-24 xl:px-32 flex items-center justify-between z-30 bg-white dark:bg-primary-950 dark:text-primary-50 transition-all">
   <!-- <nav class="bg-slate-50 dark:bg-primary dark:text-surface-50 fixed top-0 left-0 right-0 p-2 border-b border-slate-50 dark:border-slate-500 z-40"> -->
     <div :class="theme" class="flex items-center space-x-2 transition-all ease-in-out">
-      <volt-button class="navbar-toggler" variant="outlined" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation" @click="() => { toggle() }">
+      <u-button class="navbar-toggler" variant="outline" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation" @click="() => { toggle() }">
         <icon name="i-fa7-solid:bars" />
-      </volt-button>
+      </u-button>
 
       <nuxt-link-locale to="/" class="uppercase font-bold">
         My Youtube
@@ -12,8 +12,8 @@
     </div>
 
     <ul class="ms-auto">
-      <volt-button @click="() => { toggleDarkMode() }">Dark</volt-button>
-      <volt-avatar image="/avatars/avatar1.png" shape="circle" size="normal" />
+      <u-button @click="() => { toggleDarkMode() }">Dark</u-button>
+      <u-avatar src="/avatars/avatar1.png" />
     </ul>
   </nav>
 </template>

@@ -20,7 +20,7 @@
     <section class="grid grid-cols-12 gap-2 mt-4">
       <!-- Comments -->
       <div class="col-span-8">
-        <Suspense>
+        <suspense>
           <template #default>
             <client-only>
               <async-video-comment-section />
@@ -30,18 +30,16 @@
           <template #fallback>
             <volt-skeleton height="100px" />
           </template>
-        </Suspense>
+        </suspense>
       </div>
 
       <!-- Recommendations -->
       <div class="col-span-4">
-        <volt-card>
-          <template #content>
-            Filters
-          </template>
-        </volt-card>
+        <u-card>
+          Filters
+        </u-card>
 
-        <Suspense>
+        <suspense>
           <template #default>
             <client-only>
               <async-recommendation-section />
@@ -51,7 +49,7 @@
           <template #fallback>
             <volt-skeleton height="100px" />
           </template>
-        </Suspense>
+        </suspense>
       </div>
 
       <!-- Modals -->

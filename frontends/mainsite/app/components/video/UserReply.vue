@@ -1,7 +1,7 @@
 <template>
-  <article class="card my-1 shadow-none bg-primary-50 rounded-lg p-5 max-w-5xl ms-auto" aria-label="">
-    <div class="card-body">
-      <div class="d-flex justify-content-around">
+  <article class="my-1 shadow-none bg-primary-50 rounded-lg max-w-5xl ms-auto">
+    <u-card>
+      <div class="flex justify-around">
         <div class="me-3">
           <nuxt-link :to="`/channels/ch_noienozinfoz`" aria-label="">
             <u-avatar src="/avatars/avatar3.png" size="xl" alt="Image 3" />
@@ -9,10 +9,10 @@
         </div>
 
         <div class="ms-1">
-          <div class="d-flex justify-content-left">
+          <div class="flex justify-start">
             <nuxt-link :to="`/channels/ch_noienozinfoz`" aria-label="">
               <span class="fw-bold me-2">Cee Dee</span>
-              <span class="text-body-tertiary">3 weeks ago</span>
+              <span class="text-primary-400">3 weeks ago</span>
             </nuxt-link>
           </div>
 
@@ -22,31 +22,29 @@
           </p>
 
           <div class="my-3">
-            <div class="badge badge-danger me-1">
+            <u-badge>
               @creator
-            </div>
+            </u-badge>
 
-            <div class="badge badge-light">
+            <u-badge color="neutral">
               Aimé par le createur
-            </div>
+            </u-badge>
           </div>
 
-          <div class="btn-group shadow-none">
-            <button type="button" class="btn btn-primary btn-sm shadow-none">
-              <span class="mdi mdi-thumb-up me-2" />12.3k
-            </button>
-              
-            <button type="button" class="btn btn-primary btn-sm shadow-none">
-              <span class="mdi mdi-thumb-down me-2" />26
-            </button>
-              
-            <button type="button" class="btn btn-info btn-sm shadow-none">
-              Repondre
-            </button>
-          </div>
+          <u-button type="button" variant="subtle">
+            <span class="mdi mdi-thumb-up me-2" />12.3k
+          </u-button>
+            
+          <u-button type="button" variant="subtle">
+            <span class="mdi mdi-thumb-down me-2" />26
+          </u-button>
+            
+          <u-button type="button" variant="subtle">
+            Repondre
+          </u-button>
         </div>
       </div>
-    </div>
+    </u-card>
   </article>
 </template>
 

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tailwindcss-primeui";
+@import "@nuxt/ui";
 
 @custom-variant dark (&:where(.p-dark, .p-dark *));
 

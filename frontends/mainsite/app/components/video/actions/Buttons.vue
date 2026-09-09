@@ -1,45 +1,43 @@
 <template>
   <div class="flex items-center justify-left">
-    <volt-button class="me-1" rounded @click="() => { like() }">
+    <u-button class="me-1" size="xl" @click="() => { like() }">
       <icon v-if="liked" name="i-fa7-solid:thumbs-up" class="mr-2" />
       <icon v-else name="i-fa7-regular:thumbs-up" class="mr-2" />
       Like <span class="font-bold">145.3k</span>
-    </volt-button>
+    </u-button>
 
-    <volt-button class="me-3" rounded @click="() => { dislike() }">
+    <u-button class="me-3" size="xl" @click="() => { dislike() }">
       <icon v-if="unliked" name="i-fa7-solid:thumbs-down" class="mr-2" />
       <icon v-else name="i-fa7-regular:thumbs-down" class="mr-2" />
       Dislike <span class="font-bold">15</span>
-    </volt-button>
+    </u-button>
     
     <!-- Extra Actions -->
     <volt-dropdown id="more-actions" :items="menuItems">
       <template #default="{ attrs }">
-        <volt-button rounded @click="attrs.toggle">
+        <u-button size="xl" @click="attrs.toggle">
           <icon name="i-lucide-ellipsis-vertical" />
-        </volt-button>
+        </u-button>
       </template>
     </volt-dropdown>
 
-    <volt-dropdown v-if="active" id="more-actions" :items="subscribeMenuItems" rounded>
+    <volt-dropdown v-if="active" id="more-actions" size="xl" :items="subscribeMenuItems" rounded>
       <template #default="{ attrs }">
-        <volt-button rounded @click="attrs.toggle">
+        <u-button size="xl" @click="attrs.toggle">
           <icon name="i-lucide-bell-off" />
-        </volt-button>
+        </u-button>
       </template>
     </volt-dropdown>
 
-    <volt-button v-else size="large" color="light" class="ml-5" @click="() => { subscribe() }">
+    <u-button v-else size="xl" color="neutral" class="ml-5" @click="() => { subscribe() }">
       <icon name="i-lucide-bell" />
-    </volt-button>
+    </u-button>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useVideoRating, useVideoSubscription } from '~/composables/use'
-import type { DefaultVideoMenuActions } from '~/constants'
 
-import type { VideoDetails, VideoMenuItem } from '~/types'
+import type { VideoMenuItem } from '~/types'
 
 const emit = defineEmits<{ 'action:modal': [method: DefaultVideoMenuActions] }>()
 

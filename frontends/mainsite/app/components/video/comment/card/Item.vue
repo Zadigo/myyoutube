@@ -7,13 +7,13 @@
             <volt-avatar image="/avatars/avatar2.png" :alt="userChannel.name" shape="circle" size="small" />
           </nuxt-link>
   
-          <volt-button :to="`/channels/${userChannel?.reference}`" size="small" variant="outlined">
+          <u-button :to="`/channels/${userChannel?.reference}`" size="small" variant="outlined">
             {{ userChannel.name }}
-          </volt-button>
+          </u-button>
   
-          <volt-button size="small" variant="outlined" disabled>
+          <u-button size="small" variant="outlined" disabled>
             3 weeks ago
-          </volt-button>
+          </u-button>
         </div>
   
         <p class="pt-2 pb-5">{{ videoComment.node.content }}</p>
@@ -38,27 +38,27 @@
         </div>
   
         <div class="flex gap-2 mt-4">
-          <volt-button variant="outlined" size="small" rounded>
+          <u-button variant="outline" size="sm" rounded>
             <icon v-if="videoComment.node?.isLiked" name="i-fa7-solid:thumbs-up" />
             <icon v-else name="i-fa7-regular:thumbs-up" />
             12.3k
-          </volt-button>
+          </u-button>
           
-          <volt-button variant="outlined" size="small" rounded>
+          <u-button variant="outline" size="sm" rounded>
             <icon v-if="!videoComment?.node.isDisliked" name="i-fa7-solid:thumbs-down" />
             <icon v-else name="i-fa7-regular:thumbs-up" />
             24
-          </volt-button>
+          </u-button>
   
-          <volt-button variant="outlined" size="small" rounded>
+          <u-button variant="outline" size="sm" rounded>
             <icon name="i-lucide-message-circle-more" />
             Answer
-          </volt-button>
+          </u-button>
         </div>
   
-        <volt-button v-if="hasReplies" variant="text" class="mt-3" rounded @click="() => { toggleReplies() }">
+        <u-button v-if="hasReplies" variant="ghost" class="mt-3" rounded @click="() => { toggleReplies() }">
           Voir {{ videoComment.node.numberOfReplies }} commentaires
-        </volt-button>
+        </u-button>
   
         <transition id="replies" tag="div" name="pop" mode="in-out">
           <div v-if="showReplies && isDefined(replies)" class="replies">
@@ -71,8 +71,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { VideoCommentNode, VideoReplies } from '~/types'
-
 const { videoComment } = defineProps<{ videoComment: VideoCommentNode }>()
 
 /**
