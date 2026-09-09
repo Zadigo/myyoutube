@@ -33,7 +33,7 @@ const notifications = ref<Notification[]>([])
 const { $notificationsClient } = useNuxtApp()
 
 onMounted(async () => {
-  const data = await $fetch<NotificationApiResponse>('/api.notifications/', {
+  const data = await $fetch<NotificationApiResponse>('/api/notifications/', {
     method: 'GET'
   })
 

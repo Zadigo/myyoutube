@@ -8,12 +8,13 @@ export default defineConfig({
       '.nuxt',
       'dist',
       'test/__fixtures__',
-      'test/__mocks__'
+      'test/__mocks__',
+      'tests/e2e'
     ],
     coverage: {
       enabled: true,
       provider: 'v8',
-      reporter: [ 'text', 'json', 'html', 'clover' ],
+      reporter: ['text', 'json', 'html', 'clover'],
       exclude: [
         'i18n/locales/**',
         'app/assets/**',
@@ -37,6 +38,18 @@ export default defineConfig({
             {
               name: 'isolation',
               description: 'Tests that are isolated and do not depend on external services or state.'
+            },
+            {
+              name: 'composable',
+              description: 'Tests for composables'
+            },
+            {
+              name: 'frontend',
+              description: 'Tests for frontend components'
+            },
+            {
+              name: 'server',
+              description: 'Tests for server-side components'
             }
           ]
         }
@@ -44,7 +57,7 @@ export default defineConfig({
       await defineVitestProject({
         test: {
           name: 'integration',
-          include: [ 'test/integration/**/*.{test,spec}.ts' ],
+          include: ['test/integration/**/*.{test,spec}.ts'],
           environment: 'node',
           testTimeout: 20000,
           tags: [

@@ -1,4 +1,4 @@
-# Fullstack E-commerce Application Architecture
+# YouTube Fullstack Architecture
 
 ## Requirements & Assumptions 🟠
 
@@ -6,65 +6,25 @@
 
 *Questions that need to be answered to better understand the requirements and constraints of the system*
 
-Examples of clarifying questions for an E-commerce application:
-
-- **Channels** Mobile ? Web ?
-- **Payment Methods** Credit Card ? PayPal ? Apple Pay ?
-- **User Authentication** Email/Password ? Social Login ?
-- **Inventory Management** Real-time ? Batch updates ?
-- **Shipping** Integration with third-party logistics providers ? In-house fulfillment ?
-- **Inventory**
-  * How many products will the system need to handle ?
-  * How frequently will the product catalog be updated ?
-  * In-house inventory management or integration with third-party inventory systems ?
-  * What types of products will be sold (e.g., physical goods, digital products, services) ? Do they have different variants (e.g., size, color) ?
-- **Reviews** Will the system allow customers to leave reviews and ratings for products ? If so, how will these reviews be moderated and displayed on the product pages ?
+---
 
 ### Functional Requirements 🟢
 
 *Describes the specific features and functionalities that the system must provide*
 
-For example for an E-commerce application:
-
-- **Admin** Dashboard for managing products, orders, and users.
-- **Search** Allows users to search for products based on various criteria such as name, category, price, etc.
-- **Shopping Cart & Checkout** Allows users to add products to their shopping cart for purchase, can add and purchase multiple products.
-- **Payment Processing** Integrates with payment gateways to securely process payments from customers. Prevent double payment and ensure secure transactions.
-- **Order Management** Allows users to view their order history and track the status of their orders.
+---
 
 ## Capacity Planning ⏰
 
 ### Database
 
-Estimates the expected load on the system, such as the number of users, transactions, or requests per second. This helps in designing a system that can handle the anticipated traffic and scale as needed. For example:
-
-For example, Bershka gets **18.9 million** visits per month:
-
-- **Yearly** 227 million visits
-- **Daily** 621,000 visits
-- **Hourly** 25,875 visits
-- **Per Second** 7.2 visits approximate database queries per second that the database needs to handle.
-
-Some frontend applications can delegate the storage of the user's session to third party services like Firebase, which can help reduce the load on the database and improve performance. This also needs to be taken into account when estimating the load on the database and designing the system architecture.
-
-For example in the case of Firebase, writes free tier is 20K/day, read is 50K/day and deletes is 20K/day. For 227 million visits per year this would approximate to:
-
-- **Writes** 620K/day (227 million visits / 365 days)
-- **Reads** 1.24 million/day (227 million visits * 5 reads per visit / 365 days)
-- **Deletes** 620K/day (227 million visits / 365 days)
-
-Storage is 1GB free tier, and for 227 million visits per year, if we assume that each visit generates around 1KB of data (e.g., session data, user interactions), this would require approximately 227GB of storage (227 million visits * 1KB per visit). This is well within the limits of Firebase's free tier, but it's important to monitor usage and consider upgrading to a paid plan if the storage requirements exceed the free tier limits.
-
 ### Storage
 
-On the S3 storage end, and image size in `webp` format is around 100KB. An e-commerce website like Bershka has around 100,000 products, which means that the total storage required for product images would be approximately 10GB (100KB * 100,000 products). This is a manageable amount of storage for Amazon S3, which can easily scale to accommodate larger amounts of data as needed.
-
-- **Images** 100KB x 100,000 products
-- **Estimate storage** 10GB of storage required for product images.
+---
 
 ## High Level Architecture 🏗️
 
-Describes the overall structure of the system, including the main components and how they interact with each other. This can be illustrated using diagrams such as component diagrams or architecture diagrams.
+*Describes the overall structure of the system, including the main components and how they interact with each other. This can be illustrated using diagrams such as component diagrams or architecture diagrams.*
 
 ```mermaid
 flowchart
@@ -86,6 +46,8 @@ flowchart
     N --> O(3rd party logistics providers)
     N --> R(Database)
 ```
+
+---
 
 ## System Workflow 🔄
 
@@ -132,6 +94,8 @@ sequenceDiagram
     Website->>User: Display confirmation
 ```
 
+---
+
 ## Api Design 🛠️
 
 *Describes the design of the APIs that will be used for communication between different components of the system, such as the frontend and backend. This includes the endpoints, request and response formats, authentication mechanisms, and any other relevant details about how the APIs will function.*
@@ -139,18 +103,13 @@ sequenceDiagram
 > Determines also whether the system will be using RESTful APIs or GraphQL, and how the frontend will interact with these APIs to fetch and manipulate data.
 > If the system uses microservices architecture, the API design will also include details about how different microservices will communicate with each other, such as using RESTful APIs, gRPC, or message queues.
 
-| Endpoint          | Method | Description                            | Request Body                                                          | Response Body                             |
-| ----------------- | ------ | -------------------------------------- | --------------------------------------------------------------------- | ----------------------------------------- |
-| /graphql          | POST   | Retrieve a list of products            | { query: string, variables: object }                                  | List of products with details             |
-| /graphql          | POST   | Retrieve details of a specific product | { query: string, variables: object }                                  | Product details                           |
-| /graphql          | POST   | Add a product to the shopping cart     | { query: string, variables: object }                                  | Updated shopping cart details             |
-| /graphql          | POST   | Process the checkout and payment       | { query: string, variables: object }                                  | Order confirmation and details            |
-| /graphql          | POST   | Retrieve a list of user orders         | { query: string, variables: object }                                  | List of user orders with details          |
-| /graphql          | POST   | Retrieve details of a specific order   | { query: string, variables: object }                                  | Order details                             |
-| /api/v1/signup    | POST   | Register a new user                    | { username: string, password: string, password_confirmation: string } | User registration confirmation            |
-| /auth/v1/token/   | POST   | Authenticate a user                    | { username: string, password: string }                                | Authentication token and user details     |
-| /v1/auth/refresh  | POST   | Refresh authentication token           | { refresh_token: string }                                             | New authentication token and user details |
-| /v1/token/verify/ | POST   | Verify authentication token            | { token: string }                                                     | Verification result                       |
+| Endpoint | Method | Description                 | Request Body                         | Response Body                 |
+| -------- | ------ | --------------------------- | ------------------------------------ | ----------------------------- |
+| /graphql | POST   | Retrieve a list of products | { query: string, variables: object } | List of products with details |
+
+---
+
+
 
 ## Data storage
 
