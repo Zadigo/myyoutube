@@ -35,3 +35,5 @@ export interface BaseVideo {
 	width: number
 	userChannel: Pick<BaseUserChannel, 'id' | 'reference' | 'name' | 'user'> & { user: Pick<BaseUser, 'id' | 'username'> & { userProfile: Pick<BaseUserProfile, 'avatar'> } }
 }
+
+export type VideoNode = RelayNode<BaseVideo>

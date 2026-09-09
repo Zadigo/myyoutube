@@ -1,31 +1,30 @@
 import { faker } from '@faker-js/faker'
 import { computed, ref, toValue } from 'vue'
-import jsonFixtures from '../../../public/products.json'
-import { filterFunc } from '#shared/products'
+import videoFixtures from '~~/public/fixtures/videos.json'
+import { filterFunc } from '#shared/helpers'
 import type { H3Event } from 'h3'
 import { getRouterParam } from 'h3'
-import { ProductFilterOptions } from '#server/types/filter'
 import { getQuery } from 'h3'
  
 /**
- * Utility functions for loading and manipulating product fixtures for testing purposes.
+ * Utility functions for loading and manipulating video fixtures for testing purposes.
  */
-export function useLoadFixtures() {
-  const fixtures = computed(() => jsonFixtures)
+export function useLoadFixtures<T extends BaseVideo = BaseVideo>() {
+  const fixtures = computed(() => videoFixtures)
 
-  function getProduct(event: H3Event) {
+  function getItem(event: H3Event) {
     const id = getRouterParam(event, 'id')
 
     if (!id) return undefined
-    return fixtures.value.find((product) => product.id.toString() === id)
+    return fixtures.value.find((video) => video.id.toString() === id)
   }
 
   function raw() {
     return toValue(fixtures)
   }
 
-  function singleProduct() {
-    return raw().at(0) as BaseProduct
+  function singleItem() {
+    return raw().at(0) as T | undefined
   }
   
   function search(event: H3Event) {
@@ -34,11 +33,11 @@ export function useLoadFixtures() {
   }
 
   function filter(options: ProductFilterOptions) {
-    return fixtures.value.filter((product) => {
+    return fixtures.value.filter((video) => {
       const size = options.sizes || []
       // const material = options.materials || []
 
-      const sizeMatch = size.length === 0 || product.sizeSet.some((s) => size.includes(s.name))
+      const sizeMatch = size.length === 0 || video.sizeSet.some((s) => size.includes(s.name))
       // const materialMatch = material.length === 0 || material.includes(product.material)
 
       // return sizeMatch && materialMatch
@@ -46,14 +45,14 @@ export function useLoadFixtures() {
     })
   }
 
-  function toNodes(values: BaseProduct[] | undefined): ProductNode[] {
+  function toNodes(values: T[] | undefined): VideoNode[] {
     if (!values) return []
-    return values.map((product) => ({
-      node: product
+    return values.map((video) => ({
+      node: video
     }))
   }
 
-  function toPaginated(values: BaseProduct[]) {
+  function toPaginated(values: T[]) {
     return {
       edges: toNodes(values),
     }
@@ -61,42 +60,42 @@ export function useLoadFixtures() {
 
   return {
     /**
-     * Returns the computed array of product fixtures loaded from the JSON file. 
-     * This can be used to access the entire set of products for testing or 
+     * Returns the computed array of video fixtures loaded from the JSON file. 
+     * This can be used to access the entire set of videos for testing or 
      * demonstration purposes.
      */
     fixtures,
     /**
-     * Retrieves a specific product from the loaded 
+     * Retrieves a specific video from the loaded 
      * fixtures based on the 'id' parameter in the event.
      */
-    getProduct,
+    getItem,
     /**
-     * Returns the first product from the loaded fixtures, 
+     * Returns the first video from the loaded fixtures, 
      * which can be useful for testing or demonstration purposes.
      */
-    singleProduct,
+    singleItem,
     /**
      * Returns the raw array of loaded fixtures without any filtering or transformation.
      */
     raw,
     /**
-     * Filters the loaded fixtures based on a search query extracted from the event's parameters.
+     * Filters the loaded video fixtures based on a search query extracted from the event's parameters.
      * @param event - The H3Event from which to extract the search query.
      */
     search,
     /**
-     * Converts an array of products into a structure that mimics the Relay pagination format.
+     * Converts an array of videos into a structure that mimics the Relay pagination format.
      */
     toNodes,
     /**
      * Simulates the graphene pagination structure by 
-     * converting an array of products into a paginated format which
+     * converting an array of videos into a paginated format which
      * relies on Relay specifications.
      */
     toPaginated,
     /**
-     * Filters the loaded fixtures based on the provided sizes and materials.
+     * Filters the loaded video fixtures based on the provided sizes and materials.
      * @param options - An object containing optional arrays of sizes and materials to filter by.
      */
     filter

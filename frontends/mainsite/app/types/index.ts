@@ -12,7 +12,3 @@ export interface ExtendedRouteParamsGeneric extends RouteParamsGeneric {
 export interface VideoMenuItem extends MenuItem {
   label?: DefaultVideoMenuActions
 }
-
-export interface SessionCache {
-  categories: Arrayable<string>
-}
