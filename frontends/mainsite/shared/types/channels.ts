@@ -1,4 +1,7 @@
-import type { Arrayable, BaseUser, RelayNode } from '.'
+import type {  BaseUser } from '.'
+import type { BaseVideo } from './video'
+import type { Arrayable } from  './utils'
+import type { RelayNode } from './graphql'
 
 export interface Tag {
   id: string

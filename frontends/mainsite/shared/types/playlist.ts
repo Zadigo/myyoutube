@@ -1,4 +1,9 @@
-import type { BaseUserChannel, GraphQlData, Nullable, RelayEdge, VisilityStatus, BaseVideo, RelayNode } from '.'
+import type { BaseUserChannel } from './channels'
+import type { Nullable } from './utils'
+import type { BaseVideo } from './video'
+import type { RelayNode, GraphQlData, RelayEdge } from './graphql'
+
+export type VisilityStatus = 'Public' | 'Private'
 
 type BasePlaylist = {
   id: string

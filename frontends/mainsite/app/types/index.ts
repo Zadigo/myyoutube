@@ -1,9 +1,7 @@
 import type { MenuItem } from 'primevue/menuitem'
 import type { RouteParamsGeneric } from 'vue-router'
 import type { DefaultVideoMenuActions } from '~/constants/video'
-import type { Arrayable } from '#shared/utils'
-
-export type * from './restframework'
+import type { Arrayable } from '#shared/types/utils'
 
 // Other Types
 
@@ -18,5 +16,3 @@ export interface VideoMenuItem extends MenuItem {
 export interface SessionCache {
   categories: Arrayable<string>
 }
-
-export type VisilityStatus = 'Public' | 'Private'

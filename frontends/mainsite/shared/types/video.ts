@@ -1,4 +1,6 @@
-import type { BaseUser, BaseUserChannel, BaseUserProfile, Nullable, RelayNode } from '.'
+import type { Nullable } from './utils'
+import type { BaseUser, BaseUserProfile } from './accounts'
+import type { BaseUserChannel } from './channels'
 
 export interface VideoTechnicalDetails {
 	currentTime: number

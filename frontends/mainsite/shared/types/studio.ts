@@ -1,4 +1,4 @@
-import type { _DatabaseObject } from '.'
+import type { _DatabaseObject } from './restframework'
 
 export interface Categories extends _DatabaseObject {
     title: string

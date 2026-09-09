@@ -1,4 +1,5 @@
-import type { Arrayable, BaseUserChannel } from '.'
+import type { BaseUserChannel } from './channels'
+import type { Arrayable } from './utils'
 import type { BaseUser } from './accounts'
 import type { GraphQlData, RelayEdge, RelayNode } from './graphql'
 
@@ -14,7 +15,7 @@ export type BaseComment = {
   user: Pick<BaseUser, 'id' | 'username'> & { userChannelSet: Arrayable<Pick<BaseUserChannel, 'id' | 'name' | 'reference'>>}
 }
 
-// export interface Reply extends BaseComment {}
+export interface Reply extends BaseComment {}
 
 export type VideoCommentNode = RelayNode<BaseComment>
 

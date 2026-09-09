@@ -144,12 +144,23 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    firebaseProjectId: process.env.NUXT_FIREBASE_PROJECT_ID,
+    firebaseClientEmail: process.env.NUXT_FIREBASE_CLIENT_EMAIL,
+    firebasePrivateKey: process.env.NUXT_FIREBASE_PRIVATE_KEY,
+
+    // Stripe
+    stripeSecretKey: process.env.NUXT_STRIPE_TEST_SECRET_KEY,
+    stripePublishableKey: process.env.NUXT_STRIPE_TEST_PUBLISHABLE_KEY,
+    stripeAccount: process.env.NUXT_STRIPE_TEST_PUBLISHABLE_KEY,
+    stripeApiVersion: '2024-06-20',
+    stripeLocale: 'fr',
+
     public: {
-      // Django GraphQL
-      videosGraphqlUrl: process.env.NUXT_PUBLIC_DJANGO_GRAPHQL,
-      moderationGraphqlUrl: process.env.NUXT_PUBLIC_DJANGO_MODERATION_GRAPHQL,
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL,
 
       // Django
+      videosGraphqlUrl: process.env.NUXT_PUBLIC_DJANGO_GRAPHQL,
+      moderationGraphqlUrl: process.env.NUXT_PUBLIC_DJANGO_MODERATION_GRAPHQL,
       djangoProdUrl: process.env.NUXT_DJANGO_PROD_URL || 'http://127.0.0.1:8000',
       djangoModerationProdUrl: process.env.NUXT_DJANGO_MODERATION_PROD_URL || 'http://127.0.0.1:8001',
       djangoNotificationsProdUrl: process.env.NUXT_DJANGO_NOTIFICATIONS_PROD_URL || 'http://127.0.0.1:8002',
@@ -160,13 +171,6 @@ export default defineNuxtConfig({
       apiCategories: process.env.NUXT_QUART_CATEGORIES_PROD_URL || 'http://127.0.0.1:5000',
       apiReports: process.env.NUXT_QUART_REPORTS_PROD_URL || 'http://127.0.0.1:5001',
       apiUploads: process.env.NUXT_GO_UPLOADS_PROD_URL || 'http://127.0.0.1:8080',
-
-      // Stripe
-      stripeSecretKey: process.env.NUXT_STRIPE_TEST_SECRET_KEY,
-      stripePublishableKey: process.env.NUXT_STRIPE_TEST_PUBLISHABLE_KEY,
-      stripeAccount: process.env.NUXT_STRIPE_TEST_PUBLISHABLE_KEY,
-      stripeApiVersion: '2024-06-20',
-      stripeLocale: 'fr'
     }
   },
 

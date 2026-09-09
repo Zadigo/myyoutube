@@ -1,6 +1,9 @@
 import type { BaseUser, BaseUserProfile } from './accounts'
 import type { BaseUserChannel } from './channels'
+import type { RelayNode, RelayEdge, GraphQlData } from './graphql'
 import type { BaseVideo } from './video'
+import type { DefaultMainCategories } from '~/constants/categories'
+import type { DefaultVideoLength, DefaultUploadDate, DefaultSortBy } from '~/constants/filtering'
 
 interface _SearchQuery {
   search: string

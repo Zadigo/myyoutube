@@ -1,4 +1,4 @@
-import type { _DatabaseObject, ApiResponse } from '.'
+import type { _DatabaseObject, ApiResponse } from './restframework'
 
 export interface Notification extends _DatabaseObject {
   text: string
