@@ -1,8 +1,12 @@
 <template>
-  <nuxt-layout>
-    <nuxt-loading-indicator />
-    <nuxt-page />
-  </nuxt-layout>
+  <u-app>
+    <u-main>
+      <nuxt-layout>
+        <nuxt-loading-indicator />
+        <nuxt-page />
+      </nuxt-layout>
+    </u-main>
+  </u-app>
 </template>
 
 <script setup lang="ts">

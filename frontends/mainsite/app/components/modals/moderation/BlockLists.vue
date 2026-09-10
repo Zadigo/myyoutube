@@ -1,23 +1,23 @@
 <template>
-  <VoltDialog v-model:visible="show" modal>
+  <u-slideover v-model:open="show" modal>
     <template #header>
       <h3 class="text-lg font-semibold">Block lists</h3>
     </template>
 
-    <VoltInputText class="w-full mb-10" placeholder="Search by list names..." />
+    <u-input class="w-full mb-10" placeholder="Search by list names..." />
     
     <div class="flex gap-2 mb-3">
-      <VoltButton :disabled="!showBlockedItems" rounded @click="showBlockedItems=false">
+      <u-button :disabled="!showBlockedItems" rounded @click="showBlockedItems=false">
         <Icon name="i-fa7-solid:arrow-left" />
-      </VoltButton>
+      </u-button>
 
-      <VoltButton :disabled="!showBlockedItems" class="mb-3" rounded>
+      <u-button :disabled="!showBlockedItems" class="mb-3" rounded>
         Use this list
-      </VoltButton>
+      </u-button>
       
-      <VoltButton class="mb-3" rounded @click="show=true">
+      <u-button class="mb-3" rounded @click="show=true">
         Create my list
-      </VoltButton>
+      </u-button>
     </div>
     
     <VoltList v-if="showBlockedItems">
@@ -37,7 +37,7 @@
         </a>
       </template>
     </VoltList>
-  </VoltDialog>
+  </u-slideover>
 </template>
 
 <script setup lang="ts">

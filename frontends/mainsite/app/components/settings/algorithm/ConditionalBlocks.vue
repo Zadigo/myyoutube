@@ -8,10 +8,10 @@
       {{ conditions }}
 
       <div class="mt-5">
-        <volt-link to="/">
+        <nuxt-link to="/">
           <icon name="i-fa7-solid:arrow-right" />
           Advanced algorithm builder
-        </volt-link>
+        </nuxt-link>
       </div>
     </volt-alert>
 

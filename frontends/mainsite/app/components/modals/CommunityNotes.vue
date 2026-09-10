@@ -1,7 +1,9 @@
 <template>
-  <VoltDialog id="notes" v-model:visible="show">
-    Some text
-  </VoltDialog>
+  <u-modal id="notes" v-model:open="show">
+    <template #body>
+      Some text
+    </template>
+  </u-modal>
 </template>
 
 <script setup lang="ts">

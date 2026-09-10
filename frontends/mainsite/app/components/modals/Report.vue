@@ -1,5 +1,5 @@
 <template>
-  <volt-dialog id="report-video" v-model:visible="showReportModal" class="w-2xl" modal>
+  <u-modal id="report-video" v-model:open="showReportModal" class="w-2xl" modal>
     <volt-accordion v-for="reportType in reportTypes" :key="reportType.title">
       <volt-accordion-panel :value="reportType.title">
         <volt-accordion-header>{{ reportType.title }}</volt-accordion-header>
@@ -16,8 +16,8 @@
     </p>
 
     <div class="flex justify-start gap-2">
-      <volt-input-text type="time" />
-      <volt-input-text type="time" />
+      <u-input type="time" />
+      <u-input type="time" />
     </div>
 
     <div class="p-5 bg-primary-100 rounded-lg mt-5">
@@ -37,7 +37,7 @@
         Save
       </u-button>
     </template>
-  </volt-dialog>
+  </u-modal>
 </template>
 
 <script setup lang="ts">

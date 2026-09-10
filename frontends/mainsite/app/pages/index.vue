@@ -3,10 +3,10 @@
     <!-- Search -->
     <u-card class="shadow-sm">
       <form class="grid gap-2 grid-cols-1 xl:grid-cols-4" @submit.prevent>
-        <volt-input-text v-model="search" placeholder="Search" class="col-span-1 xl:col-span-3" />
-        <volt-select v-model="category" :options="mainCategoriesSelect" class="col-span-1 xl:col-span-2" option-label="name" placeholder="Categories" />
-        <volt-select v-model="videoLength" :options="videoLengthSelect" class="col-span-1 xl:col-span-1" option-label="name" placeholder="Video length" />
-        <volt-select v-model="uploadDate" :options="uploadDateSelect" class="col-span-1 xl:col-span-1" option-label="name" placeholder="Upload date" />
+        <u-input v-model="search" placeholder="Search" class="col-span-1 xl:col-span-3" />
+        <u-select v-model="category" :items="mainCategoriesSelect" class="col-span-1 xl:col-span-2" option-label="name" placeholder="Categories" />
+        <u-select v-model="videoLength" :items="videoLengthSelect" class="col-span-1 xl:col-span-1" option-label="name" placeholder="Video length" />
+        <u-select v-model="uploadDate" :items="uploadDateSelect" class="col-span-1 xl:col-span-1" option-label="name" placeholder="Upload date" />
       </form>
     </u-card>
 

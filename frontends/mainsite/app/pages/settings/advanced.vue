@@ -1,8 +1,8 @@
 <template>
   <section id="algorithm">
-    <SettingsCard class="shadow-sm" title="Advanced" subtitle="Manage what you share on YouTube">
-      <VoltInputOtp :length="4" />
-    </SettingsCard>
+    <settings-card class="shadow-sm" title="Advanced" subtitle="Manage what you share on YouTube">
+      <volt-input-otp :length="4" />
+    </settings-card>
   </section>
 </template>
 

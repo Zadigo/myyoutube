@@ -1,5 +1,5 @@
 <template>
-  <volt-dialog id="save" v-model:visible="showSaveModal" modal>
+  <u-modal id="save" v-model:open="showSaveModal" modal>
     <template #header>
       <h2 class="font-bold">
         Save to Playlist
@@ -15,7 +15,7 @@
         Save
       </u-button>
     </template>
-  </volt-dialog>
+  </u-modal>
 </template>
 
 <script setup lang="ts">

@@ -4,7 +4,7 @@
       <!-- Channel / Infos -->
       <div v-if="currentVideo.userChannel" id="left" class="flex justify-left items-center gap-3">
         <nuxt-link :to="`/channels/${currentVideo.userChannel.reference}`">
-          <volt-avatar image="/avatars/avatar1.png" size="xlarge" shape="circle" alt="" />
+          <u-avatar src="/avatars/avatar1.png" size="xl" alt="" />
         </nuxt-link>
         
         <!-- Video Infos -->

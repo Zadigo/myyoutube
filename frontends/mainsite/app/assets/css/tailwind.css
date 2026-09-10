@@ -1,108 +1,36 @@
 @import "tailwindcss";
-/* @import "tailwindcss-primeui"; */
 @import "@nuxt/ui";
 
-@custom-variant dark (&:where(.p-dark, .p-dark *));
-
-@theme {
+@theme static {
   --font-sans: 'Sora', sans-serif;
   --font-title: 'Manrope', sans-serif;
-}
-
-/* Primary and Surface Palettes */
-:root {
-  --p-primary-50: #ecfafb;
-  --p-primary-100: #c5eff3;
-  --p-primary-200: #9fe4eb;
-  --p-primary-300: #79d9e3;
-  --p-primary-400: #53cedb;
-  --p-primary-500: #2cc4d3;
-  --p-primary-600: #24a0ac;
-  --p-primary-700: #1c7c86;
-  --p-primary-800: #145960;
-  --p-primary-900: #0c3539;
-  --p-primary-950: #041213;
-
-  --p-surface-0: #ffffff;
-  --p-surface-50: #fafafa;
-  --p-surface-100: #f4f4f5;
-  --p-surface-200: #e4e4e7;
-  --p-surface-300: #d4d4d8;
-  --p-surface-400: #a1a1aa;
-  --p-surface-500: #71717a;
-  --p-surface-600: #52525b;
-  --p-surface-700: #3f3f46;
-  --p-surface-800: #27272a;
-  --p-surface-900: #18181b;
-  --p-surface-950: #09090b;
-  --p-content-border-radius: 6px;
 
   --sidebar-width: 280px;
   --navbar-height: 70px;
-}
 
-/* Light */
-:root {
-  --p-primary-color: var(--p-primary-500);
-  --p-primary-contrast-color: var(--p-surface-0);
-  --p-primary-hover-color: var(--p-primary-600);
-  --p-primary-active-color: var(--p-primary-700);
-  --p-content-border-color: var(--p-surface-200);
-  --p-content-hover-background: var(--p-surface-100);
-  --p-content-hover-color: var(--p-surface-800);
-  --p-highlight-background: var(--p-primary-50);
-  --p-highlight-color: var(--p-primary-700);
-  --p-highlight-focus-background: var(--p-primary-100);
-  --p-highlight-focus-color: var(--p-primary-800);
-  --p-text-color: var(--p-surface-700);
-  --p-text-hover-color: var(--p-surface-800);
-  --p-text-muted-color: var(--p-surface-500);
-  --p-text-hover-muted-color: var(--p-surface-600);
-}
+  /* Override default green color */
+  --color-green-50: #EFFDF5;
+  --color-green-100: #D9FBE8;
+  --color-green-200: #B3F5D1;
+  --color-green-300: #75EDAE;
+  --color-green-400: #00DC82;
+  --color-green-500: #00C16A;
+  --color-green-600: #00A155;
+  --color-green-700: #007F45;
+  --color-green-800: #016538;
+  --color-green-900: #0A5331;
+  --color-green-950: #052E16;
 
-/* 
- * Dark Mode
- * Defaults to system, change the dark variant selector to match the CSS variable configuration.
- * For example;
- * @custom-variant dark (&:where(.app-dark, .app-dark *));
- * should match to;
- * :root[class="app-dark"]
- */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --p-primary-color: var(--p-primary-950);
-    --p-primary-contrast-color: var(--p-surface-900);
-    --p-primary-hover-color: var(--p-primary-300);
-    --p-primary-active-color: var(--p-primary-200);
-    --p-content-border-color: var(--p-surface-700);
-    --p-content-hover-background: var(--p-surface-800);
-    --p-content-hover-color: var(--p-surface-0);
-    --p-highlight-background: color-mix(in srgb, var(--p-primary-400), transparent 84%);
-    --p-highlight-color: rgba(255, 255, 255, 0.87);
-    --p-highlight-focus-background: color-mix(in srgb, var(--p-primary-400), transparent 76%);
-    --p-highlight-focus-color: rgba(255, 255, 255, 0.87);
-    --p-text-color: var(--p-surface-0);
-    --p-text-hover-color: var(--p-surface-0);
-    --p-text-muted-color: var(--p-surface-400);
-    --p-text-hover-muted-color: var(--p-surface-300);
-  }
-}
-
-.page-enter-active,
-.page-leave-active {
-  transition: all .15s ease-in-out;
-  /* transition: opacity .10s ease-in;
-  transition: transform .2s ease-in-out; */
-}
-
-.page-enter-from,
-.page-leave-to {
-  opacity: 0;
-  transform: scale(.99);
-}
-
-.page-enter-to,
-.page-leave-from {
-  opacity: 1;
-  transform: scale(1);
+  /* Define new custom color */
+  --color-brand-50: #fef2f2;
+  --color-brand-100: #fee2e2;
+  --color-brand-200: #fecaca;
+  --color-brand-300: #fca5a5;
+  --color-brand-400: #f87171;
+  --color-brand-500: #ef4444;
+  --color-brand-600: #dc2626;
+  --color-brand-700: #b91c1c;
+  --color-brand-800: #991b1b;
+  --color-brand-900: #7f1d1d;
+  --color-brand-950: #450a0a;
 }

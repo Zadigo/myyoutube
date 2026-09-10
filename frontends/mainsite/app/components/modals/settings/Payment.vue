@@ -1,29 +1,31 @@
 <template>
-  <VoltDialog v-model:visible="show" modal>
-    <form id="payment" class="space-y-2" @submit.prevent>
-      <input type="text" autocomplete="" placeholder="Card Number" class="mb-4" />
-
-      <VoltInputText autocomplete="cc-number" class="w-full" placeholder="Card Number" />
-
-      <div class="flex gap-2">
-        <VoltInputText autocomplete="cc-exp-month" placeholder="MM" />
-        <VoltInputText autocomplete="cc-exp-year" placeholder="YYYY" />
-      </div>
-
-      <VoltInputText autocomplete="cc-csc" placeholder="CVC" class="w-full" />
-      <VoltInputText autocomplete="cc-name" placeholder="Cardholder Name" class="w-full" />
-    </form>
+  <u-modal v-model:open="show" modal>
+    <template #body>
+      <form id="payment" class="space-y-2" @submit.prevent>
+        <input type="text" autocomplete="" placeholder="Card Number" class="mb-4" />
+  
+        <u-input autocomplete="cc-number" class="w-full" placeholder="Card Number" />
+  
+        <div class="flex gap-2">
+          <u-input autocomplete="cc-exp-month" placeholder="MM" />
+          <u-input autocomplete="cc-exp-year" placeholder="YYYY" />
+        </div>
+  
+        <u-input autocomplete="cc-csc" placeholder="CVC" class="w-full" />
+        <u-input autocomplete="cc-name" placeholder="Cardholder Name" class="w-full" />
+      </form>
+    </template>
 
     <template #footer>
-      <VoltButton @click="show = false">
+      <u-button @click="show = false">
         Disagree
-      </VoltButton>
+      </u-button>
 
-      <VoltButton @click="show = false">
+      <u-button @click="show = false">
         Agree
-      </VoltButton>
+      </u-button>
     </template>
-  </VoltDialog>
+  </u-modal>
 </template>
 
 <script setup lang="ts">

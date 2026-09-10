@@ -2,7 +2,7 @@
   <section id="settings" class="relative">
     <header>
       <!-- Sidebar -->
-      <SidebarsSettings />
+      <sidebars-settings />
     </header>
 
     <main>
@@ -14,11 +14,11 @@
 </template>
 
 <script setup lang="ts">
-onMounted(() => {
-  document.body.classList.add('bg-primary-50/20')
-})
+// onMounted(() => {
+//   document.body.classList.add('bg-primary-50/20')
+// })
 
-onUnmounted(() => {
-  document.body.classList.remove('bg-primary-50/20')
-})
+// onUnmounted(() => {
+//   document.body.classList.remove('bg-primary-50/20')
+// })
 </script>

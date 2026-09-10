@@ -1,7 +1,7 @@
 <template>
-  <volt-dialog v-model:visible="showShareModal">
+  <u-modal v-model:open="showShareModal">
     Share
-  </volt-dialog>
+  </u-modal>
 </template>
 
 <script setup lang="ts">

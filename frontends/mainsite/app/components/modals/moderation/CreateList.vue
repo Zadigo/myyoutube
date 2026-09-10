@@ -1,18 +1,18 @@
 <template>
-  <VoltDialog v-model:visible="show" modal>
-    <VoltInputText placeholder="Name of your list" flat />
-    <VoltInputText placeholder="Search for users..." flat />
+  <u-slideover v-model:open="show" modal>
+    <u-input placeholder="Name of your list" flat />
+    <u-input placeholder="Search for users..." flat />
     
     <template #footer>
-      <VoltButton @click="show=false">
+      <u-button @click="show=false">
         Cancel
-      </VoltButton>
+      </u-button>
 
-      <VoltButton @click="show=false">
+      <u-button @click="show=false">
         Save
-      </VoltButton>
+      </u-button>
     </template>
-  </VoltDialog>
+  </u-slideover>
 </template>
 
 <script setup lang="ts">

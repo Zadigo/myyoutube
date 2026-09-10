@@ -15,7 +15,7 @@
         </volt-dropdown>
       </div>
 
-      <volt-divider class="my-3" />
+      <u-separator class="my-3" />
 
       <!-- Actions -->
       <video-comment-section-actions @new-comment="handleNewComment" />

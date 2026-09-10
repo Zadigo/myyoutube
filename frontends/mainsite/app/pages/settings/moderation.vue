@@ -9,11 +9,11 @@
       <volt-list v-if="hasChannels" :items="channels">
         <template #default="{ item }">
           <div class="flex justify-start items-center gap-3">
-            <volt-avatar image="/avatars/avatar1.png" shape="circle" size="large" />
+            <u-avatar src="/avatars/avatar1.png" size="xl" />
             <span>{{ item.channel.name }}</span>
           </div>
 
-          <u-button color="danger" variant="text">
+          <u-button color="error" variant="subtle">
             <icon name="lucide:arrow-left" />
           </u-button>
         </template> 
@@ -69,7 +69,7 @@
         </volt-alert>
         
         <div class="flex justify-center">
-          <u-button color="secondary" variant="tonal" rounded @click="() => { showBlockLists=true }">
+          <u-button color="secondary" variant="subtle" rounded @click="() => { showBlockLists=true }">
             Use or create block lists
           </u-button>
         </div>

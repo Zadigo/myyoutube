@@ -40,9 +40,7 @@
             </u-button>
 
             <div v-if="shouldDemandReason" id="readon">
-              <volt-fluid>
-                <volt-textarea v-model="reason" class="mt-2" :style="{ resize: 'none' }" />
-              </volt-fluid>
+              <u-textarea v-model="reason" class="mt-2" :style="{ resize: 'none' }" />
 
               <u-button class="mt-2" @click="() => { createVote('downvote') }">
                 Submit Reason

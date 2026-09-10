@@ -38,13 +38,13 @@
 
     <SettingsCard title="Vos chaînes YouTube" subtitle="Manage what you share on YouTube">
       <div class="my-2">
-        <NuxtLink to="/" class="bg-slate-50 p-5 rounded-lg flex items-center w-full">
+        <nuxt-link to="/" class="bg-slate-50 p-5 rounded-lg flex items-center w-full">
           <VoltAvatar image="/avatars/avatar1.png" shape="circle" size="large" alt="" />
 
           <p class="m-0">
             Channel name 1
           </p>
-        </NuxtLink>
+        </nuxt-link>
       </div>
     </SettingsCard>
   </section>
