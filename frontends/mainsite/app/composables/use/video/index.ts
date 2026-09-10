@@ -1,6 +1,5 @@
-import type { MenuItem } from 'primevue/menuitem'
+import type { DropdownMenuItem } from '@nuxt/ui'
 import type { SubscriptionModes } from '~/data'
-import type { VideoDetails, Nullable, Refeable, Undefineable } from '~/types'
 
 export * from './modals'
 
@@ -60,7 +59,7 @@ export function useVideoSubscription(video: Undefineable<Refeable<Undefineable<V
     }
   })
 
-  const subscribeMenuItems: MenuItem[] = [
+  const subscribeMenuItems: DropdownMenuItem[] = [
     {
       label: 'All',
       icon: 'i-lucide-bullhorn',

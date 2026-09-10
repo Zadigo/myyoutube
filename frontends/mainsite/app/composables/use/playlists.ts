@@ -1,5 +1,4 @@
 import { playlistsFixture } from '~/utils/fixtures'
-import type { Arrayable, Nullable, Playlist, RelayNode, SinglePlaylist } from '~/types'
 
 /**
  * Composable for editing playlists
@@ -52,19 +51,11 @@ export function useEditPlaylists(playlists: MaybeRefOrGetter<Arrayable<RelayNode
   }
 }
 
-export interface NewPlaylist {
-  name: Nullable<string>
-  description: Nullable<string>
-  is_intelligent: boolean
-}
-
 /**
  * Composable for creating and managing playlists
  * @param playlists Reactive reference to the list of playlists
  */
-export const useCreatePlaylist = createSharedComposable((playlists: MaybeRefOrGetter<Arrayable<RelayNode<SinglePlaylist>>>) => {
-  const _playlists = toRef(playlists)
-
+export const useCreatePlaylist = createSharedComposable((_playlists: MaybeRefOrGetter<Arrayable<RelayNode<SinglePlaylist>>>) => {
   /**
    * Creation Dialog
    */
@@ -87,24 +78,11 @@ export const useCreatePlaylist = createSharedComposable((playlists: MaybeRefOrGe
     toggleShowCreatePlaylist()
   }
 
-  async function create(intelligent: boolean = false) {
-    // const data = await $fetch<Playlist>('/playlists/create', {
-    //   method: 'POST',
-    //   body: newPlaylist.value,
-    //   onResponse({ response }) {
-    //     if (response.status === 201) {
-    //       showCreatePlaylist.value = false
-          
-    //       newPlaylist.value = {
-    //         name: null,
-    //         description: null,
-    //         is_intelligent: intelligent
-    //       }
-    //     }
-    //   }
-    // })
-
-    // _playlists.value.push(data)
+  async function create() {
+    return $fetch<Playlist>('/api/playlists/create', { 
+      method: 'POST', 
+      body: newPlaylist.value 
+    })
   }
 
   /**
@@ -155,29 +133,7 @@ export const usePlaylistsComposable = createGlobalState(() => {
   const playlists = computed(() => _playlists.value?.data.allplaylists.edges || [])
 
   async function getPlaylists() {
-    // const { data, execute } = useFetch<Playlist>('/v1/playlists', {
-    //   method: 'GET',
-    //   baseURL: useRuntimeConfig().public.djangoProdUrl,
-    //   immediate: false,
-    //   lazy: true,
-    //   onRequestError({ response }) {
-    //     if (response) {
-    //       if (response.status === 401) {
-    //         refreshAccessTokenClient()
-    //       }
-    //     }
-    //   }
-    // })
-
-    // await useDebounceFn(execute, 3000)()
-
-
-    // if (data.value) {
-    //   playlists.value.push(...data.value)
-
-    //   // TODO: Save to firebase
-    // }
-
+    await $fetch('/api/playlists', { method: 'GET' })
     _playlists.value = playlistsFixture
   }
 

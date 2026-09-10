@@ -1,4 +1,4 @@
-import type { BlockedChannel, BlockedKeyword } from '~/types'
+import type { BlockedChannel, BlockedKeyword } from '#shared/types/settings'
 
 /**
  * Composables for managing blocked channels in the settings.

@@ -15,8 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import { useCategories } from '~/composables/use'
-
 definePageMeta({
   layout: 'settings'
 })
@@ -25,10 +23,10 @@ definePageMeta({
  * Categories
  */
 
-const { load, categories } = useCategories()
+const { load, categories } = useCategoriesComposable()
 await load()
-provide('categories', categories)
 
+provide('categories', categories)
 
 /**
  * Settings

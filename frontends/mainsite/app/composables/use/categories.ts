@@ -1,4 +1,4 @@
-export function useCategories() {
+export function useCategoriesComposable() {
   const categories = ref([
     { id: 1, name: 'Sports', icon: 'i-fa7-solid:soccer-ball' },
     { id: 2, name: 'Music', icon: 'i-fa7-solid:music' },
@@ -10,50 +10,31 @@ export function useCategories() {
     { id: 8, name: 'Lifestyle', icon: 'i-fa7-solid:user-friends' }
   ])
 
-  // whenever(hasSelectedCategory, () => {
-  //   execute()
-  //   getCategories()
-  //   subCategories.value = response.data
-  //   instance.create(selectedCategory.value, response.data)
-  // })
-
   async function load() {
-
+    // Placeholder for loading categories if needed
   }
 
   return {
-    load,
-    categories
+    categories,
+    load
   }
 }
 
-export function useSubcategories(categories) {
-  const { categories: allCategories } = useCategories()
-  const subCategories = ref([])
-
+export async function useSubcategoriesComposable() {
   const selectedCategory = ref('Sports')
   const hasSelectedCategory = computed(() => selectedCategory.value !== null)
 
-  async function load() {
-    const { data } = await useAsyncData(() => {
-      return Promise.all([
-        $fetch(`videos/categories/${selectedCategory.value.toLowerCase()}/sub-categories`, {
-          method: 'GET',
-          baseURL: useRuntimeConfig().public.djangoProdUrl
-        })
-      ])
-    }, {
-      immediate: false
+  const { data } = await useAsyncData('sub-categories', () => {
+    return $fetch(`/api/completion/${selectedCategory.value.toLowerCase()}/sub-categories`, {
+      method: 'GET',
+      baseURL: useRuntimeConfig().public.djangoProdUrl
     })
-
-    if (data) {
-      categories.value = data.value || []
-    }
-  }
+  }, {
+    immediate: false
+  })
 
   return {
-    load,
-    subCategories,
+    subCategories: data,
     selectedCategory,
     hasSelectedCategory
   }

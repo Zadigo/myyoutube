@@ -23,32 +23,34 @@
     <!-- Blocked Keywords -->
     <settings-card title="Blocked keywords" subtitle="Block videos containing certain specific keywords (title, description)">
       <template #default>
-        <div class="flex justify-start gap-2">
-          <u-input v-model="newKeyword.word" placeholder="Enter a keyword to block" @keypress.enter="create" />
-          <u-select v-model="newKeyword.duration" :options="Array.from(BLOCKING_DURATIONS)" />
-        </div>
-
-        <u-switch v-model="excludeFollowedAccounts" label="Exclude accounts that you follow" />
-
-        <!-- <volt-list v-if="hasKeywords" :items="keywords" item-label="word">
-          <template #default="{ item }">
-            <div class="flex justify-between items-center gap-2">
-              <div class="space-x-2">
-                <p>
-                  {{ item.word }}
-                </p>
-
-                <u-badge>
-                  {{ item.duration }}
-                </u-badge>
+        <div class="space-y-4">
+          <div class="flex justify-start gap-2">
+            <u-input v-model="newKeyword.word" placeholder="Enter a keyword to block" @keypress.enter="create" />
+            <u-select v-model="newKeyword.duration" :options="Array.from(BLOCKING_DURATIONS)" />
+          </div>
+  
+          <u-switch v-model="excludeFollowedAccounts" label="Exclude accounts that you follow" />
+  
+          <base-list-group v-if="hasKeywords" :items="keywords" item-label="word">
+            <template #default="{ item }">
+              <div class="flex justify-between items-center gap-2">
+                <div class="space-x-2">
+                  <p>
+                    {{ item.word }}
+                  </p>
+  
+                  <u-badge>
+                    {{ item.duration }}
+                  </u-badge>
+                </div>
+  
+                <u-button @click="() => remove(i)">
+                  <icon name="i-fa7-solid:trash" />
+                </u-button>
               </div>
-
-              <u-button @click="() => remove(i)">
-                <icon name="i-fa7-solid:trash" />
-              </u-button>
-            </div>
-          </template>
-        </volt-list> -->
+            </template>
+          </base-list-group>
+        </div>
       </template>
     </settings-card>
 
