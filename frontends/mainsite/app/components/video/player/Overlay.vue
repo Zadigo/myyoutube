@@ -9,15 +9,15 @@
       </h2>
 
       <div class="flex gap-2">
-        <volt-button disabled>
+        <u-button disabled>
           <icon name="lucide:thumbs-up" />
           15.6K
-        </volt-button>
+        </u-button>
         
-        <volt-button disabled>
+        <u-button disabled>
           <icon name="lucide:thumbs-down" />
           200
-        </volt-button>
+        </u-button>
       </div>
 
       <p class="mt-2 font-light">

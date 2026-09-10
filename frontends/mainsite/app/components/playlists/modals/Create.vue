@@ -21,13 +21,13 @@
       </div>
     </form>
 
-    <volt-button @click="() => { toggleShowCreatePlaylist() }">
+    <u-button @click="() => { toggleShowCreatePlaylist() }">
       Cancel
-    </volt-button>
+    </u-button>
 
-    <volt-button @click="async () => { await create(), toggleShowCreatePlaylist() }">
+    <u-button @click="async () => { await create(), toggleShowCreatePlaylist() }">
       Save
-    </volt-button>
+    </u-button>
   </volt-dialog>
 </template>
 

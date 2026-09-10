@@ -15,9 +15,9 @@
       <div class="pt-2 pb-5 flex justify-end">
         <volt-dropdown id="sort-by" :items="sortByMenuItems">
           <template #default="{ attrs }">
-            <volt-button @click="attrs.toggle">
+            <u-button @click="attrs.toggle">
               <icon name="i-fa7-solid:sort" /> Sort by
-            </volt-button>
+            </u-button>
           </template>
         </volt-dropdown>
       </div>

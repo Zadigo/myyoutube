@@ -29,10 +29,10 @@
     <volt-divider class="my-5" />
 
     <div class="space-x-2">
-      <volt-button variant="primary">
+      <u-button variant="primary">
         <Icon name="i-fa7-solid:check" />
         Save
-      </volt-button>
+      </u-button>
     </div>
   </volt-drawer>
 </template>

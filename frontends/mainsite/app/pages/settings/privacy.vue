@@ -75,7 +75,6 @@
 </template>
 
 <script setup lang="ts">
-import { sensitiveCategories } from '~/utils/constants'
 definePageMeta({
   layout: 'settings'
 })

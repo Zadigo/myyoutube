@@ -11,11 +11,9 @@
     <!-- Videos -->
     <div class="col-span-8">
       <header>
-        <volt-card>
-          <template #header>
-            Select a playlist to display
-          </template>
-        </volt-card>
+        <u-card>
+          Select a playlist to display
+        </u-card>
       </header>
 
       <!-- Videos -->

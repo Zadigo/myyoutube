@@ -11,9 +11,9 @@
         {{ block.explanation }}
       </p>
 
-      <VoltButton @click="handleEdit">
+      <u-button @click="handleEdit">
         <Icon name="i-fa7-solid:pen" />
-      </VoltButton>
+      </u-button>
     </div>
   </div>
 
@@ -23,29 +23,29 @@
       <VoltInputText v-model="sourceDetails.end_time" type="time" class="w-full" placeholder="End time" />
     </div>
 
-    <VoltTextarea v-model="sourceDetails.explanation" class="w-full resize-none" placeholder="Explanation" rows="4" />
+    <u-textarea v-model="sourceDetails.explanation" :rows="4" class="w-full resize-none" placeholder="Explanation" />
 
     <div class="mt-3">
-      <VoltButton class="mb-2" variant="outlined" @click="handleAddSource">
+      <u-button class="mb-2" variant="outline" @click="handleAddSource">
         <Icon name="i-fa7-solid:book" />
         Add source
-      </VoltButton>
+      </u-button>
 
       <div v-for="(articleSource, idx) in sourceDetails.article_sources" :key="idx" class="flex justify-between items-center gap-3">
         <VoltInputText v-model="sourceDetails.article_sources[idx]" type="url" placeholder="Source" class="w-full" />
-        <VoltButton variant="outlined" @click="() => handleRemoveSource(idx)">
+        <u-button variant="outline" @click="() => handleRemoveSource(idx)">
           <Icon name="i-fa7-solid:trash" />
-        </VoltButton>
+        </u-button>
       </div>
     </div>
 
     <VoltDivider />
 
     <div class="flex justify-end">
-      <VoltButton variant="outlined" @click="handleSave">
+      <u-button variant="outline" @click="handleSave">
         <Icon name="i-fa7-solid:save" class="me-2" />
         Save source
-      </VoltButton>
+      </u-button>
     </div>
   </div>
 </template>

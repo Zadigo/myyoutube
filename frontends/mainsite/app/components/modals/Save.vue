@@ -11,9 +11,9 @@
     </form>
 
     <template #footer>
-      <volt-button @click="() => add(selectedPlaylistId, $route.params.id)">
+      <u-button @click="() => add(selectedPlaylistId, $route.params.id)">
         Save
-      </volt-button>
+      </u-button>
     </template>
   </volt-dialog>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <VoltCard class="mt-1 shadow-sm">
+  <u-card class="mt-1 shadow-sm">
     <template #header>
       <div class="p-5">
         <h3 class="font-bold text-2xl">{{ title }}</h3>
@@ -7,14 +7,12 @@
           {{ subtitle }}
         </p>
 
-        <VoltDivider />
+        <u-separator />
       </div>
     </template>
 
-    <template #content>
-      <slot />
-    </template>
-  </VoltCard>
+    <slot />
+  </u-card>
 </template>
 
 <script setup lang="ts">

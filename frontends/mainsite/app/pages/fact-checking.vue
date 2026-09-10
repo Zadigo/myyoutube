@@ -1,55 +1,49 @@
 <template>
   <section id="fact-checking" class="mx-auto">
-    <VoltCard class="shadow-sm">
-      <template #content>
-        <h1 class="font-bold text-2xl mb-4">
-          Fact checking center
-        </h1>
+    <u-card class="shadow-sm">
+      <h1 class="font-bold text-2xl mb-4">
+        Fact checking center
+      </h1>
 
-        <p class="font-light">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur deleniti at eius beatae tempora, 
-          suscipit harum odit inventore cupiditate dolorum error itaque, aspernatur blanditiis voluptatum. 
-          Debitis accusantium numquam nostrum iste?
-        </p>
+      <p class="font-light">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur deleniti at eius beatae tempora, 
+        suscipit harum odit inventore cupiditate dolorum error itaque, aspernatur blanditiis voluptatum. 
+        Debitis accusantium numquam nostrum iste?
+      </p>
 
-        <VoltButton variant="text">
-          <Icon name="i-fa7-solid:arrow-up-right-from-square" class="me-2" />
-          Learn more
-        </VoltButton>
-      </template>
-    </VoltCard>
+      <u-button variant="ghost">
+        <Icon name="i-fa7-solid:arrow-up-right-from-square" class="me-2" />
+        Learn more
+      </u-button>
+    </u-card>
 
     <div class="grid grid-cols-12 gap-2 mt-10">
       <div class="col-span-6">
-        <VoltCard class="shadow-sm">
-          <template #content>
-            <div class="space-y-3"> 
-              <FactCheckingEditBlock v-for="(block, i) in blocks" :key="i" :block="block" :index="i" @update:blocks="handleSave" />
-            </div>
+        <u-card class="shadow-sm">
+          <div class="space-y-3"> 
+            <FactCheckingEditBlock v-for="(block, i) in blocks" :key="i" :block="block" :index="i" @update:blocks="handleSave" />
+          </div>
 
-            <VoltDivider class="my-5" />
+          <u-separator class="my-5" />
 
-            <div class="space-x-2">
-              <VoltButton rounded @click="handleAddBlock">
-                <Icon name="i-fa7-solid:plus" class="me-2" />
-                Add block
-              </VoltButton>
-              
-              <VoltButton rounded>
-                <Icon name="i-fa7-solid:check" class="me-2" />
-                Submit
-              </VoltButton>
-            </div>
-          </template>
-        </VoltCard>
+          <div class="space-x-2">
+            <u-button class="rounded-full" @click="handleAddBlock">
+              <Icon name="i-fa7-solid:plus" class="me-2" />
+              Add block
+            </u-button>
+            
+            <u-button class="rounded-full">
+              <Icon name="i-fa7-solid:check" class="me-2" />
+              Submit
+            </u-button>
+          </div>
+        </u-card>
       </div>
 
       <div class="col-span-6">
-        <VoltCard class="shadow-sm">
-          <template #content>
-            <VideoPlayerBase video-source="/video_fixture_1.mp4" @update:metadata="handleMetadata" />
-          </template>
-        </VoltCard>
+        <u-card class="shadow-sm">
+          <lazy-video-player-base video-source="/videos/vid5.mp4" hydrate-on-idle @update:metadata="handleMetadata" />
+        </u-card>
       </div>
     </div>
   </section>

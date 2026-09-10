@@ -29,20 +29,18 @@
     </div>
 
     <template #footer>
-      <volt-button @click="() => showReportModal = false">
+      <u-button @click="() => showReportModal = false">
         Close
-      </volt-button>
+      </u-button>
 
-      <volt-button>
+      <u-button>
         Save
-      </volt-button>
+      </u-button>
     </template>
   </volt-dialog>
 </template>
 
 <script setup lang="ts">
-import { reportTypes } from '~/data'
-
 /**
  * Modal
  */

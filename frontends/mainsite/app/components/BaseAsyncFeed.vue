@@ -8,7 +8,7 @@
 
         <div class="mt-3">
           <nuxt-link-locale :to="`/channels/${video.node.userChannel.reference}`">
-            <volt-avatar :image="video.node.userChannel.user.userProfile.avatar" :alt="video.node.userChannel.name" shape="circle" />
+            <u-avatar :src="video.node.userChannel.user.userProfile.avatar" :alt="video.node.userChannel.name" shape="circle" />
           </nuxt-link-locale>
 
           <nuxt-link-locale :to="`/videos/${video.node.videoId}`">

@@ -4,17 +4,15 @@
       You have purchased no gifts yet. You can buy gifts here before pursuing.
     </volt-panel>
 
-    <volt-button class="my-2">
+    <u-button class="my-2">
       Purchase
-    </volt-button>
+    </u-button>
 
     <div class="grid grid-cols-3 gap-2">
       <article v-for="i in 10" id="donation" :key="i" class="font-light">
-        <volt-card class="shadow-none border border-slate-50 text-center">
-          <template #content>
-            Gift 1
-          </template>
-        </volt-card>
+        <u-card class="shadow-none border border-slate-50 text-center">
+          Gift 1
+        </u-card>
       </article>
     </div>
   </volt-dialog>

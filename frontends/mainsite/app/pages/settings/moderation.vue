@@ -13,9 +13,9 @@
             <span>{{ item.channel.name }}</span>
           </div>
 
-          <volt-button color="danger" variant="text">
+          <u-button color="danger" variant="text">
             <icon name="lucide:arrow-left" />
-          </volt-button>
+          </u-button>
         </template> 
       </volt-list>
     </settings-card>
@@ -51,9 +51,9 @@
                 </volt-badge>
               </div>
 
-              <volt-button @click="() => remove(i)">
+              <u-button @click="() => remove(i)">
                 <icon name="i-fa7-solid:trash" />
-              </volt-button>
+              </u-button>
             </div>
           </template>
         </volt-list> -->
@@ -69,9 +69,9 @@
         </volt-alert>
         
         <div class="flex justify-center">
-          <volt-button color="secondary" variant="tonal" rounded @click="() => { showBlockLists=true }">
+          <u-button color="secondary" variant="tonal" rounded @click="() => { showBlockLists=true }">
             Use or create block lists
-          </volt-button>
+          </u-button>
         </div>
       </template>
     </settings-card>

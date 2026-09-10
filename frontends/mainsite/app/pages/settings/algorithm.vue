@@ -1,12 +1,10 @@
 <template>
   <section id="algorithm">
-    <volt-card class="shadow-sm">
-      <template #content>
-        <h1 class="font-bold text-3xl">
-          Customize your viewing experience
-        </h1>
-      </template>
-    </volt-card>
+    <u-card class="shadow-sm">
+      <h1 class="font-bold text-3xl">
+        Customize your viewing experience
+      </h1>
+    </u-card>
 
     <settings-card title="Algorithm constructor" subtitle="Build your own viewing algorithm">
       <template #default>

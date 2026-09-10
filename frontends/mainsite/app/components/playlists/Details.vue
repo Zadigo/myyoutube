@@ -1,21 +1,19 @@
 <template>
-  <volt-card>
-    <template #content>
-      <volt-avatar image="/avatars/avatar1.png" shape="circle" />
+  <u-card>
+    <u-avatar src="/avatars/avatar1.png" />
 
-      <volt-button color="primary" class="mt-4" @click="() => { toggleShowPlaylistDetails() }">
-        <icon name="lucide:arrow-left" />
-      </volt-button>
-      
-      <volt-divider class="my-5" />
+    <u-button color="primary" class="mt-4" @click="() => { toggleShowPlaylistDetails() }">
+      <icon name="lucide:arrow-left" />
+    </u-button>
+    
+    <u-separator class="my-5" />
 
-      <div v-if="currentPlaylist">
-        <h3>{{ currentPlaylist.name }}</h3>
-        <p v-if="currentPlaylist.description" class="font-light">{{ currentPlaylist.description }}</p>
-        <p v-else class="font-light">No description provided.</p>
-      </div>
-    </template>
-  </volt-card>
+    <div v-if="currentPlaylist">
+      <h3>{{ currentPlaylist.name }}</h3>
+      <p v-if="currentPlaylist.description" class="font-light">{{ currentPlaylist.description }}</p>
+      <p v-else class="font-light">No description provided.</p>
+    </div>
+ </u-card>
 </template>
 
 <script setup lang="ts">

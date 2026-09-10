@@ -20,10 +20,10 @@
     </div>
 
     <div class="flex justify-center mt-3">
-      <volt-button variant="tonal" @click="create">
+      <u-button variant="subtle" @click="create">
         <icon name="i-fa7-solid:plus" class="me-2" />
         Create
-      </volt-button>
+      </u-button>
     </div>
   </div>
 </template>
