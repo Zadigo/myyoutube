@@ -7,7 +7,7 @@
       {{ mousePositionX }} {{ mousePositionY }}
 
       <div class="p-10 absolute top-4/12 left-0 z-40">
-        <volt-avatar image="/avatars/avatar1.png" size="xlarge" shape="circle" class="mb-5" />
+        <u-avatar src="/avatars/avatar1.png" size="xl" class="mb-5" />
         <h1 class="font-bold text-6xl">
           {{ currentChannel.data.userChannel.name }}
         </h1>

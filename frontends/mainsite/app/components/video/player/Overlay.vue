@@ -31,7 +31,7 @@
     <div v-if="showGeneralAlert" id="general-alert" class="absolute z-50 top-2 right-2 rounded-lg bg-primary-700 dark:bg-primary-900 text-primary-50 max-w-100 p-2">
       <div class="flex items-center justify-around gap-4">
         <div>
-          <volt-avatar src="/avatars/avatar1.png" shape="circle"/>
+          <u-avatar src="/avatars/avatar1.png" />
         </div>
         <p class="">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex tempore aperiam nostrum</p>
       </div>

@@ -46,9 +46,9 @@
                   {{ item.word }}
                 </p>
 
-                <volt-badge>
+                <u-badge>
                   {{ item.duration }}
-                </volt-badge>
+                </u-badge>
               </div>
 
               <u-button @click="() => remove(i)">

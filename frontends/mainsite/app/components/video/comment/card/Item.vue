@@ -6,7 +6,7 @@
           <u-avatar src="/avatars/avatar2.png" :alt="userChannel.name" size="sm" />
         </nuxt-link>
 
-        <u-button :to="`/channels/${userChannel?.reference}`" size="sm" variant="outline">
+        <u-button :to="`/channels/${userChannel?.reference}`" size="sm" variant="subtle">
           {{ userChannel.name }}
         </u-button>
 
@@ -17,7 +17,7 @@
 
       <p class="pt-2 pb-5">{{ videoComment.node.content }}</p>
 
-      <div class="my-3 space-x-2">
+      <div class="my-3 space-x-2 flex items-center">
         <u-badge label="@creator" />
         <u-badge label="Aimé par le createur" />
         <u-badge label="First comment" />
