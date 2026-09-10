@@ -1,18 +1,20 @@
 <template>
-  <u-slideover v-model:open="show" modal>
-    <u-input placeholder="Name of your list" flat />
-    <u-input placeholder="Search for users..." flat />
-    
+  <u-modal v-model:open="show" modal>
+    <template #body>
+      <u-input placeholder="Name of your list" flat />
+      <u-input placeholder="Search for users..." flat />
+    </template>
+
     <template #footer>
-      <u-button @click="show=false">
+      <u-button @click="show = false">
         Cancel
       </u-button>
 
-      <u-button @click="show=false">
+      <u-button @click="show = false">
         Save
       </u-button>
     </template>
-  </u-slideover>
+  </u-modal>
 </template>
 
 <script setup lang="ts">

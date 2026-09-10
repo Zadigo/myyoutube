@@ -13,13 +13,11 @@
     <!-- Content -->
     <section id="content" class="mt-5">
       <div class="pt-2 pb-5 flex justify-end">
-        <volt-dropdown id="sort-by" :items="sortByMenuItems">
-          <template #default="{ attrs }">
-            <u-button @click="attrs.toggle">
-              <icon name="i-fa7-solid:sort" /> Sort by
-            </u-button>
-          </template>
-        </volt-dropdown>
+        <u-dropdown-menu id="sort-by" :items="sortByMenuItems">
+          <u-button>
+            <icon name="i-fa7-solid:sort" /> Sort by
+          </u-button>
+        </u-dropdown-menu>
       </div>
 
       <!-- Feed -->
@@ -43,6 +41,7 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
+import type { DropdownMenuItem } from '@nuxt/ui'
 
 const AsyncFeedComponent = defineAsyncComponent({
   loader: () => import('~/components/BaseAsyncFeed.vue')
@@ -68,7 +67,7 @@ const { search, uploadDate, videoLength, category, sortBy } = await useSearchFee
  * Sort by menu items
  */
 
-const sortByMenuItems: Arrayable<DefaultSortByMenuItem> = [
+const sortByMenuItems: DropdownMenuItem[] = [
   {
     label: 'Upload date',
     icon: 'i-fa7-solid:clock',

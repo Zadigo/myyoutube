@@ -1,6 +1,6 @@
 <template>
   <div class="conditional-blocks">
-    <volt-alert>
+    <base-alert>
       You can set up conditional blocks to filter content based on specific criteria.
       For example, you can create a block that only shows videos related to a specific theme or
       keywords. This allows you to customize your viewing experience and focus on the content that matters most to you.
@@ -8,12 +8,11 @@
       {{ conditions }}
 
       <div class="mt-5">
-        <nuxt-link to="/">
-          <icon name="i-fa7-solid:arrow-right" />
+        <u-button to="/" icon="i-fa7-solid:arrow-right" variant="subtle">
           Advanced algorithm builder
-        </nuxt-link>
+        </u-button>
       </div>
-    </volt-alert>
+    </base-alert>
 
     <div class="space-y-2">
       <settings-algorithm-condition-block v-for="(condition, idx) in conditions" :key="condition.id" :index="idx" @delete-block="remove" />

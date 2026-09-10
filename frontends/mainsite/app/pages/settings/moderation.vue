@@ -6,7 +6,7 @@
 
     <!-- Blocked channels -->
     <settings-card title="Blocked channels" subtitle="Channels that you blocked and do not want to see">
-      <volt-list v-if="hasChannels" :items="channels">
+      <base-list-group v-if="hasChannels" :items="channels">
         <template #default="{ item }">
           <div class="flex justify-start items-center gap-3">
             <u-avatar src="/avatars/avatar1.png" size="xl" />
@@ -17,26 +17,18 @@
             <icon name="lucide:arrow-left" />
           </u-button>
         </template> 
-      </volt-list>
+      </base-list-group>
     </settings-card>
 
     <!-- Blocked Keywords -->
     <settings-card title="Blocked keywords" subtitle="Block videos containing certain specific keywords (title, description)">
       <template #default>
         <div class="flex justify-start gap-2">
-          <!-- <volt-input-text v-model="newKeyword.word" variant="outlined" placeholder="Enter a keyword to block" @keypress.enter="create" />
-          <volt-select v-model="newKeyword.duration" :options="Array.from(blockingDurations)" /> -->
+          <u-input v-model="newKeyword.word" placeholder="Enter a keyword to block" @keypress.enter="create" />
+          <u-select v-model="newKeyword.duration" :options="Array.from(BLOCKING_DURATIONS)" />
         </div>
 
-        <volt-label class="my-5">
-          <template #input>
-            <volt-toggle-switch v-model="excludeFollowedAccounts" />
-          </template>
-
-          <template #label>
-            Exclude accounts that you follow
-          </template>
-        </volt-label>
+        <u-switch v-model="excludeFollowedAccounts" label="Exclude accounts that you follow" />
 
         <!-- <volt-list v-if="hasKeywords" :items="keywords" item-label="word">
           <template #default="{ item }">
@@ -63,10 +55,10 @@
     <!-- Moderation Lists -->
     <settings-card title="Block lists" subtitle="Create shareable block lists">
       <template #default>
-        <volt-alert>
+        <base-alert>
           Blocklists are lists of accounts that other users have create of
           accounts that they have associated to be problematic
-        </volt-alert>
+        </base-alert>
         
         <div class="flex justify-center">
           <u-button color="secondary" variant="subtle" rounded @click="() => { showBlockLists=true }">

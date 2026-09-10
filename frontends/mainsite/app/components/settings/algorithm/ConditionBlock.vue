@@ -5,10 +5,10 @@
     <div v-else>
       <div v-if="conditionProxy">
         <header class="flex justify-end">
-          <volt-dropdown-button id="negation" :items="negationOperatorsMenuItems">
+          <u-dropdown-menu id="negation" :items="negationOperatorsMenuItems">
             <span v-if="conditionProxy.negation">Not</span>
             <span v-else>Not negated</span>
-          </volt-dropdown-button>
+          </u-dropdown-menu>
 
           <u-button class="ms-2 rounded-full" variant="outline" @click="() => emit('delete-block', index)">
             <icon name="i-fa7-solid:trash" />
@@ -20,27 +20,27 @@
         <!-- Themes -->
         <div id="themes" class="w-full">
           <p class="font-bold mb-2">Show me videos when...</p>
-          <volt-auto-complete v-model="conditionProxy.theme" :suggestions="Array.from(defaultMainCategories)" placeholder="Choose a general theme..." />
+          <u-input-menu v-model="conditionProxy.theme" :items="Array.from(DEFAULT_MAIN_CATEGORIES)" placeholder="Choose a general theme..." />
         </div>
 
         <!-- Keywords -->
         <!-- TODO: Create template with this -->
-        <div class="p-5 bg-slate-50 rounded-lg my-3">
+        <div class="p-5 bg-slate-50 dark:bg-slate-800 rounded-lg my-3">
           <p class="font-bold mb-2">Matches these keywords...</p>
           <div class="flex justify-between gap-2">            
-            <volt-select v-model="conditionProxy.keyword_operator" :options="Array.from(keywordOperators)" class="w-3/8" />
+            <u-select v-model="conditionProxy.keyword_operator" :items="Array.from(KEYWORD_OPERATORS)" class="w-3/8" />
 
             <div class="w-7/8">
-              <volt-auto-complete v-model="conditionProxy.keywords" :items="['NBA', 'WNBA']" placeholder="Select keywords..." />
+              <u-input-menu v-model="conditionProxy.keywords" :items="['NBA', 'WNBA']" placeholder="Select keywords..." />
             </div>
           </div>
 
           <!-- Subconditions -->
-          <div v-if="conditionProxy.keywords_subconditions.length > 0" class="bg-slate-100 rounded-lg my-3 p-5 space-y-2 w-7/8">
+          <div v-if="conditionProxy.keywords_subconditions.length > 0" class="bg-slate-100 dark:bg-slate-700 rounded-lg my-3 p-5 space-y-2 w-7/8">
             <div class="flex justify-start">
-              <volt-dropdown-button id="operator" :items="joinOperatorsMenuItems">
+              <u-dropdown-menu id="operator" :items="joinOperatorsMenuItems">
                 {{ conditionProxy.join_operator }}
-              </volt-dropdown-button>
+              </u-dropdown-menu>
             </div>
             
             <settings-algorithm-keyword-sub-condition v-for="(subCondition, i) in conditionProxy.keywords_subconditions" :key="i" :sub-condition="subCondition" />
@@ -65,7 +65,7 @@
         <!-- Sections -->
         <div>
           <p class="font-bold mb-2">Which appear in these sections of the video...</p>
-          <volt-select v-model="conditionProxy.video_sections" :options="videoSections" placeholder="Sections" />
+          <u-select v-model="conditionProxy.video_sections" :items="videoSections" placeholder="Sections" />
         </div>
       </div>
     </div>
@@ -82,24 +82,14 @@
 </template>
 
 <script setup lang="ts">
-import type { MenuItem } from 'primevue/menuitem'
-import { useMenuItems } from '~/composables/use'
-import { defaultMainCategories, keywordOperators, type JoinOperators } from '~/constants'
+import { KEYWORD_OPERATORS } from '~/constants/operators'
+import { DEFAULT_MAIN_CATEGORIES } from '~/constants/categories'
+import type { DropdownMenuItem } from '@nuxt/ui'
 
 const negationOperators = [
   'Not negated',
   'Not'
 ] as const
-
-type NegationOperators = (typeof negationOperators)[number]
-
-interface NegationOperatorsMenuItems extends MenuItem {
-  label: NegationOperators
-}
-
-interface JoinOperatorsMenuItems extends MenuItem {
-  label: JoinOperators
-}
 
 const props = defineProps<{ index: number }>()
 const emit = defineEmits<{ 'delete-block': [index: number] }>()
@@ -129,7 +119,7 @@ function handleAddSubcondition() {
 
 const videoSections = ['Title', 'Description', 'Theme', 'Classfication']
 
-const negationOperatorsMenuItems: NegationOperatorsMenuItems[] = [
+const negationOperatorsMenuItems: DropdownMenuItem[] = [
   {
     label: 'Not negated',
     command: () => {
@@ -148,7 +138,7 @@ const negationOperatorsMenuItems: NegationOperatorsMenuItems[] = [
   }
 ]
 
-const joinOperatorsMenuItems: JoinOperatorsMenuItems[] = [
+const joinOperatorsMenuItems: DropdownMenuItem[] = [
   {
     label: 'And',
     command: () => {

@@ -5,38 +5,29 @@
     </SettingsHeader>
 
     <SettingsCard class="shadow-sm" title="General" subtitle="Manage what you share on YouTube">
-      <VoltList>
+      <base-list-group>
         <template #body="{ theme }">
           <div :class="theme">
-            <VoltLabel>
-              <VoltToggleSwitch inset hide-details />
-              <label>Keep all my saved playlists private</label>
-            </VoltLabel>
+            <u-switch label="Keep all my saved playlists private" />
           </div>
 
           <div :class="theme">
-            <VoltLabel>
-              <VoltToggleSwitch />
-              <label>Keep all my subscriptions private</label>
-            </VoltLabel>
+            <u-switch label="Keep all my subscriptions private" />
           </div>
         </template>
-      </VoltList>
+      </base-list-group>
     </SettingsCard>
 
     <SettingsCard class="shadow-sm" title="Ad personalization" subtitle="Manage what you share on YouTube">
       <p>Google makes your ads more useful on Google services (such as Search or YouTube), and on websites & apps that partner with Google to show ads</p>
       
-      <VoltList>
+      <base-list-group>
         <template #body="{ theme }">
           <div :class="theme">
-            <VoltLabel>
-              <VoltToggleSwitch />
-              <label>Personalize ads</label>
-            </VoltLabel>
+            <u-switch label="Personalize ads" />
           </div>
         </template>
-      </VoltList>
+      </base-list-group>
 
       <h4 class="mt-5">
         How your ads are personalized
@@ -49,27 +40,22 @@
         more or update your preferences. Learn how to control the ads you see
       </p>
 
-      <VoltButton variant="text">
+      <u-button variant="ghost">
         Show categories
-      </VoltButton>
+      </u-button>
     </SettingsCard>
 
-    <VoltDivider class="my-5" />
+    <u-separator class="my-5" />
 
     <div>
       <h2 class="text-3xl font-bold">Sensitive ad categories on YouTube</h2>
       <p class="text-sm mb-5">Select the categories for which you want to see less of</p>
 
-      <VoltList>
-        <template #body="{ theme }">
-          <div v-for="item in Array.from(sensitiveCategories).map(x => ({ label: x }))" :key="item.label" :class="theme">
-            <VoltLabel>
-              <VoltToggleSwitch />
-              <label>{{ item.label }}</label>
-            </VoltLabel>
-          </div>
+      <base-list-group :items="Array.from(SENSITIVE_CATEGORIES)">
+        <template #default="{ item }">
+          <u-switch :label="item.label" />
         </template>
-      </VoltList>
+      </base-list-group>
     </div>
   </section>
 </template>
