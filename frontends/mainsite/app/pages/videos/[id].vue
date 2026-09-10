@@ -128,5 +128,5 @@ function handleLoadedMetaData (data: VideoTechnicalDetails) {
  * Modals
  */
 
-const { openModal } = useVideoDetailModals()
+const { openModal } = useVideoDetailProvider()
 </script>

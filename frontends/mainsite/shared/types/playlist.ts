@@ -28,7 +28,7 @@ export type SinglePlaylist = BasePlaylist & { videos: PlaylistVideos }
 export type Playlist = GraphQlData<'allplaylists', RelayEdge<SinglePlaylist>>
 
 export interface NewPlaylist {
-  name: Nullable<string>
-  description: Nullable<string>
+  name: string
+  description: string
   is_intelligent: boolean
 }

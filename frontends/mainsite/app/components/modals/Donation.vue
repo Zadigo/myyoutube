@@ -1,9 +1,9 @@
 <template>
   <u-modal v-model:open="showDonationModal">
     <template #body>
-      <volt-panel class="bg-surface-100">
+      <base-panel class="bg-surface-100">
         Support the creator by donating an amount between $10 and $500
-      </volt-panel>
+      </base-panel>
   
       <div class="my-5">
         <u-input type="number" :min="10" :max="500" :step="10" />
@@ -22,5 +22,5 @@
  * Modal
  */
 
-const { showDonationModal } = tryUseVideoDetailModalsStore()
+const { showDonationModal } = useVideoDetailModalsStore()
 </script>

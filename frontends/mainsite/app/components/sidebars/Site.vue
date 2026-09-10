@@ -1,7 +1,7 @@
 <template>
   <sidebars-base :links="navLinks">
     <template #footer>
-      <volt-divider class="my-4" />
+      <u-separator class="my-4" />
 
       {{ isAuthenticated }}
 

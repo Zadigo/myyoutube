@@ -4,7 +4,7 @@ import { playlistsFixture } from '~/utils/fixtures'
  * Composable for editing playlists
  * @param playlists Reactive reference to the list of playlists
  */
-export function useEditPlaylists(playlists: MaybeRefOrGetter<Arrayable<RelayNode<SinglePlaylist>>>) {
+export function useEditPlaylistsComposable(_playlists: MaybeRefOrGetter<Arrayable<RelayNode<SinglePlaylist>>>) {
   if (import.meta.server) {
     return {
       add: async () => {},
@@ -12,23 +12,16 @@ export function useEditPlaylists(playlists: MaybeRefOrGetter<Arrayable<RelayNode
     }
   }
 
-  const _playlists = toValue(playlists) 
-  
-  async function add(playlistId: Nullable<string>, videoId: string) {
-    console.log($fetch)
-    const data = await $fetch(`/playlists/${playlistId}/add`, {
+  async function add(playlistId: Nullable<string>, videoId: Undefineable<string> | string[]) {
+    return await $fetch(`/api/playlists/${playlistId}/add`, {
       method: 'POST',
       baseURL: useRuntimeConfig().public.djangoProdUrl,
       body: { video_id: videoId }
     })
-
-    if (data) {
-      // Do something
-    }
   }
 
   async function remove(playlistId: string, videoId: string) {
-    await $fetch(`/playlists/${playlistId}/remove`, {
+    return await $fetch(`/api/playlists/${playlistId}/remove`, {
       method: 'POST',
       baseURL: useRuntimeConfig().public.djangoProdUrl,
       body: { video_id: videoId }
@@ -67,8 +60,8 @@ export const useCreatePlaylist = createSharedComposable((_playlists: MaybeRefOrG
    */
 
   const newPlaylist = ref<NewPlaylist>({
-    name: null,
-    description: null,
+    name: '',
+    description: '',
     is_intelligent: false
   })
 

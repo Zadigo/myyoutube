@@ -45,5 +45,5 @@
  * Modal
  */
 
-const { showReportModal } = tryUseVideoDetailModalsStore()
+const { showReportModal } = useVideoDetailModalsStore()
 </script>

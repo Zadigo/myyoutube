@@ -7,11 +7,11 @@
     </template>
 
     <template #body>
-      <volt-panel class="my-5">
+      <base-panel class="my-5">
         Use this tool to signal that this video was not properly
         categorized by the creator and therefore does not correspond to
         the result you were expecting
-      </volt-panel>
+      </base-panel>
   
       <div class="space-y-2">
         <u-switch label="Mark as wrong category" />
@@ -35,5 +35,5 @@
  * Modal
  */
 
-const { showClassificationDrawer } = tryUseVideoDetailModalsStore()
+const { showClassificationDrawer } = useVideoDetailModalsStore()
 </script>

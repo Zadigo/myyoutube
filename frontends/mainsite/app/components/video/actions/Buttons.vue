@@ -43,49 +43,50 @@ const router = useRouter()
 const menuItems: DropdownMenuItem[] = [
   {
     label: 'Store',
-    icon: 'i-lucide-store'
+    icon: 'i-lucide-store',
+    onSelect: () => emit('action:modal', 'Store')
   },
   {
     label: 'Download',
     icon: 'i-lucide:download',
-    command: () => emit('action:modal', 'Download')
+    onSelect: () => emit('action:modal', 'Download')
   },
   {
     label: 'Save',
     icon: 'i-lucide-save',
-    command: () => emit('action:modal', 'Save')
+    onSelect: () => emit('action:modal', 'Save')
   },
   {
     label: 'Gift',
     icon: 'i-lucide-gift',
-    command: () => emit('action:modal', 'Gift')
+    onSelect: () => emit('action:modal', 'Gift')
   },
   {
     label: 'Donate',
     icon: 'i-lucide-dollar-sign',
-    command: () => emit('action:modal', 'Donate')
+    onSelect: () => emit('action:modal', 'Donate')
   },
   {
     label: 'Share',
     icon: 'i-lucide-share',
-    command: () => emit('action:modal', 'Share')
+    onSelect: () => emit('action:modal', 'Share')
   },
   {
     label: 'Recommendations',
     icon: 'i-lucide-star',
-    command: () => emit('action:modal', 'Recommendations')
+    onSelect: () => emit('action:modal', 'Recommendations')
   },
   {
     label: 'Fact check',
     icon: 'i-lucide-shield-alert',
-    command: () => {
+    onSelect: () => {
       router.push(`/fact-checking?v=${id}`)
     }
   },
   {
     label: 'Report',
     icon: 'i-lucide-store',
-    command: () => emit('action:modal', 'Report')
+    onSelect: () => emit('action:modal', 'Report')
   }
 ]
 

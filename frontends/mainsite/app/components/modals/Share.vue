@@ -9,5 +9,5 @@
  * Modal
  */
 
-const { showShareModal } = tryUseVideoDetailModalsStore()
+const { showShareModal } = useVideoDetailModalsStore()
 </script>

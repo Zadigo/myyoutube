@@ -1,9 +1,9 @@
 <template>
-  <u-modal id="gifts" v-model:open="showGiftsModal" :dismissable-mask="false" modal>
+  <u-modal id="gifts" v-model:open="showGiftsModal">
     <template #body>
-      <volt-panel class="mb-4">
+      <base-panel class="mb-4">
         You have purchased no gifts yet. You can buy gifts here before pursuing.
-      </volt-panel>
+      </base-panel>
   
       <u-button class="my-2">
         Purchase
@@ -25,5 +25,5 @@
  * Modal
  */
 
-const { showGiftsModal } = tryUseVideoDetailModalsStore()
+const { showGiftsModal } = useVideoDetailModalsStore()
 </script>

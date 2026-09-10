@@ -5,7 +5,7 @@
         <div class="flex justify-left gap-2 items-center">
           <nuxt-link :to="`/videos/${video.node.videoId}`">
             <div class="video">
-              <volt-avatar src="/avatars/avatar1.png" shape="circle" size="large" />
+              <u-avatar src="/avatars/avatar1.png" size="xl" />
             </div>
           </nuxt-link>
 

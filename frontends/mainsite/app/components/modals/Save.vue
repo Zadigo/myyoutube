@@ -6,12 +6,14 @@
       </h2>
     </template>
 
-    <form @submit.prevent>
-      <volt-autocomplete v-model="selectedPlaylistId" :suggestions="filteredPlaylists" option-label="name" dropdown @complete="handleSearch" />
-    </form>
+    <template #body>
+      <form @submit.prevent>
+        <u-input-menu v-model="selectedPlaylistId" :items="['a']" value-key="name" class="w-full" />
+      </form>
+    </template>
 
     <template #footer>
-      <u-button @click="() => add(selectedPlaylistId, $route.params.id)">
+      <u-button icon="i-lucide-save" @click="() => add(selectedPlaylistId, $route.params.id)">
         Save
       </u-button>
     </template>
@@ -19,30 +21,22 @@
 </template>
 
 <script setup lang="ts">
-import { useEditPlaylists } from '~/composables/use'
-import type { Playlist } from '~/types'
-
 /**
  * Modal
  */
 
-const { showSaveModal } = tryUseVideoDetailModalsStore()
+const { showSaveModal } = useVideoDetailModalsStore()
 
 /**
  * Playlists
  */
 
-const selectedPlaylistId = ref<string | null>(null)
+const selectedPlaylistId = ref<string>('')
 const { playlists } = usePlaylistsComposable()
 
-const playlistMenuItems = computed(() => playlists.value.map(item => ({ name: item.name })))
+/**
+ * Editionn
+ */
   
-const { add } = useEditPlaylists(playlists)
-const filteredPlaylists = ref<Playlist[]>([])
-
-function handleSearch(event: CustomEvent<Event> & { query: string }) {
-  filteredPlaylists.value = playlists.value.filter(item => {
-    return item.name.toLowerCase().includes(event.query.toLowerCase())
-  })
-}
+const { add } = useEditPlaylistsComposable(playlists)
 </script>

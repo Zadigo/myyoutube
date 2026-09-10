@@ -75,7 +75,7 @@ export function _useVideoDetailModals() {
   }
 }
 
-const [useVideoDetailModals, _useVideoDetailModalsStore] = createInjectionState(() => {
+const [useVideoDetailProvider, _useVideoDetailModalsStore] = createInjectionState(() => {
   const [showClassificationDrawer, toggleClassificationDrawer] = useToggle<boolean>(false)
   const [showReportModal, toggleShowReportModal] = useToggle<boolean>(false)
   const [showGiftsModal, toggleShowGiftsModal] = useToggle <boolean>(false)
@@ -138,12 +138,12 @@ const [useVideoDetailModals, _useVideoDetailModalsStore] = createInjectionState(
   }
 })
 
-export { useVideoDetailModals }
+export { useVideoDetailProvider }
 
-export function tryUseVideoDetailModalsStore() {
+export function useVideoDetailModalsStore() {
   const counterStore = _useVideoDetailModalsStore()
   if (counterStore == null) {
-    throw new Error('Please call `useVideoDetailModals` on the appropriate parent component')
+    throw new Error('Please call `useVideoDetailProvider` on the appropriate parent component')
   } else {
     return counterStore
   }
