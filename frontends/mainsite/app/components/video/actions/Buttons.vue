@@ -13,21 +13,17 @@
     </u-button>
     
     <!-- Extra Actions -->
-    <volt-dropdown id="more-actions" :items="menuItems">
-      <template #default="{ attrs }">
-        <u-button size="xl" @click="attrs.toggle">
-          <icon name="i-lucide-ellipsis-vertical" />
-        </u-button>
-      </template>
-    </volt-dropdown>
+    <u-dropdown-menu id="more-actions" :items="menuItems">
+      <u-button size="xl">
+        <icon name="i-lucide-ellipsis-vertical" />
+      </u-button>
+    </u-dropdown-menu>
 
-    <volt-dropdown v-if="active" id="more-actions" size="xl" :items="subscribeMenuItems" rounded>
-      <template #default="{ attrs }">
-        <u-button size="xl" @click="attrs.toggle">
-          <icon name="i-lucide-bell-off" />
-        </u-button>
-      </template>
-    </volt-dropdown>
+    <u-dropdown-menu v-if="active" id="more-actions" size="xl" :items="subscribeMenuItems" rounded>
+      <u-button size="xl">
+        <icon name="i-lucide-bell-off" />
+      </u-button>
+    </u-dropdown-menu>
 
     <u-button v-else size="xl" color="neutral" class="ml-5" @click="() => { subscribe() }">
       <icon name="i-lucide-bell" />
@@ -37,14 +33,14 @@
 
 <script lang="ts" setup>
 
-import type { VideoMenuItem } from '~/types'
+import type { DropdownMenuItem } from '@nuxt/ui'
 
 const emit = defineEmits<{ 'action:modal': [method: DefaultVideoMenuActions] }>()
 
 const { id } = useRoute().params as { id: string }
 const router = useRouter()
 
-const menuItems: VideoMenuItem[] = [
+const menuItems: DropdownMenuItem[] = [
   {
     label: 'Store',
     icon: 'i-lucide-store'
@@ -99,10 +95,10 @@ const currentVideo = injectLocal<Ref<VideoDetails>>(CURRENT_VIDEO_SYMBOL)
  * Rating
  */
 
-const { like, dislike, liked, unliked } = useVideoRating(currentVideo)
+const { like, dislike, liked, unliked } = useVideoRatingComposable(currentVideo)
 
 /**
  * Subscription
  */
-const { subscribe, active, mode, subscribeMenuItems } = useVideoSubscription(currentVideo)
+const { subscribe, active, mode, subscribeMenuItems } = useVideoSubscriptionComposable(currentVideo)
 </script>

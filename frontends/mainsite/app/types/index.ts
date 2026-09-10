@@ -1,14 +1,5 @@
-import type { MenuItem } from 'primevue/menuitem'
 import type { RouteParamsGeneric } from 'vue-router'
-import type { DefaultVideoMenuActions } from '~/constants/video'
-import type { Arrayable } from '#shared/types/utils'
-
-// Other Types
 
 export interface ExtendedRouteParamsGeneric extends RouteParamsGeneric {
   id: string
-}
-
-export interface VideoMenuItem extends MenuItem {
-  label?: DefaultVideoMenuActions
 }
