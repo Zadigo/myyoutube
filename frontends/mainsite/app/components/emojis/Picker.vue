@@ -2,9 +2,7 @@
   <v-menu>
     <!-- v-slot:activator="{ props }" -->
     <template #activator="{ props }">
-      <VoltButton v-bind="props" color="secondary" size="small" rounded="xl" flat>
-        <Icon name="i-fa7-solid:face-smile" />
-      </VoltButton>
+      <u-button v-bind="props" rounded="xl" icon="i-fa7-solid:face-smile" />
     </template>
 
     <v-card width="300">
@@ -14,9 +12,9 @@
             {{ category }}
           </h5>
           
-          <VoltButton v-for="(emoji, index) in emojis[category]" :key="`emoji_${index}`" variant="text" @click.prevent="handleEmojiClick(emoji)">
+          <u-button v-for="(emoji, index) in emojis[category]" :key="`emoji_${index}`" variant="text" @click.prevent="handleEmojiClick(emoji)">
             {{ emoji }}
-          </VoltButton>
+          </u-button>
         </article>
       </div>
     </v-card>

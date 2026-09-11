@@ -2,9 +2,9 @@
   <div v-if="isSaved" class="source p-5 rounded-lg bg-slate-50">
     <div class="flex-col">
       <div class="font-bold flex gap-2">
-        <VoltBadge><time>{{ block.start_time }}</time></VoltBadge>
-        <VoltBadge><time>{{ block.end_time }}</time></VoltBadge>
-        <VoltBadge>4 sources</VoltBadge>
+        <u-badge :label="block.start_time" />
+        <u-badge :label="block.end_time" />
+        <u-badge label="4 sources" />
       </div>
 
       <p class="font-light my-2 p-2 rounded-lg">
@@ -19,11 +19,11 @@
 
   <div v-else class="space-y-3 p-5">
     <div class="flex justify-start gap-2">
-      <VoltInputText v-model="sourceDetails.start_time" type="time" class="w-full" placeholder="Start time" />
-      <VoltInputText v-model="sourceDetails.end_time" type="time" class="w-full" placeholder="End time" />
+      <u-input v-model="sourceDetails.start_time" type="time" class="w-full" placeholder="Start time" />
+      <u-input v-model="sourceDetails.end_time" type="time" class="w-full" placeholder="End time" />
     </div>
 
-    <u-textarea v-model="sourceDetails.explanation" :rows="4" class="w-full resize-none" placeholder="Explanation" />
+    <u-textarea v-model="sourceDetails.explanation" :rows="4" class="w-full" style="resize: none;" placeholder="Explanation" />
 
     <div class="mt-3">
       <u-button class="mb-2" variant="outline" @click="handleAddSource">
@@ -32,7 +32,7 @@
       </u-button>
 
       <div v-for="(articleSource, idx) in sourceDetails.article_sources" :key="idx" class="flex justify-between items-center gap-3">
-        <VoltInputText v-model="sourceDetails.article_sources[idx]" type="url" placeholder="Source" class="w-full" />
+        <u-input v-model="sourceDetails.article_sources[idx]" type="url" placeholder="Source" class="w-full" />
         <u-button variant="outline" @click="() => handleRemoveSource(idx)">
           <Icon name="i-fa7-solid:trash" />
         </u-button>
@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { SourceDetails } from '~/types'
+import type { SourceDetails } from '#shared/types';
 
 const emit = defineEmits<{ 'update:blocks': [block: SourceDetails] }>()
 const props = defineProps<{

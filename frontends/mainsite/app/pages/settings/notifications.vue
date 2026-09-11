@@ -5,25 +5,18 @@
     </SettingsHeader>
 
     <SettingsCard title="General" subtitle="Manage your mobile and desktop notifications">
-      <VoltList :items="notificationOptions">
-        <template #item="{ item, theme }">
-          <div :class="theme">
-            <VoltLabel>
-              <template #input>
-                <VoltToggleSwitch v-model="item.action" />
-              </template>
-              <template #label>
-                {{ item.label }}
-              </template>
-            </VoltLabel>
-          </div>
+      <base-list-group :items="notificationOptions">
+        <template #item="{ item }">
+          <u-switch :label="item.label" />
         </template>
-      </VoltList>
+      </base-list-group>
     </SettingsCard>
   </section>
 </template>
 
 <script setup lang="ts">
+import type { NotificationProfile } from '#shared/types'
+
 useHead({
   title: 'Notifications'
 })

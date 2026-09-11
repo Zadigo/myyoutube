@@ -5,11 +5,11 @@
         <div class="card">
           <div class="card-body">
             <form @submit.prevent>
-              <VoltInputText v-model="usernameField" type="email" placeholder="Email" />
-              <VoltInputText v-model="password" type="password" placeholder="Password" />
-              <VoltButton variant="tonal" color="primary" @click="handleLogin">
+              <u-input-text v-model="usernameField" type="email" placeholder="Email" />
+              <u-input-text v-model="password" type="password" placeholder="Password" />
+              <u-button color="primary" @click="handleLogin">
                 Login
-              </VoltButton>
+              </u-button>
             </form>
           </div>
         </div>

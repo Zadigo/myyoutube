@@ -1,30 +1,26 @@
 <template>
   <section id="notifications" class="mx-auto">
     <div class="py-5 flex justify-end rounded-lg mb-10">
-      <VoltSelectButton v-model="notificationType" :options="['All', 'Messages', 'Uploads']" />
+      <volt-select-button v-model="notificationType" :options="['All', 'Messages', 'Uploads']" />
     </div>
 
     <div class="space-y-2">
-      <VoltCard v-for="notification in notifications" :key="notification.id" class="shadow-sm">
-        <template #content>
-          <article>
-            {{ notification }}
-          </article>
-        </template>
-      </VoltCard>
+      <u-card v-for="notification in notifications" :key="notification.id" class="shadow-sm">
+        <article>
+          {{ notification }}
+        </article>
+      </u-card>
 
       <div ref="moreButtonEl" class="py-5">
-        <VoltButton @click="() => {}">
+        <u-button @click="() => {}">
           Load More
-        </VoltButton>
+        </u-button>
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import type { Notification, NotificationApiResponse } from '~/types'
-
 const notificationType = ref<'All' | 'Messages' | 'Uploads'>('All')
 
 const apiResponse = ref<NotificationApiResponse | null>(null)

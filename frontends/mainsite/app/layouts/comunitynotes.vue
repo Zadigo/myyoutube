@@ -1,6 +1,6 @@
 <template>
   <section id="community-notes" class="mx-auto">
-    <VoltCard class="shadow-sm">
+    <u-card class="shadow-sm">
       <template #content>
         <h1 class="font-bold text-2xl mb-4">
           Community Notes
@@ -11,12 +11,12 @@
           They can help viewers understand the content better, correct misinformation, or provide useful insights that enhance the viewing experience.
         </p>
 
-        <VoltButton variant="text" class="mt-3">
+        <u-button variant="soft" class="mt-3">
           <Icon name="i-fa7-solid:arrow-up-right-from-square" class="me-2" />
           Learn more
-        </VoltButton>
+        </u-button>
       </template>
-    </VoltCard>
+    </u-card>
 
     <slot />
   </section>

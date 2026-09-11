@@ -4,10 +4,10 @@
       <slot name="description" />
 
       <div v-if="help" class="mt-2">
-        <VoltButton to="help" variant="text" color="primary">
+        <u-button to="help" color="primary">
           <Icon name="i-fa7-solid:arrow-up-right-from-square" class="me-1" />
           Learn more
-        </VoltButton>
+        </u-button>
       </div>
     </div>
 

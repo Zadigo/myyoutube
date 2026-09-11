@@ -13,17 +13,8 @@
       </template>
 
       <template #actions>
-        <div class="space-y-2">
-          <VoltLabel>
-            <VoltToggleSwitch v-model="newVideo.monetization.ads" />
-            <label>Enable monetization through Ads</label>
-          </VoltLabel>
-
-          <VoltLabel>
-            <VoltToggleSwitch v-model="newVideo.monetization.gifts" />
-            <label>Enable monetization through gifts</label>
-          </VoltLabel>
-        </div>
+        <u-switch v-model="newVideo.monetization.ads" label="Enable monetization through Ads" />
+        <u-switch v-model="newVideo.monetization.gifts" label="Enable monetization through gifts" />
       </template>
     </StudioSettingBlock>
 
@@ -40,18 +31,20 @@
 
       <div class="my-5 space-y-2">
         <div v-for="(participant, idx) in newVideo.participants" :key="idx" class="flex justify-start gap-1">
-          <VoltInputText v-model="participant.fullname" placeholder="Full name" />
-          <VoltInputText v-model="participant.url" type="url" placeholder="Social url" />
-          <VoltSelect v-model="participant.handle" :options="socials" placeholder="User handle" />
-          <VoltButton variant="outlined" color="danger" @click="() => handleRemoveParticipant(idx)">
+          <u-input v-model="participant.fullname" placeholder="Full name" />
+          <u-input v-model="participant.url" type="url" placeholder="Social url" />
+          
+          <u-select v-model="participant.handle" :options="socials" placeholder="User handle" />
+
+          <u-button @click="() => handleRemoveParticipant(idx)">
             <Icon name="i-fa7-solid:trash" />
-          </VoltButton>
+          </u-button>
         </div>
 
-        <VoltButton class="mt-5" rounded @click="handleAddParticipant">
+        <u-button class="mt-5" rounded @click="handleAddParticipant">
           <Icon name="i-fa7-solid:plus" class="me-2" />
           Add participant
-        </VoltButton>
+        </u-button>
       </div>
     </StudioSettingBlock>
 
@@ -64,10 +57,11 @@
         If you want to generate an accurate transcript of your video
         or generate a summary, you can do so by enabling the
         LLM generation feature. This will use the video content
-        to generate text.
+        to generate text. This will also allow your videos to be searchable
+        with a higher level of accuracy by using in-video speech search functionality.
       </template>
 
-      <input type="file" label="Upload a text transcription of your video" />
+      <u-file-upload type="file" label="Upload a text transcription of your video" />
     </StudioSettingBlock>
   </div>
 </template>

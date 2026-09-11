@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <div class="file-uploader border-2 border-dashed border-primary-800 rounded-lg p-5 hover:border-primary hover:bg-slate-50 transition-colors cursor-pointer" @drop.prevent="handleDrop" @dragover.prevent="handleDragOver" @dragleave.prevent="handleDragLeave">
+    <!-- <div class="file-uploader border-2 border-dashed border-primary-800 rounded-lg p-5 hover:border-primary hover:bg-slate-50 transition-colors cursor-pointer" @drop.prevent="handleDrop" @dragover.prevent="handleDragOver" @dragleave.prevent="handleDragLeave">
       <input id="video" type="file" class="form-control hidden" multiple accept=".mp4,.flv" @change="($event) => handleUpload($event)">
 
       <label for="video">
@@ -14,10 +14,11 @@
             {{ formatFileSize(selectedFiles[0]?.size) }}
           </p>
 
-          <VoltButton :badge="selectedFiles.length.toString()" label="Select files" class="mt-4" />
+          u-button :badge="selectedFiles.length.toString()" label="Select files" class="mt-4" />
         </div>
       </label>
-    </div>
+    </div> -->
+    <u-file-upload type="file" multiple accept=".mp4,.flv" @change="($event) => handleUpload($event)" />
   </div>
 </template>
 
@@ -110,15 +111,8 @@ function removeFile(file: File) {
 
 // Go Websocket
 
-const { send } = useWebsocketMessages()
-
 const { data } = useWebSocket(`${useRuntimeConfig().public.apiUploads}/ws/uploads`, {
   immediate: true,
-  onConnected() {
-    send({
-      type: 'init',
-      data: 'Welcome'
-    })
-  }
+  onConnected() {}
 })
 </script>

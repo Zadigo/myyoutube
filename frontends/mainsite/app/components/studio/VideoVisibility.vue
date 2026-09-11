@@ -17,10 +17,7 @@
       </template>
 
       <template #actions>
-        <VoltLabel>
-          <VoltToggleSwitch v-model="newVideo.visibility.age_restricted" />
-          <label>{{ ageRestrictedLabel }}</label>
-        </VoltLabel>
+        <u-switch v-model="newVideo.visibility.age_restricted" :label="ageRestrictedLabel" />
       </template>
     </StudioSettingBlock>
     
@@ -36,24 +33,14 @@
           </template>
 
           <!-- Publication Date -->
-          <VoltDatePicker v-model="newVideo.publication.publication_date" :min="minDate" />
-          <VoltInputText v-model="newVideo.publication.publication_time" type="time" />
+          <VoltDatePicker v-model="newVideo.publication.publication_date" />
+          <u-input v-model="newVideo.publication.publication_time" type="time" />
 
           <!-- Public/Private -->
-          <VoltLabel>
-            <VoltToggleSwitch v-model="newVideo.visibility.public" />
-            <label>
-              {{ newVideo.visibility.public ? 'Public' : 'Private' }}
-            </label>
-          </VoltLabel>
+          <u-switch v-model="newVideo.visibility.public" :label="newVideo.visibility.public ? 'Public' : 'Private'" />
 
           <!-- Subscribers -->
-          <VoltLabel>
-            <VoltToggleSwitch v-model="newVideo.visibility.subscribers_only" />
-            <label>
-              {{ newVideo.visibility.subscribers_only ? 'Subscribers only' : 'Everyone' }}
-            </label>
-          </VoltLabel>
+          <u-switch v-model="newVideo.visibility.subscribers_only" :label="newVideo.visibility.subscribers_only ? 'Subscribers only' : 'Everyone'" />
         </StudioSubSettingBlock>
 
         <!-- Premiere -->
@@ -64,12 +51,9 @@
             create a teaser video for it
           </template>
 
-          <VoltLabel>
-            <VoltToggleSwitch v-model="newVideo.visibility.is_premiere" />
-            <label>Announce première</label>
-          </VoltLabel>
+          <u-switch v-model="newVideo.visibility.is_premiere" label="Announce première" />
 
-          <input v-if="newVideo.visibility.is_premiere" type="file" placeholder="Teaser" />
+          <u-file-upload v-if="newVideo.visibility.is_premiere" type="file" placeholder="Teaser" />
         </StudioSubSettingBlock>
 
         <StudioSubSettingBlock callout>
@@ -81,12 +65,10 @@
             within 5 minutes of the video being posted.
           </template>
 
-          <VoltLabel>
-            <VoltToggleSwitch v-model="newVideo.visibility.panelize" />
-            <label>Limit to panel</label>
-          </VoltLabel>
+          <u-switch v-model="newVideo.visibility.panelize" />
+          <u-switch v-model="newVideo.visibility.panelize" :label="newVideo.visibility.panelize ? 'Limit to panel' : 'Everyone'" />
           
-          <VoltInputText v-if="newVideo.visibility.panelize" class="w-full" placeholder="Enter user emails" />
+          <u-input v-if="newVideo.visibility.panelize" class="w-full" placeholder="Enter user emails" />
         </StudioSubSettingBlock>
       </template>
     </StudioSettingBlock>
@@ -104,7 +86,4 @@ const ageRestrictedLabel = computed(() => {
     return "No, don't restrict my video to viewers over 18 only"
   }
 })
-
-const { $dayjs } = useNuxtApp() 
-const minDate = toRef($dayjs?.date())
 </script>

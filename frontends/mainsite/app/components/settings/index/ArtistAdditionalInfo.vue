@@ -1,8 +1,8 @@
 <template>
   <div v-if="isArtist" id="professional" class="space-x-1 p-2 rounded-lg bg-secondary-50">
-    <VoltInputText placeholder="Artist name" />
-    <VoltInputText placeholder="Spotify ID" />
-    <VoltInputText placeholder="Spotify profile" />
+    <u-input placeholder="Artist name" />
+    <u-input placeholder="Spotify ID" />
+    <u-input placeholder="Spotify profile" />
   </div>
 </template>
 

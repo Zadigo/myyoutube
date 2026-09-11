@@ -1,7 +1,7 @@
 <template>
   <div v-if="isBusiness" id="professional" class="space-x-1 p-2 rounded-lg bg-secondary-50">
-    <VoltInputText placeholder="Business ID" />
-    <VoltInputText placeholder="Business VAT" />
+    <u-input placeholder="Business ID" />
+    <u-input placeholder="Business VAT" />
   </div>
 </template>
 

@@ -9,8 +9,8 @@
       </template>
       
       <template #actions>
-        <VoltInputText v-model="newVideo.title" class="w-full" placeholder="Title" />
-        <VoltTextarea v-model="newVideo.description" cols="4" class="my-1 w-full resize-none" placeholder="Description" />
+        <u-input v-model="newVideo.title" class="w-full" placeholder="Title" />
+        <u-textarea v-model="newVideo.description" cols="4" class="my-1 w-full resize-none" placeholder="Description" />
       </template>
     </StudioSettingBlock>
 
@@ -27,13 +27,8 @@
       </template>
 
       <template #actions>
-        <VoltAutoComplete v-model="newVideo.category" :suggestions="categories" item-label="title" placeholder="Select a category">
-          <VoltInputText />
-        </VoltAutoComplete>
-
-        <VoltAutoComplete v-model="newVideo.subcategory" :suggestions="subCategories" item-label="title" placeholder="Select a sub-category">
-          <VoltInputText />
-        </VoltAutoComplete>
+        <u-input-menu v-model="newVideo.category" :items="categories" item-label="title" placeholder="Select a category" />
+        <u-input-menu v-model="newVideo.subcategory" :items="subCategories" item-label="title" placeholder="Select a sub-category" />
       </template>
     </StudioSettingBlock>
 
@@ -50,7 +45,7 @@
 
       <template #actions>
         <div v-for="(frame, i) in frames" :key="i" class="col-3">
-          <img :src="frame[1]" class="img-fluid" alt="">
+          <nuxt-img :src="frame[1]" class="img-fluid" alt="" />
         </div>
       </template>
     </StudioSettingBlock>
@@ -67,19 +62,16 @@
         video contains paid promotion.
       </template>
 
-      <VoltLabel class="my-5">
-        <VoltToggleSwitch v-model="newVideo.has_paid_promotion" />
-        <label>My video contains paid promotion like a product placement, sponsorship, or endorsement</label>
-      </VoltLabel>
+      <u-switch v-model="newVideo.has_paid_promotion" label="My video contains paid promotion like a product placement, sponsorship, or endorsement" />
 
       <div v-if="newVideo.has_paid_promotion" class="font-light italic my-3">
         By selecting this box, you confirm that the paid promotion 
         follows our ad policies and any applicable laws and regulations
 
-        <VoltButton variant="text" color="primary" class="mt-2" href="/help/video-paid-promotion">
+        <u-button variant="subtle" class="mt-2" href="/help/video-paid-promotion">
           <Icon name="i-fa7-solid:external-link-alt" class="me-2" />
           Learn more
-        </VoltButton>
+        </u-button>
       </div>
     </StudioSettingBlock>
     
@@ -96,7 +88,7 @@
       </template>
 
       <template #actions>
-        <VoltAutoComplete :suggestions="newVideo.tags" placeholder="Tags" class="w-full" />
+        <u-input-menu :items="newVideo.tags" placeholder="Tags" class="w-full" />
       </template>
     </StudioSettingBlock>
 
@@ -114,8 +106,8 @@
 
       <template #actions>
         <div class="w-80 space-y-2">
-          <VoltSelect v-model="newVideo.publication.language" class="w-full" />
-          <VoltInputText v-model="newVideo.publication.recording_location" class="w-full" placeholder="Location" />
+          <u-select v-model="newVideo.publication.language" class="w-full" />
+          <u-input v-model="newVideo.publication.recording_location" class="w-full" placeholder="Location" />
         </div>
       </template>
     </StudioSettingBlock>
@@ -123,8 +115,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { Categories, Subcategories } from '~/types'
-
 const studioStore = useStudioStore()
 const { newVideo, hasCategory } = storeToRefs(studioStore)
 

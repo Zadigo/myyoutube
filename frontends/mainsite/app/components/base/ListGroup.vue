@@ -12,7 +12,7 @@
       </template>
   
       <template v-else>
-        <div v-for="item in items" :key="item.label" active :class="theme.listGroupItem" @click="item.action ? item.action(item) : null">
+        <div v-for="item in items" :key="item.label" active :class="theme.listGroupItem">
           <slot name="item" :item="item">
             <div class="space-x-3 flex items-center">
               <icon v-if="item.icon" :name="item.icon" />
@@ -46,7 +46,7 @@ const { items, variant = 'default' } = defineProps<Props>()
 
 const theme = {
   listGroup: [
-    `rounded-md bg-white w-full group`,
+    `rounded-md bg-primary-100 dark:bg-primary-800 w-full group`,
     {
       'shadow-md': variant === 'default',
       'shadow-none': variant === 'flush' || variant === 'flat',
@@ -54,7 +54,7 @@ const theme = {
     }
   ],
   listGroupItem: [
-    `text-black font-light normal-case text-left py-4 px-5 cursor-pointer hover:bg-slate-50
+    `text-black font-light normal-case text-left py-4 px-5 cursor-pointer hover:bg-primary-100 dark:hover:bg-primary-700 
      first:hover:rounded-tl-md first:hover:rounded-tr-md 
      last:hover:rounded-bl-md last:hover:rounded-br-md
      not:last:border-b-1 not:last:border-slate-50`

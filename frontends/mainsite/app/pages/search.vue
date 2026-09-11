@@ -1,6 +1,6 @@
 <template>
   <section id="search">
-    <VoltCard class="shadow-none">
+    <u-card class="shadow-none">
       <VoltSkeleton />
 
       <div class="mt-4">
@@ -8,6 +8,6 @@
           Video name
         </h1>
       </div>
-    </VoltCard>
+    </u-card>
   </section>
 </template>
