@@ -82,17 +82,7 @@ export const useCreatePlaylist = createSharedComposable((_playlists: MaybeRefOrG
    * Intelligent playlist
    */
 
-  const intelligentVideoOptions = [
-    'Name',
-    'Author',
-    'Release Date'
-  ] as const
-
   return {
-    /**
-     * Options for intelligent video filtering
-     */
-    intelligentVideoOptions,
     /**
      * Reactive reference to the new playlist being created
      */

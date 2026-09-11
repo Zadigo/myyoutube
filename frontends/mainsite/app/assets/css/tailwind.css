@@ -34,3 +34,21 @@
   --color-brand-900: #7f1d1d;
   --color-brand-950: #450a0a;
 }
+
+.page-enter-active,
+.page-leave-active {
+  transition: all ease-in-out 0.2s;
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+.page-enter-to {
+  opacity: 1;
+}
+.page-leave-from {
+  opacity: 1;
+}
+.page-leave-to {
+  opacity: 0;
+}

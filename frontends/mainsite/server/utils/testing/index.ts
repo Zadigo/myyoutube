@@ -10,7 +10,7 @@ import { getQuery } from 'h3'
  * Utility functions for loading and manipulating video fixtures for testing purposes.
  */
 export function useLoadFixtures<T extends BaseVideo = BaseVideo>() {
-  const fixtures = computed(() => videoFixtures as FeedVideos['edges'])
+  const fixtures = computed(() => videoFixtures as BaseVideo[])
 
   function getItem(event: H3Event) {
     const id = getRouterParam(event, 'id')
@@ -32,18 +32,18 @@ export function useLoadFixtures<T extends BaseVideo = BaseVideo>() {
     return fixtures.value.filter(filterFunc(query.q))
   }
 
-  function filter(options: ProductFilterOptions) {
-    return fixtures.value.filter((video) => {
-      const size = options.sizes || []
-      // const material = options.materials || []
+  // function filter(options: ProductFilterOptions) {
+  //   return fixtures.value.filter((video) => {
+  //     const size = options.sizes || []
+  //     // const material = options.materials || []
 
-      const sizeMatch = size.length === 0 || video.sizeSet.some((s) => size.includes(s.name))
-      // const materialMatch = material.length === 0 || material.includes(product.material)
+  //     const sizeMatch = size.length === 0 || video.sizeSet.some((s) => size.includes(s.name))
+  //     // const materialMatch = material.length === 0 || material.includes(product.material)
 
-      // return sizeMatch && materialMatch
-      return sizeMatch
-    })
-  }
+  //     // return sizeMatch && materialMatch
+  //     return sizeMatch
+  //   })
+  // }
 
   function toNodes(values: T[] | undefined): VideoNode[] {
     if (!values) return []
@@ -98,7 +98,7 @@ export function useLoadFixtures<T extends BaseVideo = BaseVideo>() {
      * Filters the loaded video fixtures based on the provided sizes and materials.
      * @param options - An object containing optional arrays of sizes and materials to filter by.
      */
-    filter
+    // filter
   }
 }
 

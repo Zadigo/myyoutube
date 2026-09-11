@@ -1,10 +1,10 @@
 import { createErrorTemplate } from '#shared/errors'
 
 export default defineEventHandler(async (_event) => {
-  const { singleItem } = useLoadFixtures()
-  const video = singleItem()
-
   try {
+    const { singleItem } = useLoadFixtures()
+    const video = singleItem()
+
     return {
       data: {
         allplaylists: {
@@ -27,9 +27,9 @@ export default defineEventHandler(async (_event) => {
                         description: video?.description,
                         videoId: video?.videoId,
                         userChannel: {
-                          id: video?.userChannel.id,
-                          name: video?.userChannel.name,
-                          reference: video?.userChannel.reference
+                          id: video?.userChannel?.id,
+                          name: video?.userChannel?.name,
+                          reference: video?.userChannel?.reference
                         }
                       }
                     }
@@ -56,6 +56,7 @@ export default defineEventHandler(async (_event) => {
       }
     } as Playlist
   } catch (error) {
+    console.log(error)
     const template = createErrorTemplate(error)
     return createError(template)
   }

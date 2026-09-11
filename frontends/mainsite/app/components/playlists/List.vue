@@ -13,7 +13,7 @@
     <u-separator class="my-3" />
 
     <div class="space-y-2">
-      <a v-for="playlist in playlists" :key="playlist.node.id" href="#" class="bg-primary-50 hover:bg-primary-100 dark:bg-primary-900 dark:hover:bg-primary-800 block rounded-lg p-3" @click.prevent="emit('playlist:details', playlist)">
+      <a v-for="playlist in playlists" :key="playlist.node.id" href="#" class="bg-primary-50 hover:bg-primary-100 dark:bg-slate-900 dark:hover:bg-slate-800 block rounded-lg p-3" @click.prevent="emit('playlist:details', playlist)">
         <article :data-id="playlist.node.id">
           <p class="font-bold">{{ playlist.node.name }}</p>
           <p v-if="playlist.node.description" class="font-light m-0">

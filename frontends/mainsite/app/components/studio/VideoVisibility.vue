@@ -33,7 +33,7 @@
           </template>
 
           <!-- Publication Date -->
-          <VoltDatePicker v-model="newVideo.publication.publication_date" />
+          <u-input-date v-model="newVideo.publication.publication_date" />
           <u-input v-model="newVideo.publication.publication_time" type="time" />
 
           <!-- Public/Private -->
@@ -52,8 +52,7 @@
           </template>
 
           <u-switch v-model="newVideo.visibility.is_premiere" label="Announce première" />
-
-          <u-file-upload v-if="newVideo.visibility.is_premiere" type="file" placeholder="Teaser" />
+          <u-file-upload v-if="newVideo.visibility.is_premiere" description="Upload a teaser video for the premiere" />
         </StudioSubSettingBlock>
 
         <StudioSubSettingBlock callout>

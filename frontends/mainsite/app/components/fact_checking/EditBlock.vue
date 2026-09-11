@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <VoltDivider />
+    <u-separator />
 
     <div class="flex justify-end">
       <u-button variant="outline" @click="handleSave">
