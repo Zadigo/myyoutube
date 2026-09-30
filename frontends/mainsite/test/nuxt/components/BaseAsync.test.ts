@@ -15,7 +15,7 @@ const { useFeedComposable } = vi.hoisted(() => {
 })
 
 vi.mock('~/composables/use/feed.ts', async (original) => {
-  const actual = await original<typeof import('~/composables/use/feed.ts')>()
+  const actual = await original<typeof import('~/composables/feed')>()
   return {
     ...actual,
     useFeedComposable
