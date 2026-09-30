@@ -1,5 +1,5 @@
 <template>
-  <div ref="videoContainerEl" class="relative minx-h-[300px] md:min-h-[500px] xl:min-h-[700px] z-20 flex items-center justify-center cursor-pointer bg-primary-900 dark:bg-primary-950 mx-auto overflow-hidden rounded-lg">
+  <div ref="videoContainerEl" class="relative minx-h-[300px] md:min-h-125 xl:min-h-175 z-20 flex items-center justify-center cursor-pointer bg-primary-900 dark:bg-primary-950 mx-auto overflow-hidden rounded-lg">
     <client-only>
       <template #default>
         <video ref="videoPlayerEl" class="w-full touch-manipulation has-[source]:h-full" preload="metadata" controlist="nodownload" oncontextmenu="return false;" @loadedmetadata="handleVideoMetadata" @timeupdate="handleVideoMetadata" @canplay="handleCanPlay" @click.stop="handlePlayPause">
@@ -36,7 +36,8 @@
 
 <script setup lang="ts">
 import { useVideoPlayer, useVideoPlayerControls } from './utils'
-import type { Undefineable, VideoTechnicalDetails } from '~/types' 
+import type { Undefineable } from '#shared/types/utils'
+import type { VideoTechnicalDetails } from '#shared/types/video'
 
 const { videoSource } = defineProps<{ videoSource: Undefineable<string> }>()
 

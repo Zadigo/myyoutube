@@ -13,9 +13,8 @@
         </div>
       </div>
 
-      <div class="col-span-7">
+      <div class="col-span-7 flex items-center">
         <client-only>
-          {{ isPlaying }}
           <u-slider v-model="sliderValue" :min="0" :max="100" />
         </client-only>
       </div>
@@ -45,7 +44,6 @@ import { useVideoPlayerControls, useVideoPlayerOptions, useVideoPlayerStore } fr
 defineEmits<{ 'show:settings': [] }>()
 
 const { el } = useVideoPlayerStore()
-console.log(el)
 const { isPlaying, currentTimeFormatted, durationFormatted, completionPercentage, handlePlayPause } = useVideoPlayerControls(el)
 const { volume, quality, speed } = useVideoPlayerOptions(el)
 

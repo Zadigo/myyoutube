@@ -32,14 +32,15 @@
           </div>
 
           <u-button type="button" variant="subtle">
-            <span class="mdi mdi-thumb-up me-2" />12.3k
+            <icon name="i-lucide-thumb-up" />12.3k
           </u-button>
             
           <u-button type="button" variant="subtle">
-            <span class="mdi mdi-thumb-down me-2" />26
+            <icon name="i-lucide-thumb-down" />26
           </u-button>
             
           <u-button type="button" variant="subtle">
+            <icon name="i-lucide-reply" />
             Repondre
           </u-button>
         </div>

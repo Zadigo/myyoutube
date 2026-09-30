@@ -3,13 +3,20 @@
     <!-- Content -->
     <section id="content" class="mt-5">
       <div class="pt-2 pb-5 flex gap-2 items-center justify-end">
-        <u-input v-model="search" placeholder="Search" class="col-span-1 xl:col-span-3" />
-        <u-button @click="() => { toggleShowFilterModal(true) }">
-          <icon name="i-lucide-filter" /> Filter
-        </u-button>
+        <u-input v-model="search" :ui="{ trailing: 'pr-0' }" placeholder="Search" class="w-100">
+          <template #leading>
+            <icon name="i-lucide-search" />
+          </template>
+
+          <template #trailing>
+            <u-button variant="subtle" @click="() => { toggleShowFilterModal(true) }">
+              <icon name="i-lucide-filter" /> More
+            </u-button>
+          </template>
+        </u-input>
 
         <u-dropdown-menu id="sort-by" :items="SORTBY_MENU_ITEMS">
-          <u-button>
+          <u-button variant="subtle">
             <icon name="i-fa7-solid:sort" /> Sort by
           </u-button>
         </u-dropdown-menu>
@@ -38,10 +45,12 @@
       </template>
 
       <template #body>
-        <form class="grid gap-2 grid-cols-1 xl:grid-cols-4" @submit.prevent>
-          <u-select-menu v-model="category" :items="DEFAULT_CATEGORIES_SELECT_ITEMS" class="col-span-1 xl:col-span-2" placeholder="Categories" multiple />
-          <u-select v-model="videoLength" :items="DEFAULT_VIDEO_LENGTH_SELECT_ITEMS" class="col-span-1 xl:col-span-1" placeholder="Video length" />
-          <u-select v-model="uploadDate" :items="DEFAULT_UPLOAD_DATE_SELECT_ITEMS" class="col-span-1 xl:col-span-1" placeholder="Upload date" />
+        <form @submit.prevent>
+          <u-select-menu v-model="category" :items="DEFAULT_CATEGORIES_SELECT_ITEMS" class="w-full" placeholder="Categories" multiple />
+          <div class="flex gap-2 my-2">
+            <u-select v-model="videoLength" :items="DEFAULT_VIDEO_LENGTH_SELECT_ITEMS" placeholder="Video length" />
+            <u-select v-model="uploadDate" :items="DEFAULT_UPLOAD_DATE_SELECT_ITEMS" placeholder="Upload date" />
+          </div>
         </form>
       </template>
     </u-modal>

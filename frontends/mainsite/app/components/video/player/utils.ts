@@ -1,4 +1,5 @@
-import type { Arrayable, Nullable, Undefineable, VideoTechnicalDetails} from '~/types'
+import type { Arrayable, Nullable, Undefineable} from '#shared/types/utils'
+import type { VideoTechnicalDetails } from '#shared/types/video'
 
 export type VideoPlayerEl = Ref<Nullable<HTMLVideoElement>>
 
@@ -141,13 +142,18 @@ export const useVideoPlayerControls = createGlobalState((videoPlayerEl: VideoPla
    * Keyboard Controls
    */
 
-  // const { space } = useMagicKeys()
+  const { space, p } = useMagicKeys()
 
-  // watch(space, (isPressed) => {
-  //   if (isPressed) {
-  //     handlePlayPause(new Event('keyboard'))
-  //   }
-  // })
+  watch([
+    () => isDefined(space) ? toValue(space) : false,
+    () => isDefined(p) ? toValue(p) : false
+  ], (events) => {
+    const [isSpacePressed, isPPressed] = events
+    
+    if (isSpacePressed || isPPressed) {
+      handlePlayPause(new Event('keyboard'))
+    }
+  })
 
   /**
    * Reset
