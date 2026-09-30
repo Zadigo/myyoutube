@@ -127,13 +127,18 @@ export const usePlaylistsComposable = createGlobalState(() => {
   const currentPlaylist = ref<RelayNode<SinglePlaylist>>()
   const query = useUrlSearchParams() as { playlist: string }
 
-  const [showPlaylistDetails, toggleShowPlaylistDetails] = useToggle<boolean>(false)
+  const [showPlaylistDetails, _toggleShowPlaylistDetails] = useToggle<boolean>(false)
+
+  function toggleShowPlaylistDetails() {
+    _toggleShowPlaylistDetails()
+    query.playlist = ''
+  }
   
   function select(item: RelayNode<SinglePlaylist>) {
     if (isDefined(item)) {
       currentPlaylist.value = item
       query.playlist = item.node.playlistId
-      toggleShowPlaylistDetails(true)
+      _toggleShowPlaylistDetails()
     }
   }
 

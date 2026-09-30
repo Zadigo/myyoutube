@@ -46,7 +46,6 @@ import type { DropdownMenuItem } from '@nuxt/ui'
 const AsyncFeedComponent = defineAsyncComponent({
   loader: () => import('~/components/BaseAsyncFeed.vue')
 })
-console.log('AsyncFeedComponent', AsyncFeedComponent)
 
 /**
  * Menu items

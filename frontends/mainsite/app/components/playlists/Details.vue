@@ -1,8 +1,6 @@
 <template>
   <u-card>
-    <u-button variant="subtle" class="mt-4" @click="() => { toggleShowPlaylistDetails() }">
-      <icon name="lucide:arrow-left" />
-    </u-button>
+    <u-button icon="lucide:arrow-left" variant="subtle" class="my-4" @click="() => { toggleShowPlaylistDetails() }" />
 
     <div class="overflow-hidden rounded-lg">
       <nuxt-img src="/avatars/avatar1.png" class="w-full h-full hover:scale-105 hover:opacity-95 transition-all duration-300" alt="" />
@@ -19,7 +17,7 @@
         No description provided.
       </p>
     </div>
- </u-card>
+  </u-card>
 </template>
 
 <script setup lang="ts">

@@ -25,14 +25,18 @@
 <script setup lang="ts">
 const notificationType = ref<NotificationType>('All')
 
-const { data: notifications, refresh } = await useAsyncData<NotificationApiResponse>(`notifications-${notificationType.value}`, async () => await $fetch('/api/notifications/', {
-  method: 'GET',
-  query: {
-    type: notificationType.value
+const { data: notifications, refresh } = await useAsyncData<NotificationApiResponse>(
+  `notifications-${notificationType.value}`, 
+  async () => await $fetch('/api/notifications/', {
+    method: 'GET',
+    query: {
+      type: notificationType.value
+    }
+  }), {
+    watch: [notificationType],
+    default: () => ({} as NotificationApiResponse)
   }
-}), {
-  watch: [notificationType]
-})
+)
 
 /**
  * Infinite Scroll
