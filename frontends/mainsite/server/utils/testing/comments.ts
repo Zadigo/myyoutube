@@ -1,22 +1,24 @@
-import type { Arrayable, VideoCommentNode, VideoComments, VideoReplies } from '~/types'
+import { faker } from '@faker-js/faker'
+import type { Arrayable } from '#shared/types/utils'
+import type { VideoCommentNode, VideoComments, VideoReplies } from '#shared/types/comments'
 
 const commentNodes = (n: number) => {
   return Array.from<Arrayable<VideoCommentNode>>({ length: n }).map((_, index) => ({
     node: {
       id: `comment${index + 1}`,
-      content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Comment number ${index + 1}.`,
-      fromCreator: index % 2 === 0,
+      content: faker.lorem.paragraph({ min: 1, max: 10 }),
+      fromCreator: faker.datatype.boolean({ probability: 0.2 }),
       pinned: index === 0,
       numberOfReplies: 2,
-      createdOn: new Date(2024, 5, index + 1, 12, 0, 0).toISOString(),
+      createdOn: faker.date.past().toISOString(),
       user: {
         id: index + 1,
-        username: `User${index + 1}`,
+        username: faker.person.fullName(),
         userChannelSet: [
           {
-            id: `channel${index + 1}`,
+            id: `ch_${faker.string.uuid()}`,
             name: `Channel ${index + 1}`,
-            reference: `channel-reference-${index + 1}`
+            reference: `ch_${faker.string.uuid()}`
           }
         ]
       }
@@ -27,7 +29,7 @@ const commentNodes = (n: number) => {
 export const commentsFixture: VideoComments = {
   data: {
     videocomments: {
-      edges: commentNodes(50)
+      edges: commentNodes(15)
     }
   }
 }

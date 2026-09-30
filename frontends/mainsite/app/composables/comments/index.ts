@@ -16,7 +16,7 @@ export type SortActionsMenuItem = {
 /**
  * Composable to handle comments fetching and sorting
  */
-export async function useCommentsComposable(currentVideo: Ref<VideoDetails>) {
+export async function useCommentsComposable(currentVideo: Ref<VideoDetails> | undefined) {
   const comments = ref<Arrayable<VideoCommentNode>>()
   
   const queryParams = ref({
@@ -25,7 +25,7 @@ export async function useCommentsComposable(currentVideo: Ref<VideoDetails>) {
     offset: 0
   })
 
-  const { data, refresh } = await useAsyncData<VideoComments>(`comments-${currentVideo.value.id}`, async () => await $fetch('/api/comments', {
+  const { data, refresh } = await useAsyncData<VideoComments>(`comments-${toValue(currentVideo)?.id}`, async () => await $fetch('/api/comments', {
     method: 'GET',
     immediate: true,
     query: queryParams.value

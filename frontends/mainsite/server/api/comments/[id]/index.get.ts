@@ -1,4 +1,4 @@
-import { repliesFixture } from '~/utils/fixtures/comments'
+import { repliesFixture } from '#server/utils/testing/comments'
 
 /**
  * Return all the replies for a specific comment
