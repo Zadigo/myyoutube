@@ -2,26 +2,21 @@
   <u-card class="shadow-none">
     <div class="flex-col items-start gap-4">
       <div class=" flex items-center gap-2 mb-3">
-        <nuxt-link :to="`/channels/${userChannel.reference}`" aria-label="">
-          <u-avatar src="/avatars/avatar2.png" :alt="userChannel.name" size="sm" />
-        </nuxt-link>
-
-        <u-button :to="`/channels/${userChannel?.reference}`" size="sm" variant="subtle">
-          {{ userChannel.name }}
-        </u-button>
-
-        <u-button size="sm" variant="outline" disabled>
-          3 weeks ago
+        <u-button :to="`/channels/${userChannel?.reference}`" :avatar="{ src: '/avatars/avatar2.png', size: 'md', alt: userChannel?.name }" variant="ghost" color="neutral">
+          <div class="flex flex-col ms-3">
+            <span>{{ userChannel?.name }}</span>
+            <span class="text-slate-400">3 weeks ago</span>
+          </div>
         </u-button>
       </div>
 
       <p class="pt-2 pb-5">{{ videoComment.node.content }}</p>
 
       <div class="my-3 space-x-2 flex items-center">
-        <u-badge label="@creator" />
-        <u-badge label="Aimé par le createur" />
-        <u-badge label="First comment" />
-        <u-badge label="Donor" icon="i-lucide-dollar-sign" />
+        <lazy-video-comment-badges-from-creator hydrate-on-idle />
+        <lazy-video-comment-badges-liked-by-creator hydrate-on-idle />
+        <lazy-u-badge color="neutral" variant="soft" label="First comment" hydrate-on-idle />
+        <lazy-u-badge color="error" variant="soft" label="Donor" icon="i-lucide-dollar-sign" hydrate-on-idle />
       </div>
 
       <div class="flex gap-2 mt-4">
@@ -43,9 +38,10 @@
         Voir {{ videoComment.node.numberOfReplies }} commentaires
       </u-button>
 
+      <!-- Replies Section -->
       <transition id="replies" tag="div" name="pop" mode="in-out">
         <div v-if="showReplies && isDefined(replies)" class="replies">
-          <video-user-reply v-for="reply in replies.data.commentreplies.edges" :key="reply.node.id" :reply="reply" />
+          <video-comment-user-reply v-for="reply in replies.data.commentreplies.edges" :key="reply.node.id" :reply="reply" />
         </div>
       </transition>
     </div>

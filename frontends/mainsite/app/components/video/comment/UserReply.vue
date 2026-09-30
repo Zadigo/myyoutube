@@ -21,28 +21,24 @@
             "cool" when she realized she'd been called out on live TV.
           </p>
 
-          <div class="my-3">
-            <u-badge>
-              @creator
-            </u-badge>
-
-            <u-badge color="neutral">
-              Aimé par le createur
-            </u-badge>
+          <div class="my-3 flex gap-2">
+            <lazy-video-comment-badges-from-creator hydrate-on-idle />
+            <lazy-video-comment-badges-liked-by-creator hydrate-on-idle />
           </div>
 
-          <u-button type="button" variant="subtle">
-            <icon name="i-lucide-thumb-up" />12.3k
-          </u-button>
-            
-          <u-button type="button" variant="subtle">
-            <icon name="i-lucide-thumb-down" />26
-          </u-button>
-            
-          <u-button type="button" variant="subtle">
-            <icon name="i-lucide-reply" />
-            Repondre
-          </u-button>
+          <div class="flex items-center gap-2">
+            <u-button icon="i-lucide-thumbs-up" variant="subtle" size="sm">
+              12.3k
+            </u-button>
+              
+            <u-button icon="i-lucide-thumbs-down" variant="subtle" size="sm">
+              26
+            </u-button>
+              
+            <u-button icon="i-lucide-reply" variant="subtle" size="sm">
+              Repondre
+            </u-button>
+          </div>
         </div>
       </div>
     </u-card>

@@ -1,7 +1,7 @@
 <template>
   <u-card class="mt-4">
     <div v-if="currentVideo" class="grid grid-cols-1 md:grid-cols-12">        
-      <div class="col-span-10 col-start-2">
+      <div class="col-span-12">
         <u-button :to="`/channels/${currentVideo.userChannel.reference}`" variant="outline">
           <span class="font-bold">{{ currentVideo.userChannel.name }}</span>
           <icon name="i-fa7-solid:circle-check" class="ms-2" />
@@ -16,15 +16,35 @@
         <lazy-video-participants class="py-5" hydrate-on-idle />
         
         <!-- Description -->
-        <div class="bg-primary-50 dark:bg-primary-800/20 rounded-lg font-light my-4 p-4 cursor-pointer hover:bg-primary-100 dark:hover:bg-primary-800/40 transition duration-200">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-          Sequi porro iure repellat optio, ipsum ducimus veniam natus
-          ipsam dolor, suscipit distinctio vero? Labore repellendus
-          ipsum et cumque fuga? Ullam, nam! Lorem ipsum dolor sit amet
-          consectetur adipisicing elit. Voluptates id pariatur
-          fuga molestiae aperiam inventore repellendus, dolorum
-          ducimus saepe fugiat minima quisquam. Deleniti, ratione?
-          Quis et harum ullam ab nam.
+        <div class="bg-primary-50 dark:bg-primary-800/20 rounded-lg my-4 p-4 cursor-pointer hover:bg-primary-100 dark:hover:bg-primary-800/40 transition duration-200">
+          <span class="font-light">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+            Sequi porro iure repellat optio, ipsum ducimus veniam natus
+            ipsam dolor, suscipit distinctio vero? Labore repellendus
+            ipsum et cumque fuga? Ullam, nam! Lorem ipsum dolor sit amet
+            consectetur adipisicing elit. Voluptates id pariatur
+            fuga molestiae aperiam inventore repellendus, dolorum
+            ducimus saepe fugiat minima quisquam. Deleniti, ratione?
+            Quis et harum ullam ab nam.
+          </span>
+
+          <div class="flex gap-2 my-5">
+            <nuxt-link to="https://www.instagram.com/some-handler/">
+              <u-badge icon="i-lucide-instagram" label="@some-handler" variant="soft" color="info" />
+            </nuxt-link>
+
+            <nuxt-link to="https://www.linkedin.com/in/some-handler/">
+              <u-badge icon="i-lucide-linkedin" label="@some-handler" variant="soft" color="info" />
+            </nuxt-link>
+            
+            <nuxt-link to="https://twitter.com/some-handler/">
+              <u-badge icon="i-lucide-x" label="@some-handler" variant="soft" color="info" />
+            </nuxt-link>
+            
+            <nuxt-link to="https://www.youtube.com/@some-handler/">
+              <u-badge icon="i-lucide-youtube" label="@some-handler" variant="soft" color="info" />
+            </nuxt-link>
+          </div>
         </div>
       </div>
     </div>
