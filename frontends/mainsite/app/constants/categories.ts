@@ -1,3 +1,5 @@
+import type { SelectMenuItem } from '@nuxt/ui'
+
 export const DEFAULT_MAIN_CATEGORIES = [
   'All',
   'General',
@@ -13,6 +15,7 @@ export const DEFAULT_MAIN_CATEGORIES = [
 
 export type DefaultMainCategories = (typeof DEFAULT_MAIN_CATEGORIES)[number] | (string & {})
 
+export const DEFAULT_CATEGORIES_SELECT_ITEMS = DEFAULT_MAIN_CATEGORIES.map(category => ({ label: category } as SelectMenuItem))
 
 export const DEFAULT_CATEGORIES = [
   {

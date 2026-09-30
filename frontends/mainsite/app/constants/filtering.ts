@@ -1,4 +1,4 @@
-import type { MenuItem } from 'primevue/menuitem'
+import type { SelectMenuItem } from '@nuxt/ui'
 
 export const DEFAULT_SORT_BY = [
   'Upload date',
@@ -8,10 +8,6 @@ export const DEFAULT_SORT_BY = [
 
 export type DefaultSortBy = (typeof DEFAULT_SORT_BY)[number]
 
-export interface DefaultSortByMenuItem extends MenuItem {
-  label: DefaultSortBy
-}
-
 export const DEFAULT_VIDEO_LENGTH = [
   'Under 4 minutes',
   '4-20 minutes',
@@ -19,6 +15,8 @@ export const DEFAULT_VIDEO_LENGTH = [
 ] as const
 
 export type DefaultVideoLength = (typeof DEFAULT_VIDEO_LENGTH)[number]
+
+export const DEFAULT_VIDEO_LENGTH_SELECT_ITEMS = DEFAULT_VIDEO_LENGTH.map(length => ({ label: length } as SelectMenuItem))
 
 export const DEFAULT_UPLOAD_DATE = [
   'Last hour',
@@ -29,3 +27,5 @@ export const DEFAULT_UPLOAD_DATE = [
 ] as const
 
 export type DefaultUploadDate = (typeof DEFAULT_UPLOAD_DATE)[number]
+
+export const DEFAULT_UPLOAD_DATE_SELECT_ITEMS = DEFAULT_UPLOAD_DATE.map(date => ({ label: date } as SelectMenuItem))

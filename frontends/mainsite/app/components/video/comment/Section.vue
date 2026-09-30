@@ -6,11 +6,11 @@
           {{ comments.length }} comments
         </h2>
 
-        <u-dropdown id="comment-sorting" :items="sortActionsMenuItem">
+        <u-dropdown-menu id="comment-sorting" :items="sortActionsMenuItem">
           <u-button>
             <icon name="i-lucide-sort-asc" />
           </u-button>
-        </u-dropdown>
+        </u-dropdown-menu>
       </div>
 
       <u-separator class="my-3" />

@@ -124,24 +124,14 @@ export default defineNuxtConfig({
 
     optimizeDeps: {
       include: [
-        'primevue/config',
         'dayjs', // CJS
         'dayjs/plugin/calendar', // CJS
         'dayjs/plugin/duration', // CJS
         'dayjs/plugin/relativeTime', // CJS
         'dayjs/plugin/timezone', // CJS
         'dayjs/plugin/utc', // CJS
-        'primevue/inputtext',
-        'primevue/skeleton',
-        'primevue/card',
-        'primevue/select',
-        'primevue/button',
-        'primevue/menu',
         'tailwind-merge',
         'zod',
-        'primevue/avatar',
-        'primevue/divider',
-        'primevue/toggleswitch',
         '@faker-js/faker',
       ]
     }
