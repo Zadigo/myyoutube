@@ -1,11 +1,13 @@
 <template>
-  <div ref="videoContainerEl" class="relative minx-h-[300px] md:min-h-125 xl:min-h-175 z-20 flex items-center justify-center cursor-pointer bg-primary-900 dark:bg-primary-950 mx-auto overflow-hidden rounded-lg">
+  <div ref="videoContainerEl" class="relative minx-h-[300px] md:min-h-125 xl:min-h-210 z-20 flex items-center justify-center cursor-pointer bg-primary-50 dark:bg-primary-950 mx-auto overflow-hidden rounded-lg">
     <client-only>
       <template #default>
-        <video ref="videoPlayerEl" class="w-full touch-manipulation has-[source]:h-full" preload="metadata" controlist="nodownload" oncontextmenu="return false;" @loadedmetadata="handleVideoMetadata" @timeupdate="handleVideoMetadata" @canplay="handleCanPlay" @click.stop="handlePlayPause">
-          <source :src="videoSource" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
+        <u-context-menu :items="VideoContextMenuItems">
+          <video ref="videoPlayerEl" class="w-full touch-manipulation has-[source]:h-full" preload="metadata" controlist="nodownload" oncontextmenu="return false;" @loadedmetadata="handleVideoMetadata" @timeupdate="handleVideoMetadata" @canplay="handleCanPlay" @click.stop="handlePlayPause">
+            <source :src="videoSource" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </u-context-menu>
       </template>
 
       <template #placeholder>
@@ -35,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { useVideoPlayer, useVideoPlayerControls } from './utils'
+import { useVideoPlayer, useVideoPlayerControls, VideoContextMenuItems } from './utils'
 import type { Undefineable } from '#shared/types/utils'
 import type { VideoTechnicalDetails } from '#shared/types/video'
 

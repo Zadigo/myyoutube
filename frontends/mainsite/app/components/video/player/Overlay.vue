@@ -4,8 +4,8 @@
 
     <!-- Fact checking -->
     <div v-if="showFactCheck" id="fact-checking" class="absolute z-50 bottom-30 left-6/12 -translate-x-6/12 p-5 shadow-sm rounded-lg bg-primary-700 dark:bg-primary-900 text-primary-50">
-      <h2 class="text-3xl flex items-center gap-2">
-        Fact checking (0:15)
+      <h2 class="text-3xl flex items-center gap-2 mb-3">
+        Fact check (0:15)
       </h2>
 
       <div class="flex gap-2">
@@ -28,12 +28,14 @@
       </p>
     </div>
 
-    <div v-if="showGeneralAlert" id="general-alert" class="absolute z-50 top-2 right-2 rounded-lg bg-primary-700 dark:bg-primary-900 text-primary-50 max-w-100 p-2">
+    <div v-if="showGeneralAlert" id="general-alert" class="absolute z-20 top-2 right-2 rounded-lg bg-primary-700/30 backdrop-blur-2xl dark:bg-primary-900 text-primary-50 max-w-100 p-2">
       <div class="flex items-center justify-around gap-4">
         <div>
           <u-avatar src="/avatars/avatar1.png" />
         </div>
-        <p class="">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex tempore aperiam nostrum</p>
+        <p class="text-sm font-light">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex tempore aperiam nostrum
+        </p>
       </div>
     </div>
   </div>
@@ -41,7 +43,7 @@
 
 <script setup lang="ts">
 const showFactCheck = refAutoReset(false, 3000)
-const showGeneralAlert = refAutoReset(false, 3000)
+const showGeneralAlert = refAutoReset(true, 3000)
 
 interface FactCheckData { name: string, time: string, content: string }
 type GeneralAlertData = Omit<FactCheckData, 'time'> & { url: string }

@@ -1,7 +1,48 @@
 import type { Arrayable, Nullable, Undefineable} from '#shared/types/utils'
 import type { VideoTechnicalDetails } from '#shared/types/video'
+import type { ContextMenuItem } from '@nuxt/ui'
 
 export type VideoPlayerEl = Ref<Nullable<HTMLVideoElement>>
+
+export const VideoContextMenuItems: ContextMenuItem[][] = [
+  [
+    {
+      label: 'Copy video URL',
+      kbds: [ 'meta', 'c' ]
+    },
+    {
+      label: 'Copy video URL at current time',
+      kbds: [ 'shift', 'meta', 'c' ]
+    },
+  ],
+  [
+    {
+      label: 'Developer',
+      children: [
+        [
+          {
+            label: 'View Source',
+            kbds: [ 'meta', 'shift', 'u' ]
+          },
+          {
+            label: 'Developer Tools',
+            kbds: [ 'option', 'meta', 'i' ]
+          },
+          {
+            label: 'Inspect Elements',
+            kbds: [ 'option', 'meta', 'c' ]
+          }
+        ],
+        [
+          {
+            label: 'JavaScript Console',
+            kbds: [ 'option', 'meta', 'j' ]
+          }
+        ]
+      ]
+    }
+  ]
+]
 
 const [useVideoPlayer, _useVideoPlayerStore] = createInjectionState((el: VideoPlayerEl, videoSource: Undefineable<string>) => {
   const hasPlayer = computed(() => isDefined(el) && isDefined(el.value) && isDefined(videoSource))
@@ -270,7 +311,7 @@ export function useVideoPlayerOptions(videoPlayerEl: VideoPlayerEl) {
     }
   })
 
-  watch(quality, (newQuality) => {
+  watch(quality, (_newQuality) => {
     if (isDefined(videoPlayerEl)) {
       // Implement quality change logic here
     }

@@ -8,12 +8,12 @@
         </u-button>
 
         <!-- Subscribers -->
-        <p class="text-muted my-2">
+        <p class="my-2 text-slate-400 font-semibold">
           345.6K subscribers
         </p>
         
         <!-- Participants -->
-        <video-participants class="py-5" />
+        <lazy-video-participants class="py-5" hydrate-on-idle />
         
         <!-- Description -->
         <div class="bg-primary-50 dark:bg-primary-800/20 rounded-lg font-light my-4 p-4 cursor-pointer hover:bg-primary-100 dark:hover:bg-primary-800/40 transition duration-200">
