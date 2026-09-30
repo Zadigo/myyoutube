@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-2">
-    <StudioSettingBlock>
+    <studio-setting-block>
       <template #title>
         Monetization
       </template>
@@ -16,9 +16,9 @@
         <u-switch v-model="newVideo.monetization.ads" label="Enable monetization through Ads" />
         <u-switch v-model="newVideo.monetization.gifts" label="Enable monetization through gifts" />
       </template>
-    </StudioSettingBlock>
+    </studio-setting-block>
 
-    <StudioSettingBlock>
+    <studio-setting-block>
       <template #title>
         Participants
       </template>
@@ -30,15 +30,12 @@
       </template>
 
       <div class="my-5 space-y-2">
-        <div v-for="(participant, idx) in newVideo.participants" :key="idx" class="flex justify-start gap-1">
+        <div v-for="(participant, idx) in newVideo.participants" :key="idx" class="flex justify-start items-center gap-1">
           <u-input v-model="participant.fullname" placeholder="Full name" />
           <u-input v-model="participant.url" type="url" placeholder="Social url" />
-          
-          <u-select v-model="participant.handle" :options="Array.from(SOCIALS)" placeholder="User handle" />
+          <u-select v-model="participant.handle" :items="Array.from(SOCIALS)" class="w-35" placeholder="User handle" />
 
-          <u-button @click="() => removeParticipant(idx)">
-            <Icon name="i-fa7-solid:trash" />
-          </u-button>
+          <u-button icon="i-lucide-trash" variant="subtle" color="error" @click="() => removeParticipant(idx)" />
         </div>
 
         <u-button class="mt-5" rounded @click="addParticipant">
@@ -46,9 +43,9 @@
           Add participant
         </u-button>
       </div>
-    </StudioSettingBlock>
+    </studio-setting-block>
 
-    <StudioSettingBlock>
+    <studio-setting-block>
       <template #title>
         LLM Generation and Text transcription
       </template>
@@ -62,7 +59,7 @@
       </template>
 
       <u-file-upload type="file" label="Upload a text transcription of your video" />
-    </StudioSettingBlock>
+    </studio-setting-block>
   </div>
 </template>
 

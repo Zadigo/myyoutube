@@ -65,7 +65,11 @@
           </template>
 
           <u-switch v-model="newVideo.visibility.panelize" :label="newVideo.visibility.panelize ? 'Limit to panel' : 'Everyone'" />
-          <u-input v-if="newVideo.visibility.panelize" class="w-full" placeholder="Enter user emails" />
+          <u-input v-if="newVideo.visibility.panelize" class="w-full" placeholder="Enter user emails">
+            <template #leading>
+              <icon name="i-lucide-mail" />
+            </template>
+          </u-input>
         </StudioSubSettingBlock>
       </template>
     </StudioSettingBlock>

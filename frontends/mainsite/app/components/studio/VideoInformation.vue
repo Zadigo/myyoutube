@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-2">
     <!-- Title/Description -->
-    <StudioSettingBlock>
+    <studio-setting-block>
       <template #description>
         Your title should be an accurate representation of your video and can influence user moderation
         if it is misleading or not. The title should be short and concise, ideally under 60 characters.
@@ -10,12 +10,12 @@
       
       <template #actions>
         <u-input v-model="newVideo.title" class="w-full" placeholder="Title" />
-        <u-textarea v-model="newVideo.description" cols="4" class="my-1 w-full resize-none" placeholder="Description" />
+        <u-textarea v-model="newVideo.description" :style="{ resize: 'none' }" cols="4" class="my-1 w-full resize-none" placeholder="Description" />
       </template>
-    </StudioSettingBlock>
+    </studio-setting-block>
 
     <!-- Ranking -->
-    <StudioSettingBlock help="/help/video-ranking" callout>
+    <studio-setting-block help="/help/video-ranking" callout>
       <template #title>
         Video ranking
       </template> 
@@ -30,10 +30,10 @@
         <u-input-menu v-model="newVideo.category" :items="categories" item-label="title" placeholder="Select a category" />
         <u-input-menu v-model="newVideo.subcategory" :items="subCategories" item-label="title" placeholder="Select a sub-category" />
       </template>
-    </StudioSettingBlock>
+    </studio-setting-block>
 
     <!-- Thumbnail -->
-    <StudioSettingBlock help="/help/video-thumbnail" callout>
+    <studio-setting-block help="/help/video-thumbnail" callout>
       <template #title>
         Thumbnail
       </template>
@@ -48,10 +48,10 @@
           <nuxt-img :src="frame[1]" class="img-fluid" alt="" />
         </div>
       </template>
-    </StudioSettingBlock>
+    </studio-setting-block>
 
     <!-- Paid Promotion -->
-    <StudioSettingBlock help="/help/video-thumbnail" callout>
+    <studio-setting-block help="/help/video-thumbnail" callout>
       <template #title>
         Paid promotion
       </template>
@@ -65,18 +65,19 @@
       <u-switch v-model="newVideo.has_paid_promotion" label="My video contains paid promotion like a product placement, sponsorship, or endorsement" />
 
       <div v-if="newVideo.has_paid_promotion" class="font-light italic my-3">
-        By selecting this box, you confirm that the paid promotion 
-        follows our ad policies and any applicable laws and regulations
+        <p>
+          By selecting this box, you confirm that the paid promotion
+          follows our ad policies and any applicable laws and regulations
+        </p>
 
-        <u-button variant="subtle" class="mt-2" href="/help/video-paid-promotion">
-          <Icon name="i-fa7-solid:external-link-alt" class="me-2" />
+        <u-button icon="i-fa7-solid:external-link-alt" variant="subtle" class="mt-2" href="/help/video-paid-promotion">
           Learn more
         </u-button>
       </div>
-    </StudioSettingBlock>
+    </studio-setting-block>
     
     <!-- Tags -->
-    <StudioSettingBlock>
+    <studio-setting-block>
       <template #title>
         Tags
       </template>
@@ -90,10 +91,10 @@
       <template #actions>
         <u-input-menu :items="newVideo.tags" placeholder="Tags" class="w-full" />
       </template>
-    </StudioSettingBlock>
+    </studio-setting-block>
 
     <!-- Language/Location -->
-    <StudioSettingBlock>
+    <studio-setting-block>
       <template #title>
         Language and location
       </template>
@@ -106,11 +107,11 @@
 
       <template #actions>
         <div class="w-80 space-y-2">
-          <u-select v-model="newVideo.publication.language" :items="languages" class="w-full" />
+          <u-select-menu v-model="newVideo.publication.language" :items="languages" class="w-full" />
           <u-input-menu v-model="newVideo.publication.recording_location" :items="locations" class="w-full" placeholder="Location" />
         </div>
       </template>
-    </StudioSettingBlock>
+    </studio-setting-block>
   </div>
 </template>
 

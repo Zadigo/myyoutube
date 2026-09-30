@@ -6,3 +6,5 @@ export const SOCIALS = [
   'Instagram',
   'YouTube'
 ] as const
+
+export type Socials = (typeof SOCIALS)[number] | (string & {})

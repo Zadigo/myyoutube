@@ -63,7 +63,7 @@ const sortActionsMenuItem: SortActionsMenuItem[] = sortActions.map(action => {
 /**
  * Prepend the newly created comment to the pinned or unpinned comments list depending on its pinned status
  */
-async function handleNewComment (comment: VideoComments) {
+const handleNewComment = async (comment: VideoComments) => {
   if (comments.value) {
     // comments.value.unshift(comment)
   }

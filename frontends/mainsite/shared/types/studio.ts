@@ -1,4 +1,5 @@
 import type { _DatabaseObject } from './restframework'
+import type { Socials } from '~/constants'
 
 export interface Categories extends _DatabaseObject {
     title: string
@@ -39,7 +40,7 @@ export type NewVideoRequestData = {
     }
     participants: {
         fullname: string
-        url: string | null
-        handle: string
-    }[],
+        url: string
+        handle: Socials
+    }[]
 }
