@@ -1,6 +1,8 @@
 <template>
   <u-modal v-model:open="showShareModal">
-    Share
+    <template #body>
+      Share
+    </template>
   </u-modal>
 </template>
 
