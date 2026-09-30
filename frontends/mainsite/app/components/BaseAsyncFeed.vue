@@ -3,7 +3,7 @@
     <article v-for="video in data.data.allVideos.edges" :key="video.node.id" class="my-1">
       <u-card>
         <nuxt-link-locale :to="`/videos/${video.node.videoId}`">
-          <volt-skeleton height="200px" class="w-full" />
+          <u-skeleton class="w-full h-60" />
         </nuxt-link-locale>
 
         <div class="mt-3">

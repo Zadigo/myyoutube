@@ -1,15 +1,6 @@
 <template>
   <u-modal id="report-video" v-model:open="showReportModal" class="w-2xl" modal>
-    <volt-accordion v-for="reportType in reportTypes" :key="reportType.title">
-      <volt-accordion-panel :value="reportType.title">
-        <volt-accordion-header>{{ reportType.title }}</volt-accordion-header>
-        <volt-accordion-content>
-          <p>
-            {{ reportType.reports }}
-          </p>
-        </volt-accordion-content>
-      </volt-accordion-panel>
-    </volt-accordion>
+    <u-accordion v-for="reportType in REPORT_TYPES" :key="reportType.title" />
 
     <p class="font-bold mt-5">
       Flag the section you believe to be problematic

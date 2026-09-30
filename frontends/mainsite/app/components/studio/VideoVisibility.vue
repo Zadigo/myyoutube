@@ -52,7 +52,7 @@
           </template>
 
           <u-switch v-model="newVideo.visibility.is_premiere" label="Announce première" />
-          <u-file-upload v-if="newVideo.visibility.is_premiere" description="Upload a teaser video for the premiere" />
+          <u-file-upload v-if="newVideo.visibility.is_premiere" v-model="newVideo.teaser" description="Upload a teaser video for the premiere" />
         </StudioSubSettingBlock>
 
         <StudioSubSettingBlock callout>
@@ -64,9 +64,7 @@
             within 5 minutes of the video being posted.
           </template>
 
-          <u-switch v-model="newVideo.visibility.panelize" />
           <u-switch v-model="newVideo.visibility.panelize" :label="newVideo.visibility.panelize ? 'Limit to panel' : 'Everyone'" />
-          
           <u-input v-if="newVideo.visibility.panelize" class="w-full" placeholder="Enter user emails" />
         </StudioSubSettingBlock>
       </template>
@@ -75,8 +73,7 @@
 </template>
 
 <script lang="ts" setup>
-const storeStudio = useStudioStore()
-const { newVideo } = storeToRefs(storeStudio)
+const { newVideo } = useNewVideoComposable()
 
 const ageRestrictedLabel = computed(() => {
   if (newVideo.value.visibility.age_restricted) {

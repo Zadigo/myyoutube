@@ -106,8 +106,8 @@
 
       <template #actions>
         <div class="w-80 space-y-2">
-          <u-select v-model="newVideo.publication.language" class="w-full" />
-          <u-input v-model="newVideo.publication.recording_location" class="w-full" placeholder="Location" />
+          <u-select v-model="newVideo.publication.language" :items="languages" class="w-full" />
+          <u-input-menu v-model="newVideo.publication.recording_location" :items="locations" class="w-full" placeholder="Location" />
         </div>
       </template>
     </StudioSettingBlock>
@@ -115,30 +115,31 @@
 </template>
 
 <script lang="ts" setup>
-const studioStore = useStudioStore()
-const { newVideo, hasCategory } = storeToRefs(studioStore)
+const { newVideo } = useNewVideoComposable()
 
-/**
- * Fetch subcategories based on the selected category
- */
-const { data: subCategories, execute: getSubcategories } = useFetch<Subcategories>(`/videos/categories/${newVideo.value.category}/sub-categories`, {
-  baseURL: useRuntimeConfig().public.djangoProdUrl,
-  method: 'GET',
-  immediate: false
-})
+const { data: subCategories, execute: getSubcategories } = useAsyncData(
+  `subCategories-${newVideo.value.category}`, 
+  () => $fetch(`/api/completion/${newVideo.value.category}/sub-categories`),
+  { method: 'GET', immediate: false, default: () => [] as Subcategories[]}
+)
 
-whenever(hasCategory, () => {
-  getSubcategories()
-})
+const { data: categories } = useAsyncData(
+  'categories', 
+  () => $fetch<Categories>('/api/completion/categories'), 
+  { method: 'GET', default: () => [] as Categories[] }
+)
 
-const { execute, data: categories } = useFetch<Categories>('/videos/categories', {
-  baseURL: useRuntimeConfig().public.djangoProdUrl,
-  keepalive: true,
-  lazy: true,
-  method: 'GET'
-})
+const { data: languages } = useAsyncData(
+  'languages',
+  () => $fetch<string[]>('/api/completion/languages'),
+  { method: 'GET', default: () => [] as string[] }
+)
 
-await execute()
+const { data: locations } = useAsyncData(
+  'locations',
+  () => $fetch<string[]>('/api/completion/locations'),
+  { method: 'GET', default: () => [] as string[] }
+)
 
 const frames = ref<string | null>(null)
 </script>

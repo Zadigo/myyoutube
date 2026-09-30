@@ -2,14 +2,14 @@
   <section id="community-note">
     <div v-if="communityNote" class="grid grid-cols-2 gap-2">
       <div class="col-span-2 mb-5">
-        <nuxt-card>
+        <u-card>
           <template #content>
             <u-button to="/community-notes">
               <icon name="i-lucide-arrow-left" />
               Back
             </u-button>
           </template>
-        </nuxt-card>
+        </u-card>
       </div>
 
       <!-- User Information -->

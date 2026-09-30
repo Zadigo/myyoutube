@@ -39,14 +39,14 @@ export default defineNuxtConfig({
 
   vuefire: {
     config: {
-      apiKey: process.env.NUXT_PUBLIC_FIREBASE_API_KEY,
-      authDomain: process.env.NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-      dbUrl: process.env.NUXT_PUBLIC_FIREBASE_DB_URL,
-      storageBucket: process.env.NUXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-      appId: process.env.NUXT_PUBLIC_FIREBASE_APP_ID,
-      measurementId: process.env.NUXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
-      messageSenderId: process.env.NUXT_PUBLIC_FIREBASE_MESSAGE_SENDER_ID,
-      projectId: process.env.NUXT_PUBLIC_FIREBASE_PROJECT_ID
+      apiKey: process.env.NUXT_FIREBASE_API_KEY,
+      authDomain: process.env.NUXT_FIREBASE_AUTH_DOMAIN,
+      dbUrl: process.env.NUXT_FIREBASE_DB_URL,
+      storageBucket: process.env.NUXT_FIREBASE_STORAGE_BUCKET,
+      appId: process.env.NUXT_FIREBASE_APP_ID,
+      measurementId: process.env.NUXT_FIREBASE_MEASUREMENT_ID,
+      messageSenderId: process.env.NUXT_FIREBASE_MESSAGE_SENDER_ID,
+      projectId: process.env.NUXT_FIREBASE_PROJECT_ID
     }
   },
 
@@ -62,7 +62,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/ui',
     '@vueuse/nuxt',
-    'nuxt-authentication',
+    // 'nuxt-authentication',
     'nuxt-vuefire'
   ],
 
@@ -91,10 +91,10 @@ export default defineNuxtConfig({
     ]
   },
 
-  nuxtAuthentication: {
-    enabled: false,
-    domain: 'http://127.0.0.1:8000',
-  },
+  // nuxtAuthentication: {
+  //   enabled: false,
+  //   domain: 'http://127.0.0.1:8000',
+  // },
 
   i18n: {
     baseUrl: './',
@@ -172,8 +172,8 @@ export default defineNuxtConfig({
       djangoCommentsProdUrl: process.env.NUXT_DJANGO_COMMENTS_PROD_URL || 'http://127.0.0.1:8004',
 
       // Quart & Go APIs
-      apiCategories: process.env.NUXT_QUART_CATEGORIES_PROD_URL || 'http://127.0.0.1:5000',
-      apiReports: process.env.NUXT_QUART_REPORTS_PROD_URL || 'http://127.0.0.1:5001',
+      // apiCategories: process.env.NUXT_QUART_CATEGORIES_PROD_URL || 'http://127.0.0.1:5000',
+      // apiReports: process.env.NUXT_QUART_REPORTS_PROD_URL || 'http://127.0.0.1:5001',
       apiUploads: process.env.NUXT_GO_UPLOADS_PROD_URL || 'http://127.0.0.1:8080',
     }
   },

@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-useNuxtAuthentication()
+// useNuxtAuthentication()
 
 /**
  * Sidebar

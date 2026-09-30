@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <volt-skeleton v-else />
+      <u-skeleton class="w-full h-30" v-else />
 
       <!-- Actions -->
       <video-actions-buttons @action:modal="emit('action:modal', $event)" />
@@ -24,8 +24,8 @@
 
   <u-card v-else>
     <div class="space-y-2">
-      <volt-skeleton height="50px" />
-      <volt-skeleton height="50px" />
+      <u-skeleton class="w-full h-30" />
+      <u-skeleton class="w-full h-30" />
     </div>
   </u-card>
 </template>

@@ -34,14 +34,14 @@
           <u-input v-model="participant.fullname" placeholder="Full name" />
           <u-input v-model="participant.url" type="url" placeholder="Social url" />
           
-          <u-select v-model="participant.handle" :options="socials" placeholder="User handle" />
+          <u-select v-model="participant.handle" :options="Array.from(SOCIALS)" placeholder="User handle" />
 
-          <u-button @click="() => handleRemoveParticipant(idx)">
+          <u-button @click="() => removeParticipant(idx)">
             <Icon name="i-fa7-solid:trash" />
           </u-button>
         </div>
 
-        <u-button class="mt-5" rounded @click="handleAddParticipant">
+        <u-button class="mt-5" rounded @click="addParticipant">
           <Icon name="i-fa7-solid:plus" class="me-2" />
           Add participant
         </u-button>
@@ -67,33 +67,5 @@
 </template>
 
 <script lang="ts" setup>
-const socials = [
-  'Facebook',
-  'X',
-  'Instagram',
-  'YouTube'
-]
-
-const studioStore = useStudioStore()
-const { newVideo } = storeToRefs(studioStore)
-
-/**
- * This function adds a new participant to the
- * video being created. The participant is initialized
- */
-function handleAddParticipant () {
-  newVideo.value.participants.push({
-    fullname: '',
-    url: null,
-    handle: 'Instagram'
-  })
-}
-
-/**
- * This function removes a participant from the
- * video being created. The participant is removed
- */
-function handleRemoveParticipant(index: number) {
-  newVideo.value.participants.splice(index, 1)
-}
+const { newVideo, addParticipant, removeParticipant } = useNewVideoComposable()
 </script>

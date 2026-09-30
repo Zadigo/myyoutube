@@ -30,7 +30,7 @@ export const DEFAULT_REPORT_TYPES = [...DEFAULT_SEXUAL_CONTENT, ...DEFAULT_VIOLE
 
 export type DefaultReportTypes = DefaultSexualContentReport | DefaultViolentOrRepulsive | DefaultHatredOrAbusive
 
-export const reportTypes: { title: string, reports: DefaultReportTypes[] }[] = [
+export const REPORT_TYPES: { title: string, reports: DefaultReportTypes[] }[] = [
   {
     'title': 'Sexual content',
     'reports': [

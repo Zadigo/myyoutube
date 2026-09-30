@@ -16,7 +16,7 @@
       <div class="col-span-7">
         <client-only>
           {{ isPlaying }}
-          <volt-slider v-model="sliderValue" :min="0" :max="100" />
+          <u-slider v-model="sliderValue" :min="0" :max="100" />
         </client-only>
       </div>
 

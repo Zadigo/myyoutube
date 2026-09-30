@@ -1,2 +1,4 @@
-export default defineEventHandler(async (_event) => {
+export default defineEventHandler(async (event) => {
+  const options = await readBody(event)
+  console.log(options)
 })

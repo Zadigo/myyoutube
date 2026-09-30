@@ -29,8 +29,8 @@
         <template #fallback>
           <div class="grid grid-cols-4 auto-rows-min gap-2">
             <div v-for="i in 28" :key="i">
-              <volt-skeleton height="150px" />
-              <volt-skeleton class="mt-1" height="20px" width="30%" />
+              <u-skeleton class="w-full" />
+              <u-skeleton class="mt-1 w-full" />
             </div>
           </div>
         </template>

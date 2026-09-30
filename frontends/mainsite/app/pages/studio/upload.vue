@@ -23,7 +23,7 @@
       </u-stepper>
 
       <template #footer>
-        <u-button :disabled="!isFinalStep" @click="studioStore.submit">
+        <u-button @click="submit">
           Complete
         </u-button>
       </template>
@@ -34,11 +34,7 @@
 <script lang="ts" setup>
 import type { StepperItem } from '@nuxt/ui'
 
-const studioStore = useStudioStore()
-const { newVideo } = storeToRefs(studioStore)
-
-const activeStep = ref<number>(1)
-const isFinalStep = computed(() => activeStep.value === 4)
+const { submit } = useNewVideoComposable()
 
 const items = ref<StepperItem[]>([
   {

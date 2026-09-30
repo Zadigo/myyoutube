@@ -28,7 +28,7 @@
           </template>
 
           <template #fallback>
-            <volt-skeleton height="100px" />
+            <u-skeleton class="w-full" />
           </template>
         </suspense>
       </div>
@@ -47,7 +47,7 @@
           </template>
 
           <template #fallback>
-            <volt-skeleton height="100px" />
+            <u-skeleton class="w-full" />
           </template>
         </suspense>
       </div>

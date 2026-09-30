@@ -1,3 +1,3 @@
 export default defineEventHandler(async (_event) => {
-  return [] as Subcategories[]
+  return ['English'] as string[]
 })
