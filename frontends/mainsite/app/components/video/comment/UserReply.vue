@@ -1,5 +1,5 @@
 <template>
-  <article class="my-1 shadow-none bg-primary-50 rounded-lg max-w-5xl ms-auto">
+  <article ref="replyCardEl" class="my-1 shadow-none bg-primary-50 rounded-lg max-w-5xl ms-auto">
     <u-card>
       <div class="flex justify-around">
         <div class="me-3">
@@ -35,9 +35,14 @@
               26
             </u-button>
               
-            <u-button icon="i-lucide-reply" variant="subtle" size="sm">
+            <u-button icon="i-lucide-reply" variant="subtle" size="sm" @click="() => { toggleReplyTextarea() }">
               Repondre
             </u-button>
+          </div>
+
+          <!-- Reply textarea -->
+          <div v-if="showReplyTextarea">
+            <u-textarea :style="{ resize: 'none' }" class="w-full mt-5" placeholder="Write a reply..." />
           </div>
         </div>
       </div>
@@ -47,4 +52,15 @@
 
 <script lang="ts" setup>
 defineProps<{ reply: VideoReplyNode }>()
+
+const [showReplyTextarea, toggleReplyTextarea] = useToggle()
+
+/**
+ * Click outside
+ */
+
+const replyCardEl = useTemplateRef('replyCardEl')
+onClickOutside(replyCardEl, () => {
+  toggleReplyTextarea(false)
+})
 </script>

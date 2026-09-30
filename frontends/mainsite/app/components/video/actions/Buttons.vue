@@ -14,25 +14,19 @@
     
     <!-- Extra Actions -->
     <u-dropdown-menu id="more-actions" :items="menuItems">
-      <u-button size="xl">
+      <u-button class="w-10 h-10" size="xl">
         <icon name="i-lucide-ellipsis-vertical" />
       </u-button>
     </u-dropdown-menu>
 
-    <u-dropdown-menu v-if="active" id="more-actions" size="xl" :items="subscribeMenuItems" rounded>
-      <u-button size="xl">
-        <icon name="i-lucide-bell-off" />
-      </u-button>
+    <u-dropdown-menu v-if="active" id="more-actions" :items="subscribeMenuItems" class="ml-2">
+      <u-button icon="i-lucide-bell-off" class="w-10 h-10" />
     </u-dropdown-menu>
-
-    <u-button v-else size="xl" color="neutral" class="ml-5" @click="() => { subscribe() }">
-      <icon name="i-lucide-bell" />
-    </u-button>
+    <u-button v-else class="w-10 h-10 ml-2" icon="i-lucide-bell" variant="subtle" color="neutral" @click="() => { subscribe() }" />    
   </div>
 </template>
 
 <script lang="ts" setup>
-
 import type { DropdownMenuItem } from '@nuxt/ui'
 
 const emit = defineEmits<{ 'action:modal': [method: DefaultVideoMenuActions] }>()

@@ -10,6 +10,18 @@ export function useVideoRatingComposable(_video: Undefineable<Refeable<Undefinea
   const [liked, like] = useToggle(false)
   const [unliked, dislike] = useToggle(false)
 
+  watch(liked, (newValue) => {
+    if (newValue) {
+      dislike(false)
+    }
+  })
+
+  watch(unliked, (newValue) => {
+    if (newValue) {
+      like(false)
+    }
+  })
+
   return {
     /**
      * Reactive property indicating if the video is liked
@@ -47,22 +59,22 @@ export function useVideoSubscriptionComposable(_video: Undefineable<Refeable<Und
   const subscribeMenuItems: DropdownMenuItem[] = [
     {
       label: 'All',
-      icon: 'i-lucide-bullhorn',
-      command: () => {
+      icon: 'i-lucide-bell-ring',
+      onSelect: () => {
         mode.value = 'All'
       }
     },
     {
       label: 'None',
-      icon: 'i-lucide-bell-slash',
-      command: () => {
+      icon: 'i-lucide-bell-off',
+      onSelect: () => {
         mode.value = null
       }
     },
     {
       label: 'Unsubscribe',
       icon: 'i-lucide-user-minus',
-      command: () => {
+      onSelect: () => {
         mode.value = 'None'
         active.value = false
       }

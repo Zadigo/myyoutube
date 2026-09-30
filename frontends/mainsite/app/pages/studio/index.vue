@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts" setup>
-const { data: userVideos, execute } = useAsyncData<VideoInfo[]>('user-videos', () => $fetch('/api/studio/videos', {
+const { data: userVideos, execute } = useAsyncData<VideoInfo[]>('user-videos', async () => await $fetch('/api/studio/videos', {
   method: 'GET'
 }))
 

@@ -16,7 +16,7 @@
       <u-separator class="my-3" />
 
       <!-- Actions -->
-      <video-comment-section-actions @new-comment="handleNewComment" />
+      <video-comment-section-actions @new-comment="(comment) => { void handleNewComment(comment) }" />
     </u-card>
     
     <!-- Comments -->
@@ -41,16 +41,18 @@ type SortActionsMenuItem = {
   label: SortActions
 }
 
+const currentVideo = inject<Ref<VideoDetails>>(CURRENT_VIDEO_SYMBOL)
+
 /**
  * Comments
  */
 
-const { comments, pinnedComments, unpinnedComments, sortCommentsBy } = await useCommentsComposable()
+const { comments, pinnedComments, unpinnedComments, sortCommentsBy } = await useCommentsComposable(currentVideo)
 
 const sortActionsMenuItem: SortActionsMenuItem[] = sortActions.map(action => {
   return {
     label: action,
-    command: sortCommentsBy
+    onSelect: () => void sortCommentsBy(action)
   }
 })
 
@@ -59,9 +61,7 @@ const sortActionsMenuItem: SortActionsMenuItem[] = sortActions.map(action => {
  */
 
 /**
- * Append the newly created comment by implementing it
- * at the start of the current comment list
- * @todo - Send to backend
+ * Prepend the newly created comment to the pinned or unpinned comments list depending on its pinned status
  */
 async function handleNewComment (comment: VideoComments) {
   if (comments.value) {

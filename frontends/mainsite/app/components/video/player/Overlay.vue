@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 const showFactCheck = refAutoReset(false, 3000)
-const showGeneralAlert = refAutoReset(true, 3000)
+const showGeneralAlert = refAutoReset(false, 3000)
 
 interface FactCheckData { name: string, time: string, content: string }
 type GeneralAlertData = Omit<FactCheckData, 'time'> & { url: string }

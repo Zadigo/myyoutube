@@ -1,4 +1,4 @@
-import type { Arrayable, VideoCommentNode, VideoComments } from '~/types'
+import type { VideoCommentNode, VideoComments } from '#shared/types/comments'
 
 export const sortActions = [
   'Newest',
@@ -16,7 +16,7 @@ export type SortActionsMenuItem = {
 /**
  * Composable to handle comments fetching and sorting
  */
-export async function useCommentsComposable() {
+export async function useCommentsComposable(currentVideo: Ref<VideoDetails>) {
   const comments = ref<Arrayable<VideoCommentNode>>()
   
   const queryParams = ref({
@@ -25,11 +25,11 @@ export async function useCommentsComposable() {
     offset: 0
   })
 
-  const { data, refresh } = await useFetch<VideoComments>('/api/comments', {
+  const { data, refresh } = await useAsyncData<VideoComments>(`comments-${currentVideo.value.id}`, async () => await $fetch('/api/comments', {
     method: 'GET',
     immediate: true,
     query: queryParams.value
-  })
+  }))
   
   if (isDefined(data)) {
     comments.value = data.value.data.videocomments.edges
@@ -96,12 +96,12 @@ export async function useCommentsComposable() {
  * Composable to handle comment creation
  * and replying to comments
  */
-export function useCreateCommentComposable() {
+export function useCreateCommentComposable(videoId: string) {
   const newComment = ref('')
 
   async function create() {
     if (isDefined(newComment)) {
-      await $fetch('/api/comments', {
+      await $fetch(`/api/videos/${videoId}/comment`, {
         method: 'POST',
         body: {
           content: newComment.value
@@ -110,11 +110,12 @@ export function useCreateCommentComposable() {
     }
   }
 
-  async function reply() {
+  async function reply(commentId: string) {
     if (isDefined(newComment)) {
-      await $fetch('/api/comments', {
+      await $fetch(`/api/videos/${videoId}/comment/reply`, {
         method: 'POST',
         body: {
+          commentId,
           content: newComment.value
         }
       })

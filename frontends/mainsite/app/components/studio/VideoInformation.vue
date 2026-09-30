@@ -119,26 +119,22 @@ const { newVideo } = useNewVideoComposable()
 
 const { data: subCategories, execute: getSubcategories } = useAsyncData(
   `subCategories-${newVideo.value.category}`, 
-  () => $fetch(`/api/completion/${newVideo.value.category}/sub-categories`),
-  { method: 'GET', immediate: false, default: () => [] as Subcategories[]}
+  async () => await $fetch(`/api/completion/${newVideo.value.category}/sub-categories`, { method: 'GET', immediate: false }), { default: () => [] as Subcategories[] }
 )
 
 const { data: categories } = useAsyncData(
   'categories', 
-  () => $fetch<Categories>('/api/completion/categories'), 
-  { method: 'GET', default: () => [] as Categories[] }
+  async () => await $fetch<Categories>('/api/completion/categories', { method: 'GET' }), { default: () => [] as Categories[] }
 )
 
 const { data: languages } = useAsyncData(
   'languages',
-  () => $fetch<string[]>('/api/completion/languages'),
-  { method: 'GET', default: () => [] as string[] }
+  async () => await $fetch<string[]>('/api/completion/languages', { method: 'GET' }), { default: () => [] as string[] }
 )
 
 const { data: locations } = useAsyncData(
   'locations',
-  () => $fetch<string[]>('/api/completion/locations'),
-  { method: 'GET', default: () => [] as string[] }
+  async () => await $fetch<string[]>('/api/completion/locations', { method: 'GET' }), { default: () => [] as string[] }
 )
 
 const frames = ref<string | null>(null)

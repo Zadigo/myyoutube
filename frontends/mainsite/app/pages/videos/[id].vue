@@ -9,17 +9,17 @@
       </client-only>
     </section>
 
+    <!-- Actions -->
     <section id="information" class="mt-4">
-      <!-- Actions -->
-      <video-actions-card @action:modal="openModal" />
+      <lazy-video-actions-card hydrate-on-idle @action:modal="openModal" />
     </section>
     
     <section class="grid grid-cols-12 gap-2 mt-4">
-      <!-- Comments -->
       <div class="col-span-8">
         <!-- Information -->
         <lazy-video-information hydrate-on-idle />
 
+        <!-- Comments -->
         <suspense>
           <template #default>
             <client-only>
@@ -84,35 +84,24 @@ const AsyncRecommendationSection = defineAsyncComponent({
  * Get Video
  */
 
-provideLocal(IS_LOADING_SYMBOL, ref<boolean>(true))
-provideLocal(CURRENT_VIDEO_SYMBOL, ref<Undefineable<VideoDetails>>(undefined))
+const { id: videoId } = useRoute().params as { id: string }
+const { data: currentVideo, status } = await useAsyncData(`video-${videoId}`, async () => await $fetch<VideoDetails>(`/api/videos/${videoId}`, {
+  method: 'POST'
+}), {
+  lazy: true,
+  default: () => ({} as VideoDetails)
+})
 
-const isLoading = injectLocal<Ref<boolean>>(IS_LOADING_SYMBOL)
-const currentVideo = injectLocal<Ref<Undefineable<VideoDetails>>>(CURRENT_VIDEO_SYMBOL)
+const isLoading = computed(() => toValue(status) !== 'pending')
 
-try {
-  const { id: videoId } = useRoute().params as { id: string }
-  // const data = await $fetch<VideoDetails>(`/api/videos/${videoId}`, {
-  //   method: 'POST'
-  // })
-  const { data } = await useAsyncData(`video-${videoId}`, () => $fetch<VideoDetails>(`/api/videos/${videoId}`, {
-    method: 'POST'
-  }), {
-    default: () => ({} as VideoDetails)
-  })
-  
-  if (isLoading) isLoading.value = false
-  if (currentVideo) currentVideo.value = toValue(data)
-} catch (e) {
-  console.log(e)
-}
+provide(IS_LOADING_SYMBOL, isLoading)
+provide(CURRENT_VIDEO_SYMBOL, currentVideo)
 
 /**
  * Video
  */
 
 const videoSource = computed(() => currentVideo && isDefined(currentVideo) ? currentVideo.value.video : '')
-// const videoSource = ref(undefined)
 
 /**
  * Playing Details & History
