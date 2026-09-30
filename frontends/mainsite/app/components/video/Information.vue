@@ -1,5 +1,5 @@
 <template>
-  <u-card class="mt-4">
+  <u-card>
     <div v-if="currentVideo" class="grid grid-cols-1 md:grid-cols-12">        
       <div class="col-span-12">
         <u-button :to="`/channels/${currentVideo.userChannel.reference}`" variant="outline">

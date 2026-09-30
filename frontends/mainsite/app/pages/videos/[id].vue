@@ -12,14 +12,14 @@
     <section id="information" class="mt-4">
       <!-- Actions -->
       <video-actions-card @action:modal="openModal" />
-
-      <!-- Information -->
-      <lazy-video-information hydrate-on-idle />
     </section>
-
+    
     <section class="grid grid-cols-12 gap-2 mt-4">
       <!-- Comments -->
       <div class="col-span-8">
+        <!-- Information -->
+        <lazy-video-information hydrate-on-idle />
+
         <suspense>
           <template #default>
             <client-only>
