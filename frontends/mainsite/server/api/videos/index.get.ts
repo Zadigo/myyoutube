@@ -1,10 +1,11 @@
 import { createErrorTemplate } from '~/utils/errors'
 import jsonFeed from '~~/public/fixtures/feed.json'
 
-export default defineEventHandler(async (_event) => {
+export default defineEventHandler(async (event) => {
   try {
+    const _query = getQuery<SearchQuery>(event)
     console.log(jsonFeed)
-    return jsonFeed as FeedVideos
+    return jsonFeed
 
     // const _query = getQuery<SearchQuery>(event)
     // const { toPaginated, fixtures } = useLoadFixtures()

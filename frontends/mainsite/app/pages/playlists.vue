@@ -40,8 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import { useCreatePlaylist } from '~/composables/use'
-
 /**
  * Playlist
  */

@@ -4,9 +4,9 @@
     <u-card class="shadow-sm">
       <form class="grid gap-2 grid-cols-1 xl:grid-cols-4" @submit.prevent>
         <u-input v-model="search" placeholder="Search" class="col-span-1 xl:col-span-3" />
-        <u-select v-model="category" :items="DEFAULT_CATEGORIES_SELECT_ITEMS" class="col-span-1 xl:col-span-2" option-label="name" placeholder="Categories" />
-        <u-select v-model="videoLength" :items="DEFAULT_VIDEO_LENGTH_SELECT_ITEMS" class="col-span-1 xl:col-span-1" option-label="name" placeholder="Video length" />
-        <u-select v-model="uploadDate" :items="DEFAULT_UPLOAD_DATE_SELECT_ITEMS" class="col-span-1 xl:col-span-1" option-label="name" placeholder="Upload date" />
+        <u-select-menu v-model="category" :items="DEFAULT_CATEGORIES_SELECT_ITEMS" class="col-span-1 xl:col-span-2" placeholder="Categories" multiple />
+        <u-select v-model="videoLength" :items="DEFAULT_VIDEO_LENGTH_SELECT_ITEMS" class="col-span-1 xl:col-span-1" placeholder="Video length" />
+        <u-select v-model="uploadDate" :items="DEFAULT_UPLOAD_DATE_SELECT_ITEMS" class="col-span-1 xl:col-span-1" placeholder="Upload date" />
       </form>
     </u-card>
 

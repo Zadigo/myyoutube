@@ -16,7 +16,7 @@ export const DEFAULT_VIDEO_LENGTH = [
 
 export type DefaultVideoLength = (typeof DEFAULT_VIDEO_LENGTH)[number]
 
-export const DEFAULT_VIDEO_LENGTH_SELECT_ITEMS = DEFAULT_VIDEO_LENGTH.map(length => ({ label: length } as SelectMenuItem))
+export const DEFAULT_VIDEO_LENGTH_SELECT_ITEMS = Array.from(DEFAULT_VIDEO_LENGTH).map(length => ({ label: length } as SelectMenuItem))
 
 export const DEFAULT_UPLOAD_DATE = [
   'Last hour',
@@ -28,4 +28,4 @@ export const DEFAULT_UPLOAD_DATE = [
 
 export type DefaultUploadDate = (typeof DEFAULT_UPLOAD_DATE)[number]
 
-export const DEFAULT_UPLOAD_DATE_SELECT_ITEMS = DEFAULT_UPLOAD_DATE.map(date => ({ label: date } as SelectMenuItem))
+export const DEFAULT_UPLOAD_DATE_SELECT_ITEMS = Array.from(DEFAULT_UPLOAD_DATE).map(date => ({ label: date } as SelectMenuItem))

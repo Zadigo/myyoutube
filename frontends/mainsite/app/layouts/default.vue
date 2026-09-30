@@ -2,7 +2,15 @@
   <section :class="{ full: !showSidebar }" class="relative">
     <header>
       <!-- Sidebar -->
-      <transition mode="out-in" enter-active-class="duration-500" leave-active-class="duration-400" enter-from-class="-translate-x-(--sidebar-width)" enter-to-class="translate-x-0" leave-from-class="opacity-100 translate-x-0" leave-to-class="opacity-0 -translate-x-(--sidebar-width)">
+      <transition 
+        mode="out-in"
+        enter-active-class="duration-500" 
+        leave-active-class="duration-400" 
+        enter-from-class="-translate-x-(--sidebar-width)" 
+        enter-to-class="translate-x-0" 
+        leave-from-class="opacity-100 translate-x-0" 
+        leave-to-class="opacity-0 -translate-x-(--sidebar-width)"
+      >
         <sidebars-site v-if="showSidebar" />
       </transition>
 

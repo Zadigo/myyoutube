@@ -1,12 +1,4 @@
 <template>
-  <!-- <div class="mx-3 mt-4 flex-col justify-between">
-    <div id="links" class="space-y-5">
-      <NuxtLink v-for="navLink in navLinks" :key="navLink.to" :to="navLink.to" :aria-current="route.path === navLink.to" class="p-2 px-4 rounded-lg flex gap-3 items-center font-semibold hover:bg-primary-50">
-        <font-awesome :icon="navLink.icon" class="me-3" />
-        {{ navLink.name }}
-      </NuxtLink>
-    </div>
-  </div> -->
   <SidebarsBase :links="navLinks" />
 </template>
 

@@ -11,9 +11,14 @@
       </nuxt-link-locale>
     </div>
 
-    <ul class="ms-auto">
-      <u-button @click="() => { toggleDarkMode() }">Dark</u-button>
-      <u-avatar src="/avatars/avatar1.png" />
+    <ul class="flex items-centerms-auto">
+      <u-button to="/studio/upload" icon="i-lucide-plus">
+        Upload
+      </u-button>
+
+      <u-dropdown-menu :items="[{ label: 'Dark mode', icon: 'i-lucide-moon', onSelect: () => { toggleDarkMode() } }]">
+        <u-avatar src="/avatars/avatar1.png" />
+      </u-dropdown-menu>
     </ul>
   </nav>
 </template>
