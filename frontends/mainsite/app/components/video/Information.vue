@@ -2,10 +2,11 @@
   <u-card>
     <div v-if="currentVideo" class="grid grid-cols-1 md:grid-cols-12">        
       <div class="col-span-12">
-        <u-button :to="`/channels/${currentVideo.userChannel.reference}`" variant="outline">
+        <u-button v-if="currentVideo.userChannel" :to="`/channels/${currentVideo.userChannel.reference}`" variant="outline">
           <span class="font-bold">{{ currentVideo.userChannel.name }}</span>
           <icon name="i-fa7-solid:circle-check" class="ms-2" />
         </u-button>
+        <u-skeleton v-else class="h-10 w-40" />
 
         <!-- Subscribers -->
         <p class="my-2 text-slate-400 font-semibold">
@@ -18,14 +19,7 @@
         <!-- Description -->
         <div class="bg-primary-50 dark:bg-primary-800/20 rounded-lg my-4 p-4 cursor-pointer hover:bg-primary-100 dark:hover:bg-primary-800/40 transition duration-200">
           <span class="font-light">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-            Sequi porro iure repellat optio, ipsum ducimus veniam natus
-            ipsam dolor, suscipit distinctio vero? Labore repellendus
-            ipsum et cumque fuga? Ullam, nam! Lorem ipsum dolor sit amet
-            consectetur adipisicing elit. Voluptates id pariatur
-            fuga molestiae aperiam inventore repellendus, dolorum
-            ducimus saepe fugiat minima quisquam. Deleniti, ratione?
-            Quis et harum ullam ab nam.
+            {{ currentVideo.description }}
           </span>
 
           <div class="flex gap-2 my-5">

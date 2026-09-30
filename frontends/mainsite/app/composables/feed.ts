@@ -28,25 +28,28 @@ export const useSearchFeedComposable = createSharedComposable(async () => {
     const [newSearch, newCategory, newVideoLength, newUploadDate, newSortBy] = newValues
 
     query.search = newSearch || undefined
-    query.category = newCategory.join(',')
+    query.category = newCategory.length > 0 ? newCategory.join(',') : undefined
     query.videoLength = newVideoLength !== '4-20 minutes' ? newVideoLength : undefined
     query.uploadDate = newUploadDate !== 'This week' ? newUploadDate : undefined
     query.sortBy = newSortBy !== 'Upload date' ? newSortBy : undefined
   })
 
-  const { data, execute } = await useAsyncData(`feed-${search.value}-${category.value}-${videoLength.value}-${uploadDate.value}-${sortBy.value}`, async () => $fetch<Feed>('/api/videos', {
-    method: 'GET',
-    query: {
-      search: search.value,
-      category: category.value,
-      videoLength: videoLength.value,
-      uploadDate: uploadDate.value,
-      sortBy: sortBy.value
+  const { data, execute } = await useAsyncData(
+    `feed-${search.value}-${category.value}-${videoLength.value}-${uploadDate.value}-${sortBy.value}`, 
+    async () => $fetch<Feed>('/api/videos', {
+      method: 'GET',
+      query: {
+        search: search.value,
+        category: category.value,
+        videoLength: videoLength.value,
+        uploadDate: uploadDate.value,
+        sortBy: sortBy.value
+      }
+    }), {
+      watch: [search, category, videoLength, uploadDate, sortBy],
+      default: () => ({} as Feed)
     }
-  }), {
-    watch: [search, category, videoLength, uploadDate, sortBy],
-    default: () => ({} as Feed)
-  })
+  )
 
   const hasVideos = computed(() => toValue(data).data.allVideos.edges.length > 0)
 

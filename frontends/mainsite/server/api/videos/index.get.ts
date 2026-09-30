@@ -4,7 +4,6 @@ import jsonFeed from '~~/public/fixtures/feed.json'
 export default defineEventHandler(async (event) => {
   try {
     const _query = getQuery<SearchQuery>(event)
-    console.log(jsonFeed)
     return jsonFeed
 
     // const _query = getQuery<SearchQuery>(event)

@@ -8,7 +8,7 @@ const commentNodes = (n: number) => {
       id: `comment${index + 1}`,
       content: faker.lorem.paragraph({ min: 1, max: 10 }),
       fromCreator: faker.datatype.boolean({ probability: 0.2 }),
-      pinned: index === 0,
+      pinned: faker.datatype.boolean({ probability: 0.1 }),
       numberOfReplies: 2,
       createdOn: faker.date.past().toISOString(),
       user: {
@@ -17,7 +17,7 @@ const commentNodes = (n: number) => {
         userChannelSet: [
           {
             id: `ch_${faker.string.uuid()}`,
-            name: `Channel ${index + 1}`,
+            name: faker.person.firstName(),
             reference: `ch_${faker.string.uuid()}`
           }
         ]
