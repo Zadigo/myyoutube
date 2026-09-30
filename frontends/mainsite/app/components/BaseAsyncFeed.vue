@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hasVideos" class="grid grid-cols-1 xl:grid-cols-5 auto-rows-min gap-2">
+  <div v-if="hasVideos" class="grid grid-cols-1 xl:grid-cols-3 auto-rows-min gap-2">
     <article v-for="video in data.data.allVideos.edges" :key="video.node.id" class="my-1">
       <u-card>
         <nuxt-link-locale :to="`/videos/${video.node.videoId}`">

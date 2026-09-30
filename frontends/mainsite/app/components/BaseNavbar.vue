@@ -7,7 +7,7 @@
       </u-button>
 
       <nuxt-link-locale to="/" class="uppercase font-bold">
-        My Youtube
+        <nuxt-img src="/logos/gency-dark.png" class="w-25" />
       </nuxt-link-locale>
     </div>
 

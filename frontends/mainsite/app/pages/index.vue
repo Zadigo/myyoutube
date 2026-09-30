@@ -1,18 +1,13 @@
 <template>
   <section id="videos" class="mx-auto">
-    <!-- Search -->
-    <u-card class="shadow-sm">
-      <form class="grid gap-2 grid-cols-1 xl:grid-cols-4" @submit.prevent>
-        <u-input v-model="search" placeholder="Search" class="col-span-1 xl:col-span-3" />
-        <u-select-menu v-model="category" :items="DEFAULT_CATEGORIES_SELECT_ITEMS" class="col-span-1 xl:col-span-2" placeholder="Categories" multiple />
-        <u-select v-model="videoLength" :items="DEFAULT_VIDEO_LENGTH_SELECT_ITEMS" class="col-span-1 xl:col-span-1" placeholder="Video length" />
-        <u-select v-model="uploadDate" :items="DEFAULT_UPLOAD_DATE_SELECT_ITEMS" class="col-span-1 xl:col-span-1" placeholder="Upload date" />
-      </form>
-    </u-card>
-
     <!-- Content -->
     <section id="content" class="mt-5">
-      <div class="pt-2 pb-5 flex justify-end">
+      <div class="pt-2 pb-5 flex gap-2 items-center justify-end">
+        <u-input v-model="search" placeholder="Search" class="col-span-1 xl:col-span-3" />
+        <u-button @click="() => { toggleShowFilterModal(true) }">
+          <icon name="i-lucide-filter" /> Filter
+        </u-button>
+
         <u-dropdown-menu id="sort-by" :items="SORTBY_MENU_ITEMS">
           <u-button>
             <icon name="i-fa7-solid:sort" /> Sort by
@@ -27,7 +22,7 @@
         </template>
 
         <template #fallback>
-          <div class="grid grid-cols-4 auto-rows-min gap-2">
+          <div class="grid grid-cols-3 auto-rows-min gap-2">
             <div v-for="i in 28" :key="i">
               <u-skeleton class="w-full" />
               <u-skeleton class="mt-1 w-full" />
@@ -36,6 +31,20 @@
         </template>
       </suspense>
     </section>
+
+    <u-modal v-model:open="showFilterModal">
+      <template #title>
+        Filter Videos
+      </template>
+
+      <template #body>
+        <form class="grid gap-2 grid-cols-1 xl:grid-cols-4" @submit.prevent>
+          <u-select-menu v-model="category" :items="DEFAULT_CATEGORIES_SELECT_ITEMS" class="col-span-1 xl:col-span-2" placeholder="Categories" multiple />
+          <u-select v-model="videoLength" :items="DEFAULT_VIDEO_LENGTH_SELECT_ITEMS" class="col-span-1 xl:col-span-1" placeholder="Video length" />
+          <u-select v-model="uploadDate" :items="DEFAULT_UPLOAD_DATE_SELECT_ITEMS" class="col-span-1 xl:col-span-1" placeholder="Upload date" />
+        </form>
+      </template>
+    </u-modal>
   </section>
 </template>
 
@@ -46,6 +55,12 @@ import type { DropdownMenuItem } from '@nuxt/ui'
 const AsyncFeedComponent = defineAsyncComponent({
   loader: () => import('~/components/BaseAsyncFeed.vue')
 })
+
+/**
+ * Filter
+ */
+
+const [showFilterModal, toggleShowFilterModal] = useToggle()
 
 /**
  * Search
